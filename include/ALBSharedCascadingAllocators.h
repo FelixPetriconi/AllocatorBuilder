@@ -129,7 +129,7 @@ namespace ALB
     /**
      * This method is only available when Allocator implements ::expand
      */
-    typename Traits::ExpandEnabled1A<Allocator>::type
+    typename Traits::expand_enabled<Allocator>::type
     expand(Block& b, size_t n)
     {
       Node* p = _root;

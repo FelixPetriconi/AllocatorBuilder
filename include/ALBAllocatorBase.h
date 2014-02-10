@@ -84,76 +84,45 @@ namespace ALB
 
     /**
      * The following traits define a type bool, if the given Allocators implement expand,
-     * otherwise it hides the signature bool expand(Block&, size_t)
+     * otherwise it hides the signature bool expand(Block&, size_t) for has_expand<>
      */
+
     struct Disabled;
 
-    template <class A, typename Enabled = void>
-    struct ExpandEnabled1A;
-
-    template <class A>
-    struct ExpandEnabled1A<A, 
-      typename std::enable_if<has_expand<A>::value>::type>
-    {
-      typedef bool type;
-    };
-
-    template <class A>
-    struct ExpandEnabled1A<A, 
-      typename std::enable_if<!has_expand<A>::value>::type>
-    {
-      typedef Disabled type;
-    };
-
-
-    template <class A, class B, typename Enabled = void>
-    struct ExpandEnabled2A;
+    template <class A, class B = A, typename Enabled = void>
+    struct expand_enabled;
 
     template <class A, class B>
-    struct ExpandEnabled2A<A, B, 
+    struct expand_enabled<A, B, 
       typename std::enable_if<has_expand<A>::value && has_expand<B>::value>::type>
     {
       typedef bool type;
     };
 
     template <class A, class B>
-    struct ExpandEnabled2A<A, B, 
-      typename std::enable_if<!has_expand<A>::value || !has_expand<B>::value>::type>
+    struct expand_enabled<A, B, 
+      typename std::enable_if<!has_expand<A>::value || !has_deallocateAll<B>::value>::type>
     {
       typedef Disabled type;
     };
 
 
-
-    template <class A, typename Enabled = void>
-    struct DeallocateAllEnabled1A;
-
-    template <class A>
-    struct DeallocateAllEnabled1A<A, 
-      typename std::enable_if<has_deallocateAll<A>::value>::type>
-    {
-      typedef void type;
-    };
-
-    template <class A>
-    struct DeallocateAllEnabled1A<A, 
-      typename std::enable_if<!has_deallocateAll<A>::value>::type>
-    {
-      typedef Disabled type;
-    };
-
-    template <class A, class B, typename Enabled = void>
-    struct DeallocateAllEnabled2A;
+    /**
+     * The following traits define a type void, if the given Allocators implement deallocateAll,
+     * otherwise it hides the signature void deallocateAll() for has_deallocateAll<>
+     */
+    template <class A, class B = A, typename Enabled = void>
+    struct deallocateAll_enabled;
 
     template <class A, class B>
-    struct DeallocateAllEnabled2A<A, B, 
+    struct deallocateAll_enabled<A, B, 
       typename std::enable_if<has_deallocateAll<A>::value && has_deallocateAll<B>::value>::type>
     {
-      typedef void type;
+      typedef bool type;
     };
 
     template <class A, class B>
-    struct DeallocateAllEnabled2A<A, B, 
+    struct deallocateAll_enabled<A, B, 
       typename std::enable_if<!has_deallocateAll<A>::value || !has_deallocateAll<B>::value>::type>
     {
       typedef Disabled type;

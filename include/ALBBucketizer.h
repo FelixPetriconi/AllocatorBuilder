@@ -70,7 +70,7 @@ namespace ALB
 
     // Make the function invisible for the has_expand<Bucketizer> trait if the dependent type
     // Allocator does not implement expand
-    typename Traits::ExpandEnabled1A<Allocator>::type
+    typename Traits::expand_enabled<Allocator>::type
     expand(Block& b, size_t delta) {
       if (!b) {
         b = allocate(delta);
@@ -91,7 +91,7 @@ namespace ALB
       (*it)->deallocate(b);
     }
 
-    typename Traits::DeallocateAllEnabled1A<Allocator>::type
+    typename Traits::deallocateAll_enabled<Allocator>::type
     deallocateAll() {
       for (auto& item : _buckets) {
         item.deallocateAll();

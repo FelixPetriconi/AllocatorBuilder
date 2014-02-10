@@ -45,7 +45,7 @@ namespace ALB
 
     // Make the function invisible for the has_expand<Segregator> trait if the dependent type
     // SmallAllocator, LargeAllocator do not implement expand
-    typename Traits::ExpandEnabled2A<SmallAllocator, LargeAllocator>::type 
+    typename Traits::expand_enabled<SmallAllocator, LargeAllocator>::type 
     expand(Block& b, size_t delta) {
       if (b.length + delta >= Threshold) {
         return false;
@@ -74,7 +74,7 @@ namespace ALB
       return LargeAllocator::deallocate(b);
     }
 
-    typename Traits::DeallocateAllEnabled2A<SmallAllocator, LargeAllocator>::type
+    typename Traits::deallocateAll_enabled<SmallAllocator, LargeAllocator>::type
     deallocateAll() {
       SmallAllocator::deallocateAll();
       LargeAllocator::deallocateAll();
