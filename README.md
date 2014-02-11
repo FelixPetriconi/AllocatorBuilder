@@ -1,15 +1,21 @@
 AllocatorBuilder
 ================
 
-A highly composable C++ heap based on ideas from Andrei Alexandrescu, presented at the C++ and Beyond 2013 seminar.
+A highly composable, policy based C++ allocator based on ideas from Andrei Alexandrescu, presented at the C++ and Beyond 2013 seminar.
 
 The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of allocators to handle in a fast way memory allocations and deallocations. All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
+So an appropached is taken that returns such a Block
+    struct Block {
+      void* ptr;
+      size_t length;
+    };
 
-C++11 features are used as far as Visual Studio 2012 supports them.
+
+C++ 11 features are used as far as Visual Studio 2012 supports them.
 
 Motivation
 ----------
-Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)
+Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)
 
 So the code could look like this
   
@@ -44,14 +50,14 @@ So, isn't this nicer?
   
 Content
 -------
-  * Bucketizer
-  * FallbackAllocator
-  * Mallocator
-  * Segregator
-  * SharedFreeList
-  * SharedCascadingAllocator
-  * SharedHeap
-  * StackAllocator
+  * Bucketizer - Manages a bunch of Allocators with increasing bucket size
+  * FallbackAllocator - Either the default Allocator can handle a request, otherwise it is passed to a fallback Allocator
+  * Mallocator - Provides and interface to systems ::malloc()
+  * Segregator - Separates allocation requests depending on a threshold to Allocator A or B
+  * SharedFreeList - Manages a list of freed memory blocks in a list for faster reusage in a thread safe manner
+  * SharedCascadingAllocator - Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory
+  * SharedHeap - A thread safe heap with minimal overhead and as far as possible in a lock-free way.
+  * StackAllocator - Provides a memory access, takedn from the stack
   
 
 Author 
