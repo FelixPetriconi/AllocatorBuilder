@@ -30,7 +30,7 @@ So the code could look like this
       p = heapAllocated.get();
     }
   
-    // ... work with p ... 
+    // ... work with p[0..neededBytes-1]
 
 Everybody would agree that this is not nice! So what if one could encapsulate this into something like:
 
@@ -43,7 +43,9 @@ Everybody would agree that this is not nice! So what if one could encapsulate th
     auto block = localAllocator.allocate(neededBytes);
     SCOPED_EXIT { localAllocator.deallocate(block); };
     
-    // ... work with block.ptr ... 
+    auto p = static_cast<char*>(block.ptr);
+    
+    // ... work with p[0..neededBytes-1]
  
 So, isn't this nicer? 
   
