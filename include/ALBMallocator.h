@@ -13,13 +13,11 @@
 
 namespace ALB
 {
-  template <size_t DefaultAlignment = 16>
   class Mallocator {
-    static const size_t alignment = DefaultAlignment;
 
   public:
     Block allocate(size_t n) {
-      return Block(_aligned_malloc(n, DefaultAlignment), n);
+      return Block(::malloc(n), n);
     }
 
     bool reallocate(Block& b, size_t n) {
@@ -27,7 +25,7 @@ namespace ALB
         return true;
       }
 
-      Block reallocatedBlock(_aligned_realloc(b.ptr, n, DefaultAlignment), n);
+      Block reallocatedBlock(::realloc(b.ptr, n), n);
       
       if (reallocatedBlock.ptr != nullptr) {
         b = reallocatedBlock;
@@ -38,7 +36,7 @@ namespace ALB
 
     void deallocate(Block& b) {
       if (b) {
-        _aligned_free(b.ptr);
+        ::free(b.ptr);
         b.reset();
       }
     }

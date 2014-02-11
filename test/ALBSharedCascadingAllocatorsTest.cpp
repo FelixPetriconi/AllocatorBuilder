@@ -22,7 +22,7 @@ class TCascadingAllocatorsTest : public ::testing::Test
 
 TEST_F(TCascadingAllocatorsTest, SingleAllocation)
 {
-  ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator<>, 64,8>> sut;
+  ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 64,8>> sut;
 
   auto m1 = sut.allocate(64*8);
   auto m2 = sut.allocate(64*8);
@@ -33,7 +33,7 @@ TEST_F(TCascadingAllocatorsTest, SingleAllocation)
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceAllocationByOneRunningThread)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator<>, 64,8>> AllocatorUnderTest;
+  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 64,8>> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   ALB::TestHelpers::TestWorker<AllocatorUnderTest> testWorker(sut, 256);
@@ -43,7 +43,7 @@ TEST_F(TCascadingAllocatorsTest,  BruteForceAllocationByOneRunningThread)
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceSingleAllocationWithinTwoRunningThreads)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator<>, 512,64>> AllocatorUnderTest;
+  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 512,64>> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, 2> TestParams;
@@ -64,7 +64,7 @@ TEST_F(TCascadingAllocatorsTest,  BruteForceSingleAllocationWithinTwoRunningThre
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceWithSeveralAllocatedBlocksWithinTwoRunningThreads)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator<>, 512,64>> AllocatorUnderTest;
+  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 512,64>> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, 2> TestParams;

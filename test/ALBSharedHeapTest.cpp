@@ -17,7 +17,7 @@
 class HeapTestWithOneBlockChunk : public ::testing::Test
 {
 protected:
- ALB::SharedHeap<ALB::Mallocator<>, 64, 8> sut;
+ ALB::SharedHeap<ALB::Mallocator, 64, 8> sut;
 };
 
 TEST_F(HeapTestWithOneBlockChunk, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
@@ -163,7 +163,7 @@ TEST_F(HeapTestWithOneBlockChunk, ThatASmallerFreedBlockIsNotUsedForANewAllocati
 class HeapWithSeveralChunksTest : public ::testing::Test
 {
 protected:
- ALB::SharedHeap<ALB::Mallocator<>, 512, 8> sut;
+ ALB::SharedHeap<ALB::Mallocator, 512, 8> sut;
 };
 
 TEST_F(HeapWithSeveralChunksTest, ThatAfterAFilledChunkTheNextIsStarted)
@@ -263,7 +263,7 @@ class HeapWithThreadsTest : public ::testing::Test
 
 TEST_F(HeapWithThreadsTest,  BruteForceAllocationByOneRunningThread)
 {
-  typedef ALB::SharedHeap<ALB::Mallocator<>, 512, 8> AllocatorUnderTest;
+  typedef ALB::SharedHeap<ALB::Mallocator, 512, 8> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   ALB::TestHelpers::TestWorker<AllocatorUnderTest> testWorker(sut, 128);
@@ -276,7 +276,7 @@ TEST_F(HeapWithThreadsTest,  BruteForceAllocationByOneRunningThread)
 
 TEST_F(HeapWithThreadsTest, BruteForceTestWithSeveralThreadsRunning)
 {
-  typedef ALB::SharedHeap<ALB::Mallocator<>, 512, 64> AllocatorUnderTest;
+  typedef ALB::SharedHeap<ALB::Mallocator, 512, 64> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, 2> TestParams;

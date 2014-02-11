@@ -15,7 +15,7 @@
 
 TEST(TFreeListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
 {
-  ALB::SharedFreeList<ALB::Mallocator<>, 0, 17 > sut;
+  ALB::SharedFreeList<ALB::Mallocator, 0, 17 > sut;
   auto mem = sut.allocate(8);
   EXPECT_NE(nullptr, mem.ptr);
   EXPECT_EQ(16, mem.length);
@@ -25,7 +25,7 @@ TEST(TFreeListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
 
 TEST(TFreeListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
 {
-  ALB::SharedFreeList<ALB::Mallocator<>, 0, 17> sut;
+  ALB::SharedFreeList<ALB::Mallocator, 0, 17> sut;
   auto mem = sut.allocate(8);
   auto oldPtr = mem.ptr;
   sut.deallocate(mem);
@@ -38,7 +38,7 @@ TEST(TFreeListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSam
 
 TEST(TFreeListTest, ThatSeveralDeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
 {
-  ALB::SharedFreeList<ALB::Mallocator<>, 0, 17> sut;
+  ALB::SharedFreeList<ALB::Mallocator, 0, 17> sut;
   auto mem1 = sut.allocate(8);
   auto mem2 = sut.allocate(8);
   auto oldPtr1 = mem1.ptr;
