@@ -18,6 +18,9 @@ namespace ALB
 {
   namespace TestHelpers
   {
+    /**
+     * Simple class that oscilates from zero to maxValue with each increment
+     */
     class Oszillator
     {
       int _value;
@@ -52,8 +55,16 @@ namespace ALB
       }
     };
 
+    /**
+     * Checks that both memory blocks are equal until n bytes
+     */
     void EXPECT_MEM_EQ(void* a, void* b, size_t n);
 
+    /**
+     * Class to check that no memory overrun takes place with allocations, reallocations 
+     * and deallocations.
+     * Use check() to start the test.
+     */
     template <class Allocator>
     class TestWorker
     {
@@ -107,6 +118,11 @@ namespace ALB
     };
 
 
+    /**
+     * Class to check that no memory overrun takes place with while it holds multiple allocations 
+     * at the same time 
+     * Use check() to start the test.
+     */
     template <class Allocator>
     class MultipleAllocationsTester
     {
@@ -167,6 +183,12 @@ namespace ALB
     };
 
 
+    /**
+     * Class that lets run in ThreadNumber threads Tester instances on the given Allocator
+     * All threads are started, Testers initialization is done and wait until all Testers 
+     * are ready. Then all threads are started in parallel to ensure that the Allocator is
+     * really stressed by different threads
+     */
     template <class Allocator, size_t ThreadNumber, class Tester, class TestParams>
     class TestWorkerCollector
     {
