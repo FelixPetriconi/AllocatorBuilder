@@ -9,35 +9,35 @@ C++11 features are used as far as Visual Studio 2012 supports them.
 
 Motivation
 ----------
-Inside a method temporary raw memory is needed. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used.
+Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)
+
 So the code could look like this
   
-  const int STACK_THRESHOLD = 1024;
-  int neededBytes = 42
-  bool wouldFitOnTheStack = neededBytes < STACK_THRESHOLD;
-  char* p = wouldFitOnStack? : (char*):alloca(neededBytes) : nullptr;
+    const int STACK_THRESHOLD = 1024;
+    int neededBytes = 42
+    bool wouldFitOnTheStack = neededBytes < STACK_THRESHOLD;
+    char* p = wouldFitOnStack? : (char*):alloca(neededBytes) : nullptr;
+    
+    std::unique_ptr<char[]> heapAllocated(!wouldFitOnStack? new char[neededBytes] : nullptr);
   
-  std::unique_ptr<char[]> heapAllocated(!wouldFitOnStack? new char[neededBytes] : nullptr);
+    if (!p) {
+      p = heapAllocated.get();
+    }
   
-  if (!p)
-  {
-    p = heapAllocated.get();
-  }
-  
-  // ... work with p ... 
+    // ... work with p ... 
 
 Everybody would agree that this is not nice! So what if one could encapsulate this into something like:
 
-  const int STACK_THRESHOLD = 1024;
-  int neededBytes = 42
+    const int STACK_THRESHOLD = 1024;
+    int neededBytes = 42
 
-  typedef FallbackAllocator<StackAllocator<STACK_THRESHOLD>, Mallocator<>> LocalAllocator; 
-  LocalAllocator localAllocator;
+    typedef FallbackAllocator<StackAllocator<STACK_THRESHOLD>, Mallocator<>> LocalAllocator; 
+    LocalAllocator localAllocator;
   
-  auto block = localAllocator.allocate(neededBytes);
-  SCOPED_EXIT { localAllocator.deallocate(block); };
-  
-  // ... work with block.ptr ... 
+    auto block = localAllocator.allocate(neededBytes);
+    SCOPED_EXIT { localAllocator.deallocate(block); };
+    
+    // ... work with block.ptr ... 
  
 So, isn't this nicer? 
   
