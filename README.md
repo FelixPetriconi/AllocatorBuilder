@@ -87,7 +87,8 @@ Version
 Requirements
 ------------
   * C++ 11 (partly)
-  * boost 1.54
+  * boost 1.55
+  * GoogleTest (is now part of the repository, because the CMakeFiles.txt needed some patches.)
 
 
 Platform
@@ -97,7 +98,6 @@ Platform
 ToDo
 ----
   * Add more UnitTests
-  * Add AlignedMallocator
   * Add FreeList
   * Add CascadingAllocators
   * Add expand at the missing places

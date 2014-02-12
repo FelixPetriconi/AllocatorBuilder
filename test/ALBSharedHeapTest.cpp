@@ -8,7 +8,7 @@
 //
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
+
 #include "ALBSharedHeap.h"
 #include "ALBMallocator.h"
 #include "ALBTestHelpers.h"
