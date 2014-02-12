@@ -9,15 +9,30 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <gtest/gtest.h>
 #include <memory.h>
 #include <future>
 #include <array>
 #include <stdlib.h>
 
+#include "ALBAllocatorBase.h"
+
 namespace ALB
 {
   namespace TestHelpers
   {
+    template <class Allocator>
+    class AllocatorBaseTest : public ::testing::Test
+    {
+    protected:
+      void deallocateAndCheckBlockIsThenEmpty(ALB::Block& b) {
+        sut.deallocate(b);
+        EXPECT_FALSE(b);
+        EXPECT_EQ(nullptr, b.ptr);
+      }
+      Allocator sut;
+    };
+
     /**
      * Simple class that oscilates from zero to maxValue with each increment
      */

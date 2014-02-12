@@ -38,154 +38,168 @@ namespace
        *(reinterpret_cast<T*>(b.ptr) + i) = ReferenceData[i];
      }
    }
+   const size_t SmallBlockSize = 8;
+   const size_t NumberOfBlocks = 64;
 }
 
-class HeapTestWithOneBlockChunk : public ::testing::Test
+
+
+class ThreadHeapWithSmallAllocationsTest : 
+  public ALB::TestHelpers::AllocatorBaseTest<
+    ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>>
 {
-protected:
- ALB::SharedHeap<ALB::Mallocator, 64, 8> sut;
 };
 
-TEST_F(HeapTestWithOneBlockChunk, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
 {
   auto mem = sut.allocate(0);
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_FALSE(mem);
 
   EXPECT_NO_THROW(sut.deallocate(mem));
+  
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatAllocatingOneBytesReturnsABlockOfBlockSize)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingOneBytesReturnsABlockOfBlockSize)
 {
   auto mem = sut.allocate(1);
   EXPECT_TRUE(nullptr != mem.ptr);
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(SmallBlockSize, mem.length);
 
-  EXPECT_NO_THROW(sut.deallocate(mem));
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatAllocatingBlockSizeBytesReturnsABlockOfBlockSize)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingBlockSizeBytesReturnsABlockOfBlockSize)
 {
-  auto mem = sut.allocate(8);
+  auto mem = sut.allocate(SmallBlockSize);
   EXPECT_TRUE(nullptr != mem.ptr);
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(SmallBlockSize, mem.length);
 
-  EXPECT_NO_THROW(sut.deallocate(mem));
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
 
-TEST_F(HeapTestWithOneBlockChunk, ThatAllocatingTwoMemoryBlocksUsesContiguousMemory)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingTwoMemoryBlocksUsesContiguousMemory)
 {
-  auto mem1 = sut.allocate(8);
-  auto mem2 = sut.allocate(8);
-  EXPECT_EQ(mem2.ptr, static_cast<char*>(mem1.ptr) + 8);
-  EXPECT_EQ(8, mem1.length);
-  EXPECT_EQ(8, mem2.length);
+  auto mem1stAllocation = sut.allocate(SmallBlockSize);
+  auto mem2ndAllocation = sut.allocate(SmallBlockSize);
 
-  EXPECT_NO_THROW(sut.deallocate(mem2));
-  EXPECT_NO_THROW(sut.deallocate(mem1));
+  EXPECT_EQ(mem2ndAllocation.ptr, static_cast<char*>(mem1stAllocation.ptr) + SmallBlockSize);
+  EXPECT_EQ(SmallBlockSize, mem1stAllocation.length);
+  EXPECT_EQ(SmallBlockSize, mem2ndAllocation.length);
+
+  deallocateAndCheckBlockIsThenEmpty(mem2ndAllocation);
+  deallocateAndCheckBlockIsThenEmpty(mem1stAllocation);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatAFreedBlockIsUsedForANewAllocation)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocation)
 {
-  auto mem1 = sut.allocate(8);
-  auto mem2 = sut.allocate(8);
+  auto mem1stAllocation = sut.allocate(SmallBlockSize);
+  auto mem2ndAllocation = sut.allocate(SmallBlockSize);
 
-  auto ptrOf1stLocation = mem1.ptr;
-  EXPECT_NO_THROW(sut.deallocate(mem1));
+  auto ptrOf1stLocation = mem1stAllocation.ptr;
+  deallocateAndCheckBlockIsThenEmpty(mem1stAllocation);
 
-  auto mem3 = sut.allocate(8);
-  EXPECT_EQ(ptrOf1stLocation, mem3.ptr);
+  auto mem3rdAllocation = sut.allocate(SmallBlockSize);
+  EXPECT_EQ(ptrOf1stLocation, mem3rdAllocation.ptr);
 
-  EXPECT_NO_THROW(sut.deallocate(mem2));
-  EXPECT_NO_THROW(sut.deallocate(mem3));
+  deallocateAndCheckBlockIsThenEmpty(mem2ndAllocation);
+  deallocateAndCheckBlockIsThenEmpty(mem3rdAllocation);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatItsPossibleToAllocate64MemoryBlocksAndThatAllOfThemAreContiguous)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlocksAndThatAllOfThemAreContiguous)
 {
-  ALB::Block blocks[64];
+  ALB::Block blocks[NumberOfBlocks];
 
-  for (auto& b : blocks) { b = sut.allocate(8); }
+  for (auto& b : blocks) { 
+    b = sut.allocate(8); 
+  }
 
-  for (size_t i = 0; i < 63; i++)
+  for (size_t i = 0; i < NumberOfBlocks - 1; i++)
   {
     ASSERT_TRUE(blocks[i].ptr != nullptr);
     ASSERT_TRUE(blocks[i+1].ptr != nullptr);
-    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + 8);
+    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + SmallBlockSize);
   }
 
-  for (auto& b : blocks) { sut.deallocate(b); }
+  for (auto& b : blocks) { 
+    deallocateAndCheckBlockIsThenEmpty(b); 
+  }
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatANullBlockIsreturnedIfTheHeapIsOutOfMemory)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOutOfMemory)
 {
-  ALB::Block blocks[64];
-  for (auto& b : blocks) { b = sut.allocate(8); }
+  auto allMem = sut.allocate(NumberOfBlocks * SmallBlockSize);
 
-  auto mem = sut.allocate(8);
+  auto outOfMem = sut.allocate(1);
 
-  EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(nullptr, outOfMem.ptr);
+  EXPECT_EQ(0, outOfMem.length);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatANullBlockIsreturnedIfABiggerChunkIsReqeustedThanTheCompleteHeapCanHandle)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfABiggerChunkIsReqeustedThanTheCompleteHeapCanHandle)
 {
-  auto mem = sut.allocate(64 * 8 + 1);
+  auto outOfMem = sut.allocate(NumberOfBlocks * SmallBlockSize + 1);
 
-  EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(nullptr, outOfMem.ptr);
+  EXPECT_EQ(0, outOfMem.length);
 }
 
-
-TEST_F(HeapTestWithOneBlockChunk, ThatItsPossibleToAllocate32MemoryBlocksWith16BytesAndThatAllOfThemAreContiguous)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOfBlocksMemoryBlocksWithDoubleBlockSizeBytesAndThatAllOfThemAreContiguous)
 {
-  ALB::Block blocks[32];
+  ALB::Block blocks[NumberOfBlocks/2];
 
-  for (auto& b : blocks) { b = sut.allocate(16); }
+  for (auto& b : blocks) { 
+    b = sut.allocate(SmallBlockSize * 2); 
+  }
 
-  for (size_t i = 0; i < 31; i++)
+  for (size_t i = 0; i < NumberOfBlocks/2 - 1; i++)
   {
     ASSERT_TRUE(blocks[i].ptr != nullptr);
     ASSERT_TRUE(blocks[i+1].ptr != nullptr);
-    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + 16);
+    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + SmallBlockSize * 2);
   }
 
-  for (auto& b : blocks) { sut.deallocate(b); }
+  for (auto& b : blocks) { 
+    deallocateAndCheckBlockIsThenEmpty(b); 
+  }
 }
 
 
-TEST_F(HeapTestWithOneBlockChunk, ThatABiggerFreedBlockIsUsedForANewAllocationOfSmallerSize)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatABiggerFreedBlockIsUsedForANewAllocationOfSmallerSize)
 {
-  auto mem1 = sut.allocate(16);
-  auto mem2 = sut.allocate(8);
+  auto largerAllocation = sut.allocate(SmallBlockSize * 2);
+  auto smallerAllocation = sut.allocate(SmallBlockSize);
 
-  auto ptrOf1stLocation = mem1.ptr;
-  EXPECT_NO_THROW(sut.deallocate(mem1));
+  auto ptrOf1stLocation = largerAllocation.ptr;
+  deallocateAndCheckBlockIsThenEmpty(largerAllocation);
 
-  auto mem3 = sut.allocate(8);
-  EXPECT_EQ(ptrOf1stLocation, mem3.ptr);
+  auto mem = sut.allocate(SmallBlockSize);
+  EXPECT_EQ(ptrOf1stLocation, mem.ptr);
 
-  EXPECT_NO_THROW(sut.deallocate(mem2));
-  EXPECT_NO_THROW(sut.deallocate(mem3));
+  deallocateAndCheckBlockIsThenEmpty(smallerAllocation);
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatASmallerFreedBlockIsNotUsedForANewAllocationButANewContiguousBlockIsUsed)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatASmallerFreedBlockIsNotUsedForANewAllocationButANewContiguousBlockIsUsed)
 {
-  auto mem1 = sut.allocate(8);
-  auto mem2 = sut.allocate(16);
+  auto mem1 = sut.allocate(SmallBlockSize);
+  auto mem2 = sut.allocate(SmallBlockSize * 2);
 
   auto ptrOf1stLocation = mem1.ptr;
-  EXPECT_NO_THROW(sut.deallocate(mem1));
+  deallocateAndCheckBlockIsThenEmpty(mem1);
 
-  auto mem3 = sut.allocate(16);
+  auto mem3 = sut.allocate(SmallBlockSize * 2);
+
   ASSERT_NE(ptrOf1stLocation, mem3.ptr);
-  EXPECT_EQ(static_cast<char*>(mem3.ptr), static_cast<char*>(mem2.ptr) + 16);
+  EXPECT_EQ(static_cast<char*>(mem3.ptr), static_cast<char*>(mem2.ptr) + SmallBlockSize * 2);
 
-  EXPECT_NO_THROW(sut.deallocate(mem2));
-  EXPECT_NO_THROW(sut.deallocate(mem3));
+  deallocateAndCheckBlockIsThenEmpty(mem2);
+  deallocateAndCheckBlockIsThenEmpty(mem3);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatExpandByZeroBytesOfAnEmptyBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAnEmptyBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
   auto mem = sut.allocate(0);
 
@@ -195,9 +209,9 @@ TEST_F(HeapTestWithOneBlockChunk, ThatExpandByZeroBytesOfAnEmptyBlockReturnsSucc
   EXPECT_EQ(0, mem.length);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatExpandByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
-  auto mem = sut.allocate(8);
+  auto mem = sut.allocate(SmallBlockSize);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
@@ -207,9 +221,9 @@ TEST_F(HeapTestWithOneBlockChunk, ThatExpandByZeroBytesOfAFilledBlockReturnsSucc
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData, mem.length);
 }
 
-TEST_F(HeapTestWithOneBlockChunk, ThatExpandByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
-  auto mem = sut.allocate(8);
+  auto mem = sut.allocate(SmallBlockSize);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
@@ -221,13 +235,11 @@ TEST_F(HeapTestWithOneBlockChunk, ThatExpandByNBytesOfAFilledBlockReturnsSuccess
 }
 
 
-class HeapWithSeveralChunksTest : public ::testing::Test
+class ThreadHeapWithLargeAllocationsTest : public ALB::TestHelpers::AllocatorBaseTest<ALB::SharedHeap<ALB::Mallocator, 512, 8>>
 {
-protected:
- ALB::SharedHeap<ALB::Mallocator, 512, 8> sut;
 };
 
-TEST_F(HeapWithSeveralChunksTest, ThatAfterAFilledChunkTheNextIsStarted)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAfterAFilledChunkTheNextIsStarted)
 {
   auto mem1 = sut.allocate(8*64);
   auto mem2 = sut.allocate(8);
@@ -236,41 +248,41 @@ TEST_F(HeapWithSeveralChunksTest, ThatAfterAFilledChunkTheNextIsStarted)
   auto mem3 = sut.allocate(8*64);
   EXPECT_EQ(static_cast<char*>(mem3.ptr), static_cast<char*>(mem1.ptr) + 2*8*64);
 
-  EXPECT_NO_THROW(sut.deallocate(mem1));
-  EXPECT_NO_THROW(sut.deallocate(mem2));
+  deallocateAndCheckBlockIsThenEmpty(mem1);
+  deallocateAndCheckBlockIsThenEmpty(mem2);
 }
 
-TEST_F(HeapWithSeveralChunksTest, ThatAllocatingSeveralWholeChunksIsSupported)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksIsSupported)
 {
   auto mem = sut.allocate(8*128);
   EXPECT_NE(nullptr, mem.ptr);
   EXPECT_EQ(8*128, mem.length);
 
-  EXPECT_NO_THROW(sut.deallocate(mem));
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(HeapWithSeveralChunksTest, ThatAllocatingAllWithOneAllocationIsSupported)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingAllWithOneAllocationIsSupported)
 {
   auto mem = sut.allocate(8*512);
   EXPECT_NE(nullptr, mem.ptr);
   EXPECT_EQ(8*512, mem.length);
 
-  EXPECT_NO_THROW(sut.deallocate(mem));
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(HeapWithSeveralChunksTest, ThatAllocatingSeveralWholeChunksAfterASingleBlockIsSupported)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksAfterASingleBlockIsSupported)
 {
   auto mem1 = sut.allocate(1);
   auto mem2 = sut.allocate(8*128);
   EXPECT_EQ(mem2.ptr, static_cast<char*>(mem1.ptr) + 8*64);
   EXPECT_EQ(8*128, mem2.length);
 
-  EXPECT_NO_THROW(sut.deallocate(mem1));
-  EXPECT_NO_THROW(sut.deallocate(mem2));
+  deallocateAndCheckBlockIsThenEmpty(mem1);
+  deallocateAndCheckBlockIsThenEmpty(mem2);
 }
 
 
-TEST_F(HeapWithSeveralChunksTest, ThatWhenAllChunksAreUsedNoMemoryCanBeAllocatedAndThatDeallocateAllFreesMakesAllBlocksAgainAvailable)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatWhenAllChunksAreUsedNoMemoryCanBeAllocatedAndThatDeallocateAllFreesMakesAllBlocksAgainAvailable)
 {
   ALB::Block blocks[8];
   for (auto& b : blocks) { b = sut.allocate(64*8); }
@@ -287,20 +299,22 @@ TEST_F(HeapWithSeveralChunksTest, ThatWhenAllChunksAreUsedNoMemoryCanBeAllocated
     EXPECT_EQ(64*8, b.length);
   }
 
-  for (auto& b : blocks) { sut.deallocate(b); }
+  for (auto& b : blocks) { 
+    deallocateAndCheckBlockIsThenEmpty(b); 
+  }
 }
 
-TEST_F(HeapWithSeveralChunksTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorks)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorks)
 {
   auto mem = sut.allocate(65*8);
 
   EXPECT_NE(nullptr, mem.ptr);
   EXPECT_EQ(65*8, mem.length);
 
-  EXPECT_NO_THROW(sut.deallocate(mem));
+  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(HeapWithSeveralChunksTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorksAfterASingleMemoryBlockHasTheCorrectOffsets)
+TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorksAfterASingleMemoryBlockHasTheCorrectOffsets)
 {
   auto mem1 = sut.allocate(8);
   auto mem2 = sut.allocate(65*8);
@@ -311,10 +325,10 @@ TEST_F(HeapWithSeveralChunksTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorksA
   EXPECT_EQ(mem3.ptr, static_cast<char*>(mem1.ptr) + 8);   // This fits into the first gab
   EXPECT_EQ(mem4.ptr, static_cast<char*>(mem2.ptr) + 65*8); // This comes after the big chunk, because there is no gap inbetween
 
-  EXPECT_NO_THROW(sut.deallocate(mem1));
-  EXPECT_NO_THROW(sut.deallocate(mem2));
-  EXPECT_NO_THROW(sut.deallocate(mem3));
-  EXPECT_NO_THROW(sut.deallocate(mem4));
+  deallocateAndCheckBlockIsThenEmpty(mem1);
+  deallocateAndCheckBlockIsThenEmpty(mem2);
+  deallocateAndCheckBlockIsThenEmpty(mem3);
+  deallocateAndCheckBlockIsThenEmpty(mem4);
 }
 
 
