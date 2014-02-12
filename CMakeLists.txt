@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
-include(ExternalProject)
 
 project(AllocatorBuilder)
 
@@ -14,16 +13,15 @@ if(MSVC AND MSVC_VERSION EQUAL 1700)
 endif ()
 
 
-set (BOOST_ROOT D:/boost-1_55_0)
-set (Boost_USE_STATIC_LIBS   TRUE)
-set (Boost_USE_MULTITHREADED ON)
-find_package( Boost 1.55.0 REQUIRED COMPONENTS system thread chrono )
+set(BOOST_ROOT D:/boost_1_55_0)
+set(Boost_USE_STATIC_LIBS        OFF)
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME     OFF)
+#set(BOOST_ALL_DYN_LINK           ON) 
+find_package( Boost 1.55.0 REQUIRED COMPONENTS system thread chrono date_time)
 
 
 add_subdirectory(util/gtest-1.7.0)
 add_subdirectory(source)
 add_subdirectory(test)
-
-add_dependencies(ALBUnitTest gtest)
-add_dependencies(ALBUnitTest ALB)
 

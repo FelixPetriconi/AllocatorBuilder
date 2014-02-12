@@ -23,12 +23,11 @@ add_executable(ALBUnitTest
                ALBTestHelpers.cpp
                main.cpp)
 
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(ALBUnitTest ${Boost_LIBRARIES})
-endif()
+include_directories(${Boost_INCLUDE_DIRS})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+add_definitions(-DBOOST_ALL_NO_LIB)
+
 
 add_dependencies(ALBUnitTest gtest)
 add_dependencies(ALBUnitTest ALB)
-
-
+target_link_libraries(ALBUnitTest ${Boost_LIBRARIES} gtest ALB)
