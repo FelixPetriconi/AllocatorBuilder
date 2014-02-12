@@ -13,6 +13,32 @@
 #include "ALBMallocator.h"
 #include "ALBTestHelpers.h"
 #include <thread>
+#include <xutility>
+
+using namespace ALB::TestHelpers;
+
+namespace
+{
+   const int ReferenceData[] = {
+     0,1,2,3,4,5,6,7,
+     8,9,10,11,12,13,14,15,
+     16,17,18,19,20,21,22,23,
+     24,25,26,27,28,29,30,31
+   };
+
+   template <typename T, size_t N>
+   size_t size(const T (&)[N]) {
+     return N;
+   }
+
+   template <typename T>
+   void fillBlockWithReferenceData(ALB::Block& b)
+   {
+     for (size_t i = 0; i < std::min(size(ReferenceData), b.length / sizeof(T)); i++) {
+       *(reinterpret_cast<T*>(b.ptr) + i) = ReferenceData[i];
+     }
+   }
+}
 
 class HeapTestWithOneBlockChunk : public ::testing::Test
 {
@@ -159,6 +185,41 @@ TEST_F(HeapTestWithOneBlockChunk, ThatASmallerFreedBlockIsNotUsedForANewAllocati
   EXPECT_NO_THROW(sut.deallocate(mem3));
 }
 
+TEST_F(HeapTestWithOneBlockChunk, ThatExpandByZeroBytesOfAnEmptyBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem = sut.allocate(0);
+
+  EXPECT_TRUE(sut.expand(mem, 0));
+
+  EXPECT_EQ(nullptr, mem.ptr);
+  EXPECT_EQ(0, mem.length);
+}
+
+TEST_F(HeapTestWithOneBlockChunk, ThatExpandByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem = sut.allocate(8);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.expand(mem, 0));
+
+  EXPECT_EQ(origMem, mem);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData, mem.length);
+}
+
+TEST_F(HeapTestWithOneBlockChunk, ThatExpandByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem = sut.allocate(8);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.expand(mem, 4));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_GE(mem.length, origMem.length + 4);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData, origMem.length);
+}
+
 
 class HeapWithSeveralChunksTest : public ::testing::Test
 {
@@ -255,6 +316,8 @@ TEST_F(HeapWithSeveralChunksTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorksA
   EXPECT_NO_THROW(sut.deallocate(mem3));
   EXPECT_NO_THROW(sut.deallocate(mem4));
 }
+
+
 
 
 class HeapWithThreadsTest : public ::testing::Test

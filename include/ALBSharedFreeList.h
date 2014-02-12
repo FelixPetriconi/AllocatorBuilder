@@ -44,10 +44,7 @@ namespace ALB
       return _upperBound.value();
     }
 
-    SharedFreeList() : _root(PoolSize) {
-      assert(_lowerBound.value() != 0);
-      assert(_upperBound.value() != 0);
-    }
+    SharedFreeList() : _root(PoolSize) {}
 
     SharedFreeList(size_t minSize, size_t maxSize) 
       : _root(PoolSize) 

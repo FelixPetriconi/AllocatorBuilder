@@ -236,6 +236,23 @@ namespace ALB
       }
       b.reset();
     }
+
+    bool expandWithinASingleControlRegister(Block& b, int freeBlockFieldIndex, int subIndex, size_t numberOfNewNeededBlocks) {
+      uint64_t mask = ((1uLL << numberOfNewNeededBlocks) - 1) << (subIndex + 1);
+      uint64_t currentControlRegister = _control[freeBlockFieldIndex].load();
+
+      if ((currentControlRegister & mask) == mask) {
+        auto newControlRegister = currentControlRegister & (mask ^ all_set);
+        boost::shared_lock< boost::shared_mutex > guard(_mutex);
+        
+        if (_control[freeBlockFieldIndex].compare_exchange_strong(currentControlRegister, newControlRegister)) {
+          b.length += numberOfNewNeededBlocks * BlockSize;
+          return true;
+        }
+      }
+      return false;
+    }
+
   public:
 
     SharedHeap()
@@ -352,12 +369,34 @@ namespace ALB
       if (n < b.length) {
         // handle insito
       }
-     
+
+      // no lock is needed here, because the necessary operations are handled inside the method under lock
       // most simple version for the beginning
       return Helper::reallocateWithCopy(*this, *this, b, n);
       // case that next to the block is in the same chunk remaining space, doable without lock
       // case that less memory is needed within the same chunk, doable without lock
       // all others need lock
+    }
+
+    bool expand(Block& b, size_t delta) {
+      if (delta == 0) {
+        return true;
+      }
+
+      //size_t numberOfBlocks = b.length / BlockSize;
+      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
+      int freeBlockFieldIndex = blockIndex / 64;
+      int subIndex = blockIndex % 64;
+      size_t numberOfNewNeededBlocks = Helper::roundToAlignment<BlockSize>(delta) / BlockSize;
+      
+      if (subIndex + numberOfNewNeededBlocks < 64) {
+        return expandWithinASingleControlRegister(b, freeBlockFieldIndex, subIndex, numberOfNewNeededBlocks);
+      }
+      else {
+
+      }
+      // we have to search for delta ones bits starting at 
+      return false;
     }
   };
 
