@@ -14,7 +14,7 @@
 
 namespace ALB
 {
-  template <typename T, unsigned Pattern>
+  template <typename T, size_t Pattern>
   class MemoryCorruptionDetector {
     static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t), "Memory check not for valid types");
     

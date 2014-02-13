@@ -11,9 +11,16 @@
 
 #include "ALBAllocatorBase.h"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4345)
+#endif
+
 namespace ALB
 {
-  template <class Allocator, typename Prefix, typename Sufix = void>
+  struct Empty {};
+
+  template <class Allocator, typename Prefix, typename Sufix = Empty>
   class AffixAllocator {
     typedef Allocator allocator;
     static const size_t prefix_size = sizeof(Prefix);
@@ -73,3 +80,8 @@ namespace ALB
     }
   };
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+

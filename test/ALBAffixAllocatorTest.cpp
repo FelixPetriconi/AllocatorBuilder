@@ -14,15 +14,20 @@
 #include "ALBStackAllocator.h"
 #include "ALBMemmoryCorruptionDetector.h"
 
+namespace
+{
+  const unsigned PrefixMarker = 0xbaadf00d;
+  const uint64_t LargePrefixMarker = 0xfefefefebaadf00d;
+  const unsigned SufixMarker = 0xf000baaa;
+}
+
+
 class AffixAllocatorWithPrefixTest : 
   public ALB::TestHelpers::AllocatorBaseTest<
     ALB::AffixAllocator<
       ALB::StackAllocator<512>, 
-      ALB::MemoryCorruptionDetector<int, 0xbaadf00d>, 
-      ALB::MemoryCorruptionDetector<int, 0xf000baaa>>>
-{
-
-};
+      ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>>>
+{};
 
 TEST_F(AffixAllocatorWithPrefixTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
 {
@@ -49,8 +54,47 @@ TEST_F(AffixAllocatorWithPrefixTest, ThatASmallAllocationsReturnsTheRequestedSiz
   auto mem = sut.allocate(8);
   
   EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(0xbaadf00d, *(static_cast<int*>(mem.ptr) - 1) ); 
-  EXPECT_EQ(0xf000baaa, *(static_cast<int*>(mem.ptr) + 8 / sizeof(int)) );
+  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
+  //EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + 8 / sizeof(int)) );
+
+  deallocateAndCheckBlockIsThenEmpty(mem);
+}
+
+
+class AffixAllocatorWithPrefixAndSuffixTest : 
+  public ALB::TestHelpers::AllocatorBaseTest<
+  ALB::AffixAllocator<
+  ALB::StackAllocator<512>, 
+  ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>,
+  ALB::MemoryCorruptionDetector<unsigned, SufixMarker>>>
+{};
+
+TEST_F(AffixAllocatorWithPrefixAndSuffixTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
+{
+  auto mem = sut.allocate(8);
+
+  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
+  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + 8 / sizeof(int)) );
+
+  deallocateAndCheckBlockIsThenEmpty(mem);
+}
+
+class AffixAllocatorWithDifferentSizedPrefixAndSuffixTest : 
+  public ALB::TestHelpers::AllocatorBaseTest<
+  ALB::AffixAllocator<
+  ALB::StackAllocator<512>, 
+  ALB::MemoryCorruptionDetector<uint64_t, LargePrefixMarker>,
+  ALB::MemoryCorruptionDetector<unsigned, SufixMarker>>>
+{};
+
+TEST_F(AffixAllocatorWithDifferentSizedPrefixAndSuffixTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
+{
+  auto mem = sut.allocate(8);
+
+  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(LargePrefixMarker, *(static_cast<uint64_t*>(mem.ptr) - 1) ); 
+  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + 8 / sizeof(int)) );
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
