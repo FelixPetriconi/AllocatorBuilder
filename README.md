@@ -52,6 +52,7 @@ So, isn't this nicer?
   
 Content
 -------
+  * AffixAllocator - Allows to automatically pre- and sufix allocated regions.
   * Bucketizer - Manages a bunch of Allocators with increasing bucket size
   * FallbackAllocator - Either the default Allocator can handle a request, otherwise it is passed to a fallback Allocator
   * Mallocator - Provides and interface to systems ::malloc()
@@ -88,7 +89,7 @@ Requirements
 ------------
   * C++ 11 (partly)
   * boost 1.55
-  * GoogleTest (is now part of the repository, because the CMakeFiles.txt needed some patches.)
+  * GoogleTest (is now part of the repository, because its CMakeFiles.txt needed some patches.)
 
 
 Platform
