@@ -15,6 +15,7 @@ include_directories("${PROJECT_SOURCE_DIR}/../include")
 include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
 add_executable(ALBUnitTest 
+               ALBAffixAllocatorTest.cpp
                ALBAllocatorBaseTest.cpp 
                ALBSharedCascadingAllocatorsTest.cpp
                ALBSharedFreeListTest.cpp

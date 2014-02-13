@@ -62,7 +62,7 @@ namespace ALB
       if (isLastUsedBlock(b)) {
         _p = static_cast<char*>(b.ptr);
       }
-      //b.reset();
+      b.reset();
     }
 
     bool reallocate(Block& b, size_t n) {
