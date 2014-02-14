@@ -151,17 +151,17 @@ TEST_F(StackAllocatorTest, ThatADecreasingReallocationWithOfTheLastAllocatedBloc
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(StackAllocatorTest, ThatADecreasingReallocationOfNotTheLastAllocatedBlockUpdatesTheMemPtrAndKeepsTheData)
+TEST_F(StackAllocatorTest, ThatADecreasingReallocationOfNotTheLastAllocatedBlockKeepsTheMemPtrAndTheData)
 {
   auto mem = sut.allocate(16);
   auto memInBetween = sut.allocate(1);
 
   auto originalMemPtr = mem.ptr;
   *static_cast<int*>(mem.ptr) = 42;
-  sut.reallocate(mem, 8);
+  EXPECT_TRUE(sut.reallocate(mem, 8));
 
   EXPECT_EQ(8, mem.length);
-  EXPECT_NE(originalMemPtr, mem.ptr);
+  EXPECT_EQ(originalMemPtr, mem.ptr);
   EXPECT_EQ(42, *static_cast<int*>(mem.ptr));
 
   deallocateAndCheckBlockIsThenEmpty(mem);

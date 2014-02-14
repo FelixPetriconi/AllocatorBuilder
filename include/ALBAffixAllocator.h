@@ -23,8 +23,11 @@ namespace ALB
   template <class Allocator, typename Prefix, typename Sufix = Empty>
   class AffixAllocator {
     typedef Allocator allocator;
+    typedef Prefix prefix;
+    typedef Sufix sufix;
+
     static const size_t prefix_size = sizeof(Prefix);
-    static const size_t sufix_size = sizeof(Sufix);
+    static const size_t sufix_size = std::is_same<Sufix, Empty>::value? 0 : sizeof(Sufix);
     
     Allocator _allocator;
     
@@ -44,6 +47,14 @@ namespace ALB
       return reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length);
     }
 
+    Block toInnerBlock(const Block& b) {
+      return Block(static_cast<char*>(b.ptr) - prefix_size, b.length + prefix_size + sufix_size);
+    }
+
+    Block toOuterBlock(const Block& b) {
+      return Block(static_cast<char*>(b.ptr) + prefix_size, b.length - prefix_size - sufix_size);
+    }
+
   public:
     Block allocate(size_t n) {
       if (n == 0) {
@@ -58,8 +69,7 @@ namespace ALB
         if (sufix_size > 0) {
           new (innerToSufix(innerMem)) Sufix();
         }
-        return Block(static_cast<char*>(innerMem.ptr) + prefix_size, 
-                      innerMem.length - prefix_size - sufix_size);
+        return toOuterBlock(innerMem);
       }
       return Block();
     }
@@ -75,8 +85,25 @@ namespace ALB
       if (sufix_size > 0) {
         outerToSufix(b)->~Sufix();
       }
-      _allocator.deallocate(Block(static_cast<char*>(b.ptr) - prefix_size, b.length + prefix_size + sufix_size));
+      _allocator.deallocate(toInnerBlock(b));
       b.reset();
+    }
+
+    bool reallocate(Block& b, size_t n) {
+      if (Helper::Reallocator<AffixAllocator>::isHandledDefault(*this, b, n)) {
+        return true;
+      }
+      auto innerBlock = toInnerBlock(b);
+      auto oldSufix(*outerToSufix(b));
+
+      if (_allocator.reallocate(innerBlock, n + prefix_size + sufix_size)) {
+        if (sufix_size > 0) {
+          new (innerToSufix(innerBlock)) Sufix(oldSufix);
+        }
+        b = toOuterBlock(innerBlock);
+        return true;
+      }
+      return false;
     }
   };
 }

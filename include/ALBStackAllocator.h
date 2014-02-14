@@ -92,6 +92,13 @@ namespace ALB
           return false;
         }
       }
+      else {
+        if (b.length > n) {
+          b.length = Helper::roundToAlignment<DefaultAlignment>(n);
+          return true;
+        }
+      }
+
       
       auto newBlock = allocate(alignedLength); // we cannot deallocate the old block, because it is in between used ones.
       if (newBlock) {
