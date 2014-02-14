@@ -44,27 +44,27 @@ namespace ALB
   class AffixAllocator {
     Allocator _allocator;
     
-    Prefix* innerToPrefix(const Block& b) {
+    Prefix* innerToPrefix(const Block& b) const {
       return reinterpret_cast<Prefix*>(static_cast<Prefix*>(b.ptr));
     }
 
-    Sufix* innerToSufix(const Block& b) {
+    Sufix* innerToSufix(const Block& b) const {
       return reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length - sufix_size);
     }
 
-    Prefix* outerToPrefix(const Block& b) {
+    Prefix* outerToPrefix(const Block& b) const {
       return reinterpret_cast<Prefix*>(static_cast<Prefix*>(b.ptr) - 1);
     }
 
-    Sufix* outerToSufix(const Block& b) {
+    Sufix* outerToSufix(const Block& b) const {
       return reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length);
     }
 
-    Block toInnerBlock(const Block& b) {
+    Block toInnerBlock(const Block& b) const {
       return Block(static_cast<char*>(b.ptr) - prefix_size, b.length + prefix_size + sufix_size);
     }
 
-    Block toOuterBlock(const Block& b) {
+    Block toOuterBlock(const Block& b) const {
       return Block(static_cast<char*>(b.ptr) + prefix_size, b.length - prefix_size - sufix_size);
     }
 
@@ -99,6 +99,8 @@ namespace ALB
         return;
       }
 
+      assert(owns(b));
+
       if (prefix_size > 0) {
         outerToPrefix(b)->~Prefix();
       }
@@ -109,22 +111,56 @@ namespace ALB
       b.reset();
     }
 
+    bool owns(const Block& b) const {
+      return _allocator.owns(toInnerBlock(b));
+    }
+
     bool reallocate(Block& b, size_t n) {
       if (Helper::Reallocator<AffixAllocator>::isHandledDefault(*this, b, n)) {
         return true;
       }
       auto innerBlock = toInnerBlock(b);
-      auto oldSufix(*outerToSufix(b));
+
+      // Remember the old Sufix in case that it is available, because it must
+      // be later placed to the new position
+      std::unique_ptr<Sufix> oldSufix(sufix_size > 0? new Sufix(*outerToSufix(b)) : nullptr);
 
       if (_allocator.reallocate(innerBlock, n + prefix_size + sufix_size)) {
         if (sufix_size > 0) {
-          new (innerToSufix(innerBlock)) Sufix(oldSufix);
+          new (innerToSufix(innerBlock)) Sufix(*oldSufix);
         }
         b = toOuterBlock(innerBlock);
         return true;
       }
       return false;
     }
+
+    // Make the function invisible for the has_expand<AffixAllocator> trait if the dependent type
+    // Allocator do not implement expand
+    typename Traits::expand_enabled<Allocator>::type 
+    expand(Block& b, size_t delta) {
+      if (delta == 0) {
+        return true;
+      }
+
+      if (!b) {
+        b = allocate(delta);
+        return b;
+      }
+
+      auto oldBlock = b;
+      auto innerBlock = toInnerBlock(b);
+      
+      if (_allocator.expand(innerBlock, delta)) {
+        if (sufix_size > 0) {
+          new (innerToSufix(innerBlock)) Sufix(*outerToSufix(oldBlock));
+        }
+        b = toOuterBlock(innerBlock);
+        return true;
+      }
+      return false;
+    }
+
   };
 }
 

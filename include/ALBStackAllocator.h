@@ -120,7 +120,7 @@ namespace ALB
       if (!isLastUsedBlock(b)) {
         return false;
       }
-      if (_p + delta >= _data + MaxSize) {
+      if (_p + delta > _data + MaxSize) {
         return false;
       }
       _p += delta;
