@@ -1,7 +1,7 @@
 AllocatorBuilder
 ================
 
-A highly composable, policy based C++ allocator based on ideas from Andrei Alexandrescu, presented at the "C++ and Beyond 2013" seminar.
+A highly composable, policy based C++ allocator based on ideas from [Andrei Alexandrescu](http://erdani.com/), presented at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.
 
 The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of allocators to handle in a fast way memory allocations and deallocations. 
 All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
@@ -78,7 +78,7 @@ Author
 Contributions
 -------------
 
-Contributions are welcome! Please make a forke, request for integration.
+Contributions are welcome! Please make a forke and request for integration.
   
 License
 -------
@@ -102,13 +102,9 @@ Platform
 
 ToDo
 ----
-  * Add UnitTests
-  - FallbackAllocator
-  - Segregator
-  - Bucketizer
+  * Add UnitTests (FallbackAllocator, Segregator, Bucketizer)
   * Add FreeList
   * Add CascadingAllocators
-  * Add expand at the missing places
-  - SharedHeap
+  * Add expand at the missing places (SharedHeap)
 
 
