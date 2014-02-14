@@ -20,6 +20,9 @@ namespace ALB
     
     T _pattern;
   public:
+    typedef T value_type;
+    static const T pattern = Pattern;
+
     MemoryCorruptionDetector() : _pattern(Pattern) {}
 
     ~MemoryCorruptionDetector() {

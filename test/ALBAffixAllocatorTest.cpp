@@ -21,172 +21,106 @@ namespace
   const unsigned SufixMarker = 0xf000baaa;
 }
 
-
-class AffixAllocatorWithPrefixTest : 
-  public ALB::TestHelpers::AllocatorBaseTest<
-    ALB::AffixAllocator<
-      ALB::StackAllocator<512,4>, 
-      ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>>>
-{};
-
-TEST_F(AffixAllocatorWithPrefixTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
+template <class T>
+class AffixAllocatorTest : public ALB::TestHelpers::AllocatorBaseTest<T> 
 {
-  auto mem = sut.allocate(0);
+protected:
+  void TearDown() {
+    deallocateAndCheckBlockIsThenEmpty(mem);
+  }
+
+  void checkAffixContent() {
+    const ::testing::TestInfo* const test_info =
+      ::testing::UnitTest::GetInstance()->current_test_info();
+
+    if (T::prefix_size > 0) {
+      EXPECT_EQ(T::prefix::pattern, *(static_cast<T::prefix::value_type*>(mem.ptr) - 1) ) 
+        << "Problem in " << typeid(T).name() << " of test case " << test_info->test_case_name();
+    }
+    if (T::sufix_size > 0) {
+      EXPECT_EQ(T::sufix::pattern, *(static_cast<T::sufix::value_type*>(mem.ptr) + mem.length / sizeof(T::sufix::value_type)) ) 
+        << "Problem in " << typeid(T).name() << " of test case " << test_info->test_case_name();
+    }
+  }
+  ALB::Block mem;
+};
+
+typedef ::testing::Types<
+  ALB::AffixAllocator<
+    ALB::StackAllocator<512,4>, 
+      ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>
+  >,
+  ALB::AffixAllocator<
+    ALB::StackAllocator<512,4>, 
+      ALB::AffixAllocatorHelper::Empty,
+      ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
+  >,
+  ALB::AffixAllocator<
+    ALB::StackAllocator<512, 4>, 
+      ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>,
+      ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
+  >,
+  ALB::AffixAllocator<
+    ALB::StackAllocator<512, 4>, 
+      ALB::MemoryCorruptionDetector<uint64_t, LargePrefixMarker>,
+        ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
+  >
+> TypesToTest;
+
+TYPED_TEST_CASE(AffixAllocatorTest, TypesToTest);
+
+
+TYPED_TEST(AffixAllocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
+{
+  mem = sut.allocate(0);
 
   EXPECT_EQ(0, mem.length);
   EXPECT_EQ(nullptr, mem.ptr);
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(AffixAllocatorWithPrefixTest, ThatAFullAllocationReturnsAnEmptyBlockBecauseOfMissingSpaceForTheAffixes)
+TYPED_TEST(AffixAllocatorTest, ThatAFullAllocationReturnsAnEmptyBlockBecauseOfMissingSpaceForTheAffixes)
 {
-  auto mem = sut.allocate(512);
+  mem = sut.allocate(512);
 
   EXPECT_EQ(0, mem.length);
   EXPECT_EQ(nullptr, mem.ptr);
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(AffixAllocatorWithPrefixTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
+TYPED_TEST(AffixAllocatorTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
 {
-  auto mem = sut.allocate(8);
+  mem = sut.allocate(8);
   
   EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
 
-  deallocateAndCheckBlockIsThenEmpty(mem);
+  checkAffixContent();
 }
 
-TEST_F(AffixAllocatorWithPrefixTest, ThatASmallAllocationReallocatedIntoANewMemAreaKeepsTheOldMarker)
+TYPED_TEST(AffixAllocatorTest, ThatASmallAllocatedBlockIncreasingReallocatedIntoANewMemAreaKeepsTheOldMarker)
 {
-  auto mem = sut.allocate(8);
+  mem = sut.allocate(8);
   auto memInBetween = sut.allocate(4);
 
   EXPECT_TRUE(sut.reallocate(mem, 16));
   
   EXPECT_EQ(16, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
+  checkAffixContent();
 
-  deallocateAndCheckBlockIsThenEmpty(mem);
   deallocateAndCheckBlockIsThenEmpty(memInBetween);
 }
 
-TEST_F(AffixAllocatorWithPrefixTest, ThatASmallAllocatedBlockIncreasingReallocatedIntoANewMemAreaKeepsTheOldMarker)
+
+TYPED_TEST(AffixAllocatorTest, ThatALargerAllocatedBlockDecreasingReallocatedKeepsThePositionAndTheOldMarker)
 {
-  auto mem = sut.allocate(8);
-  auto memInBetween = sut.allocate(4);
-
-  EXPECT_TRUE(sut.reallocate(mem, 16));
-
-  EXPECT_EQ(16, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
-  deallocateAndCheckBlockIsThenEmpty(memInBetween);
-}
-
-TEST_F(AffixAllocatorWithPrefixTest, ThatALargerAllocatedBlockDecreasingReallocatedKeepsThePositionAndTheOldMarker)
-{
-  auto mem = sut.allocate(16);
+  mem = sut.allocate(16);
   auto memInBetween = sut.allocate(4);
   auto mem1stPointer = mem.ptr;
 
   EXPECT_TRUE(sut.reallocate(mem, 8));
 
   EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
   EXPECT_EQ(mem1stPointer, mem.ptr);
+  checkAffixContent();
 
-  deallocateAndCheckBlockIsThenEmpty(mem);
   deallocateAndCheckBlockIsThenEmpty(memInBetween);
 }
 
-
-class AffixAllocatorWithPrefixAndSuffixTest : 
-  public ALB::TestHelpers::AllocatorBaseTest<
-  ALB::AffixAllocator<
-  ALB::StackAllocator<512, 4>, 
-  ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>,
-  ALB::MemoryCorruptionDetector<unsigned, SufixMarker>>>
-{};
-
-TEST_F(AffixAllocatorWithPrefixAndSuffixTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
-{
-  auto mem = sut.allocate(8);
-
-  EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) ); 
-  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + mem.length / sizeof(int)) );
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
-}
-
-TEST_F(AffixAllocatorWithPrefixAndSuffixTest, ThatASmallAllocationReallocatedIntoANewMemAreaKeepsTheOldMarker)
-{
-  auto mem = sut.allocate(8);
-  auto memInBetween = sut.allocate(4);
-
-  EXPECT_TRUE(sut.reallocate(mem, 16));
-
-  EXPECT_EQ(16, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) );
-  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + mem.length / sizeof(int)) );
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
-  deallocateAndCheckBlockIsThenEmpty(memInBetween);
-}
-
-TEST_F(AffixAllocatorWithPrefixAndSuffixTest, ThatASmallAllocatedBlockIncreasingReallocatedIntoANewMemAreaKeepsTheOldMarker)
-{
-  auto mem = sut.allocate(8);
-  auto memInBetween = sut.allocate(4);
-
-  EXPECT_TRUE(sut.reallocate(mem, 16));
-
-  EXPECT_EQ(16, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) );
-  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + mem.length / sizeof(int)) );
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
-  deallocateAndCheckBlockIsThenEmpty(memInBetween);
-}
-
-TEST_F(AffixAllocatorWithPrefixAndSuffixTest, ThatALargerAllocatedBlockDecreasingReallocatedKeepsThePositionAndTheOldMarker)
-{
-  auto mem = sut.allocate(16);
-  auto memInBetween = sut.allocate(4);
-  auto mem1stPointer = mem.ptr;
-
-  EXPECT_TRUE(sut.reallocate(mem, 8));
-
-  EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(PrefixMarker, *(static_cast<int*>(mem.ptr) - 1) );
-  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + mem.length / sizeof(int)) );
-  EXPECT_EQ(mem1stPointer, mem.ptr);
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
-  deallocateAndCheckBlockIsThenEmpty(memInBetween);
-}
-
-
-
-class AffixAllocatorWithDifferentSizedPrefixAndSuffixTest : 
-  public ALB::TestHelpers::AllocatorBaseTest<
-  ALB::AffixAllocator<
-  ALB::StackAllocator<512>, 
-  ALB::MemoryCorruptionDetector<uint64_t, LargePrefixMarker>,
-  ALB::MemoryCorruptionDetector<unsigned, SufixMarker>>>
-{};
-
-TEST_F(AffixAllocatorWithDifferentSizedPrefixAndSuffixTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
-{
-  auto mem = sut.allocate(8);
-
-  EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(LargePrefixMarker, *(static_cast<uint64_t*>(mem.ptr) - 1) ); 
-  EXPECT_EQ(SufixMarker, *(static_cast<int*>(mem.ptr) + mem.length / sizeof(int)) );
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
-}

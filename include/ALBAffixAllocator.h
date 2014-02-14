@@ -18,17 +18,30 @@
 
 namespace ALB
 {
-  struct Empty {};
+  namespace AffixAllocatorHelper {
+    /**
+     * This special kind of Empty is necessary to have the possibility to test the
+     * AffixAllocator in a generic way. This must be used to disable a Prefix or
+     * Sufix.
+     */
+    struct Empty {
+      typedef size_t value_type;
+      static const size_t pattern = 0;
+    };
+  }
 
-  template <class Allocator, typename Prefix, typename Sufix = Empty>
+  /**
+   * This allocator enabled the possibility to surround allocated memory blocks with
+   * guards, ref-counter, mutex or etc.
+   * It automatically places an object of type Prefix before the returned memory location 
+   * and an object of type Sufix after it. In case that they are of type AffixAllocatorHelper::Empty 
+   * nothing is inserted.
+   * Prefix and Sufix, if used, must be trivially copyable. (This cannot be statically asserted,
+   * because this would block the possibility to use this allocator as guard for memory
+   * under- or overflow.
+   */
+  template <class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::Empty>
   class AffixAllocator {
-    typedef Allocator allocator;
-    typedef Prefix prefix;
-    typedef Sufix sufix;
-
-    static const size_t prefix_size = sizeof(Prefix);
-    static const size_t sufix_size = std::is_same<Sufix, Empty>::value? 0 : sizeof(Sufix);
-    
     Allocator _allocator;
     
     Prefix* innerToPrefix(const Block& b) {
@@ -56,6 +69,13 @@ namespace ALB
     }
 
   public:
+    typedef Allocator allocator;
+    typedef Prefix prefix;
+    typedef Sufix sufix;
+
+    static const size_t prefix_size = std::is_same<Prefix, AffixAllocatorHelper::Empty>::value? 0 : sizeof(Prefix);
+    static const size_t sufix_size = std::is_same<Sufix, AffixAllocatorHelper::Empty>::value? 0 : sizeof(Sufix);
+
     Block allocate(size_t n) {
       if (n == 0) {
         return Block();
