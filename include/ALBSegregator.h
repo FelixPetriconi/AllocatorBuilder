@@ -14,7 +14,8 @@
 namespace ALB
 {
   template <size_t Threshold, class SmallAllocator, class LargeAllocator>
-  class Segregator : public SmallAllocator, public LargeAllocator {
+  class Segregator : private SmallAllocator, private LargeAllocator {
+
     static const size_t threshold = Threshold;
     typedef SmallAllocator small_allocator;
     typedef LargeAllocator large_allocator;
@@ -32,15 +33,21 @@ namespace ALB
         return true;
       }
 
-      if (n < Threshold) {
-        return Helper::reallocateWithCopy(*this, static_cast<SmallAllocator&>(*this), b, n);
+      if (SmallAllocator::owns(b)) {
+        if (SmallAllocator::reallocate(b, n)) {
+          return true;
+        }
+        else { // try a cross reallocate
+          return Helper::reallocateWithCopy(*this, static_cast<LargeAllocator&>(*this), b, n);
+        }
+      }
+      else {
+        if (LargeAllocator::reallocate(b, n)) {
+          return true;
+        }
       }
 
-      if (b.length < Threshold) {
-        return Helper::reallocateWithCopy(*this, static_cast<LargeAllocator&>(*this), b, n);
-      }
-      
-      return LargeAllocator::reallocate(b, n);
+      return false;
     }
 
     // Make the function invisible for the has_expand<Segregator> trait if the dependent type

@@ -1,17 +1,22 @@
 AllocatorBuilder
 ================
 
-A highly composable, policy based C++ allocator based on ideas from Andrei Alexandrescu, presented at the C++ and Beyond 2013 seminar.
+A highly composable, policy based C++ allocator based on ideas from Andrei Alexandrescu, presented at the "C++ and Beyond 2013" seminar.
 
-The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of allocators to handle in a fast way memory allocations and deallocations. All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
-So an appropached is taken that returns such a Block
+The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of allocators to handle in a fast way memory allocations and deallocations. 
+All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
+
+So the appropached is every allocator returns such a Block
+
     struct Block {
       void* ptr;
       size_t length;
     };
 
 
-C++ 11 features are used as far as Visual Studio 2012 supports them.
+And request goes this way:
+    auto mem = allocator.allocate(42);
+
 
 Motivation
 ----------
@@ -60,7 +65,7 @@ Content
   * SharedFreeList - Manages a list of freed memory blocks in a list for faster reusage in a thread safe manner
   * SharedCascadingAllocator - Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory
   * SharedHeap - A thread safe heap with minimal overhead and as far as possible in a lock-free way.
-  * StackAllocator - Provides a memory access, takedn from the stack
+  * StackAllocator - Provides a memory access, taken from the stack
   
 
 Author 
@@ -71,10 +76,7 @@ Author
 Contributions
 -------------
 
-If you're wanting to make changes, please clone the git repository at [sources]
-
-git://github.com/FelixPetriconi/AllocatorBuilder.git
-
+Contributions are welcome! Please make a forke, request for integration.
   
 License
 -------
@@ -83,24 +85,28 @@ License
 
 Version
 -------
-  0.0.1
+  0.1.0
 
 Requirements
 ------------
-  * C++ 11 (partly)
+  * C++ 11 (partly, as far as Visual Studio 2012 supports them)
   * boost 1.55
   * GoogleTest (is now part of the repository, because its CMakeFiles.txt needed some patches.)
 
 
 Platform
 --------
-  No platform specific features used, tested so far only with MS Visual Studio 2012
+  No platform specific features used, but tested so far only with MS Visual Studio 2012
 
 ToDo
 ----
-  * Add more UnitTests
+  * Add UnitTests
+  ** FallbackAllocator
+  ** Segregator
+  ** Bucketizer
   * Add FreeList
   * Add CascadingAllocators
   * Add expand at the missing places
+  ** SharedHeap
 
 

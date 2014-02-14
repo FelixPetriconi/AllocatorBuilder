@@ -96,5 +96,21 @@ namespace ALB
     {
       typedef Disabled type;
     };
+
+    // forward declarations of all allocator
+    template <size_t MaxSize, size_t Alignment=4>
+    class StackAllocator;
+
+    template<class Allocator>
+    struct is_stackallocator : std::false_type
+    {};
+
+    template <size_t MaxSize>
+    struct is_stackallocator<StackAllocator<MaxSize>> : std::true_type
+    {};
+
+    template <size_t MaxSize, size_t Alignment>
+    struct is_stackallocator<StackAllocator<MaxSize, Alignment>> : std::true_type
+    {};
   }
 }

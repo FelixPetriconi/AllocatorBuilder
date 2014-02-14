@@ -385,6 +385,7 @@ namespace ALB
       // all others need lock
     }
 
+    // TODO
     bool expand(Block& b, size_t delta) {
       if (delta == 0) {
         return true;

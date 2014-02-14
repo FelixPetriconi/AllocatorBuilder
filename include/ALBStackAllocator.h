@@ -17,11 +17,8 @@ namespace ALB
    * Generic memory management of memory allocated on the stack.
    * This class is (and cannot be) thread safe!
    */
-  template <size_t MaxSize, size_t DefaultAlignment = 4>
+  template <size_t MaxSize, size_t Alignment = 4>
   class StackAllocator {
-    static const size_t max_size = MaxSize;
-    static const size_t alignment = DefaultAlignment;
-
     char _data[MaxSize];
     char* _p;
 
@@ -30,6 +27,10 @@ namespace ALB
     }
 
   public:
+    typename typedef StackAllocator allocator;
+    static const size_t max_size = MaxSize;
+    static const size_t alignment = Alignment;
+
     StackAllocator() : _p(_data) {}
 
     Block allocate(size_t n) {
@@ -39,7 +40,7 @@ namespace ALB
         return result;
       }
 
-      const auto alignedLength = Helper::roundToAlignment<DefaultAlignment>(n);
+      const auto alignedLength = Helper::roundToAlignment<Alignment>(n);
       if (alignedLength + _p > _data + MaxSize) { // not enough memory left
         return result;
       }
@@ -76,10 +77,10 @@ namespace ALB
         return true;
       }
 
-      const auto alignedLength = Helper::roundToAlignment<DefaultAlignment>(n);
+      const auto alignedLength = Helper::roundToAlignment<Alignment>(n);
 
       if ( isLastUsedBlock(b) ) {
-        if (static_cast<char*>(b.ptr) + alignedLength < _data + MaxSize) {
+        if (static_cast<char*>(b.ptr) + alignedLength <= _data + MaxSize) {
           b.length = alignedLength;
           _p = static_cast<char*>(b.ptr) + alignedLength;
           return true;
@@ -90,7 +91,7 @@ namespace ALB
       }
       else {
         if (b.length > n) {
-          b.length = Helper::roundToAlignment<DefaultAlignment>(n);
+          b.length = Helper::roundToAlignment<Alignment>(n);
           return true;
         }
       }

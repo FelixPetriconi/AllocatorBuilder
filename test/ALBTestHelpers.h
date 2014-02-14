@@ -16,6 +16,7 @@
 #include <stdlib.h>
 
 #include "ALBAllocatorBase.h"
+#include <vector>
 
 namespace ALB
 {
@@ -34,7 +35,7 @@ namespace ALB
     };
 
     /**
-     * Simple class that oscilates from zero to maxValue with each increment
+     * Simple class that oscillates from zero to maxValue with each increment
      */
     class Oszillator
     {
@@ -69,6 +70,40 @@ namespace ALB
         return *this;
       }
     };
+
+
+
+    template <typename I, typename N> 
+    N iota(I first, I last, N start, N step) {
+      typedef typename std::iterator_traits<I>::value_type T;
+      while (first != last) {
+        *first = T(start);
+        start += step;
+        ++first;
+      }
+      return start;
+    }
+
+
+
+    const size_t ReferenceDataSize = 64;
+    const std::vector<int> ReferenceData = 
+      []() -> std::vector<int> {
+        std::vector<int> result(ReferenceDataSize);
+        iota(std::begin(result), std::end(result), 0, 1);
+        return result;
+      }();
+
+
+
+    template <typename T>
+    void fillBlockWithReferenceData(ALB::Block& b)
+    {
+      for (size_t i = 0; i < std::min(ReferenceData.size(), b.length / sizeof(T)); i++) {
+        *(reinterpret_cast<T*>(b.ptr) + i) = ReferenceData[i];
+      }
+    }
+
 
     /**
      * Checks that both memory blocks are equal until n bytes
