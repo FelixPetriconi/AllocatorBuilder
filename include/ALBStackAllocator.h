@@ -9,8 +9,6 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <boost/lockfree/stack.hpp>
-#include <stdio.h>
 #include "ALBAllocatorBase.h"
 
 namespace ALB
@@ -19,7 +17,7 @@ namespace ALB
    * Generic memory management of memory allocated on the stack.
    * This class is (and cannot be) thread safe!
    */
-  template <size_t MaxSize, size_t DefaultAlignment = 16>
+  template <size_t MaxSize, size_t DefaultAlignment = 4>
   class StackAllocator {
     static const size_t max_size = MaxSize;
     static const size_t alignment = DefaultAlignment;
@@ -27,14 +25,12 @@ namespace ALB
     char _data[MaxSize];
     char* _p;
 
-    bool isLastUsedBlock(const Block& block) {
+    bool isLastUsedBlock(const Block& block) const {
       return (static_cast<char*>(block.ptr) + block.length == _p);
     }
 
   public:
     StackAllocator() : _p(_data) {}
-
-    ~StackAllocator() {}
 
     Block allocate(size_t n) {
       Block result;
@@ -99,8 +95,9 @@ namespace ALB
         }
       }
 
-      
-      auto newBlock = allocate(alignedLength); // we cannot deallocate the old block, because it is in between used ones.
+      auto newBlock = allocate(alignedLength); 
+      // we cannot deallocate the old block, because it is in between used ones, so we have to 
+      // "leak" here.
       if (newBlock) {
         Helper::blockCopy(b, newBlock);
         b = newBlock;
@@ -129,7 +126,7 @@ namespace ALB
     }
 
     bool owns(const Block& b) const {
-      return (b.ptr >= _data && b.ptr < _data + MaxSize);
+      return b && (b.ptr >= _data && b.ptr < _data + MaxSize);
     }
 
     void deallocateAll() {

@@ -14,6 +14,7 @@
 #include "ALBTestHelpers.h"
 #include <thread>
 #include <xutility>
+#include "ALBAffixAllocator.h"
 
 using namespace ALB::TestHelpers;
 
@@ -44,13 +45,13 @@ namespace
 
 
 
-class ThreadHeapWithSmallAllocationsTest : 
+class SharedHeapWithSmallAllocationsTest : 
   public ALB::TestHelpers::AllocatorBaseTest<
     ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>>
 {
 };
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
 {
   auto mem = sut.allocate(0);
   EXPECT_EQ(nullptr, mem.ptr);
@@ -61,7 +62,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingZeroBytesReturnsAnEmpty
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingOneBytesReturnsABlockOfBlockSize)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingOneBytesReturnsABlockOfBlockSize)
 {
   auto mem = sut.allocate(1);
   EXPECT_TRUE(nullptr != mem.ptr);
@@ -70,7 +71,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingOneBytesReturnsABlockOf
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingBlockSizeBytesReturnsABlockOfBlockSize)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingBlockSizeBytesReturnsABlockOfBlockSize)
 {
   auto mem = sut.allocate(SmallBlockSize);
   EXPECT_TRUE(nullptr != mem.ptr);
@@ -80,7 +81,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingBlockSizeBytesReturnsAB
 }
 
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingTwoMemoryBlocksUsesContiguousMemory)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingTwoMemoryBlocksUsesContiguousMemory)
 {
   auto mem1stAllocation = sut.allocate(SmallBlockSize);
   auto mem2ndAllocation = sut.allocate(SmallBlockSize);
@@ -93,7 +94,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAllocatingTwoMemoryBlocksUsesCont
   deallocateAndCheckBlockIsThenEmpty(mem1stAllocation);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocation)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocation)
 {
   auto mem1stAllocation = sut.allocate(SmallBlockSize);
   auto mem2ndAllocation = sut.allocate(SmallBlockSize);
@@ -108,7 +109,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocatio
   deallocateAndCheckBlockIsThenEmpty(mem3rdAllocation);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlocksAndThatAllOfThemAreContiguous)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlocksAndThatAllOfThemAreContiguous)
 {
   ALB::Block blocks[NumberOfBlocks];
 
@@ -128,7 +129,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlo
   }
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOutOfMemory)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOutOfMemory)
 {
   auto allMem = sut.allocate(NumberOfBlocks * SmallBlockSize);
 
@@ -138,7 +139,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOu
   EXPECT_EQ(0, outOfMem.length);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfABiggerChunkIsReqeustedThanTheCompleteHeapCanHandle)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfABiggerChunkIsReqeustedThanTheCompleteHeapCanHandle)
 {
   auto outOfMem = sut.allocate(NumberOfBlocks * SmallBlockSize + 1);
 
@@ -146,7 +147,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfABiggerChun
   EXPECT_EQ(0, outOfMem.length);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOfBlocksMemoryBlocksWithDoubleBlockSizeBytesAndThatAllOfThemAreContiguous)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOfBlocksMemoryBlocksWithDoubleBlockSizeBytesAndThatAllOfThemAreContiguous)
 {
   ALB::Block blocks[NumberOfBlocks/2];
 
@@ -167,7 +168,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOf
 }
 
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatABiggerFreedBlockIsUsedForANewAllocationOfSmallerSize)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatABiggerFreedBlockIsUsedForANewAllocationOfSmallerSize)
 {
   auto largerAllocation = sut.allocate(SmallBlockSize * 2);
   auto smallerAllocation = sut.allocate(SmallBlockSize);
@@ -182,7 +183,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatABiggerFreedBlockIsUsedForANewAll
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatASmallerFreedBlockIsNotUsedForANewAllocationButANewContiguousBlockIsUsed)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatASmallerFreedBlockIsNotUsedForANewAllocationButANewContiguousBlockIsUsed)
 {
   auto mem1 = sut.allocate(SmallBlockSize);
   auto mem2 = sut.allocate(SmallBlockSize * 2);
@@ -199,7 +200,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatASmallerFreedBlockIsNotUsedForANe
   deallocateAndCheckBlockIsThenEmpty(mem3);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAnEmptyBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAnEmptyBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
   auto mem = sut.allocate(0);
 
@@ -209,7 +210,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAnEmptyBlockRe
   EXPECT_EQ(0, mem.length);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
   auto mem = sut.allocate(SmallBlockSize);
   auto origMem = mem;
@@ -221,7 +222,7 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAFilledBlockRe
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData, mem.length);
 }
 
-TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
   auto mem = sut.allocate(SmallBlockSize);
   auto origMem = mem;
@@ -235,11 +236,12 @@ TEST_F(ThreadHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockRetur
 }
 
 
-class ThreadHeapWithLargeAllocationsTest : public ALB::TestHelpers::AllocatorBaseTest<ALB::SharedHeap<ALB::Mallocator, 512, 8>>
+class SharedHeapWithLargeAllocationsTest : public 
+  ALB::TestHelpers::AllocatorBaseTest<ALB::SharedHeap<ALB::Mallocator, 512, 8>>
 {
 };
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAfterAFilledChunkTheNextIsStarted)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatAfterAFilledChunkTheNextIsStarted)
 {
   auto mem1 = sut.allocate(8*64);
   auto mem2 = sut.allocate(8);
@@ -252,7 +254,7 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAfterAFilledChunkTheNextIsStarted
   deallocateAndCheckBlockIsThenEmpty(mem2);
 }
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksIsSupported)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksIsSupported)
 {
   auto mem = sut.allocate(8*128);
   EXPECT_NE(nullptr, mem.ptr);
@@ -261,7 +263,7 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksIsSup
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingAllWithOneAllocationIsSupported)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatAllocatingAllWithOneAllocationIsSupported)
 {
   auto mem = sut.allocate(8*512);
   EXPECT_NE(nullptr, mem.ptr);
@@ -270,7 +272,7 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingAllWithOneAllocationIsS
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksAfterASingleBlockIsSupported)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksAfterASingleBlockIsSupported)
 {
   auto mem1 = sut.allocate(1);
   auto mem2 = sut.allocate(8*128);
@@ -282,7 +284,7 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksAfter
 }
 
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatWhenAllChunksAreUsedNoMemoryCanBeAllocatedAndThatDeallocateAllFreesMakesAllBlocksAgainAvailable)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatWhenAllChunksAreUsedNoMemoryCanBeAllocatedAndThatDeallocateAllFreesMakesAllBlocksAgainAvailable)
 {
   ALB::Block blocks[8];
   for (auto& b : blocks) { b = sut.allocate(64*8); }
@@ -304,7 +306,7 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatWhenAllChunksAreUsedNoMemoryCanBe
   }
 }
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorks)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorks)
 {
   auto mem = sut.allocate(65*8);
 
@@ -314,7 +316,7 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkS
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorksAfterASingleMemoryBlockHasTheCorrectOffsets)
+TEST_F(SharedHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSizeWorksAfterASingleMemoryBlockHasTheCorrectOffsets)
 {
   auto mem1 = sut.allocate(8);
   auto mem2 = sut.allocate(65*8);
@@ -334,11 +336,11 @@ TEST_F(ThreadHeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkS
 
 
 
-class HeapWithThreadsTest : public ::testing::Test
+class SharedHeapTreatetWithThreadsTest : public ::testing::Test
 {
 };
 
-TEST_F(HeapWithThreadsTest,  BruteForceAllocationByOneRunningThread)
+TEST_F(SharedHeapTreatetWithThreadsTest,  BruteForceAllocationByOneRunningThread)
 {
   typedef ALB::SharedHeap<ALB::Mallocator, 512, 8> AllocatorUnderTest;
   AllocatorUnderTest sut;
@@ -351,7 +353,7 @@ TEST_F(HeapWithThreadsTest,  BruteForceAllocationByOneRunningThread)
 }
 
 
-TEST_F(HeapWithThreadsTest, BruteForceTestWithSeveralThreadsRunning)
+TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWithSeveralThreadsRunningHoldingASingleAllocation)
 {
   typedef ALB::SharedHeap<ALB::Mallocator, 512, 64> AllocatorUnderTest;
   AllocatorUnderTest sut;
@@ -369,4 +371,39 @@ TEST_F(HeapWithThreadsTest, BruteForceTestWithSeveralThreadsRunning)
 
   auto allDeallocatedCheck = sut.allocate(512*64);
   EXPECT_TRUE((bool)allDeallocatedCheck);
+}
+
+
+TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldingMultipleAllocations)
+{
+  const size_t NumberOfBlocks = 1024;
+  const size_t BlockSize = 64;
+  const size_t NumberOfThread = 4;
+
+  typedef ALB::TestHelpers::AffixGuard<unsigned, 0xbaadf00d> PrefixGuard;
+  typedef ALB::TestHelpers::AffixGuard<unsigned, 0xf000baaa> SufixGuard;
+
+  typedef ALB::AffixAllocator<
+    ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, BlockSize>, PrefixGuard, SufixGuard> AllocatorUnderTest;
+
+  AllocatorUnderTest sut;
+
+  typedef std::array<unsigned char, NumberOfThread> TestParams;
+  TestParams maxAllocatedBytes = {127, 131, 165, 129};
+
+  ALB::TestHelpers::TestWorkerCollector<
+    AllocatorUnderTest, 
+    NumberOfThread, 
+    ALB::TestHelpers::MultipleAllocationsTester<AllocatorUnderTest>,
+    TestParams> testCollector(sut, maxAllocatedBytes);
+
+  testCollector.check();
+
+  // At the end, we check that all memory was released. The easiest way to check this
+  // is by trying to allocate everything
+  auto allDeallocatedCheck = sut.allocate(
+    NumberOfBlocks * BlockSize 
+    - AllocatorUnderTest::prefix_size - AllocatorUnderTest::sufix_size);
+
+  EXPECT_TRUE(allDeallocatedCheck);
 }

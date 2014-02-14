@@ -75,6 +75,22 @@ namespace ALB
      */
     void EXPECT_MEM_EQ(void* a, void* b, size_t n);
 
+
+    template <typename T, size_t Pattern>
+    class AffixGuard {
+      static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t), "Memory check not for valid types");
+
+      T _pattern;
+    public:
+      typedef T value_type;
+      static const T pattern = Pattern;
+
+      AffixGuard() : _pattern(Pattern) {}
+
+      ~AffixGuard() {
+        EXPECT_EQ(_pattern, Pattern);
+      } 
+    };
     /**
      * Class to check that no memory overrun takes place with allocations, reallocations 
      * and deallocations.
@@ -165,12 +181,12 @@ namespace ALB
 
       void check() {
         Oszillator bytesToWork(_maxUsedBytes);
-        Oszillator memBlockIndex(8);
+        Oszillator memBlockIndex(7);
         std::vector<ALB::Block> mems;
 
         for (size_t i = 0; i < 8; i++) {
           auto mem = _allocator.allocate(bytesToWork++);
-          ::memcpy(mems[i].ptr, _reference.get(), bytesToWork);
+          ::memcpy(mem.ptr, _reference.get(), bytesToWork);
           mems.push_back(mem);
         }
 

@@ -13,7 +13,6 @@
 
 #include <atomic>
 #include <boost/thread.hpp>
-#include <limits>
 
 #ifdef min
 #undef min
@@ -276,8 +275,8 @@ namespace ALB
       _allocator.deallocate(_buffer);
     }
 
-    bool owns(Block b) {
-      return _buffer.ptr <= b.ptr && b.ptr < (static_cast<char*>(_buffer.ptr) + _buffer.length);
+    bool owns(const Block& b) const {
+      return b && _buffer.ptr <= b.ptr && b.ptr < (static_cast<char*>(_buffer.ptr) + _buffer.length);
     }
 
     Block allocate(size_t n) {

@@ -49,7 +49,7 @@ typedef ::testing::Types<
   >,
   ALB::AffixAllocator<
     ALB::StackAllocator<512,4>, 
-      ALB::AffixAllocatorHelper::Empty,
+      ALB::AffixAllocatorHelper::NoAffix,
       ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
   >,
   ALB::AffixAllocator<

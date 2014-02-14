@@ -20,11 +20,11 @@ namespace ALB
 {
   namespace AffixAllocatorHelper {
     /**
-     * This special kind of Empty is necessary to have the possibility to test the
+     * This special kind of NoAffix is necessary to have the possibility to test the
      * AffixAllocator in a generic way. This must be used to disable a Prefix or
      * Sufix.
      */
-    struct Empty {
+    struct NoAffix {
       typedef size_t value_type;
       static const size_t pattern = 0;
     };
@@ -40,7 +40,7 @@ namespace ALB
    * because this would block the possibility to use this allocator as guard for memory
    * under- or overflow.
    */
-  template <class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::Empty>
+  template <class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix>
   class AffixAllocator {
     Allocator _allocator;
     
@@ -73,8 +73,8 @@ namespace ALB
     typedef Prefix prefix;
     typedef Sufix sufix;
 
-    static const size_t prefix_size = std::is_same<Prefix, AffixAllocatorHelper::Empty>::value? 0 : sizeof(Prefix);
-    static const size_t sufix_size = std::is_same<Sufix, AffixAllocatorHelper::Empty>::value? 0 : sizeof(Sufix);
+    static const size_t prefix_size = std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Prefix);
+    static const size_t sufix_size = std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Sufix);
 
     Block allocate(size_t n) {
       if (n == 0) {
@@ -112,7 +112,7 @@ namespace ALB
     }
 
     bool owns(const Block& b) const {
-      return _allocator.owns(toInnerBlock(b));
+      return b && _allocator.owns(toInnerBlock(b));
     }
 
     bool reallocate(Block& b, size_t n) {
@@ -135,8 +135,8 @@ namespace ALB
       return false;
     }
 
-    // Make the function invisible for the has_expand<AffixAllocator> trait if the dependent type
-    // Allocator do not implement expand
+    // Make the function invisible for the has_expand<> trait if the dependent type
+    // Allocator does not implement expand
     typename Traits::expand_enabled<Allocator>::type 
     expand(Block& b, size_t delta) {
       if (delta == 0) {
