@@ -122,6 +122,9 @@ namespace ALB
 
       AffixGuard() : _pattern(Pattern) {}
 
+      AffixGuard(const AffixGuard& o) : _pattern(o._pattern) {
+        EXPECT_EQ(_pattern, Pattern);
+      }
       ~AffixGuard() {
         EXPECT_EQ(_pattern, Pattern);
       } 

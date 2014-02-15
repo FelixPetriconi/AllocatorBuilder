@@ -216,6 +216,27 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockRetur
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
 }
 
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockNotAtTheBeginningReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem1stBlock = sut.allocate(SmallBlockSize * 2);
+  fillBlockWithReferenceData<int>(mem1stBlock);
+  auto mem = sut.allocate(SmallBlockSize*3);
+  auto mem3rdBlock = sut.allocate(SmallBlockSize);
+  fillBlockWithReferenceData<int>(mem3rdBlock);
+  sut.deallocate(mem);
+  mem = sut.allocate(SmallBlockSize*2);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.expand(mem, SmallBlockSize));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_GE(mem.length, origMem.length + SmallBlockSize);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+  EXPECT_MEM_EQ(mem1stBlock.ptr, (void*)ReferenceData.data(), mem1stBlock.length);
+  EXPECT_MEM_EQ(mem3rdBlock.ptr, (void*)ReferenceData.data(), mem3rdBlock.length);
+}
+
 
 class SharedHeapWithLargeAllocationsTest : public 
   AllocatorBaseTest<ALB::SharedHeap<ALB::Mallocator, 512, 8>>
@@ -359,7 +380,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
 {
   const size_t NumberOfBlocks = 1024;
   const size_t BlockSize = 64;
-  const size_t NumberOfThread = 4;
+  const size_t NumberOfThread = 2;
 
   typedef AffixGuard<unsigned, 0xbaadf00d> PrefixGuard;
   typedef AffixGuard<unsigned, 0xf000baaa> SufixGuard;
@@ -370,7 +391,8 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, NumberOfThread> TestParams;
-  TestParams maxAllocatedBytes = {127, 131, 165, 129};
+  //TestParams maxAllocatedBytes = {127, 131, 165, 129};
+  TestParams maxAllocatedBytes = {127, 131};
 
   TestWorkerCollector<
     AllocatorUnderTest, 

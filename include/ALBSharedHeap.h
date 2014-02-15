@@ -22,6 +22,12 @@
 #undef max
 #endif
 
+#define CAS(ATOMIC, EXPECT, VALUE) \
+  ATOMIC.compare_exchange_strong(EXPECT, VALUE)
+
+#define CAS_P(ATOMIC, EXPECT, VALUE) \
+  ATOMIC->compare_exchange_strong(EXPECT, VALUE)
+
 namespace ALB
 {
   /**
@@ -54,7 +60,49 @@ namespace ALB
 
     boost::shared_mutex _mutex;
     Allocator _allocator;
+    
+    template <bool Used>
+    uint64_t setUsed(const uint64_t& currentRegister, const uint64_t& mask);
 
+    template <>
+    uint64_t setUsed<false>(const uint64_t& currentRegister, const uint64_t& mask) {
+      return currentRegister & (mask ^ all_set);
+    }
+    template <>
+    uint64_t setUsed<true>(const uint64_t& currentRegister, const uint64_t& mask) {
+      return currentRegister | mask;
+    }
+
+
+    template <bool Used>
+    bool testAndSetWithinSingleRegister(int registerIndex, int subIndex, int numberOfBits) {
+      assert(subIndex + numberOfBits <= 64);
+
+      uint64_t mask = (numberOfBits == 64)? all_set : ( ((1uLL << numberOfBits) - 1) << subIndex);
+      uint64_t currentRegister, newRegister;
+      do {
+        currentRegister = _control[registerIndex].load();
+        if ( (currentRegister & mask) != mask) {
+          return false;
+        }
+        newRegister = setUsed<Used>(currentRegister, mask);
+        boost::shared_lock< boost::shared_mutex > guard(_mutex);
+      } while (!CAS(_control[registerIndex], currentRegister, newRegister));
+      return true;
+    }
+
+    template <bool Used>
+    void setWithinSingleRegister(int registerIndex, int subIndex, int numberOfBits) {
+      assert(subIndex + numberOfBits <= 64);
+
+      uint64_t mask = (numberOfBits == 64)? all_set : ( ((1uLL << numberOfBits) - 1) << subIndex);
+      uint64_t currentRegister, newRegister;
+      do {
+        currentRegister = _control[registerIndex].load();
+        newRegister = setUsed<Used>(currentRegister, mask);
+        boost::shared_lock< boost::shared_mutex > guard(_mutex);
+      } while (!CAS(_control[registerIndex], currentRegister, newRegister));
+    }
 
     Block allocateWithinASingleControlRegister(size_t numberOfBlocks)
     {
@@ -76,7 +124,7 @@ namespace ALB
 
                 boost::shared_lock< boost::shared_mutex > guard(_mutex);
 
-                if (_control[controlIndex].compare_exchange_strong(currentControlRegister, newControlRegister)) {
+                if (CAS(_control[controlIndex], currentControlRegister, newControlRegister)) {
                   size_t ptrOffset = (controlIndex * 64 + i ) * BlockSize;
                   return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * BlockSize);
                 }
@@ -106,7 +154,7 @@ namespace ALB
 
         boost::shared_lock< boost::shared_mutex > guard(_mutex);
 
-        if (freeChunk->compare_exchange_strong(all_set, all_zero)) {
+        if (CAS_P(freeChunk, all_set, all_zero)) {
           size_t ptrOffset = ( (freeChunk - std::begin(_control)) * 64) * BlockSize;
           return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * BlockSize);
         }
@@ -126,7 +174,7 @@ namespace ALB
       }
       auto p = freeFirstChunk;
       while (p < freeFirstChunk + neededChunks) {
-        p->compare_exchange_strong(all_set, all_zero);
+        CAS_P(p, all_set, all_zero);
         ++p;
       }
 
@@ -187,32 +235,6 @@ namespace ALB
     }
 
 
-    void deallocateWithinSingleControlRegister(Block& b, size_t numberOfBlocks, size_t freeBlockFieldIndex, size_t subIndex) {
-      uint64_t mask = (1uLL << numberOfBlocks) - 1;
-      mask <<= subIndex;
-
-      uint64_t currentChunk, newChunk;
-      do {
-        currentChunk = _control[freeBlockFieldIndex].load();
-        assert( (currentChunk & mask) == 0);
-
-        newChunk = currentChunk | mask;
-        boost::shared_lock< boost::shared_mutex > guard(_mutex);
-      }
-      while (!_control[freeBlockFieldIndex].compare_exchange_strong(currentChunk, newChunk));
-      b.reset();
-      return;
-    }
-
-    void deallocateOfACompleteControlRegister(Block& b, size_t freeBlockFieldIndex) {
-      boost::shared_lock< boost::shared_mutex > guard(_mutex);
-
-      if (!_control[freeBlockFieldIndex].compare_exchange_strong(all_zero, all_set)) {
-        assert(!"Heap Corruption");
-      }
-      b.reset();
-    }
-
     void deallocateForMultipleCompleteControlRegister(Block& b, size_t numberOfBlocks, size_t freeBlockFieldIndex) {
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
 
@@ -245,14 +267,14 @@ namespace ALB
     }
 
     bool expandWithinASingleControlRegister(Block& b, int freeBlockFieldIndex, int subIndex, size_t numberOfNewNeededBlocks) {
-      uint64_t mask = ((1uLL << numberOfNewNeededBlocks) - 1) << (subIndex + 1);
+      uint64_t mask = ((1uLL << numberOfNewNeededBlocks) - 1) << subIndex;
       uint64_t currentControlRegister = _control[freeBlockFieldIndex].load();
 
       if ((currentControlRegister & mask) == mask) {
         auto newControlRegister = currentControlRegister & (mask ^ all_set);
         boost::shared_lock< boost::shared_mutex > guard(_mutex);
         
-        if (_control[freeBlockFieldIndex].compare_exchange_strong(currentControlRegister, newControlRegister)) {
+        if (CAS(_control[freeBlockFieldIndex], currentControlRegister, newControlRegister)) {
           b.length += numberOfNewNeededBlocks * BlockSize;
           return true;
         }
@@ -320,42 +342,34 @@ namespace ALB
 
 
     void deallocate(Block& b) {
-      if (b.length == 0) {
-        assert(b.ptr == nullptr);
+      if (!b) {
         return;
       }
 
       assert(b.length % BlockSize == 0);
       assert(owns(b));
 
-      size_t numberOfBlocks = b.length / BlockSize;
-      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
-      int freeBlockFieldIndex = blockIndex / 64;
-      int subIndex = blockIndex % 64;
+      const int numberOfBlocks = static_cast<int>(b.length / BlockSize);
+      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
+      const int registerIndex = blockIndex / 64;
+      const int subIndex = blockIndex % 64;
       
       //printf("Used Block %d in thread %d\n", blockIndex, std::this_thread::get_id());
-      if (numberOfBlocks < 64) {
-        deallocateWithinSingleControlRegister(b, numberOfBlocks, freeBlockFieldIndex, subIndex);
-        if (!b) {
-          return;
-        }
-
+      if (numberOfBlocks <= 64) {
+        setWithinSingleRegister<true>(registerIndex, subIndex, numberOfBlocks);
+        b.reset();
+        return;
+        // TODO
         // Handle cases with register overlap
       }
-      else if (numberOfBlocks == 64) {
-        deallocateOfACompleteControlRegister(b, freeBlockFieldIndex);
-        if (!b) {
-          return;
-        }
-      }
       else if ( (numberOfBlocks % 64) == 0 ) {
-        deallocateForMultipleCompleteControlRegister(b, numberOfBlocks, freeBlockFieldIndex);
+        deallocateForMultipleCompleteControlRegister(b, numberOfBlocks, registerIndex);
         if (!b) {
           return;
         }
       }
       else {
-        deallocateWithControlRegisterOverlap(b, numberOfBlocks, freeBlockFieldIndex, subIndex);
+        deallocateWithControlRegisterOverlap(b, numberOfBlocks, registerIndex, subIndex);
         if (!b) {
           return;
         }
@@ -367,15 +381,24 @@ namespace ALB
 
       std::fill(std::begin(_control), std::end(_control), static_cast<uint64_t>(-1));
     }
-
+    
+    // TODO
     bool reallocate(Block& b, size_t n) {
       if (Helper::Reallocator<SharedHeap>::isHandledDefault(*this, b, n)){
         return true;
       }
 
-      if (n < b.length) {
-        // handle insito
+      const size_t numberOfBlocks = b.length / BlockSize;
+      const size_t numberOfAlignedBytes = Helper::roundToAlignment<BlockSize>(n);
+      const size_t numberOfNewNeededBlocks = numberOfAlignedBytes / BlockSize;
+      
+      if (numberOfBlocks == numberOfNewNeededBlocks) {
+        return true;
       }
+
+      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
+      int freeBlockFieldIndex = blockIndex / 64;
+      int subIndex = blockIndex % 64;
 
       // no lock is needed here, because the necessary operations are handled inside the method under lock
       // most simple version for the beginning
@@ -390,20 +413,25 @@ namespace ALB
       if (delta == 0) {
         return true;
       }
-
-      //size_t numberOfBlocks = b.length / BlockSize;
-      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
-      int freeBlockFieldIndex = blockIndex / 64;
-      int subIndex = blockIndex % 64;
-      size_t numberOfNewNeededBlocks = Helper::roundToAlignment<BlockSize>(delta) / BlockSize;
+      const int numberOfBlocks = static_cast<int>(b.length / BlockSize);
+      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
+      const int registerIndex = blockIndex / 64;
+      const int subIndex = blockIndex % 64;
+      const int numberOfAdditionalNeededBlocks = 
+        static_cast<int>(Helper::roundToAlignment<BlockSize>(delta) / BlockSize);
       
-      if (subIndex + numberOfNewNeededBlocks < 64) {
-        return expandWithinASingleControlRegister(b, freeBlockFieldIndex, subIndex, numberOfNewNeededBlocks);
+      if (subIndex + numberOfBlocks + numberOfAdditionalNeededBlocks <= 64) {
+        if (testAndSetWithinSingleRegister<false>(registerIndex, subIndex + numberOfBlocks, numberOfAdditionalNeededBlocks)) {
+          b.length += numberOfAdditionalNeededBlocks * BlockSize;
+          return true;
+        }
+        else {
+          return false;
+        }
       }
       else {
 
       }
-      // we have to search for delta ones bits starting at 
       return false;
     }
   };
