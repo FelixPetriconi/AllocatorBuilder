@@ -2,8 +2,28 @@ project(ALB)
 
 include_directories("${PROJECT_SOURCE_DIR}/../include")
 
-IF(WIN32)
-  ADD_DEFINITIONS(-D_WIN32_WINNT=0x0501)
-ENDIF(WIN32)
+if(WIN32)
+  add_definitions(-D_WIN32_WINNT=0x0501)
+endif(WIN32)
 
-add_library(ALB *.cpp)
+set(SOURCE
+  ALBAllocatorBase.cpp
+)
+
+set(HEADERS
+  ../include/ALBAffixAllocator.h
+  ../include/ALBAlignedMallocator.h
+  ../include/ALBAllocatorBase.h
+  ../include/ALBBucketizer.h
+  ../include/ALBFallbackAllocator.h
+  ../include/ALBMallocator.h
+  ../include/ALBMemmoryCorruptionDetector.h
+  ../include/ALBSegregator.h
+  ../include/ALBSharedCascadingAllocators.h
+  ../include/ALBSharedFreeList.h
+  ../include/ALBSharedHeap.h
+  ../include/ALBStackAllocator.h
+  ../include/ALBTraits.h
+)
+
+add_library(ALB ${SOURCE} ${HEADERS})

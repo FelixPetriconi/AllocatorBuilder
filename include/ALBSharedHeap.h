@@ -31,26 +31,26 @@
 namespace ALB
 {
   /**
-   * The SharedHeap implements a classic heap with a pre-allocated size of NumberOfBlocks * BlockSize
+   * The SharedHeap implements a classic heap with a pre-allocated size of NumberOfChunks * ChunkSize
    * It has a overhead of one bit per block and linear complexity for allocation and deallocation
    * operations.
    * It is thread safe, except the moment of instantiation.
    * As far as possible only a shared lock + an atomic operation is used during the memory operations
    *
-   * TODO: * Dynastic for BlockSize
+   * TODO: * Dynastic for ChunkSize
    *       * implement expand
    *       * improve reallocate
-   *       * Handle more relaxed the NumberOfBlocks
+   *       * Handle more relaxed the NumberOfChunks
    */
-  template <class Allocator, size_t NumberOfBlocks, size_t BlockSize>
+  template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
   class SharedHeap {
     typedef Allocator allocator;
 
-    static const size_t number_of_blocks = NumberOfBlocks;
-    static const size_t block_size = BlockSize;
+    static const size_t number_of_blocks = NumberOfChunks;
+    static const size_t block_size = ChunkSize;
 
-    static_assert(NumberOfBlocks % (sizeof(uint64_t) * 8) == 0, "NumberOfBlocks is not correct aligned!");
-    static const size_t ControlSize = NumberOfBlocks / (sizeof(uint64_t) * 8);
+    static_assert(NumberOfChunks % (sizeof(uint64_t) * 8) == 0, "NumberOfChunks is not correct aligned!");
+    static const size_t ControlSize = NumberOfChunks / (sizeof(uint64_t) * 8);
   
     uint64_t all_set;
     uint64_t all_zero;
@@ -61,6 +61,16 @@ namespace ALB
     boost::shared_mutex _mutex;
     Allocator _allocator;
     
+    struct BlockContext {
+      BlockContext(int ri, int si, int uc) : registerIndex(ri), subIndex(si), usedChunks(uc) {}
+      int registerIndex, subIndex, usedChunks;
+    };
+    
+    BlockContext blockToContext(const Block& b) {
+      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / ChunkSize );
+      return BlockContext(blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / ChunkSize));
+    }
+
     template <bool Used>
     uint64_t setUsed(const uint64_t& currentRegister, const uint64_t& mask);
 
@@ -75,19 +85,19 @@ namespace ALB
 
 
     template <bool Used>
-    bool testAndSetWithinSingleRegister(int registerIndex, int subIndex, int numberOfBits) {
-      assert(subIndex + numberOfBits <= 64);
+    bool testAndSetWithinSingleRegister(const BlockContext& context) {
+      assert(context.subIndex + context.usedChunks <= 64);
 
-      uint64_t mask = (numberOfBits == 64)? all_set : ( ((1uLL << numberOfBits) - 1) << subIndex);
+      uint64_t mask = (context.usedChunks == 64)? all_set : ( ((1uLL << context.usedChunks) - 1) << context.subIndex);
       uint64_t currentRegister, newRegister;
       do {
-        currentRegister = _control[registerIndex].load();
+        currentRegister = _control[context.registerIndex].load();
         if ( (currentRegister & mask) != mask) {
           return false;
         }
         newRegister = setUsed<Used>(currentRegister, mask);
         boost::shared_lock< boost::shared_mutex > guard(_mutex);
-      } while (!CAS(_control[registerIndex], currentRegister, newRegister));
+      } while (!CAS(_control[context.registerIndex], currentRegister, newRegister));
       return true;
     }
 
@@ -125,8 +135,8 @@ namespace ALB
                 boost::shared_lock< boost::shared_mutex > guard(_mutex);
 
                 if (CAS(_control[controlIndex], currentControlRegister, newControlRegister)) {
-                  size_t ptrOffset = (controlIndex * 64 + i ) * BlockSize;
-                  return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * BlockSize);
+                  size_t ptrOffset = (controlIndex * 64 + i ) * ChunkSize;
+                  return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * ChunkSize);
                 }
               }
               i++;
@@ -155,8 +165,8 @@ namespace ALB
         boost::shared_lock< boost::shared_mutex > guard(_mutex);
 
         if (CAS_P(freeChunk, all_set, all_zero)) {
-          size_t ptrOffset = ( (freeChunk - std::begin(_control)) * 64) * BlockSize;
-          return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * BlockSize);
+          size_t ptrOffset = ( (freeChunk - std::begin(_control)) * 64) * ChunkSize;
+          return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * ChunkSize);
         }
       } while (true);
     }
@@ -178,8 +188,8 @@ namespace ALB
         ++p;
       }
 
-      size_t ptrOffset = ( (freeFirstChunk - std::begin(_control)) * 64) * BlockSize;
-      return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * BlockSize);
+      size_t ptrOffset = ( (freeFirstChunk - std::begin(_control)) * 64) * ChunkSize;
+      return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * ChunkSize);
     }
 
     Block allocateWithRegisterOverlap(size_t numberOfBlocks) {
@@ -227,8 +237,8 @@ namespace ALB
             blocksToMark = 0;
           }
         }
-        size_t ptrOffset = (chunkStart - reinterpret_cast<unsigned char*>(&_control[0])) * 8 * BlockSize;
-        return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * BlockSize);
+        size_t ptrOffset = (chunkStart - reinterpret_cast<unsigned char*>(&_control[0])) * 8 * ChunkSize;
+        return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * ChunkSize);
       }
 
       return Block();
@@ -275,7 +285,7 @@ namespace ALB
         boost::shared_lock< boost::shared_mutex > guard(_mutex);
         
         if (CAS(_control[freeBlockFieldIndex], currentControlRegister, newControlRegister)) {
-          b.length += numberOfNewNeededBlocks * BlockSize;
+          b.length += numberOfNewNeededBlocks * ChunkSize;
           return true;
         }
       }
@@ -287,7 +297,7 @@ namespace ALB
     SharedHeap()
       : all_set(static_cast<uint64_t>(-1))
       , all_zero(0) {
-      _buffer = _allocator.allocate( BlockSize * NumberOfBlocks );
+      _buffer = _allocator.allocate( ChunkSize * NumberOfChunks );
       deallocateAll();
     }
 
@@ -306,12 +316,12 @@ namespace ALB
         return Block();
       }
 
-      if ( n > BlockSize * NumberOfBlocks) { // The heap cannot handle such a big request
+      if ( n > ChunkSize * NumberOfChunks) { // The heap cannot handle such a big request
         return Block();
       }
 
-      size_t numberOfAlignedBytes = Helper::roundToAlignment<BlockSize>(n);
-      size_t numberOfBlocks = numberOfAlignedBytes / BlockSize;
+      size_t numberOfAlignedBytes = Helper::roundToAlignment<ChunkSize>(n);
+      size_t numberOfBlocks = numberOfAlignedBytes / ChunkSize;
       numberOfBlocks = std::max(1uLL, numberOfBlocks);
 
       if (numberOfBlocks < 64)
@@ -346,11 +356,11 @@ namespace ALB
         return;
       }
 
-      assert(b.length % BlockSize == 0);
+      assert(b.length % ChunkSize == 0);
       assert(owns(b));
 
-      const int numberOfBlocks = static_cast<int>(b.length / BlockSize);
-      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
+      const int numberOfBlocks = static_cast<int>(b.length / ChunkSize);
+      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / ChunkSize );
       const int registerIndex = blockIndex / 64;
       const int subIndex = blockIndex % 64;
       
@@ -388,15 +398,15 @@ namespace ALB
         return true;
       }
 
-      const size_t numberOfBlocks = b.length / BlockSize;
-      const size_t numberOfAlignedBytes = Helper::roundToAlignment<BlockSize>(n);
-      const size_t numberOfNewNeededBlocks = numberOfAlignedBytes / BlockSize;
+      const size_t numberOfBlocks = b.length / ChunkSize;
+      const size_t numberOfAlignedBytes = Helper::roundToAlignment<ChunkSize>(n);
+      const size_t numberOfNewNeededBlocks = numberOfAlignedBytes / ChunkSize;
       
       if (numberOfBlocks == numberOfNewNeededBlocks) {
         return true;
       }
 
-      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
+      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / ChunkSize );
       int freeBlockFieldIndex = blockIndex / 64;
       int subIndex = blockIndex % 64;
 
@@ -413,16 +423,16 @@ namespace ALB
       if (delta == 0) {
         return true;
       }
-      const int numberOfBlocks = static_cast<int>(b.length / BlockSize);
-      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / BlockSize );
-      const int registerIndex = blockIndex / 64;
-      const int subIndex = blockIndex % 64;
+
+      const auto context = blockToContext(b);
       const int numberOfAdditionalNeededBlocks = 
-        static_cast<int>(Helper::roundToAlignment<BlockSize>(delta) / BlockSize);
+        static_cast<int>(Helper::roundToAlignment<ChunkSize>(delta) / ChunkSize);
       
-      if (subIndex + numberOfBlocks + numberOfAdditionalNeededBlocks <= 64) {
-        if (testAndSetWithinSingleRegister<false>(registerIndex, subIndex + numberOfBlocks, numberOfAdditionalNeededBlocks)) {
-          b.length += numberOfAdditionalNeededBlocks * BlockSize;
+      if (context.subIndex + context.usedChunks + numberOfAdditionalNeededBlocks <= 64) {
+        if (testAndSetWithinSingleRegister<false>(BlockContext(context.registerIndex, 
+                                                              context.subIndex + context.usedChunks, 
+                                                              numberOfAdditionalNeededBlocks)) ) {
+          b.length += numberOfAdditionalNeededBlocks * ChunkSize;
           return true;
         }
         else {

@@ -14,22 +14,28 @@ endif ()
 include_directories("${PROJECT_SOURCE_DIR}/../include")
 include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
-add_executable(ALBUnitTest 
-               ALBAffixAllocatorTest.cpp
-               ALBAllocatorBaseTest.cpp
-               ALBFallbackAllocatorTest.cpp 
-               ALBSegregatorTest.cpp
-               ALBSharedCascadingAllocatorsTest.cpp
-               ALBSharedFreeListTest.cpp
-               ALBSharedHeapTest
-               ALBStackAllocatorTest.cpp
-               ALBTestHelpers.cpp
-               main.cpp)
+set(HEADERS
+  ALBTestHelpers.h
+)
+
+set(SOURCE
+	ALBAffixAllocatorTest.cpp
+	ALBAllocatorBaseTest.cpp
+	ALBFallbackAllocatorTest.cpp 
+	ALBSegregatorTest.cpp
+	ALBSharedCascadingAllocatorsTest.cpp
+	ALBSharedFreeListTest.cpp
+	ALBSharedHeapTest
+	ALBStackAllocatorTest.cpp
+	ALBTestHelpers.cpp
+	main.cpp
+)
+
+add_executable(ALBUnitTest ${SOURCE} ${HEADERS})
 
 include_directories(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 add_definitions(-DBOOST_ALL_NO_LIB)
-
 
 add_dependencies(ALBUnitTest gtest)
 add_dependencies(ALBUnitTest ALB)
