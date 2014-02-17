@@ -97,6 +97,35 @@ namespace ALB
     }
 
     template <bool Used>
+    void setOverMultipleRegistersWithoutLock(const BlockContext& context) {
+      size_t chunksToTest = context.usedChunks;
+      size_t subIndexStart = context.subIndex;
+      size_t registerIndex = context.registerIndex;
+      do {
+        size_t mask;
+        if (subIndexStart > 0)
+          mask = ((1uLL << (64 - subIndexStart)) - 1) << subIndexStart;
+        else
+          mask = (chunksToTest >= 64)? all_set : ((1uLL << chunksToTest) - 1);
+
+        assert(registerIndex < ControlSize);
+
+        auto newRegister = setUsed<Used>(_control[registerIndex].load(), mask);
+        _control[registerIndex] = newRegister;
+
+        if (subIndexStart + chunksToTest > 64) {
+          chunksToTest = subIndexStart + chunksToTest - 64;
+          subIndexStart = 0;
+        }
+        else {
+          chunksToTest = 0;            
+        }
+        registerIndex++;
+      }
+      while (chunksToTest > 0);
+    }
+
+    template <bool Used>
     bool testAndSetOverMultipleRegisters(const BlockContext& context) {
       static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t), 
         "Current assumption that std::atomic has no overhead on integral types is not fullfilled!");
@@ -133,32 +162,9 @@ namespace ALB
         }
       }
       while (chunksToTest > 0); 
+      
+      setOverMultipleRegistersWithoutLock<Used>(context);
 
-      chunksToTest = context.usedChunks;
-      subIndexStart = context.subIndex;
-      registerIndex = context.registerIndex;
-      do {
-        size_t mask;
-        if (subIndexStart > 0)
-          mask = ((1uLL << (64 - subIndexStart)) - 1) << subIndexStart;
-        else
-          mask = (chunksToTest >= 64)? all_set : ((1uLL << chunksToTest) - 1);
-
-        auto currentRegister = _control[registerIndex].load();
-        
-        auto newRegister = setUsed<Used>(currentRegister, mask);
-        _control[registerIndex] = newRegister;
-
-        if (subIndexStart + chunksToTest > 64) {
-          chunksToTest = subIndexStart + chunksToTest - 64;
-          subIndexStart = 0;
-        }
-        else {
-          chunksToTest = 0;            
-        }
-        registerIndex++;
-      }
-      while (chunksToTest > 0);
       return true;
     }
 
@@ -287,22 +293,10 @@ namespace ALB
       };
 
       if (p != lastp && freeBlocksCount >= numberOfBlocks) {
-        int blocksToMark = static_cast<int>(numberOfBlocks);
-        p = chunkStart;
-        while (blocksToMark > 0) {
-          if (blocksToMark > 8) {
-            *p = 0;
-            p++;
-            blocksToMark -= 8;
-          }
-          else {
-            unsigned char mask = ((1 << blocksToMark) - 1) ^ 0xff;
-            *p &= mask;
-            blocksToMark = 0;
-          }
-        }
         size_t ptrOffset = (chunkStart - reinterpret_cast<unsigned char*>(&_control[0])) * 8 * ChunkSize;
-        return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * ChunkSize);
+        Block result(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * ChunkSize);
+        setOverMultipleRegistersWithoutLock<false>(blockToContext(result));
+        return result;
       }
 
       return Block();
@@ -318,23 +312,7 @@ namespace ALB
 
     void deallocateWithControlRegisterOverlap(const BlockContext& context) {
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
-
-      unsigned char* p = reinterpret_cast<unsigned char*>(&_control[0]) 
-        + context.registerIndex * sizeof(uint64_t) + context.subIndex / 8;
-
-      int blocksToMark = static_cast<int>(context.usedChunks);
-      while (blocksToMark > 0) {
-        if (blocksToMark > 8) {
-          *p = 0xFF;
-          p++;
-          blocksToMark -= 8;
-        }
-        else {
-          unsigned char mask = ((1 << blocksToMark) - 1);
-          *p |= mask;
-          blocksToMark = 0;
-        }
-      }
+      setOverMultipleRegistersWithoutLock<true>(context);
     }
 
   public:
@@ -410,7 +388,7 @@ namespace ALB
       const auto context = blockToContext(b);
             
       //printf("Used Block %d in thread %d\n", blockIndex, std::this_thread::get_id());
-      if (context.usedChunks <= 64) {
+      if (context.subIndex + context.usedChunks <= 64) {
         setWithinSingleRegister<true>(context);
         // TODO
         // Handle cases with register overlap
