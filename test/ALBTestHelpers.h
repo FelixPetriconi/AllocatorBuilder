@@ -26,6 +26,8 @@ namespace ALB
     class AllocatorBaseTest : public ::testing::Test
     {
     protected:
+      typedef Allocator allocator;
+
       void deallocateAndCheckBlockIsThenEmpty(ALB::Block& b) {
         sut.deallocate(b);
         EXPECT_FALSE(b);

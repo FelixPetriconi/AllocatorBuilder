@@ -96,6 +96,72 @@ namespace ALB
       return true;
     }
 
+    template <bool Used>
+    bool testAndSetOverMultipleRegisters(const BlockContext& context) {
+      static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t), 
+        "Current assumption that std::atomic has no overhead on integral types is not fullfilled!");
+
+      // This branch works on multiple chunks at the same time and so a real lock is necessary.
+      size_t chunksToTest = context.usedChunks;
+      size_t subIndexStart = context.subIndex;
+      size_t registerIndex = context.registerIndex;
+
+      boost::unique_lock< boost::shared_mutex > guard(_mutex);
+      do {
+        uint64_t mask;
+        if (subIndexStart > 0)
+          mask = ((1uLL << (64 - subIndexStart)) - 1) << subIndexStart;
+        else
+          mask = (chunksToTest >= 64)? all_set : ((1uLL << chunksToTest) - 1);
+
+        auto currentRegister = _control[registerIndex].load();
+        
+        if ( (currentRegister & mask) != mask) {
+          return false;
+        }
+        
+        if (subIndexStart + chunksToTest > 64) {
+          chunksToTest = subIndexStart + chunksToTest - 64;
+          subIndexStart = 0;
+        }
+        else {
+          chunksToTest = 0;            
+        }
+        registerIndex++;
+        if (registerIndex > ControlSize) {
+          return false;
+        }
+      }
+      while (chunksToTest > 0); 
+
+      chunksToTest = context.usedChunks;
+      subIndexStart = context.subIndex;
+      registerIndex = context.registerIndex;
+      do {
+        size_t mask;
+        if (subIndexStart > 0)
+          mask = ((1uLL << (64 - subIndexStart)) - 1) << subIndexStart;
+        else
+          mask = (chunksToTest >= 64)? all_set : ((1uLL << chunksToTest) - 1);
+
+        auto currentRegister = _control[registerIndex].load();
+        
+        auto newRegister = setUsed<Used>(currentRegister, mask);
+        _control[registerIndex] = newRegister;
+
+        if (subIndexStart + chunksToTest > 64) {
+          chunksToTest = subIndexStart + chunksToTest - 64;
+          subIndexStart = 0;
+        }
+        else {
+          chunksToTest = 0;            
+        }
+        registerIndex++;
+      }
+      while (chunksToTest > 0);
+      return true;
+    }
+
 
     template <bool Used>
     void setWithinSingleRegister(const BlockContext& context) {
@@ -275,7 +341,7 @@ namespace ALB
     typedef Allocator allocator;
     static const size_t number_of_chunks = NumberOfChunks;
     static const size_t chunk_size = ChunkSize;
-
+    
     SharedHeap()
       : all_set(static_cast<uint64_t>(-1))
       , all_zero(0) {
@@ -412,7 +478,12 @@ namespace ALB
         }
       }
       else {
-
+        if (testAndSetOverMultipleRegisters<false>(BlockContext(context.registerIndex,
+                                                               context.subIndex + context.usedChunks,
+                                                               numberOfAdditionalNeededBlocks)) ) {
+          b.length += numberOfAdditionalNeededBlocks * ChunkSize;
+          return true;
+        }
       }
       return false;
     }

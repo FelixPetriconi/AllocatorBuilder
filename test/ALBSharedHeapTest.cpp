@@ -20,15 +20,15 @@ using namespace ALB::TestHelpers;
 
 namespace
 {
-   const size_t SmallBlockSize = 8;
-   const size_t NumberOfBlocks = 128;
+   const size_t SmallChunkSize = 8;
+   const size_t NumberOfChunks = 192;
 }
 
 
 
 class SharedHeapWithSmallAllocationsTest : 
   public AllocatorBaseTest<
-    ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>>
+    ALB::SharedHeap<ALB::Mallocator, NumberOfChunks, SmallChunkSize>>
 {
 };
 
@@ -47,16 +47,16 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingOneBytesReturnsABlockOf
 {
   auto mem = sut.allocate(1);
   EXPECT_TRUE(nullptr != mem.ptr);
-  EXPECT_EQ(SmallBlockSize, mem.length);
+  EXPECT_EQ(SmallChunkSize, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingBlockSizeBytesReturnsABlockOfBlockSize)
 {
-  auto mem = sut.allocate(SmallBlockSize);
+  auto mem = sut.allocate(SmallChunkSize);
   EXPECT_TRUE(nullptr != mem.ptr);
-  EXPECT_EQ(SmallBlockSize, mem.length);
+  EXPECT_EQ(SmallChunkSize, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -64,12 +64,12 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingBlockSizeBytesReturnsAB
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingTwoMemoryBlocksUsesContiguousMemory)
 {
-  auto mem1stAllocation = sut.allocate(SmallBlockSize);
-  auto mem2ndAllocation = sut.allocate(SmallBlockSize);
+  auto mem1stAllocation = sut.allocate(SmallChunkSize);
+  auto mem2ndAllocation = sut.allocate(SmallChunkSize);
 
-  EXPECT_EQ(mem2ndAllocation.ptr, static_cast<char*>(mem1stAllocation.ptr) + SmallBlockSize);
-  EXPECT_EQ(SmallBlockSize, mem1stAllocation.length);
-  EXPECT_EQ(SmallBlockSize, mem2ndAllocation.length);
+  EXPECT_EQ(mem2ndAllocation.ptr, static_cast<char*>(mem1stAllocation.ptr) + SmallChunkSize);
+  EXPECT_EQ(SmallChunkSize, mem1stAllocation.length);
+  EXPECT_EQ(SmallChunkSize, mem2ndAllocation.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem2ndAllocation);
   deallocateAndCheckBlockIsThenEmpty(mem1stAllocation);
@@ -77,13 +77,13 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatAllocatingTwoMemoryBlocksUsesCont
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocation)
 {
-  auto mem1stAllocation = sut.allocate(SmallBlockSize);
-  auto mem2ndAllocation = sut.allocate(SmallBlockSize);
+  auto mem1stAllocation = sut.allocate(SmallChunkSize);
+  auto mem2ndAllocation = sut.allocate(SmallChunkSize);
 
   auto ptrOf1stLocation = mem1stAllocation.ptr;
   deallocateAndCheckBlockIsThenEmpty(mem1stAllocation);
 
-  auto mem3rdAllocation = sut.allocate(SmallBlockSize);
+  auto mem3rdAllocation = sut.allocate(SmallChunkSize);
   EXPECT_EQ(ptrOf1stLocation, mem3rdAllocation.ptr);
 
   deallocateAndCheckBlockIsThenEmpty(mem2ndAllocation);
@@ -92,17 +92,17 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocatio
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlocksAndThatAllOfThemAreContiguous)
 {
-  ALB::Block blocks[NumberOfBlocks];
+  ALB::Block blocks[NumberOfChunks];
 
   for (auto& b : blocks) { 
     b = sut.allocate(8); 
   }
 
-  for (size_t i = 0; i < NumberOfBlocks - 1; i++)
+  for (size_t i = 0; i < NumberOfChunks - 1; i++)
   {
     ASSERT_TRUE(blocks[i].ptr != nullptr);
     ASSERT_TRUE(blocks[i+1].ptr != nullptr);
-    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + SmallBlockSize);
+    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + SmallChunkSize);
   }
 
   for (auto& b : blocks) { 
@@ -112,7 +112,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlo
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOutOfMemory)
 {
-  auto allMem = sut.allocate(NumberOfBlocks * SmallBlockSize);
+  auto allMem = sut.allocate(NumberOfChunks * SmallChunkSize);
 
   auto outOfMem = sut.allocate(1);
 
@@ -122,25 +122,25 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOu
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfABiggerChunkIsReqeustedThanTheCompleteHeapCanHandle)
 {
-  auto outOfMem = sut.allocate(NumberOfBlocks * SmallBlockSize + 1);
+  auto outOfMem = sut.allocate(NumberOfChunks * SmallChunkSize + 1);
 
   EXPECT_EQ(nullptr, outOfMem.ptr);
   EXPECT_EQ(0, outOfMem.length);
 }
 
-TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOfBlocksMemoryBlocksWithDoubleBlockSizeBytesAndThatAllOfThemAreContiguous)
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOfChunksMemoryBlocksWithDoubleBlockSizeBytesAndThatAllOfThemAreContiguous)
 {
-  ALB::Block blocks[NumberOfBlocks/2];
+  ALB::Block blocks[NumberOfChunks/2];
 
   for (auto& b : blocks) { 
-    b = sut.allocate(SmallBlockSize * 2); 
+    b = sut.allocate(SmallChunkSize * 2); 
   }
 
-  for (size_t i = 0; i < NumberOfBlocks/2 - 1; i++)
+  for (size_t i = 0; i < NumberOfChunks/2 - 1; i++)
   {
     ASSERT_TRUE(blocks[i].ptr != nullptr);
     ASSERT_TRUE(blocks[i+1].ptr != nullptr);
-    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + SmallBlockSize * 2);
+    EXPECT_EQ(blocks[i+1].ptr, static_cast<char*>(blocks[i].ptr) + SmallChunkSize * 2);
   }
 
   for (auto& b : blocks) { 
@@ -151,13 +151,13 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOf
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatABiggerFreedBlockIsUsedForANewAllocationOfSmallerSize)
 {
-  auto largerAllocation = sut.allocate(SmallBlockSize * 2);
-  auto smallerAllocation = sut.allocate(SmallBlockSize);
+  auto largerAllocation = sut.allocate(SmallChunkSize * 2);
+  auto smallerAllocation = sut.allocate(SmallChunkSize);
 
   auto ptrOf1stLocation = largerAllocation.ptr;
   deallocateAndCheckBlockIsThenEmpty(largerAllocation);
 
-  auto mem = sut.allocate(SmallBlockSize);
+  auto mem = sut.allocate(SmallChunkSize);
   EXPECT_EQ(ptrOf1stLocation, mem.ptr);
 
   deallocateAndCheckBlockIsThenEmpty(smallerAllocation);
@@ -166,16 +166,16 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatABiggerFreedBlockIsUsedForANewAll
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatASmallerFreedBlockIsNotUsedForANewAllocationButANewContiguousBlockIsUsed)
 {
-  auto mem1 = sut.allocate(SmallBlockSize);
-  auto mem2 = sut.allocate(SmallBlockSize * 2);
+  auto mem1 = sut.allocate(SmallChunkSize);
+  auto mem2 = sut.allocate(SmallChunkSize * 2);
 
   auto ptrOf1stLocation = mem1.ptr;
   deallocateAndCheckBlockIsThenEmpty(mem1);
 
-  auto mem3 = sut.allocate(SmallBlockSize * 2);
+  auto mem3 = sut.allocate(SmallChunkSize * 2);
 
   ASSERT_NE(ptrOf1stLocation, mem3.ptr);
-  EXPECT_EQ(static_cast<char*>(mem3.ptr), static_cast<char*>(mem2.ptr) + SmallBlockSize * 2);
+  EXPECT_EQ(static_cast<char*>(mem3.ptr), static_cast<char*>(mem2.ptr) + SmallChunkSize * 2);
 
   deallocateAndCheckBlockIsThenEmpty(mem2);
   deallocateAndCheckBlockIsThenEmpty(mem3);
@@ -193,7 +193,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAnEmptyBlockRe
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
-  auto mem = sut.allocate(SmallBlockSize);
+  auto mem = sut.allocate(SmallChunkSize);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
@@ -205,7 +205,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByZeroBytesOfAFilledBlockRe
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
 {
-  auto mem = sut.allocate(SmallBlockSize);
+  auto mem = sut.allocate(SmallChunkSize);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
@@ -217,38 +217,64 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockRetur
 }
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaThatFitsIntoTheGapIsSuccessful) {
-  auto usedMem = UsedMemGenerator<ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>, 
-    SmallBlockSize*2>(sut)
-    .withAUsedPatternOf("1100'0110").build();
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*2>(sut).withAUsedPatternOf("1100'0110").build();
 
-  auto mem = sut.allocate(SmallBlockSize*4);
+  auto mem = sut.allocate(SmallChunkSize*4);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
-  EXPECT_TRUE(sut.expand(mem, SmallBlockSize*2));
+  EXPECT_TRUE(sut.expand(mem, SmallChunkSize*2));
 
   EXPECT_EQ(origMem.ptr, mem.ptr);
-  EXPECT_GE(mem.length, origMem.length + SmallBlockSize);
+  EXPECT_GE(mem.length, origMem.length + SmallChunkSize);
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
 }
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaThatDoesNotFitsIntoTheGapIsNotSuccessful) {
-  auto usedMem = UsedMemGenerator<ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>, 
-    SmallBlockSize*2>(sut)
-    .withAUsedPatternOf("1100'0110").build();
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*2>(sut).withAUsedPatternOf("1100'0110").build();
 
-  auto mem = sut.allocate(SmallBlockSize*6);
+  auto mem = sut.allocate(SmallChunkSize*6);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
-  EXPECT_FALSE(sut.expand(mem, SmallBlockSize));
+  EXPECT_FALSE(sut.expand(mem, SmallChunkSize));
 
   EXPECT_EQ(origMem.ptr, mem.ptr);
   EXPECT_EQ(mem.length, origMem.length);
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
 }
 
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfASingleControlRegsiterIsSuccessful) {
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*4>(sut).withAUsedPatternOf("1000'0000'0000'0000").build();
 
+  auto mem = sut.allocate(SmallChunkSize*4);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.expand(mem, SmallChunkSize * 64));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize * (4 + 64), mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfATwoControlRegsiterIsSuccessful) {
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*4>(sut).withAUsedPatternOf("1111'1111'1111'1100").build();
+
+  auto mem = sut.allocate(SmallChunkSize*4);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.expand(mem, SmallChunkSize*128));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize * (4 + 128), mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
 
 
 
@@ -393,7 +419,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWithSeveralThreadsRunning
 
 TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldingMultipleAllocations)
 {
-  const size_t NumberOfBlocks = 1024;
+  const size_t NumberOfChunks = 1024;
   const size_t BlockSize = 64;
   const size_t NumberOfThread = 2;
 
@@ -401,7 +427,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
   typedef AffixGuard<unsigned, 0xf000baaa> SufixGuard;
 
   typedef ALB::AffixAllocator<
-    ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, BlockSize>, PrefixGuard, SufixGuard> AllocatorUnderTest;
+    ALB::SharedHeap<ALB::Mallocator, NumberOfChunks, BlockSize>, PrefixGuard, SufixGuard> AllocatorUnderTest;
 
   AllocatorUnderTest sut;
 
@@ -420,7 +446,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
   // At the end, we check that all memory was released. The easiest way to check this
   // is by trying to allocate everything
   auto allDeallocatedCheck = sut.allocate(
-    NumberOfBlocks * BlockSize 
+    NumberOfChunks * BlockSize 
     - AllocatorUnderTest::prefix_size - AllocatorUnderTest::sufix_size);
 
   EXPECT_TRUE(allDeallocatedCheck);
