@@ -21,7 +21,7 @@ using namespace ALB::TestHelpers;
 namespace
 {
    const size_t SmallBlockSize = 8;
-   const size_t NumberOfBlocks = 64;
+   const size_t NumberOfBlocks = 128;
 }
 
 
@@ -216,26 +216,41 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockRetur
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
 }
 
-TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockNotAtTheBeginningReturnsSuccessAndDoesNotChangeTheProvidedBlock)
-{
-  auto mem1stBlock = sut.allocate(SmallBlockSize * 2);
-  fillBlockWithReferenceData<int>(mem1stBlock);
-  auto mem = sut.allocate(SmallBlockSize*3);
-  auto mem3rdBlock = sut.allocate(SmallBlockSize);
-  fillBlockWithReferenceData<int>(mem3rdBlock);
-  sut.deallocate(mem);
-  mem = sut.allocate(SmallBlockSize*2);
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaThatFitsIntoTheGapIsSuccessful) {
+  auto usedMem = UsedMemGenerator<ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>, 
+    SmallBlockSize*2>(sut)
+    .withAUsedPatternOf("1100'0110").build();
+
+  auto mem = sut.allocate(SmallBlockSize*4);
   auto origMem = mem;
   fillBlockWithReferenceData<int>(mem);
 
-  EXPECT_TRUE(sut.expand(mem, SmallBlockSize));
+  EXPECT_TRUE(sut.expand(mem, SmallBlockSize*2));
 
   EXPECT_EQ(origMem.ptr, mem.ptr);
   EXPECT_GE(mem.length, origMem.length + SmallBlockSize);
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
-  EXPECT_MEM_EQ(mem1stBlock.ptr, (void*)ReferenceData.data(), mem1stBlock.length);
-  EXPECT_MEM_EQ(mem3rdBlock.ptr, (void*)ReferenceData.data(), mem3rdBlock.length);
 }
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaThatDoesNotFitsIntoTheGapIsNotSuccessful) {
+  auto usedMem = UsedMemGenerator<ALB::SharedHeap<ALB::Mallocator, NumberOfBlocks, SmallBlockSize>, 
+    SmallBlockSize*2>(sut)
+    .withAUsedPatternOf("1100'0110").build();
+
+  auto mem = sut.allocate(SmallBlockSize*6);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_FALSE(sut.expand(mem, SmallBlockSize));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(mem.length, origMem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
+
+
+
 
 
 class SharedHeapWithLargeAllocationsTest : public 
@@ -410,3 +425,4 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
 
   EXPECT_TRUE(allDeallocatedCheck);
 }
+

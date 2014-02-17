@@ -44,11 +44,6 @@ namespace ALB
    */
   template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
   class SharedHeap {
-    typedef Allocator allocator;
-
-    static const size_t number_of_blocks = NumberOfChunks;
-    static const size_t block_size = ChunkSize;
-
     static_assert(NumberOfChunks % (sizeof(uint64_t) * 8) == 0, "NumberOfChunks is not correct aligned!");
     static const size_t ControlSize = NumberOfChunks / (sizeof(uint64_t) * 8);
   
@@ -101,18 +96,20 @@ namespace ALB
       return true;
     }
 
-    template <bool Used>
-    void setWithinSingleRegister(int registerIndex, int subIndex, int numberOfBits) {
-      assert(subIndex + numberOfBits <= 64);
 
-      uint64_t mask = (numberOfBits == 64)? all_set : ( ((1uLL << numberOfBits) - 1) << subIndex);
+    template <bool Used>
+    void setWithinSingleRegister(const BlockContext& context) {
+      assert(context.subIndex + context.usedChunks <= 64);
+
+      uint64_t mask = (context.usedChunks == 64)? all_set : ( ((1uLL << context.usedChunks) - 1) << context.subIndex);
       uint64_t currentRegister, newRegister;
       do {
-        currentRegister = _control[registerIndex].load();
+        currentRegister = _control[context.registerIndex].load();
         newRegister = setUsed<Used>(currentRegister, mask);
         boost::shared_lock< boost::shared_mutex > guard(_mutex);
-      } while (!CAS(_control[registerIndex], currentRegister, newRegister));
+      } while (!CAS(_control[context.registerIndex], currentRegister, newRegister));
     }
+
 
     Block allocateWithinASingleControlRegister(size_t numberOfBlocks)
     {
@@ -193,11 +190,12 @@ namespace ALB
     }
 
     Block allocateWithRegisterOverlap(size_t numberOfBlocks) {
+      // search for free area
+      static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t), 
+        "Current assumption that std::atomic has no overhead on integral types is not fullfilled!");
+
       // This branch works on multiple chunks at the same time and so a real lock is necessary.
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
-
-      // search for free area
-      static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t), "Current assumption that std::atomic has no overhead on integral types is not fullfilled!");
 
       unsigned char* p = reinterpret_cast<unsigned char*>(&_control[0]);
       const unsigned char* lastp = reinterpret_cast<unsigned char*>(&_control[0]) + ControlSize * sizeof(uint64_t);
@@ -245,22 +243,20 @@ namespace ALB
     }
 
 
-    void deallocateForMultipleCompleteControlRegister(Block& b, size_t numberOfBlocks, size_t freeBlockFieldIndex) {
+    void deallocateForMultipleCompleteControlRegister(const BlockContext& context) {
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
 
-      std::fill(std::begin(_control) + freeBlockFieldIndex, 
-        std::begin(_control) + freeBlockFieldIndex + numberOfBlocks / 64, static_cast<uint64_t>(-1));
-
-      b.reset();
+      std::fill(std::begin(_control) + context.registerIndex, 
+        std::begin(_control) + context.registerIndex + context.usedChunks/ 64, static_cast<uint64_t>(-1));
     }
 
-    void deallocateWithControlRegisterOverlap(Block& b, size_t numberOfBlocks, size_t freeBlockFieldIndex, size_t subIndex) {
+    void deallocateWithControlRegisterOverlap(const BlockContext& context) {
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
 
       unsigned char* p = reinterpret_cast<unsigned char*>(&_control[0]) 
-        + freeBlockFieldIndex * sizeof(uint64_t) + subIndex / 8;
+        + context.registerIndex * sizeof(uint64_t) + context.subIndex / 8;
 
-      int blocksToMark = static_cast<int>(numberOfBlocks);
+      int blocksToMark = static_cast<int>(context.usedChunks);
       while (blocksToMark > 0) {
         if (blocksToMark > 8) {
           *p = 0xFF;
@@ -273,26 +269,12 @@ namespace ALB
           blocksToMark = 0;
         }
       }
-      b.reset();
-    }
-
-    bool expandWithinASingleControlRegister(Block& b, int freeBlockFieldIndex, int subIndex, size_t numberOfNewNeededBlocks) {
-      uint64_t mask = ((1uLL << numberOfNewNeededBlocks) - 1) << subIndex;
-      uint64_t currentControlRegister = _control[freeBlockFieldIndex].load();
-
-      if ((currentControlRegister & mask) == mask) {
-        auto newControlRegister = currentControlRegister & (mask ^ all_set);
-        boost::shared_lock< boost::shared_mutex > guard(_mutex);
-        
-        if (CAS(_control[freeBlockFieldIndex], currentControlRegister, newControlRegister)) {
-          b.length += numberOfNewNeededBlocks * ChunkSize;
-          return true;
-        }
-      }
-      return false;
     }
 
   public:
+    typedef Allocator allocator;
+    static const size_t number_of_chunks = NumberOfChunks;
+    static const size_t chunk_size = ChunkSize;
 
     SharedHeap()
       : all_set(static_cast<uint64_t>(-1))
@@ -359,31 +341,21 @@ namespace ALB
       assert(b.length % ChunkSize == 0);
       assert(owns(b));
 
-      const int numberOfBlocks = static_cast<int>(b.length / ChunkSize);
-      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / ChunkSize );
-      const int registerIndex = blockIndex / 64;
-      const int subIndex = blockIndex % 64;
-      
+      const auto context = blockToContext(b);
+            
       //printf("Used Block %d in thread %d\n", blockIndex, std::this_thread::get_id());
-      if (numberOfBlocks <= 64) {
-        setWithinSingleRegister<true>(registerIndex, subIndex, numberOfBlocks);
-        b.reset();
-        return;
+      if (context.usedChunks <= 64) {
+        setWithinSingleRegister<true>(context);
         // TODO
         // Handle cases with register overlap
       }
-      else if ( (numberOfBlocks % 64) == 0 ) {
-        deallocateForMultipleCompleteControlRegister(b, numberOfBlocks, registerIndex);
-        if (!b) {
-          return;
-        }
+      else if ( (context.usedChunks % 64) == 0 ) {
+        deallocateForMultipleCompleteControlRegister(context);
       }
       else {
-        deallocateWithControlRegisterOverlap(b, numberOfBlocks, registerIndex, subIndex);
-        if (!b) {
-          return;
-        }
+        deallocateWithControlRegisterOverlap(context);
       }
+      b.reset();
     }
 
     void deallocateAll() {
