@@ -18,6 +18,8 @@ namespace ALB
     typedef Primary primary_allocator;
     typedef Fallback fallback_allocator;
 
+    static_assert( !Traits::both_same_base<Primary, Fallback>::value, "Primary- and Fallback-Allocator cannot be both of base!");
+
   public:
     Block allocate(size_t n) {
       Block result( Primary::allocate(n) );

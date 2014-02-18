@@ -28,7 +28,7 @@ namespace ALB
     static const size_t max_size = MaxSize;
     static const size_t min_size = MinSize;
     static const size_t step_size = StepSize;
-    typedef Allocator allocator;
+    typename typedef Allocator allocator;
 
     static const size_t NumberOfBuckets = 1 + (MaxSize - MinSize) / StepSize;
     std::array<std::unique_ptr<Allocator>, NumberOfBuckets> _buckets;

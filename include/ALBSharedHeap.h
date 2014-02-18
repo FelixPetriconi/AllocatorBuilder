@@ -38,8 +38,6 @@ namespace ALB
    * As far as possible only a shared lock + an atomic operation is used during the memory operations
    *
    * TODO: * Dynastic for ChunkSize
-   *       * implement expand
-   *       * improve reallocate
    *       * Handle more relaxed the NumberOfChunks
    */
   template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>

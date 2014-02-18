@@ -17,8 +17,10 @@ namespace ALB
   class Segregator : private SmallAllocator, private LargeAllocator {
 
     static const size_t threshold = Threshold;
-    typedef SmallAllocator small_allocator;
-    typedef LargeAllocator large_allocator;
+    typename typedef SmallAllocator small_allocator;
+    typename typedef LargeAllocator large_allocator;
+
+    static_assert( !Traits::both_same_base<SmallAllocator, LargeAllocator>::value, "Small- and Large-Allocator cannot be both of base!");
 
   public:
     Block allocate(size_t n) {
@@ -88,3 +90,4 @@ namespace ALB
     }
   };
 }
+ 

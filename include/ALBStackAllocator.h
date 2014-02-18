@@ -134,4 +134,15 @@ namespace ALB
       _p = _data;
     }
   };
+
+  namespace Traits
+  {
+    template <class T>
+    struct is_stackallocator : std::false_type
+    {};
+
+    template <size_t P1, size_t P2>
+    struct is_stackallocator<StackAllocator<P1, P2>> : std::true_type
+    {};
+  }
 }

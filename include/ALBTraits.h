@@ -97,20 +97,59 @@ namespace ALB
       typedef Disabled type;
     };
 
-    // forward declarations of all allocator
-    template <size_t MaxSize, size_t Alignment=4>
-    class StackAllocator;
-
-    template<class Allocator>
-    struct is_stackallocator : std::false_type
+    /**
+     * This traits returns true if both passed types have the same type, resp. template base type
+     * 
+     * e.g. both_same_base<StackAllocator<32>, StackAllocator<64>>::value == true
+     * 
+     * It's usage is not absolute safe, because it would mean to unroll all possible parameter combinations.
+     * But all currently available allocator should work.
+     */
+    template<class T1, class T2>
+    struct both_same_base : std::false_type
     {};
 
-    template <size_t MaxSize>
-    struct is_stackallocator<StackAllocator<MaxSize>> : std::true_type
+    template<class T1>
+    struct both_same_base<T1,T1> : std::true_type
     {};
 
-    template <size_t MaxSize, size_t Alignment>
-    struct is_stackallocator<StackAllocator<MaxSize, Alignment>> : std::true_type
+    template<template <size_t> class Allocator, size_t P1, size_t P2>
+    struct both_same_base<Allocator<P1>, Allocator<P2>> : std::true_type
     {};
+
+    template<template <size_t, size_t> class Allocator, size_t P1, size_t P2, size_t P3, size_t P4>
+    struct both_same_base<Allocator<P1,P2>, Allocator<P3, P4>> : std::true_type
+    {};
+
+    template<template <size_t, size_t, size_t> class Allocator, size_t P1, size_t P2, size_t P3, size_t P4, size_t P5, size_t P6>
+    struct both_same_base<Allocator<P1,P2,P3>, Allocator<P4, P5, P6>> : std::true_type
+    {};
+
+    template<template <size_t, size_t, size_t, size_t> class Allocator, size_t P1, size_t P2, size_t P3, size_t P4, size_t P5, size_t P6, size_t P7, size_t P8>
+    struct both_same_base<Allocator<P1,P2,P3, P4>, Allocator<P5, P6, P7, P8>> : std::true_type
+    {};
+
+    template<template <class> class Allocator, class A1, class A2>
+    struct both_same_base<Allocator<A1>, Allocator<A2>> : std::true_type
+    {};
+
+    template<template <class, size_t> class Allocator, class A1, size_t P1, class A2, size_t P2>
+    struct both_same_base<Allocator<A1, P1>, Allocator<A2, P2>> : std::true_type
+    {};
+
+    template<template <class, size_t, size_t> class Allocator, class A1, size_t P1, size_t P2, class A2, size_t P3, size_t P4>
+    struct both_same_base<Allocator<A1, P1,P2>, Allocator<A2, P3, P4>> : std::true_type
+    {};
+
+    template<template <class, size_t, size_t, size_t> class Allocator, class A1, size_t P1, size_t P2, size_t P3, class A2, size_t P4, size_t P5, size_t P6>
+    struct both_same_base<Allocator<A1, P1,P2,P3>, Allocator<A2, P4, P5, P6>> : std::true_type
+    {};
+
+    template<template <class, size_t, size_t, size_t, size_t> class Allocator, class A1, size_t P1, size_t P2, size_t P3, size_t P4, class A2, size_t P5, size_t P6, size_t P7, size_t P8>
+    struct both_same_base<Allocator<A1, P1,P2,P3, P4>, Allocator<A2, P5, P6, P7, P8>> : std::true_type
+    {};
+
+
+
   }
 }
