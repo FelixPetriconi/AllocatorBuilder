@@ -519,7 +519,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
 {
   const size_t NumberOfChunks = 1024;
   const size_t BlockSize = 64;
-  const size_t NumberOfThread = 2;
+  const size_t NumberOfThread = 4;
 
   typedef AffixGuard<unsigned, 0xbaadf00d> PrefixGuard;
   typedef AffixGuard<unsigned, 0xf000baaa> SufixGuard;
@@ -530,8 +530,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, NumberOfThread> TestParams;
-  //TestParams maxAllocatedBytes = {127, 131, 165, 129};
-  TestParams maxAllocatedBytes = {127, 131};
+  TestParams maxAllocatedBytes = {127, 131, 165, 129};
 
   TestWorkerCollector<
     AllocatorUnderTest, 
