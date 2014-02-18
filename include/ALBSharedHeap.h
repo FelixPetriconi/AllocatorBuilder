@@ -356,22 +356,18 @@ namespace ALB
         if (result) {
           return result;
         }
-        // Try to allocate over controlRegisterEdges
-
       }
       else if (numberOfBlocks == 64) {
         auto result = allocateWithinCompleteControlRegister(numberOfBlocks);
         if (result) {
           return result;
         }
-        // Try to allocate over controlRegisterEdges
       }
       else if ( (numberOfBlocks % 64) == 0) {
         auto result = allocateMultipleCompleteControlRegisters(numberOfBlocks);
         if (result) {
           return result;
         }
-        // Try to allocate over controlRegisterEdges
       }
       return allocateWithRegisterOverlap(numberOfBlocks);
     }
@@ -390,8 +386,6 @@ namespace ALB
       //printf("Used Block %d in thread %d\n", blockIndex, std::this_thread::get_id());
       if (context.subIndex + context.usedChunks <= 64) {
         setWithinSingleRegister<true>(context);
-        // TODO
-        // Handle cases with register overlap
       }
       else if ( (context.usedChunks % 64) == 0 ) {
         deallocateForMultipleCompleteControlRegister(context);
@@ -408,33 +402,36 @@ namespace ALB
       std::fill(std::begin(_control), std::end(_control), static_cast<uint64_t>(-1));
     }
     
-    // TODO
     bool reallocate(Block& b, size_t n) {
       if (Helper::Reallocator<SharedHeap>::isHandledDefault(*this, b, n)){
         return true;
       }
 
-      const size_t numberOfBlocks = b.length / ChunkSize;
-      const size_t numberOfAlignedBytes = Helper::roundToAlignment<ChunkSize>(n);
-      const size_t numberOfNewNeededBlocks = numberOfAlignedBytes / ChunkSize;
+      const int numberOfBlocks = static_cast<int>(b.length / ChunkSize);
+      const int numberOfNewNeededBlocks = static_cast<int>(Helper::roundToAlignment<ChunkSize>(n) / ChunkSize);
       
       if (numberOfBlocks == numberOfNewNeededBlocks) {
         return true;
       }
-
-      int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / ChunkSize );
-      int freeBlockFieldIndex = blockIndex / 64;
-      int subIndex = blockIndex % 64;
-
-      // no lock is needed here, because the necessary operations are handled inside the method under lock
-      // most simple version for the beginning
+      if (b.length > n) {
+        auto context = blockToContext(b);
+        if (context.subIndex + context.usedChunks <= 64) {
+          setWithinSingleRegister<true>(BlockContext(context.registerIndex, 
+            context.subIndex + numberOfNewNeededBlocks, 
+            context.usedChunks - numberOfNewNeededBlocks));
+        } 
+        else {
+          deallocateWithControlRegisterOverlap(BlockContext(context.registerIndex, 
+            context.subIndex + numberOfNewNeededBlocks, 
+            context.usedChunks - numberOfNewNeededBlocks));
+        }
+        b.length = numberOfNewNeededBlocks * ChunkSize;
+        return true;
+      }
       return Helper::reallocateWithCopy(*this, *this, b, n);
-      // case that next to the block is in the same chunk remaining space, doable without lock
-      // case that less memory is needed within the same chunk, doable without lock
-      // all others need lock
     }
 
-    // TODO
+
     bool expand(Block& b, size_t delta) {
       if (delta == 0) {
         return true;
@@ -466,5 +463,4 @@ namespace ALB
       return false;
     }
   };
-
 }

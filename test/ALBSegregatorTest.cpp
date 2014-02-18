@@ -105,7 +105,7 @@ TEST_F(SegregatorTest, ThatReallocatingASmallBlockOutOfTheBoundsOfTheSmallAlloca
 
 // TODO
 // Does not work so far, because the insito reallocation of the SharedHeap is not implemented so far
-TEST_F(SegregatorTest, DISABLED_ThatReallocatingALargeBlockToASmallerSizeStaysAtTheLargeAllocator) 
+TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeStaysAtTheLargeAllocator) 
 {
   mem = sut.allocate(LargeBlockSize);
   ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);

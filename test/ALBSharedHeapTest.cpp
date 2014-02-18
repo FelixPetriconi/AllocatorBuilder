@@ -261,7 +261,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfA
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
 }
 
-TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfATwoControlRegsiterIsSuccessful) {
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfATwoControlRegisterIsSuccessful) {
   auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
     SmallChunkSize*4>(sut).withAUsedPatternOf("1111'1111'1111'1100").build();
 
@@ -275,6 +275,104 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfA
   EXPECT_EQ(SmallChunkSize * (4 + 128), mem.length);
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
 }
+
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocatrByZeroBytesOfAnEmptyBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem = sut.allocate(0);
+
+  EXPECT_TRUE(sut.reallocate(mem, 0));
+
+  EXPECT_EQ(nullptr, mem.ptr);
+  EXPECT_EQ(0, mem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocateByZeroBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem = sut.allocate(SmallChunkSize);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.reallocate(mem, SmallChunkSize));
+
+  EXPECT_EQ(origMem, mem);
+  EXPECT_EQ(SmallChunkSize, mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), mem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocateByNBytesOfAFilledBlockReturnsSuccessAndDoesNotChangeTheProvidedBlock)
+{
+  auto mem = sut.allocate(SmallChunkSize);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.reallocate(mem, SmallChunkSize + 4));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize + SmallChunkSize, mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocatrOfABlockIsWithinAUsedAreaThatFitsIntoTheGapIsSuccessful) {
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*2>(sut).withAUsedPatternOf("1100'0110").build();
+
+  auto mem = sut.allocate(SmallChunkSize*4);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.reallocate(mem, SmallChunkSize*(4+2)));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize*(4+2), mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocateOfABlockIsWithinAUsedAreaThatDoesNotFitsIntoTheGapIsSuccessfulWithANewLocations) {
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*2>(sut).withAUsedPatternOf("1100'0110").build();
+
+  auto mem = sut.allocate(SmallChunkSize*6);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.reallocate(mem, SmallChunkSize*(6+1)));
+
+  EXPECT_NE(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize*(6+1), mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocateOfABlockBeyondTheSizeOfASingleControlRegsiterIsSuccessful) {
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*4>(sut).withAUsedPatternOf("1000'0000'0000'0000").build();
+
+  auto mem = sut.allocate(SmallChunkSize*4);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.reallocate(mem, SmallChunkSize * (4+64)));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize * (4 + 64), mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
+TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocateOfABlockBeyondTheSizeOfATwoControlRegisterIsSuccessful) {
+  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+    SmallChunkSize*4>(sut).withAUsedPatternOf("1111'1111'1111'1100").build();
+
+  auto mem = sut.allocate(SmallChunkSize*4);
+  auto origMem = mem;
+  fillBlockWithReferenceData<int>(mem);
+
+  EXPECT_TRUE(sut.reallocate(mem, SmallChunkSize*(128 + 4)));
+
+  EXPECT_EQ(origMem.ptr, mem.ptr);
+  EXPECT_EQ(SmallChunkSize * (4 + 128), mem.length);
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), origMem.length);
+}
+
 
 
 
