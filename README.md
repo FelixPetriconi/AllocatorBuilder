@@ -60,6 +60,7 @@ So, isn't this nicer?
 Content
 -------
   * AffixAllocator - Allows to automatically pre- and sufix allocated regions.
+  * AllocatorWithStats - An allocator that collects a configured number of statistic information
   * Bucketizer - Manages a bunch of Allocators with increasing bucket size
   * FallbackAllocator - Either the default Allocator can handle a request, otherwise it is passed to a fallback Allocator
   * Mallocator - Provides and interface to systems ::malloc()
@@ -93,7 +94,7 @@ Requirements
 ------------
   * C++ 11 (partly, as far as Visual Studio 2012 supports them)
   * boost 1.55
-  * GoogleTest (is now part of the repository, because its CMakeFiles.txt needed some patches.)
+  * GoogleTest (is now part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
 
 
 Platform
@@ -104,7 +105,8 @@ ToDo
 ----
   * Add UnitTests (FallbackAllocator, Segregator, Bucketizer)
   * Add FreeList
+  * Finalize AllocatorWithStats
   * Add CascadingAllocators
-  * Add expand at the missing places (SharedHeap)
+  * Compile and test on Posix system
 
 
