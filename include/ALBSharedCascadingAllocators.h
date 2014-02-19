@@ -10,7 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
-
+#include <boost/assert.hpp>
 #include <mutex>
 #include <atomic>
 
@@ -18,7 +18,7 @@ namespace ALB
 {
   template <typename Allocator>
   class SharedCascadingAllocators {
-    typedef Allocator allocator;
+    typename typedef Allocator allocator;
 
     struct Node {
       Node() : next(nullptr) {}
@@ -88,8 +88,8 @@ namespace ALB
     }
 
     void deallocate(Block& b) {
-      if (!b) {
-        assert(b.ptr == nullptr);
+      BOOST_ASSERT_MSG(owns(b), "It is not wise to deallocate a foreign Block!");
+      if (!b || !owns(b)) {
         return;
       }
 
@@ -101,8 +101,6 @@ namespace ALB
         }
         p = p->next.load();
       }
-
-      assert(false);
     }
 
     bool reallocate(Block& b, size_t n)
@@ -122,7 +120,7 @@ namespace ALB
         }
         p = p->next.load();
       }
-      assert(0);
+      BOOST_ASSERT(0);
       return false;
     }
 
@@ -139,7 +137,19 @@ namespace ALB
         }
         p = p->next.load();
       }
-      assert(0);
+      BOOST_ASSERT(0);
+      return false;
+    }
+
+    bool owns(const Block& b) const {
+      static_assert(Traits::has_owns<Allocator>::value, "Allocator does not implements ::owns()!");
+      Node* p = _root;
+      while (p) {
+        if (p->allocator.owns(b)) {
+          return true;
+        }
+        p = p->next.load();
+      }
       return false;
     }
   };

@@ -144,8 +144,10 @@ namespace ALB
         return;
       }
 
-      assert(b.length % _chunkSize.value() == 0);
-      assert(owns(b));
+      BOOST_ASSERT_MSG(owns(b), "It is not to wise to deallocate with allocator a foreign Block!");
+      if (!owns(b)) {
+        return;
+      }
 
       const auto context = blockToContext(b);
             
@@ -271,7 +273,7 @@ namespace ALB
 
     template <bool Used>
     bool testAndSetWithinSingleRegister(const BlockContext& context) {
-      assert(context.subIndex + context.usedChunks <= 64);
+      BOOST_ASSERT(context.subIndex + context.usedChunks <= 64);
 
       uint64_t mask = (context.usedChunks == 64)? all_set : ( ((1uLL << context.usedChunks) - 1) << context.subIndex);
       uint64_t currentRegister, newRegister;
@@ -298,7 +300,7 @@ namespace ALB
         else
           mask = (chunksToTest >= 64)? all_set : ((1uLL << chunksToTest) - 1);
 
-        assert(registerIndex < _controlSize);
+        BOOST_ASSERT(registerIndex < _controlSize);
 
         uint64_t currentRegister, newRegister;
         do {
@@ -365,7 +367,7 @@ namespace ALB
 
     template <class LockPolicy, bool Used>
     void setWithinSingleRegister(const BlockContext& context) {
-      assert(context.subIndex + context.usedChunks <= 64);
+      BOOST_ASSERT(context.subIndex + context.usedChunks <= 64);
 
       uint64_t mask = (context.usedChunks == 64)? all_set : 
         ( ((1uLL << context.usedChunks) - 1) << context.subIndex);
@@ -447,7 +449,7 @@ namespace ALB
         all_set, 
         [](const std::atomic<uint64_t>&v, const uint64_t& p) { 
           return v.load() == p;
-      }
+        }
       );
 
       if (freeFirstChunk == _control + _controlSize) {

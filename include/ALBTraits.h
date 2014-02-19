@@ -52,6 +52,24 @@ namespace ALB
     };
 
     /**
+     * Trait that checks if the given class implements bool owns(const Block&) const
+     */
+    template<typename T>
+    struct has_owns
+    {
+    private:
+      typedef char   Yes;
+      typedef struct No { char dummy[2]; };
+
+      template <typename U, bool (U::*)(const Block&) const> struct Check;
+      template <typename U> static Yes func(Check<U, &U::owns> *);
+      template <typename U> static No func(...);
+    public:
+      static const bool value = (sizeof(func<T>(0)) == sizeof(Yes));
+    };
+
+
+    /**
      * The following traits define a type bool, if the given Allocators implement expand,
      * otherwise it hides the signature bool expand(Block&, size_t) for has_expand<>
      */

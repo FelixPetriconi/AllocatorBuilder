@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/assert.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -95,11 +96,10 @@ namespace ALB
     }
 
     void deallocate(Block& b) {
-      if (!b) {
+      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
+      if (!b || !owns(b)) {
         return;
       }
-
-      assert(owns(b));
 
       if (prefix_size > 0) {
         outerToPrefix(b)->~Prefix();

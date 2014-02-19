@@ -36,13 +36,6 @@ namespace ALB
     Helper::Dynastic<(MaxSize == DynamicSetSize? 0 : MaxSize), 0> _upperBound;
   
   public:
-    size_t min_size() const {
-      return _lowerBound.value();
-    }
-    size_t max_size() const {
-      return _upperBound.value();
-    }
-
     SharedFreeList() : _root(PoolSize) {}
 
     SharedFreeList(size_t minSize, size_t maxSize) 
@@ -50,6 +43,24 @@ namespace ALB
     {
       _lowerBound.value(minSize);
       _upperBound.value(maxSize);
+    }
+
+    void setMinMax(size_t minSize, size_t maxSize) {
+      BOOST_ASSERT_MSG(_lowerBound.value() == -1, 
+        "Changing the lower bound during after initialization is not wise!");
+      BOOST_ASSERT_MSG(_upperBound.value() == -1,
+        "Changing the upper bound during after initialization is not wise!");
+
+      _lowerBound.value(minSize);
+      _upperBound.value(maxSize);
+    }
+
+    size_t min_size() const {
+      return _lowerBound.value();
+    }
+
+    size_t max_size() const {
+      return _upperBound.value();
     }
 
     ~SharedFreeList() {
@@ -73,8 +84,10 @@ namespace ALB
           if (batchAllocatedBlocks) {
             // we use the very first block directly so we start at 1
             for (size_t i = 1; i < NumberOfBatchAllocations; i++) {
-              // deallocate automatically puts them into the list
-              deallocate(Block(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize, blockSize));
+              if (!_root.push(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize)) {
+                BOOST_ASSERT(false);
+                _allocator.deallocate(Block(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize, blockSize));
+              }
             }
             // returning the first within block
             return Block(batchAllocatedBlocks.ptr, blockSize);

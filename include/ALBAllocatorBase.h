@@ -169,7 +169,7 @@ namespace ALB
     private:
       size_t _v;
     public:
-      Dynastic() : _v(0) {}
+      Dynastic() : _v(-1) {}
       size_t value() const { return _v; }
       void value(size_t w) { _v = w; }
     };
