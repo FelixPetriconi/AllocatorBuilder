@@ -49,6 +49,24 @@ namespace ALB
     size_t length;
   };
 
+  template <typename Allocator, typename T>
+  class StdAllocator
+  {
+    Allocator* _allocator;
+  public:
+    StdAllocator()
+      : _allocator(nullptr)
+    {}
+
+    T *allocate(size_t num)
+    {
+    }
+
+    void deallocate(T* p, size_t num)
+    {
+    }
+
+  };
 
   namespace Helper {
     /**
@@ -60,12 +78,9 @@ namespace ALB
     /**
      * Returns a upper rounded value of multiples of a
      */
-    template <size_t a>
-    inline size_t roundToAlignment(size_t n) {
-      static_assert(a % 4 == 0, "Alignment must be a multiple of 4");
-
-      auto remainder = n % a;
-      return n + ((remainder == 0)? 0 : (a - remainder));
+    inline size_t roundToAlignment(size_t basis, size_t n) {
+      auto remainder = n % basis;
+      return n + ((remainder == 0)? 0 : (basis - remainder));
     }
 
     /**

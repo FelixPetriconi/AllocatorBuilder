@@ -31,7 +31,7 @@ namespace ALB
   }
 
   /**
-   * This allocator enabled the possibility to surround allocated memory blocks with
+   * This allocator enables the possibility to surround allocated memory blocks with
    * guards, ref-counter, mutex or etc.
    * It automatically places an object of type Prefix before the returned memory location 
    * and an object of type Sufix after it. In case that they are of type AffixAllocatorHelper::Empty 
@@ -70,8 +70,8 @@ namespace ALB
 
   public:
     typedef Allocator allocator;
-    typedef Prefix prefix;
-    typedef Sufix sufix;
+    typename typedef Prefix prefix;
+    typename typedef Sufix sufix;
 
     static const size_t prefix_size = std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Prefix);
     static const size_t sufix_size = std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Sufix);
