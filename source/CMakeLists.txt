@@ -14,6 +14,7 @@ set(HEADERS
   ../include/ALBAffixAllocator.h
   ../include/ALBAlignedMallocator.h
   ../include/ALBAllocatorBase.h
+  ../include/ALBAllocatorWithStats.h
   ../include/ALBBucketizer.h
   ../include/ALBFallbackAllocator.h
   ../include/ALBMallocator.h

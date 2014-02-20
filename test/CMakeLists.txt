@@ -21,6 +21,7 @@ set(HEADERS
 set(SOURCE
 	ALBAffixAllocatorTest.cpp
 	ALBAllocatorBaseTest.cpp
+  ALBAllocatorWithStatsTest.cpp
 	ALBFallbackAllocatorTest.cpp 
 	ALBSegregatorTest.cpp
 	ALBSharedCascadingAllocatorsTest.cpp
