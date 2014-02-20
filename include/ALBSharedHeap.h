@@ -142,9 +142,8 @@ namespace ALB
     void deallocate(Block& b) {
       if (!b) {
         return;
-      }
-
-      BOOST_ASSERT_MSG(owns(b), "It is not to wise to deallocate with allocator a foreign Block!");
+      }    
+      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
       if (!owns(b)) {
         return;
       }
