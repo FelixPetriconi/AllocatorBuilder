@@ -15,7 +15,7 @@
 
 class SharedFreeListTest : 
   public ALB::TestHelpers::AllocatorBaseTest<
-    ALB::SharedFreeList<ALB::Mallocator, 0, 17 >>
+    ALB::SharedFreeList<ALB::Mallocator, 0, 16 >>
 {};
 
 TEST_F(SharedFreeListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)

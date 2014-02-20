@@ -76,7 +76,7 @@ namespace ALB
       BOOST_ASSERT_MSG(_upperBound.value() != -1,
         "The upper bound was not initialized!");
 
-      if (_lowerBound.value() <= n && n < _upperBound.value() && !_root.empty()) {
+      if (_lowerBound.value() <= n && n <= _upperBound.value() && !_root.empty()) {
         void* freeBlock = nullptr;
 
         if (_root.pop(freeBlock)) {
@@ -84,7 +84,7 @@ namespace ALB
         }        
         else {
           // allocating in a bunch to gain of having the allocator code in the cache
-          size_t blockSize = static_cast<size_t>(_upperBound.value() - 1);
+          size_t blockSize = _upperBound.value();
           auto batchAllocatedBlocks = _allocator.allocate(blockSize * NumberOfBatchAllocations);
           if (batchAllocatedBlocks) {
             // we use the very first block directly so we start at 1
@@ -100,7 +100,7 @@ namespace ALB
           return _allocator.allocate(blockSize);
         }
       }
-      return _allocator.allocate(static_cast<size_t>(_upperBound.value() - 1));
+      return _allocator.allocate(static_cast<size_t>(_upperBound.value()));
     }
 
     bool reallocate(Block& b, size_t n) {
@@ -112,7 +112,7 @@ namespace ALB
     }
 
     bool owns(const Block& block) const {
-      return _lowerBound.value() <= block.length && block.length < _upperBound.value();
+      return _lowerBound.value() <= block.length && block.length <= _upperBound.value();
     }
 
     void deallocate(Block& b) {

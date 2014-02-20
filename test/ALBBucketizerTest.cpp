@@ -10,30 +10,113 @@
 #pragma once
 
 #include <gtest/gtest.h>
+#include "ALBTestHelpers.h"
 #include "ALBBucketizer.h"
 #include "ALBSharedFreeList.h"
 #include "ALBMallocator.h"
 
-class BucketizerTest : public ::testing::Test {
-protected:
-  typedef ALB::Bucketizer<
-    ALB::SharedFreeList<
-      ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>,
-      16, 64, 16> AllocatorUnderTest;
+using namespace ALB::TestHelpers;
 
-   AllocatorUnderTest sut;
+typedef ALB::Bucketizer<
+  ALB::SharedFreeList<
+    ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>,
+    17, 64, 16> AllocatorUnderTest;
+
+class BucketizerTest : public AllocatorBaseTest<AllocatorUnderTest> {
 };
 
 TEST_F(BucketizerTest, ThatMinAndMaxSizeOfTheBucketItemsAreSetSpecifiedByTheParameter)
 {
   ASSERT_EQ(3, AllocatorUnderTest::number_of_buckets);
 
-  EXPECT_EQ(16, sut._buckets[0].min_size());
-  EXPECT_EQ(33, sut._buckets[0].max_size());
+  EXPECT_EQ(17, sut._buckets[0].min_size());
+  EXPECT_EQ(32, sut._buckets[0].max_size());
 
-  EXPECT_EQ(32, sut._buckets[1].min_size());
-  EXPECT_EQ(49, sut._buckets[1].max_size());
+  EXPECT_EQ(33, sut._buckets[1].min_size());
+  EXPECT_EQ(48, sut._buckets[1].max_size());
 
-  EXPECT_EQ(48, sut._buckets[2].min_size());
-  EXPECT_EQ(65, sut._buckets[2].max_size());
+  EXPECT_EQ(49, sut._buckets[2].min_size());
+  EXPECT_EQ(64, sut._buckets[2].max_size());
 }
+
+TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlock)
+{
+  auto mem = sut.allocate(0);
+  EXPECT_FALSE(mem);
+
+  mem = sut.allocate(4);
+  EXPECT_FALSE(mem);
+
+  mem = sut.allocate(65);
+  EXPECT_FALSE(mem);
+
+  mem = sut.allocate(100);
+  EXPECT_FALSE(mem);
+}
+
+TEST_F(BucketizerTest, ThatAllocatingAtTheLowerEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
+{
+  for (size_t i = 0; i < AllocatorUnderTest::number_of_buckets; i++) {
+    auto mem = sut.allocate(17 + i*16);
+    EXPECT_EQ(16 + (i+1)*16, mem.length);
+    deallocateAndCheckBlockIsThenEmpty(mem);
+  }
+}
+
+TEST_F(BucketizerTest, ThatAllocatingAtTheUpperEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
+{
+  for (size_t i = 0; i < AllocatorUnderTest::number_of_buckets; i++) {
+    auto mem = sut.allocate((i+2)*16);
+    EXPECT_EQ((i+2)*16, mem.length);
+    deallocateAndCheckBlockIsThenEmpty(mem);
+  }
+}
+
+TEST_F(BucketizerTest, ThatAReallocationWithInTheEdgesOfABucketItemTheLengthAndTheContentIsTheSame)
+{
+  auto mem = sut.allocate(32);
+  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+
+  auto originalPtr = mem.ptr;
+  EXPECT_TRUE(sut.reallocate(mem, 20));
+
+  EXPECT_EQ(32, mem.length);
+  EXPECT_EQ(originalPtr, mem.ptr);
+
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 32);
+
+  deallocateAndCheckBlockIsThenEmpty(mem);
+}
+
+TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheContent)
+{
+  auto mem = sut.allocate(32);
+  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+
+  auto originalPtr = mem.ptr;
+  EXPECT_TRUE(sut.reallocate(mem, 33));
+
+  EXPECT_EQ(48, mem.length);
+  EXPECT_NE(originalPtr, mem.ptr);
+
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 32);
+
+  deallocateAndCheckBlockIsThenEmpty(mem);
+}
+
+TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheStrippedContent)
+{
+  auto mem = sut.allocate(48);
+  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+
+  auto originalPtr = mem.ptr;
+  EXPECT_TRUE(sut.reallocate(mem, 20));
+
+  EXPECT_EQ(32, mem.length);
+  EXPECT_NE(originalPtr, mem.ptr);
+
+  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 32);
+
+  deallocateAndCheckBlockIsThenEmpty(mem);
+}
+
