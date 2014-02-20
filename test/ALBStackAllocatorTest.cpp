@@ -12,7 +12,7 @@
 #include "ALBStackAllocator.h"
 #include "ALBTestHelpers.h"
 
-class StackAllocatorTest: public ALB::TestHelpers::AllocatorBaseTest<ALB::StackAllocator<64,8>>
+class StackAllocatorTest: public ALB::TestHelpers::AllocatorBaseTest<ALB::StackAllocator<64,4>>
 {
 };
 
@@ -29,7 +29,7 @@ TEST_F(StackAllocatorTest, ThatAllocatingOneBytesReturnsABlockOfOneByte)
 {
   auto mem = sut.allocate(1);
   EXPECT_TRUE(nullptr != mem.ptr);
-  EXPECT_EQ(1, mem.length);
+  EXPECT_EQ(4, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }

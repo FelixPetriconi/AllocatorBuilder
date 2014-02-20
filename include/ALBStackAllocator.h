@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/assert.hpp>
 
 namespace ALB
 {
@@ -51,13 +52,21 @@ namespace ALB
       }
 
       result.ptr = _p;
-      result.length = n;
+      result.length = alignedLength;
 
       _p += alignedLength;
       return result;
     }
 
     void deallocate(Block& b) {
+      if (!b) {
+        return;
+      }
+      if (!owns(b)) {
+        BOOST_ASSERT(false);
+        return;
+      }
+
       // If it was the most recent allocated MemoryBlock, then we can re-use the memory. Otherwise
       // this freed MemoryBlock is not available for further allocations. Since all happens on the stack
       // this is not a leak!

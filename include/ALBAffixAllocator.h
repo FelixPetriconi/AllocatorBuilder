@@ -140,8 +140,9 @@ namespace ALB
 
     // Make the function invisible for the has_expand<> trait if the dependent type
     // Allocator does not implement expand
-    typename Traits::expand_enabled<Allocator>::type 
-    expand(Block& b, size_t delta) {
+    typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
+      expand(Block& b, size_t delta) 
+    {
       if (delta == 0) {
         return true;
       }

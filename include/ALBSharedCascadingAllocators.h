@@ -130,13 +130,13 @@ namespace ALB
     /**
      * This method is only available when Allocator implements ::expand
      */
-    typename Traits::expand_enabled<Allocator>::type
-    expand(Block& b, size_t n)
+    typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
+      expand(Block& b, size_t delta) 
     {
       Node* p = _root;
       while (p) {
         if (p->allocator.owns(b)) {
-          return p->allocator.expand(b, n);
+          return p->allocator.expand(b, delta);
         }
         p = p->next.load();
       }
@@ -145,7 +145,6 @@ namespace ALB
     }
 
     bool owns(const Block& b) const {
-      static_assert(Traits::has_owns<Allocator>::value, "Allocator does not implements ::owns()!");
       Node* p = _root;
       while (p) {
         if (p->allocator.owns(b)) {

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/assert.hpp>
 
 namespace ALB
 {
@@ -30,22 +31,45 @@ namespace ALB
       return LargeAllocator::allocate(n);
     }
 
+    void deallocate(Block& b) {
+      if (!b) {
+        return;
+      }
+
+      if (!owns(b)) {
+        BOOST_ASSERT(false);
+        return;
+      }
+
+      if (b.length < Threshold) {
+        return SmallAllocator::deallocate(b);
+      }
+      return LargeAllocator::deallocate(b);
+    }
+
     bool reallocate(Block& b, size_t n) {
+      if (!owns(b)) {
+        BOOST_ASSERT(false);
+        return false;
+      }
       if (Helper::Reallocator<Segregator>::isHandledDefault(*this, b, n)){
         return true;
       }
 
-      if (SmallAllocator::owns(b)) {
-        if (SmallAllocator::reallocate(b, n)) {
-          return true;
+      if (b.length < Threshold) {
+        if (n < Threshold) {
+          return SmallAllocator::reallocate(b, n);
         }
-        else { // try a cross reallocate
+        else {
           return Helper::reallocateWithCopy(*this, static_cast<LargeAllocator&>(*this), b, n);
         }
       }
       else {
-        if (LargeAllocator::reallocate(b, n)) {
-          return true;
+        if (n < Threshold) {
+          return Helper::reallocateWithCopy(*this, static_cast<SmallAllocator&>(*this), b, n);
+        }
+        else {
+          return SmallAllocator::reallocate(b, n);          
         }
       }
 
@@ -54,33 +78,36 @@ namespace ALB
 
     // Make the function invisible for the has_expand<Segregator> trait if the dependent type
     // SmallAllocator, LargeAllocator do not implement expand
-    typename Traits::expand_enabled<SmallAllocator, LargeAllocator>::type 
-    expand(Block& b, size_t delta) {
-      if (b.length + delta >= Threshold) {
+    typename Traits::enabled<
+      Traits::has_expand<SmallAllocator>::value || Traits::has_expand<LargeAllocator>::value
+    >::type expand(Block& b, size_t delta) 
+    {
+      if (b.length < Threshold && b.length + delta >= Threshold) {
         return false;
       }
       if (b.length < Threshold) {
-        return SmallAllocator::expand(b, delta);
+        if (Traits::has_expand<SmallAllocator>::value) {
+          return Traits::Expander<SmallAllocator>::doIt(static_cast<SmallAllocator&>(*this), b, delta);
+        }
+        else {
+          return false;
+        }
       }
-      return LargeAllocator::expand(b, delta);
+      if (Traits::has_expand<LargeAllocator>::value) {
+        return Traits::Expander<LargeAllocator>::doIt(static_cast<LargeAllocator&>(*this), b, delta);
+      }
+      else {
+        return false;
+      }
     }
 
-    bool owns(const Block& b) const {
+    typename Traits::enabled<
+      Traits::has_owns<SmallAllocator>::value && Traits::has_owns<LargeAllocator>::value
+    >::type owns(const Block& b) const {
       if (b.length < Threshold) {
         return SmallAllocator::owns(b);
       }
-      return LargeAllocator::owns(n);
-    }
-
-    void deallocate(Block& b) {
-      if (!b) {
-        return;
-      }
-
-      if (b.length < Threshold) {
-        return SmallAllocator::deallocate(b);
-      }
-      return LargeAllocator::deallocate(b);
+      return LargeAllocator::owns(b);
     }
 
     typename Traits::deallocateAll_enabled<SmallAllocator, LargeAllocator>::type
