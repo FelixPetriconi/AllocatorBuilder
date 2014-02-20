@@ -234,13 +234,13 @@ namespace ALB {
       return _allocator.reallocate(b, n);
     }
 
-    typename Traits::owns_enabled<Allocator>::type 
+    typename Traits::enabled<Traits::has_owns<Allocator>::value>::type 
     owns(const Block& b) const {
       return _allocator.owns(b);
 
     }
 
-    typename Traits::expand_enabled<Allocator>::type 
+    typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
     expand(const Block& b, size_t delta) {
       return _allocator.expand(b, delta);
     }
