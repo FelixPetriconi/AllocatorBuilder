@@ -52,25 +52,53 @@ namespace ALB
     };
 
     /**
-     * The following traits define a type bool, if the given Allocators implement expand,
-     * otherwise it hides the signature bool expand(Block&, size_t) for has_expand<>
+     * Trait that checks if the given class implements bool owns(const Block&) const
      */
+    template<typename T>
+    struct has_owns
+    {
+    private:
+      typedef char   Yes;
+      typedef struct No { char dummy[2]; };
 
-    struct Disabled;
+      template <typename U, bool (U::*)(const Block&) const> struct Check;
+      template <typename U> static Yes func(Check<U, &U::owns> *);
+      template <typename U> static No func(...);
+    public:
+      static const bool value = (sizeof(func<T>(0)) == sizeof(Yes));
+    };
 
-    template <class A, class B = A, typename Enabled = void>
-    struct expand_enabled;
 
-    template <class A, class B>
-    struct expand_enabled<A, B, 
-      typename std::enable_if<has_expand<A>::value && has_expand<B>::value>::type>
+    class Disabled {
+      operator bool() const;
+      Disabled();
+      Disabled(const Disabled&);
+      Disabled& operator=(const Disabled&);
+      Disabled(Disabled&&);
+      Disabled& operator=(Disabled&&);
+    };
+
+
+    /**
+     * If the passed template type is true, then it defines bool as return type, otherwise only type Disabled
+     * which has only one purpose, to not be useful ;-)
+     * This trait can be used in combination with has_expand<> to check if a certain depended class implements
+     * expand as well.
+     * Example: typename Traits::enabled<Traits::has_expand<Allocator>::value>::type expand(Block& b, size_t delta) {}
+     *          The result type of the method expand is ugly long, but without static_if, it is not possible to hide a
+     *          signature during compile time for a SFINAE construct.
+     */
+    template <bool>
+    struct enabled;
+
+    template<>
+    struct enabled<true>
     {
       typedef bool type;
     };
 
-    template <class A, class B>
-    struct expand_enabled<A, B, 
-      typename std::enable_if<!has_expand<A>::value || !has_deallocateAll<B>::value>::type>
+    template<>
+    struct enabled<false>
     {
       typedef Disabled type;
     };
@@ -87,7 +115,7 @@ namespace ALB
     struct deallocateAll_enabled<A, B, 
       typename std::enable_if<has_deallocateAll<A>::value && has_deallocateAll<B>::value>::type>
     {
-      typedef bool type;
+      typedef void type;
     };
 
     template <class A, class B>
@@ -148,6 +176,23 @@ namespace ALB
     template<template <class, size_t, size_t, size_t, size_t> class Allocator, class A1, size_t P1, size_t P2, size_t P3, size_t P4, class A2, size_t P5, size_t P6, size_t P7, size_t P8>
     struct both_same_base<Allocator<A1, P1,P2,P3, P4>, Allocator<A2, P5, P6, P7, P8>> : std::true_type
     {};
+
+    template <class Allocator, typename Enabled = void>
+    struct Expander;
+
+    template <class Allocator>
+    struct Expander<Allocator, typename std::enable_if<has_expand<Allocator>::value>::type> {
+      static bool doIt(Allocator& a, Block& b, size_t delta) {
+        return a.expand(b, delta);
+      }
+    };
+
+    template <class Allocator>
+    struct Expander<Allocator, typename std::enable_if<!has_expand<Allocator>::value>::type> {
+      static bool doIt(Allocator&, Block&, size_t) {
+        return false;
+      }
+    };
 
 
 

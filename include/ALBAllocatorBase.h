@@ -60,12 +60,9 @@ namespace ALB
     /**
      * Returns a upper rounded value of multiples of a
      */
-    template <size_t a>
-    inline size_t roundToAlignment(size_t n) {
-      static_assert(a % 4 == 0, "Alignment must be a multiple of 4");
-
-      auto remainder = n % a;
-      return n + ((remainder == 0)? 0 : (a - remainder));
+    inline size_t roundToAlignment(size_t basis, size_t n) {
+      auto remainder = n % basis;
+      return n + ((remainder == 0)? 0 : (basis - remainder));
     }
 
     /**
@@ -154,7 +151,7 @@ namespace ALB
     private:
       size_t _v;
     public:
-      Dynastic() : _v(0) {}
+      Dynastic() : _v(-1) {}
       size_t value() const { return _v; }
       void value(size_t w) { _v = w; }
     };

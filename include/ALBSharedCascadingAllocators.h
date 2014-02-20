@@ -10,7 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
-
+#include <boost/assert.hpp>
 #include <mutex>
 #include <atomic>
 
@@ -18,7 +18,7 @@ namespace ALB
 {
   template <typename Allocator>
   class SharedCascadingAllocators {
-    typedef Allocator allocator;
+    typename typedef Allocator allocator;
 
     struct Node {
       Node() : next(nullptr) {}
@@ -89,7 +89,10 @@ namespace ALB
 
     void deallocate(Block& b) {
       if (!b) {
-        assert(b.ptr == nullptr);
+        return;
+      }    
+      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
+      if (!owns(b)) {
         return;
       }
 
@@ -101,8 +104,6 @@ namespace ALB
         }
         p = p->next.load();
       }
-
-      assert(false);
     }
 
     bool reallocate(Block& b, size_t n)
@@ -122,24 +123,35 @@ namespace ALB
         }
         p = p->next.load();
       }
-      assert(0);
+      BOOST_ASSERT(0);
       return false;
     }
 
     /**
      * This method is only available when Allocator implements ::expand
      */
-    typename Traits::expand_enabled<Allocator>::type
-    expand(Block& b, size_t n)
+    typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
+      expand(Block& b, size_t delta) 
     {
       Node* p = _root;
       while (p) {
         if (p->allocator.owns(b)) {
-          return p->allocator.expand(b, n);
+          return p->allocator.expand(b, delta);
         }
         p = p->next.load();
       }
-      assert(0);
+      BOOST_ASSERT(0);
+      return false;
+    }
+
+    bool owns(const Block& b) const {
+      Node* p = _root;
+      while (p) {
+        if (p->allocator.owns(b)) {
+          return true;
+        }
+        p = p->next.load();
+      }
       return false;
     }
   };

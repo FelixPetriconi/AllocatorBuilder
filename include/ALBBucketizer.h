@@ -10,85 +10,87 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
-#include <cassert>
+#include <boost/assert.hpp>
 #include <array>
 
 namespace ALB
 {
   /**
    * The Bucketizer is intended to hold allocators with StepSize increasing buckets,
-   * starting at MinSize until MaxSize.
-   * Eg MinSize = 16, MaxSize = 64, StepSize = 16 => BucketsSize[16, 32, 48, 64]
+   * within the range of [MinSize, MaxSize)
+   * Eg MinSize = 16, MaxSize = 64, StepSize = 16 => 
+   *    BucketsSize[16, 33)[32 49)[48 65)
    * It plays very well together with @FreeList or @SharedFreeList
    * After instantiation any instance is as far thread safe as the Allocator is thread
    * safe.
    */
   template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
   class Bucketizer {
+  public:
+    static_assert(MinSize < MaxSize, "MinSize must be smaller than MaxSize");
+    static_assert((MaxSize - MinSize + 1) % StepSize == 0, "Incorrect ranges or step size!");
+
+    static const size_t number_of_buckets = (MaxSize - MinSize + 1) / StepSize;    
+    Allocator _buckets[number_of_buckets];
     static const size_t max_size = MaxSize;
     static const size_t min_size = MinSize;
     static const size_t step_size = StepSize;
     typename typedef Allocator allocator;
 
-    static const size_t NumberOfBuckets = 1 + (MaxSize - MinSize) / StepSize;
-    std::array<std::unique_ptr<Allocator>, NumberOfBuckets> _buckets;
-
-  public:
     Bucketizer() {
-      for(size_t i = 0; i < NumberOfBuckets; i++) {
-        _buckets[i].reset( new Allocator(MinSize + i * StepSize, MinSize + (i+1) * StepSize + 1 ) );
+      for(size_t i = 0; i < number_of_buckets; i++) {
+        _buckets[i].setMinMax(MinSize + i * StepSize, MinSize + (i+1) * StepSize - 1 );
       }
     }
 
     Block allocate(size_t n) {
       size_t i = 0;
-      while (i < NumberOfBuckets) {
-        if (_buckets[i]->min_size() <= n && n < _buckets[i]->max_size()) {
-          return _buckets[i]->allocate(n);
+      while (i < number_of_buckets) {
+        if (_buckets[i].min_size() <= n && n <= _buckets[i].max_size()) {
+          return _buckets[i].allocate(n);
         }
         ++i;
       }
-
-      assert(0);
       return Block();
     }
 
     bool owns(const Block& b) {
-      return (MinSize <= b.length && b.length < MaxSize);
+      return b && (MinSize <= b.length && b.length <= MaxSize);
     }
     
     bool reallocate(Block& b, size_t n) {
-      assert(owns(b));
-      assert(MinSize <= n && n < MaxSize);
+      if (n != 0 && (n < MinSize || n > MaxSize) ) {
+        return false;
+      }
 
       if (Helper::Reallocator<Bucketizer>::isHandledDefault(*this, b, n)) {
         return true;
       }
 
-      return Helper::reallocateWithCopy(*this, allocator, b, n);
-    }
+      BOOST_ASSERT(owns(b));
 
-    // Make the function invisible for the has_expand<Bucketizer> trait if the dependent type
-    // Allocator does not implement expand
-    typename Traits::expand_enabled<Allocator>::type
-    expand(Block& b, size_t delta) {
-      if (!b) {
-        b = allocate(delta);
-        return b.length != 0;
+      const auto alignedLength = Helper::roundToAlignment(StepSize, n);
+      auto currentAllocator = findMatchingAllocator(b.length);
+      auto newAllocator = findMatchingAllocator(alignedLength);
+
+      if (currentAllocator == newAllocator) {
+        return true;
       }
-      assert(owns(b));
 
-      auto it = std::find_if(begin(_buckets), end(_buckets), [&b](const Allocator& a){ return a.owns(b); });
-      return it->expand(b);
+      return Helper::reallocateWithCopy(*currentAllocator, *newAllocator, b, alignedLength);
     }
 
     void deallocate(Block& b) {
-      assert(owns(b));
-
-      auto it = std::find_if(begin(_buckets), end(_buckets), 
-        [&b](std::unique_ptr<Allocator>& a) { return a->owns(b); });
-
-      (*it)->deallocate(b);
+      if (!b) {
+        return;
+      }    
+      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
+      if (!owns(b)) {
+        return;
+      }
+      
+      auto currentAllocator = findMatchingAllocator(b.length);
+      currentAllocator->deallocate(b);
     }
 
     typename Traits::deallocateAll_enabled<Allocator>::type
@@ -96,6 +98,13 @@ namespace ALB
       for (auto& item : _buckets) {
         item.deallocateAll();
       }
+    }
+  private:
+    
+    Allocator* findMatchingAllocator(size_t n) {
+      BOOST_ASSERT(MinSize <= n && n <= MaxSize);
+      auto v = ALB::Helper::roundToAlignment(StepSize, n);
+      return &_buckets[(v - MinSize)/StepSize];
     }
   };
 }

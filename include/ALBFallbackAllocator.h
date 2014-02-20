@@ -22,6 +22,9 @@ namespace ALB
 
   public:
     Block allocate(size_t n) {
+      if (n == 0) {
+        return Block();
+      }
       Block result( Primary::allocate(n) );
       if (!result)
         result = Fallback::allocate(n);
@@ -29,7 +32,11 @@ namespace ALB
       return result;
     }
 
-    void deallocate(Block b) {
+    void deallocate(Block& b) {
+      if (!b) {
+        return;
+      }
+
       if (Primary::owns(b))
         Primary::deallocate(b);
       else 
@@ -37,32 +44,52 @@ namespace ALB
     }
 
     bool reallocate(Block& b, size_t n) {
-      if (Helper::Reallocator::isHandledDefault(*this, b, n)){
-        return true;
+      if (Primary::owns(b)) {
+        if (Helper::Reallocator<Primary>::isHandledDefault(static_cast<Primary&>(*this), b, n)) {
+          return true;
+        }
+      } 
+      else {
+        if (Helper::Reallocator<Fallback>::isHandledDefault(static_cast<Fallback&>(*this), b, n)) {
+          return true;
+        }
       }
 
       if (Primary::owns(b)) {
         if (Primary::reallocate(b, n)) {
           return true;
         }
-        return reallocateWithCopy(static_cast<Primary&>(*this), static_cast<Fallback&>(*this), b, n);
+        return Helper::reallocateWithCopy(static_cast<Primary&>(*this), static_cast<Fallback&>(*this), b, n);
       }
 
       return Fallback::reallocate(b, n);
     }
 
-    bool expand(Block& b, size_t delta) {
-      static_assert(Traits::has_expand<Primary>::value, "Primary allocator does not implement expand()");
-      static_assert(Traits::has_expand<Fallback>::value, "Fallback allocator does not implement expand()");
-
+    typename Traits::enabled<
+      Traits::has_expand<Primary>::value || Traits::has_expand<Fallback>::value
+    >::type expand(Block& b, size_t delta) 
+    {
       if (Primary::owns(b)) {
-        return Primary::expand(b, delta);
+        if (Traits::has_expand<Primary>::value) {
+          return Traits::Expander<Primary>::doIt(static_cast<Primary&>(*this), b, delta);
+        }
+        else {
+          return false;
+        }
       }
-      return Fallback::expand(b, delta);
+      if (Traits::has_expand<Fallback>::value) {
+        return Traits::Expander<Fallback>::doIt(static_cast<Fallback&>(*this), b, delta);
+      }
+      else {
+        return false;
+      }
+
+      return false;
     }
 
 
-    bool owns(const Block& b) {
+    typename Traits::enabled<Traits::has_owns<Primary>::value && Traits::has_owns<Fallback>::value
+    >::type owns(const Block& b) {
       return Primary::owns(b) || Fallback::owns(b);
     }
 

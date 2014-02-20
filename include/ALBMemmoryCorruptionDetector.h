@@ -26,7 +26,7 @@ namespace ALB
     MemoryCorruptionDetector() : _pattern(Pattern) {}
 
     ~MemoryCorruptionDetector() {
-      assert(_pattern == Pattern);
+      BOOST_ASSERT(_pattern == Pattern);
     } 
   };
 }

@@ -32,17 +32,10 @@ namespace ALB
     Allocator _allocator;
     boost::lockfree::stack<void*> _root;
 
-    Helper::Dynastic<(MinSize == DynamicSetSize? 0 : MinSize), 0> _lowerBound;
-    Helper::Dynastic<(MaxSize == DynamicSetSize? 0 : MaxSize), 0> _upperBound;
+    Helper::Dynastic<(MinSize == DynamicSetSize? DynamicSetSize : MinSize), DynamicSetSize> _lowerBound;
+    Helper::Dynastic<(MaxSize == DynamicSetSize? DynamicSetSize : MaxSize), DynamicSetSize> _upperBound;
   
   public:
-    size_t min_size() const {
-      return _lowerBound.value();
-    }
-    size_t max_size() const {
-      return _upperBound.value();
-    }
-
     SharedFreeList() : _root(PoolSize) {}
 
     SharedFreeList(size_t minSize, size_t maxSize) 
@@ -50,6 +43,24 @@ namespace ALB
     {
       _lowerBound.value(minSize);
       _upperBound.value(maxSize);
+    }
+
+    void setMinMax(size_t minSize, size_t maxSize) {
+      BOOST_ASSERT_MSG(_lowerBound.value() == -1, 
+        "Changing the lower bound during after initialization is not wise!");
+      BOOST_ASSERT_MSG(_upperBound.value() == -1,
+        "Changing the upper bound during after initialization is not wise!");
+
+      _lowerBound.value(minSize);
+      _upperBound.value(maxSize);
+    }
+
+    size_t min_size() const {
+      return _lowerBound.value();
+    }
+
+    size_t max_size() const {
+      return _upperBound.value();
     }
 
     ~SharedFreeList() {
@@ -60,7 +71,12 @@ namespace ALB
     }
 
     Block allocate(size_t n) {
-      if (_lowerBound.value() <= n && n < _upperBound.value() && !_root.empty()) {
+      BOOST_ASSERT_MSG(_lowerBound.value() != -1, 
+        "The lower bound was not initialized!");
+      BOOST_ASSERT_MSG(_upperBound.value() != -1,
+        "The upper bound was not initialized!");
+
+      if (_lowerBound.value() <= n && n <= _upperBound.value() && !_root.empty()) {
         void* freeBlock = nullptr;
 
         if (_root.pop(freeBlock)) {
@@ -68,13 +84,15 @@ namespace ALB
         }        
         else {
           // allocating in a bunch to gain of having the allocator code in the cache
-          size_t blockSize = static_cast<size_t>(_upperBound.value() - 1);
+          size_t blockSize = _upperBound.value();
           auto batchAllocatedBlocks = _allocator.allocate(blockSize * NumberOfBatchAllocations);
           if (batchAllocatedBlocks) {
             // we use the very first block directly so we start at 1
             for (size_t i = 1; i < NumberOfBatchAllocations; i++) {
-              // deallocate automatically puts them into the list
-              deallocate(Block(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize, blockSize));
+              if (!_root.push(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize)) {
+                BOOST_ASSERT(false);
+                _allocator.deallocate(Block(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize, blockSize));
+              }
             }
             // returning the first within block
             return Block(batchAllocatedBlocks.ptr, blockSize);
@@ -82,7 +100,7 @@ namespace ALB
           return _allocator.allocate(blockSize);
         }
       }
-      return _allocator.allocate(static_cast<size_t>(_upperBound.value() - 1));
+      return _allocator.allocate(static_cast<size_t>(_upperBound.value()));
     }
 
     bool reallocate(Block& b, size_t n) {
@@ -94,7 +112,7 @@ namespace ALB
     }
 
     bool owns(const Block& block) const {
-      return _lowerBound.value() <= block.length && block.length < _upperBound.value();
+      return _lowerBound.value() <= block.length && block.length <= _upperBound.value();
     }
 
     void deallocate(Block& b) {

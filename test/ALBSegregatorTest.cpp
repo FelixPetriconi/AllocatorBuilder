@@ -103,7 +103,7 @@ TEST_F(SegregatorTest, ThatReallocatingASmallBlockOutOfTheBoundsOfTheSmallAlloca
   EXPECT_EQ(StartLargeAllocatorPtr, mem.ptr);
 }
 
-TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeStaysAtTheLargeAllocator) 
+TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeGoesToTheSmallAllocator) 
 {
   mem = sut.allocate(LargeBlockSize);
   ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
@@ -112,5 +112,5 @@ TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeStaysAtTheLargeA
   ALB::TestHelpers::EXPECT_MEM_EQ(mem.ptr, (void*)ALB::TestHelpers::ReferenceData.data(), 4);
 
   EXPECT_EQ(4, mem.length);
-  EXPECT_EQ(StartLargeAllocatorPtr, mem.ptr);
+  EXPECT_EQ(StartSmallAllocatorPtr, mem.ptr);
 }

@@ -10,12 +10,18 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/assert.hpp>
 
 namespace ALB
 {
   /**
-   * Generic memory management of memory allocated on the stack.
-   * This class is (and cannot be) thread safe!
+   * Allocator that provides memory from the stack.
+   * By design it is n
+   * @tparam MaxSize The maximum number of bytes that can be allocated by this
+   *         allocator
+   * @tparam Alignment Each memory allocation request by @see #allocate, @see 
+   *         #reallocate and @see #expand is aligned by this value
+   *
    */
   template <size_t MaxSize, size_t Alignment = 4>
   class StackAllocator {
@@ -40,19 +46,27 @@ namespace ALB
         return result;
       }
 
-      const auto alignedLength = Helper::roundToAlignment<Alignment>(n);
+      const auto alignedLength = Helper::roundToAlignment(Alignment, n);
       if (alignedLength + _p > _data + MaxSize) { // not enough memory left
         return result;
       }
 
       result.ptr = _p;
-      result.length = n;
+      result.length = alignedLength;
 
       _p += alignedLength;
       return result;
     }
 
     void deallocate(Block& b) {
+      if (!b) {
+        return;
+      }
+      if (!owns(b)) {
+        BOOST_ASSERT(false);
+        return;
+      }
+
       // If it was the most recent allocated MemoryBlock, then we can re-use the memory. Otherwise
       // this freed MemoryBlock is not available for further allocations. Since all happens on the stack
       // this is not a leak!
@@ -77,7 +91,7 @@ namespace ALB
         return true;
       }
 
-      const auto alignedLength = Helper::roundToAlignment<Alignment>(n);
+      const auto alignedLength = Helper::roundToAlignment(Alignment, n);
 
       if ( isLastUsedBlock(b) ) {
         if (static_cast<char*>(b.ptr) + alignedLength <= _data + MaxSize) {
@@ -91,7 +105,7 @@ namespace ALB
       }
       else {
         if (b.length > n) {
-          b.length = Helper::roundToAlignment<Alignment>(n);
+          b.length = Helper::roundToAlignment(Alignment, n);
           return true;
         }
       }
@@ -107,6 +121,13 @@ namespace ALB
       return false;
     }
 
+    /**
+     * Expands the given block insito by the amount of bytes
+     * @param b The block that should be expanded
+     * @param delta The amount of bytes that should be appended
+     * @return true, if the operation was successful or false if not enough
+     *         memory is left
+     */
     bool expand(Block& b, size_t delta) {
       if (delta == 0) {
         return true;
@@ -118,21 +139,48 @@ namespace ALB
       if (!isLastUsedBlock(b)) {
         return false;
       }
-      if (_p + delta > _data + MaxSize) {
+      auto alignedBytes = Helper::roundToAlignment(Alignment, delta);
+      if (_p + alignedBytes > _data + MaxSize) {
         return false;
       }
-      _p += delta;
-      b.length += delta;
+      _p += alignedBytes;
+      b.length += alignedBytes;
       return true;
     }
 
+    /**
+     * Returns true, if the provided block was allocated previously with this
+     * allocator
+     * @param b The block to be checked.
+     */
     bool owns(const Block& b) const {
       return b && (b.ptr >= _data && b.ptr < _data + MaxSize);
     }
 
+    /**
+     * Sets all possibly provided memory to free. 
+     * Be warned that all usage of previously allocated blocks results in
+     * unpredictable results!
+     */
     void deallocateAll() {
       _p = _data;
     }
+
+  private:
+    // disable copy ctor, move ctor and assignment operators
+    StackAllocator(const StackAllocator& );      
+    StackAllocator& operator =(const StackAllocator&);
+    StackAllocator(StackAllocator&& );
+    StackAllocator& operator=(StackAllocator&&);
+
+    // disable heap allocation
+    void* operator new(size_t);                   
+    void* operator new[](size_t);
+    void operator delete(void*);
+    void operator delete[](void*);
+
+    // disable address taking
+    StackAllocator* operator&();                  
   };
 
   namespace Traits
