@@ -49,24 +49,6 @@ namespace ALB
     size_t length;
   };
 
-  template <typename Allocator, typename T>
-  class StdAllocator
-  {
-    Allocator* _allocator;
-  public:
-    StdAllocator()
-      : _allocator(nullptr)
-    {}
-
-    T *allocate(size_t num)
-    {
-    }
-
-    void deallocate(T* p, size_t num)
-    {
-    }
-
-  };
 
   namespace Helper {
     /**

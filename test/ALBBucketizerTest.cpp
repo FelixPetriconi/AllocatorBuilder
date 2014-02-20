@@ -52,6 +52,9 @@ TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlo
 
   mem = sut.allocate(100);
   EXPECT_FALSE(mem);
+
+  // Just to satisfy the code coverage
+  sut.deallocate(ALB::Block());
 }
 
 TEST_F(BucketizerTest, ThatAllocatingAtTheLowerEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
@@ -104,6 +107,28 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTh
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
+TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockOutsideTheBoundsBytesReturnsFalse)
+{
+  EXPECT_FALSE(sut.reallocate(ALB::Block(), 1));
+  EXPECT_FALSE(sut.reallocate(ALB::Block(), 65));
+}
+
+TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockWithinTheBoundsBytesReturnsAValidBlock)
+{
+  ALB::Block mem;
+  EXPECT_TRUE(sut.reallocate(mem, 32));
+  EXPECT_EQ(32, mem.length);
+  deallocateAndCheckBlockIsThenEmpty(mem);
+}
+
+TEST_F(BucketizerTest, ThatAReallocationOfAFilledBlockToZeroDeallocatesTheMemory)
+{
+  auto mem = sut.allocate(32);
+  EXPECT_TRUE(sut.reallocate(mem, 0));
+  EXPECT_FALSE(mem);
+}
+
+
 TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheStrippedContent)
 {
   auto mem = sut.allocate(48);
@@ -120,3 +145,9 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTh
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
+TEST_F(BucketizerTest, ThatReturnsFalseIfTheBlockIsOutOgBoundsOrInvalid)
+{
+  EXPECT_FALSE(sut.owns(ALB::Block()));
+  EXPECT_FALSE(sut.owns(ALB::Block(nullptr, 1)));
+  EXPECT_FALSE(sut.owns(ALB::Block(nullptr, 65)));
+}

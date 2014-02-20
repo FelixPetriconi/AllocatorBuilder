@@ -59,15 +59,15 @@ namespace ALB
     }
     
     bool reallocate(Block& b, size_t n) {
-      BOOST_ASSERT(owns(b));
+      if (n != 0 && (n < MinSize || n > MaxSize) ) {
+        return false;
+      }
 
       if (Helper::Reallocator<Bucketizer>::isHandledDefault(*this, b, n)) {
         return true;
       }
 
-      if (n < MinSize || n > MaxSize) {
-        return false;
-      }
+      BOOST_ASSERT(owns(b));
 
       const auto alignedLength = Helper::roundToAlignment(StepSize, n);
       auto currentAllocator = findMatchingAllocator(b.length);
