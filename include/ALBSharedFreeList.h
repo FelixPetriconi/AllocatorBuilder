@@ -32,8 +32,8 @@ namespace ALB
     Allocator _allocator;
     boost::lockfree::stack<void*> _root;
 
-    Helper::Dynastic<(MinSize == DynamicSetSize? 0 : MinSize), 0> _lowerBound;
-    Helper::Dynastic<(MaxSize == DynamicSetSize? 0 : MaxSize), 0> _upperBound;
+    Helper::Dynastic<(MinSize == DynamicSetSize? DynamicSetSize : MinSize), DynamicSetSize> _lowerBound;
+    Helper::Dynastic<(MaxSize == DynamicSetSize? DynamicSetSize : MaxSize), DynamicSetSize> _upperBound;
   
   public:
     SharedFreeList() : _root(PoolSize) {}
@@ -71,6 +71,11 @@ namespace ALB
     }
 
     Block allocate(size_t n) {
+      BOOST_ASSERT_MSG(_lowerBound.value() != -1, 
+        "The lower bound was not initialized!");
+      BOOST_ASSERT_MSG(_upperBound.value() != -1,
+        "The upper bound was not initialized!");
+
       if (_lowerBound.value() <= n && n < _upperBound.value() && !_root.empty()) {
         void* freeBlock = nullptr;
 
