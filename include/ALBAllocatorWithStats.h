@@ -158,9 +158,9 @@ namespace ALB {
 
 #define MEMBER_ACCESSOR(X)          \
     private:                        \
-      unsigned long long  _##X;     \
+      size_t  _##X;                 \
     public:                         \
-      unsigned long long X() const { return _##X; }
+      size_t X() const { return _##X; }
 
 
 
@@ -193,6 +193,32 @@ namespace ALB {
 #undef MEMBER_ACCESSOR
 #undef MEMBER_ACCESSORS
 
+    template <typename T>
+    void up(ALB::StatsOptions option, T& value) {
+      if (Flags & option)
+        value++;
+    }
+    template <typename T>
+    void upOK(ALB::StatsOptions option, T& value, bool ok) {
+      if (Flags & option && ok)
+        value++;
+    }
+    template <typename T>
+    void add(ALB::StatsOptions option, T& value, typename std::make_signed<T>::type delta) {
+      if (Flags & option)
+        value += delta;
+    }
+
+    void updateHighTide() {
+      if (Flags & StatsOptions::bytesHighTide)
+      {
+        const size_t currentlyAllocated = _bytesAllocated - _bytesDeallocated;
+        if (_bytesHighTide < currentlyAllocated) {
+          _bytesHighTide = currentlyAllocated;
+        }
+      }
+    }
+
   public:
     AllocatorWithStats() 
       : _numOwns(0)
@@ -216,22 +242,47 @@ namespace ALB {
 
     Block allocate(size_t n) {
       auto result = _allocator.allocate(n);
-      if (Flags & StatsOptions::numAllocate)
-        _numAllocate++;
-      if (Flags & StatsOptions::bytesAllocated)
-        _bytesAllocated += result.length;
-      if (Flags & StatsOptions::bytesHighTide)
-        _bytesHighTide += result.length;
-
+      up(StatsOptions::numAllocate, _numAllocate);
+      upOK(StatsOptions::numAllocateOK, _numAllocateOK, n > 0 && result);
+      add(StatsOptions::bytesAllocated, _bytesAllocated, result.length);
+      updateHighTide();
       return result;
     }
 
     void deallocate(Block& b) {
+      up(StatsOptions::numDeallocate, _numDeallocate);
+      add(StatsOptions::bytesDeallocated, _bytesDeallocated, b.length);
       _allocator.deallocate(b);
     }
 
     bool reallocate(Block& b, size_t n) {
-      return _allocator.reallocate(b, n);
+      auto originalBlock = b;
+      up(StatsOptions::numReallocate, _numReallocate);
+
+      if (!_allocator.reallocate(b, n))
+      {
+        return false;
+      }
+      up(StatsOptions::numReallocateOK, _numReallocateOK);
+      std::make_signed<size_t>::type delta = b.length - originalBlock.length;
+      if (b.ptr == originalBlock.ptr) {
+        up(StatsOptions::numReallocateInPlace, _numReallocateInPlace);
+        if (delta > 0) {
+          add(StatsOptions::bytesAllocated, _bytesAllocated, delta);
+          add(StatsOptions::bytesExpanded, _bytesExpanded, delta);
+        }
+        else {
+          add(StatsOptions::bytesDeallocated, _bytesDeallocated, -delta);
+          add(StatsOptions::bytesContracted, _bytesContracted, -delta);
+        }
+      }  // was moved to a new location
+      else {
+        add(StatsOptions::bytesAllocated, _bytesAllocated, b.length);
+        add(StatsOptions::bytesMoved, _bytesMoved, originalBlock.length);
+        add(StatsOptions::bytesDeallocated, _bytesDeallocated, originalBlock.length);
+      }
+      updateHighTide();
+      return true;
     }
 
     typename Traits::enabled<Traits::has_owns<Allocator>::value>::type 
@@ -241,8 +292,18 @@ namespace ALB {
     }
 
     typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
-    expand(const Block& b, size_t delta) {
-      return _allocator.expand(b, delta);
+    expand(Block& b, size_t delta) {
+      up(StatsOptions::numExpand, _numExpand);
+      auto oldLength = b.length;
+      auto result = _allocator.expand(b, delta);
+      if (result)
+      {
+        up(StatsOptions::numExpandOK, _numExpandOK);
+        add(StatsOptions::bytesExpanded, _bytesExpanded, b.length - oldLength);
+        add(StatsOptions::bytesAllocated, _bytesAllocated, b.length - oldLength);
+        updateHighTide();
+      }
+      return result;
     }
   };
 }

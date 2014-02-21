@@ -93,7 +93,8 @@ Version
 Requirements
 ------------
   * C++ 11 (partly, as far as Visual Studio 2012 supports them)
-  * boost 1.55
+  * boost 1.55.0 (lockfree, thread, assert)
+  * CMake 2.8 or later
   * GoogleTest (is now part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
 
 
@@ -101,11 +102,22 @@ Platform
 --------
   No platform specific features used, but tested so far only with MS Visual Studio 2012
 
+Installation Win
+----------------
+  * Have boost installed and the standard libs be build, install into D:\boost_1_55_0
+  * Clone into eg D:\misc\AllocatorBuilder
+  * Create a build folder, eg D:\misc\alb_build
+  * Open a command promt in that alb_build folder
+  * Have CMake in the path
+  * Execute cmake -G "Visual Studio 11 Win64" ..\alb_build
+  * Open created solution in .\alb_build\AllocatorBuilder.sln
+  * Compile and run all test (if necessary add D:\boost_1_55_0\stage\lib to search path)
+  
 ToDo
 ----
-  * Add UnitTests (FallbackAllocator, Segregator, Bucketizer)
+  * Add UnitTests (Edge cases detected by code coverage tool)
   * Add FreeList
-  * Finalize AllocatorWithStats
+  * Finalize AllocatorWithStats (File stats is missing)
   * Add CascadingAllocators
   * Compile and test on Posix system
 
