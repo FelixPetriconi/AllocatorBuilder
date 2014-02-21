@@ -18,11 +18,15 @@ namespace ALB
   /**
    * The Bucketizer is intended to hold allocators with StepSize increasing buckets,
    * within the range of [MinSize, MaxSize)
-   * Eg MinSize = 16, MaxSize = 64, StepSize = 16 => 
-   *    BucketsSize[16, 33)[32 49)[48 65)
+   * Eg MinSize = 17, MaxSize = 64, StepSize = 16 => 
+   *    BucketsSize[17, 32][33 48][48 64]
    * It plays very well together with @FreeList or @SharedFreeList
    * After instantiation any instance is as far thread safe as the Allocator is thread
    * safe.
+   * @tparam Allocator Specifies which shall be handled in a bucketized way
+   * @tparam MinSize The minimum size of the first bucket item
+   * @tparam MaxSize The upper size of the last bucket item
+   * @tparam StepSize The equi distant step size of the size of all buckets
    */
   template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
   class Bucketizer {
@@ -43,6 +47,12 @@ namespace ALB
       }
     }
 
+    /**
+     * Allocates the requested number of bytes. The request is forwarded to
+     * the bucket with which edges are at [min,max] bytes.
+     * @param n The number of bytes to be allocated
+     * @return The @see Block describing the allocated memory
+     */
     Block allocate(size_t n) {
       size_t i = 0;
       while (i < number_of_buckets) {
@@ -54,10 +64,24 @@ namespace ALB
       return Block();
     }
 
+    /**
+     * Checks, if the given block is owned by one of the bucket item
+     * @param b The block to be checked
+     * @return Returns true, if the block is owned by one of the bucket items
+     */
     bool owns(const Block& b) {
       return b && (MinSize <= b.length && b.length <= MaxSize);
     }
     
+    /**
+     * Forwards the reallocation of the given block to the corresponding bucket item
+     * If the length of the given block and the specified new size crosses the
+     * boundary of a bucket, then content memory of the block is moved to the 
+     * new bucket item
+     * @param b Then @see Block its size should be changed
+     * @param n The new size of the block.
+     * @return True, if the reallocation was successful.
+     */
     bool reallocate(Block& b, size_t n) {
       if (n != 0 && (n < MinSize || n > MaxSize) ) {
         return false;
@@ -80,12 +104,16 @@ namespace ALB
       return Helper::reallocateWithCopy(*currentAllocator, *newAllocator, b, alignedLength);
     }
 
+    /**
+     * Frees the given block and resets it.
+     * @param b The block, its  meory should be freed
+     */
     void deallocate(Block& b) {
       if (!b) {
         return;
       }    
-      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
       if (!owns(b)) {
+        BOOST_ASSERT_MSG(false, "It is not wise to let me deallocate a foreign Block!");
         return;
       }
       
@@ -93,7 +121,10 @@ namespace ALB
       currentAllocator->deallocate(b);
     }
 
-    typename Traits::deallocateAll_enabled<Allocator>::type
+    /**
+     * Deallocates the complete 
+     */
+    typename Traits::enabled<has_deallocateAll<Allocator>::value>::type
     deallocateAll() {
       for (auto& item : _buckets) {
         item.deallocateAll();

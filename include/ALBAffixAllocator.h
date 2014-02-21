@@ -40,6 +40,11 @@ namespace ALB
    * Prefix and Sufix, if used, must be trivially copyable. (This cannot be statically asserted,
    * because this would block the possibility to use this allocator as guard for memory
    * under- or overflow.
+   * One should keep in mind, that using a Sufix is not CPU cache friendly!
+   * @tparam Allocator The allocator that is used as underlying allocator
+   * @tparam Prefix If defined, then an object of that kind is constructed in front of
+   *                any returned block
+   * @tparam Sufix If defined, then an object of that kind is constructed beyond any returned block
    */
   template <class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix>
   class AffixAllocator {
@@ -77,6 +82,15 @@ namespace ALB
     static const size_t prefix_size = std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Prefix);
     static const size_t sufix_size = std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Sufix);
 
+    /**
+     * Allocates a @see Block of n bytes. Actually a Block of n + sizeof(Prefix) + sizeof(Sufix)
+     * bytes is allocated. Depending of the defines Prefix and Sufix types objects of this
+     * gets instantiated before and/or beyond the returned Block. 
+     * If Zero bytes are allocated then no allocation at all takes places and an empty Block
+     * is returned.
+     * @param n Specifies the number of requested bytes. n or more bytes are returned, depending on
+     *          the alignment of the underlying Allocator.
+     */
     Block allocate(size_t n) {
       if (n == 0) {
         return Block();
@@ -95,12 +109,18 @@ namespace ALB
       return Block();
     }
 
+    /**
+     * The given block gets deallocated. If Prefix or Sufix are defined then their d'tor(s) are 
+     * called.
+     * @param b The @see Block that should be freed. An assertion is raised, if the block
+     *          is not owned by the underlying Allocator
+     */
     void deallocate(Block& b) {
       if (!b) {
         return;
       }    
-      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
       if (!owns(b)) {
+        BOOST_ASSERT_MSG(false, "It is not wise to let me deallocate a foreign Block!");
         return;
       }
 
@@ -114,10 +134,22 @@ namespace ALB
       b.reset();
     }
 
-    bool owns(const Block& b) const {
+    /**
+     * If the underlying Allocator defines ::owns() this method is available.
+     * It returns true, if the given block is owned by this allocator.
+     * @param b The @see Block that should be checked for ownership
+     */
+    typename Traits::enabled<Traits::has_owns<Allocator>::value>::type owns(const Block& b) const {
       return b && _allocator.owns(toInnerBlock(b));
     }
 
+    /**
+     * The given block gets reallocated to the new provided size n. Any potential defined
+     * Prefix and/or Sufix gets copied to the new location. 
+     * @param b The block that should be resized
+     * @param n The new size (n = zero means a deallocation)
+     * @return True if the operation was successful
+     */
     bool reallocate(Block& b, size_t n) {
       if (Helper::Reallocator<AffixAllocator>::isHandledDefault(*this, b, n)) {
         return true;
@@ -138,8 +170,14 @@ namespace ALB
       return false;
     }
 
-    // Make the function invisible for the has_expand<> trait if the dependent type
-    // Allocator does not implement expand
+    /**
+     * The method tries to expand the given block by at least delta bytes insito at the 
+     * given location. This only This is only available if the underlaying Allocator 
+     * implemnts ::expand().
+     * @param b The block that should be expanded
+     * @param delta The number of bytes that the given block should be increased
+     * @return True, if the operation was successful.
+     */
     typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
       expand(Block& b, size_t delta) 
     {

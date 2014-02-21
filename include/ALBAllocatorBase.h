@@ -14,15 +14,8 @@
 
 namespace ALB
 {
-
   /**
-   * Flag to be used inside the Dynastic struct
-   */
-  static const int DynamicSetSize = -2;
-
-
-  /**
-   * Value type to hold a memory block and it's length
+   * Value type to describe a memory block and it's length
    */
   struct Block {
     Block() : ptr(nullptr), length(0) {}
@@ -32,8 +25,15 @@ namespace ALB
       , length(length) 
     {}
 
+    /**
+     * During destruction of any of this instance, the described memory
+     * is not freed!
+     */
     ~Block() {}
 
+    /**
+     * Clears the block
+     */
     void reset() {
       ptr = nullptr;
       length = 0;
@@ -41,13 +41,26 @@ namespace ALB
 #if _MSC_VER > 1700 
     explicit
 #endif      
+    /**
+     * Bool operator to make the Allocator code better readable
+     */
     operator bool() const { 
       return length != 0; 
     }
 
+    /// This points to the start address of the described memory block
     void* ptr;
+
+    /// This describes the length of the reserved bytes.
     size_t length;
   };
+
+  /**
+   * Flag to be used inside the Dynastic struct to signal that the value
+   * can be changed during runtime.
+   */
+  static const int DynamicSetSize = -2;
+
 
 
   namespace Helper {
@@ -76,21 +89,24 @@ namespace ALB
       if (!newBlock) {
         return false;
       }
-      
       blockCopy(b, newBlock);
       oldAllocator.deallocate(b);
       b = newBlock;
-
       return true;
     }
 
     /**
-     * The Reallocator handles standard use cases during the deallocation
-     * If available it uses ::expand() of the allocator
+     * The Reallocator handles standard use cases during the deallocation.
+     * If available it uses ::expand() of the allocator.
+     * (With C++11 this could be done with a partial specialized function,
+     * but VS 2012 does not support this.)
      */
     template <class Allocator, typename Enabled = void>
     struct Reallocator;
 
+    /**
+     * Specialization for Allocators that implements ::expand()
+     */
     template <class Allocator>
     struct Reallocator<Allocator, typename std::enable_if<Traits::has_expand<Allocator>::value>::type>
     {
@@ -116,6 +132,9 @@ namespace ALB
       }
     };
 
+    /**
+     * Specialization for Allocators, that don't implement ::expand()
+     */
     template <class Allocator>
     struct Reallocator<Allocator, typename std::enable_if<!Traits::has_expand<Allocator>::value>::type>
     {
@@ -140,6 +159,7 @@ namespace ALB
      * Simple generic value type that is either compile time constant or dynamically set-able
      * depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then value can be changed
      * during runtime.
+     * @Author Andrei Alexandrescu
      */
     template <size_t v, size_t DynamicEnableSwitch>
     struct Dynastic {

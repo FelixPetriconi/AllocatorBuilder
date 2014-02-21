@@ -13,6 +13,13 @@
 
 namespace ALB
 {
+  /**
+   * This class implements a facade to the system ::malloc(). According the template 
+   * parameter @see DefaultAlignment the allocated values are aligned to the specific
+   * boundary in bytes. Normally this should be a multiple of at least 4 bytes.
+   * @tparam DefaultAlignment Specified the alignment in bytes of all allocation and
+   *         reallocations.
+   */
   template <size_t DefaultAlignment = 16>
   class AlignedMallocator {
     static const size_t alignment = DefaultAlignment;
@@ -52,6 +59,11 @@ namespace ALB
 #endif
 
   public:
+    /**
+     * Allocates rounded up to the defined alignment the number of bytes.
+     * If the system cannot allocate the specified amount of memory then
+     * a null Block is returned.
+     */
     Block allocate(size_t n) {
 #ifdef _MSC_VER      
       return Block(_aligned_malloc(n, DefaultAlignment), n);
@@ -60,14 +72,27 @@ namespace ALB
 #endif      
     }
 
+    /**
+     * The given block is reallocated to the given size. The new size is aligned to
+     * specified alignment. It depends to the OS, if the provided memory block is
+     * expanded or moved. It is guaranteed that the values of min(b.length, n) bytes 
+     * are preserved.
+     * @param b The block that should be reallocated
+     * @param n The new size of the block
+     * @return True, if the operation was successful
+     */
     bool reallocate(Block& b, size_t n) {
-      if (Helper::Reallocator<Mallocator>::isHandledDefault(*this, b, n)) {
+      if (Helper::Reallocator<AlignedMallocator>::isHandledDefault(*this, b, n)) {
         return true;
       }
 
       return alignedReallocate(b, n);
     }
 
+    /**
+     * Frees the given block back to the system. The block gets nulled.
+     * @param b The block, describing what memory shall be freed.
+     */
     void deallocate(Block& b) {
       if (b) {
 #ifdef _MSC_VER        

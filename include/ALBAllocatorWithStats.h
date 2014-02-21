@@ -4,7 +4,9 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: 
+//          http://erdani.com, Andrei Alexandrescu
+//          http://petriconi.net, Felix Petriconi
 //
 //////////////////////////////////////////////////////////////////
 #pragma once
@@ -13,7 +15,11 @@
 
 namespace ALB {
 
-  enum StatsOptions { // Taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
+  /**
+   * The following options define what statistics shall be collected during runtime
+   * Directly taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
+   */
+  enum StatsOptions : unsigned { 
     /**
      * Counts the number of calls to @see #owns).
      */
@@ -163,7 +169,15 @@ namespace ALB {
       size_t X() const { return _##X; }
 
 
-
+  /**
+   * This Allocator serves as a facade in front of the specified allocator to collect
+   * statistics during runtime about all operations done on this instance.
+   * Be aware that collecting of caller informations can easily consume lot's
+   * of memory! With a good optimizing compiler only the code for the enabled
+   * statistic information gets created.
+   * @tparam Allocator The allocator that performs all allocations
+   * @tparam Flags Specifies what kind of statistics get collected
+   */
   template <class Allocator, unsigned Flags = ALB::StatsOptions::all>
   class AllocatorWithStats {
     Allocator _allocator;
@@ -240,6 +254,11 @@ namespace ALB {
       , _bytesHighTide(0)
     {}
 
+    /**
+     * The number of specified bytes gets allocated by the underlying Allocator.
+     * Depending on the specified @see Flag, the allocating statistic information 
+     * is stored.
+     */
     Block allocate(size_t n) {
       auto result = _allocator.allocate(n);
       up(StatsOptions::numAllocate, _numAllocate);
@@ -249,12 +268,22 @@ namespace ALB {
       return result;
     }
 
+    /**
+     * The specified block gets freed by the underlaying Allocator
+     * Depending on the specified @see Flag, the deallocating statistic information
+     * is stored.
+     */
     void deallocate(Block& b) {
       up(StatsOptions::numDeallocate, _numDeallocate);
       add(StatsOptions::bytesDeallocated, _bytesDeallocated, b.length);
       _allocator.deallocate(b);
     }
 
+    /**
+     * The specified block gets reallocated by the underlaying Allocator
+     * Depending on the specified @see Flag, the reallocating statistic information 
+     * is stored.
+     */
     bool reallocate(Block& b, size_t n) {
       auto originalBlock = b;
       up(StatsOptions::numReallocate, _numReallocate);
@@ -285,12 +314,25 @@ namespace ALB {
       return true;
     }
 
+    /**
+     * The given block is passed to the underlying Allocator to be checked
+     * for ownership. 
+     * This method is only available if the underlying Allocator implements it.
+     * Depending on the specified @see Flag, the ownc statistic information 
+     * is stored.
+     */
     typename Traits::enabled<Traits::has_owns<Allocator>::value>::type 
     owns(const Block& b) const {
+      up(StatsOptions::numOwns, _numOwns);
       return _allocator.owns(b);
-
     }
 
+    /**
+     * The given block is passed to the underlying Allocator to be expanded
+     * This method is only available if the underlying allocator implements it.
+     * Depending on the specified @see Flag, the expand statistic information 
+     * is stored.
+     */
     typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
     expand(Block& b, size_t delta) {
       up(StatsOptions::numExpand, _numExpand);
