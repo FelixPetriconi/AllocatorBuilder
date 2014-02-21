@@ -65,7 +65,7 @@ namespace ALB
       return Fallback::reallocate(b, n);
     }
 
-    typename Traits::enabled<
+    typename Traits::enable_result_to<bool,
       Traits::has_expand<Primary>::value || Traits::has_expand<Fallback>::value
     >::type expand(Block& b, size_t delta) 
     {
@@ -88,16 +88,16 @@ namespace ALB
     }
 
 
-    typename Traits::enabled<Traits::has_owns<Primary>::value && Traits::has_owns<Fallback>::value
+    typename Traits::enable_result_to<bool, 
+      Traits::has_owns<Primary>::value && Traits::has_owns<Fallback>::value
     >::type owns(const Block& b) {
       return Primary::owns(b) || Fallback::owns(b);
     }
 
-    void deallocateAll() {
-      static_assert(Traits::has_deallocateAll<SmallAllocator>::value, "The SmallAllocator does not implement deallocateAll")
-      static_assert(Traits::has_deallocateAll<Fallback>::value, "The Fallback does not implement deallocateAll")
-      
-      SmallAllocator::deallocateAll();
+    typename Traits::enable_result_to<void,
+      Traits::has_deallocateAll<Primary>::value && Traits::has_deallocateAll<Fallback>::value
+    >::type  deallocateAll() {
+      Primary::deallocateAll();
       Fallback::deallocateAll();
     }
   };

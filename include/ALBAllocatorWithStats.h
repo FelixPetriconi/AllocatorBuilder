@@ -321,7 +321,7 @@ namespace ALB {
      * Depending on the specified @see Flag, the ownc statistic information 
      * is stored.
      */
-    typename Traits::enabled<Traits::has_owns<Allocator>::value>::type 
+    typename Traits::enable_result_to<bool, Traits::has_owns<Allocator>::value>::type 
     owns(const Block& b) const {
       up(StatsOptions::numOwns, _numOwns);
       return _allocator.owns(b);
@@ -333,7 +333,7 @@ namespace ALB {
      * Depending on the specified @see Flag, the expand statistic information 
      * is stored.
      */
-    typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
+    typename Traits::enable_result_to<bool, Traits::has_expand<Allocator>::value>::type 
     expand(Block& b, size_t delta) {
       up(StatsOptions::numExpand, _numExpand);
       auto oldLength = b.length;

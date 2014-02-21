@@ -88,42 +88,21 @@ namespace ALB
      *          The result type of the method expand is ugly long, but without static_if, it is not possible to hide a
      *          signature during compile time for a SFINAE construct.
      */
-    template <bool>
-    struct enabled;
+    template <typename T, bool>
+    struct enable_result_to;
 
-    template<>
-    struct enabled<true>
+    template<typename T>
+    struct enable_result_to<T, true>
     {
-      typedef bool type;
+      typedef T type;
     };
 
-    template<>
-    struct enabled<false>
-    {
-      typedef Disabled type;
-    };
-
-
-    /**
-     * The following traits define a type void, if the given Allocators implement deallocateAll,
-     * otherwise it hides the signature void deallocateAll() for has_deallocateAll<>
-     */
-    template <class A, class B = A, typename Enabled = void>
-    struct deallocateAll_enabled;
-
-    template <class A, class B>
-    struct deallocateAll_enabled<A, B, 
-      typename std::enable_if<has_deallocateAll<A>::value && has_deallocateAll<B>::value>::type>
-    {
-      typedef void type;
-    };
-
-    template <class A, class B>
-    struct deallocateAll_enabled<A, B, 
-      typename std::enable_if<!has_deallocateAll<A>::value || !has_deallocateAll<B>::value>::type>
+    template<typename T>
+    struct enable_result_to<T, false>
     {
       typedef Disabled type;
     };
+
 
     /**
      * This traits returns true if both passed types have the same type, resp. template base type
@@ -192,6 +171,22 @@ namespace ALB
       static bool doIt(Allocator&, Block&, size_t) {
         return false;
       }
+    };
+
+
+    template <class Allocator, typename Enabled = void>
+    struct AllDeallocator;
+
+    template <class Allocator>
+    struct AllDeallocator<Allocator, typename std::enable_if<has_deallocateAll<Allocator>::value>::type> {
+      static void doIt(Allocator& a) {
+        a.deallocateAll();
+      }
+    };
+
+    template <class Allocator>
+    struct AllDeallocator<Allocator, typename std::enable_if<!has_deallocateAll<Allocator>::value>::type> {
+      static void doIt(Allocator&) {}
     };
 
 

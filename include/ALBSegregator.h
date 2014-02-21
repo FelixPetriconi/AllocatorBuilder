@@ -78,7 +78,7 @@ namespace ALB
 
     // Make the function invisible for the has_expand<Segregator> trait if the dependent type
     // SmallAllocator, LargeAllocator do not implement expand
-    typename Traits::enabled<
+    typename Traits::enable_result_to<bool,
       Traits::has_expand<SmallAllocator>::value || Traits::has_expand<LargeAllocator>::value
     >::type expand(Block& b, size_t delta) 
     {
@@ -101,7 +101,7 @@ namespace ALB
       }
     }
 
-    typename Traits::enabled<
+    typename Traits::enable_result_to<bool,
       Traits::has_owns<SmallAllocator>::value && Traits::has_owns<LargeAllocator>::value
     >::type owns(const Block& b) const {
       if (b.length < Threshold) {
@@ -110,10 +110,11 @@ namespace ALB
       return LargeAllocator::owns(b);
     }
 
-    typename Traits::deallocateAll_enabled<SmallAllocator, LargeAllocator>::type
-    deallocateAll() {
-      SmallAllocator::deallocateAll();
-      LargeAllocator::deallocateAll();
+    typename Traits::enable_result_to<bool, 
+      Traits::has_deallocateAll<SmallAllocator>::value || Traits::has_deallocateAll<LargeAllocator>::value
+    >::type deallocateAll() {
+      Traits::AllDeallocator<SmallAllocator>::doIt(static_cast<SmallAllocator&>(*this));
+      Traits::AllDeallocator<LargeAllocator>::doIt(static_cast<LargeAllocator&>(*this));
     }
   };
 }

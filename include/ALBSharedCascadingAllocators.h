@@ -130,7 +130,7 @@ namespace ALB
     /**
      * This method is only available when Allocator implements ::expand
      */
-    typename Traits::enabled<Traits::has_expand<Allocator>::value>::type 
+    typename Traits::enable_result_to<bool, Traits::has_expand<Allocator>::value>::type 
       expand(Block& b, size_t delta) 
     {
       Node* p = _root;

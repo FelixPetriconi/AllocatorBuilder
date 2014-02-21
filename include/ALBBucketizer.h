@@ -124,10 +124,10 @@ namespace ALB
     /**
      * Deallocates the complete 
      */
-    typename Traits::enabled<has_deallocateAll<Allocator>::value>::type
+    typename Traits::enable_result_to<void, Traits::has_deallocateAll<Allocator>::value>::type
     deallocateAll() {
       for (auto& item : _buckets) {
-        item.deallocateAll();
+        Traits::AllDeallocator<allocator>::doIt(item);
       }
     }
   private:
