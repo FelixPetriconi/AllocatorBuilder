@@ -21,7 +21,7 @@ namespace ALB
    *         allocator
    * @tparam Alignment Each memory allocation request by @see #allocate, @see 
    *         #reallocate and @see #expand is aligned by this value
-   *
+   * \ingroup group_allocators
    */
   template <size_t MaxSize, size_t Alignment = 4>
   class StackAllocator {

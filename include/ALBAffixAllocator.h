@@ -45,6 +45,7 @@ namespace ALB
    * @tparam Prefix If defined, then an object of that kind is constructed in front of
    *                any returned block
    * @tparam Sufix If defined, then an object of that kind is constructed beyond any returned block
+   * \ingroup group_allocators group_shared
    */
   template <class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix>
   class AffixAllocator {

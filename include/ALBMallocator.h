@@ -13,13 +13,34 @@
 
 namespace ALB
 {
+  /**
+   * This class implements a facade against the system ::malloc()
+   * \ingroup group_allocators group_shared
+   */
   class Mallocator {
 
   public:
+    /**
+     * Allocates the specified number of bytes.
+     * If the system cannot allocate the specified amount of memory then
+     * a null Block is returned.
+     * @param n The number of bytes.
+     * @return Block with memory information
+     */
     Block allocate(size_t n) {
-      return Block(::malloc(n), n);
+      void *p = ::malloc(n);
+      if (p != nullptr) {
+        return Block(p, n);
+      }
+      return Block();
     }
 
+    /**
+     * Reallocate the specified block to the specified size.
+     * @param b The block to be reallocated
+     * @param n The new size
+     * @return True, if the operation was successful.
+     */
     bool reallocate(Block& b, size_t n) {
       if (Helper::Reallocator<Mallocator>::isHandledDefault(*this, b, n)) {
         return true;
@@ -34,6 +55,10 @@ namespace ALB
       return false;
     }
 
+    /**
+     * Frees the given block and resets it.
+     * @param b Block to be freed.
+     */
     void deallocate(Block& b) {
       if (b) {
         ::free(b.ptr);

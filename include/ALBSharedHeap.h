@@ -38,9 +38,7 @@ namespace ALB
    * operations.
    * It is thread safe, except the moment of instantiation.
    * As far as possible only a shared lock + an atomic operation is used during the memory operations
-   *
-   * TODO: * Dynastic for _chunkSize.value()
-   *       * Handle more relaxed the _numberOfChunks.value()
+   * \ingroup group_allocators group_shared
    */
   template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
   class SharedHeap {

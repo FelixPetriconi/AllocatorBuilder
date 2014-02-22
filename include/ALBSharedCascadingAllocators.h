@@ -16,6 +16,14 @@
 
 namespace ALB
 {
+  /**
+   * This implements a cascade of allocators. If the first allocator cannot 
+   * fullfil the given request, then a next one is created and the requested is
+   * passed to it.
+   * This class is thread safe.
+   * @tparam Allocator Of this type Allocators get created.
+   * \ingroup group_allocators group_shared
+   */
   template <typename Allocator>
   class SharedCascadingAllocators {
     typename typedef Allocator allocator;
@@ -45,6 +53,9 @@ namespace ALB
   public:
     SharedCascadingAllocators() : _root(nullptr) {}
 
+    /**
+     * Frees all allocated memory!
+     */
     ~SharedCascadingAllocators() {
       while (_root.load() != nullptr) {
         Node* old = _root;
@@ -55,6 +66,10 @@ namespace ALB
       }
     }
 
+    /**
+     * Sends the request to the first allocator, if it cannot fulfill the request
+     * then the next Allocator is created and so on 
+     */
     Block allocate(size_t n) {
       Block result = allocateNoGrow(n);
       if (result) {
@@ -87,12 +102,15 @@ namespace ALB
       return allocateNoGrow(n);
     }
 
+    /**
+     * Frees the given block and resets it
+     */
     void deallocate(Block& b) {
       if (!b) {
         return;
       }    
-      BOOST_ASSERT_MSG(owns(b), "It is not wise to let me deallocate a foreign Block!");
       if (!owns(b)) {
+        BOOST_ASSERT_MSG(false, "It is not wise to let me deallocate a foreign Block!");
         return;
       }
 
@@ -106,6 +124,13 @@ namespace ALB
       }
     }
 
+    /**
+     * Reallocates the given block to the specified size.
+     * If the owning allocator cannot fulfill the request then a cross move is performed
+     * @param b Block to be reallocated
+     * @param n The new size
+     * @param True, if the operation was successful
+     */
     bool reallocate(Block& b, size_t n)
     {
       if (Helper::Reallocator<SharedCascadingAllocators>::isHandledDefault(*this, b, n)){
@@ -128,7 +153,11 @@ namespace ALB
     }
 
     /**
-     * This method is only available when Allocator implements ::expand
+     * Tries to expand the given block insito by the specified number óf bytes
+     * This is only available if the Allocator implements it
+     * @param b The block to be expanded
+     * @param delta The amount of bytes
+     * @return True, if the operation was successful
      */
     typename Traits::enable_result_to<bool, Traits::has_expand<Allocator>::value>::type 
       expand(Block& b, size_t delta) 
@@ -144,6 +173,11 @@ namespace ALB
       return false;
     }
 
+    /**
+     * Checks for the ownership of the given block
+     * @param b The block to check
+     * @return True, if one of the allocator owns it.
+     */
     bool owns(const Block& b) const {
       Node* p = _root;
       while (p) {

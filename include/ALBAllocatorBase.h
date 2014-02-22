@@ -64,12 +64,14 @@ namespace ALB
   namespace Helper {
     /**
      * Copies std::min(source.length, destination.length) bytes from source to destination
+     * \ingroup group_helpers
      */
     void blockCopy(const ALB::Block& source, ALB::Block& destination);
 
 
     /**
      * Returns a upper rounded value of multiples of a
+     * \ingroup group_helpers
      */
     inline size_t roundToAlignment(size_t basis, size_t n) {
       auto remainder = n % basis;
@@ -79,6 +81,7 @@ namespace ALB
     /**
      * Allocates a new block of n bytes with newAllocator, copies min(b.length, n) bytes to it,
      * deallocates the old block b, and returns the new block.
+     * \ingroup group_helpers
      */
     template <class OldAllocator, class NewAllocator>
     bool reallocateWithCopy(OldAllocator& oldAllocator, NewAllocator& newAllocator, Block& b, size_t n)
@@ -98,6 +101,7 @@ namespace ALB
      * If available it uses ::expand() of the allocator.
      * (With C++11 this could be done with a partial specialized function,
      * but VS 2012 does not support this.)
+     * \ingroup group_helpers
      */
     template <class Allocator, typename Enabled = void>
     struct Reallocator;
@@ -158,6 +162,7 @@ namespace ALB
      * depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then value can be changed
      * during runtime.
      * @Author Andrei Alexandrescu
+     * \ingroup group_helpers
      */
     template <size_t v, size_t DynamicEnableSwitch>
     struct Dynastic {

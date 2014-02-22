@@ -27,6 +27,7 @@ namespace ALB
    * @tparam MinSize The minimum size of the first bucket item
    * @tparam MaxSize The upper size of the last bucket item
    * @tparam StepSize The equi distant step size of the size of all buckets
+   * \ingroup group_allocators group_shared
    */
   template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
   class Bucketizer {

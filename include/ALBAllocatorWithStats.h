@@ -177,6 +177,7 @@ namespace ALB {
    * statistic information gets created.
    * @tparam Allocator The allocator that performs all allocations
    * @tparam Flags Specifies what kind of statistics get collected
+   * \ingroup group_allocators
    */
   template <class Allocator, unsigned Flags = ALB::StatsOptions::all>
   class AllocatorWithStats {

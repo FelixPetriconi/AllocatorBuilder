@@ -23,6 +23,7 @@ namespace ALB
    * at compile time.)
    * MinSize and MaxSize can be set at runtime by instantiating this with ALB::DynamicSetSize.
    * Except the moment of instantiation, this allocator is thread safe and all operations are lock free.
+   * \ingroup group_allocators group_shared
    */
   template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024, size_t NumberOfBatchAllocations = 8>
   class SharedFreeList {

@@ -19,6 +19,7 @@ namespace ALB
   {
     /**
      * Trait that checks if the given class implements bool expand(Block&, size_t)
+     * \ingroup group_traits
      */
     template<typename T>
     struct has_expand
@@ -36,6 +37,7 @@ namespace ALB
 
     /**
      * Trait that checks if the given class implements void deallocateAll()
+     * \ingroup group_traits
      */
     template<typename T>
     struct has_deallocateAll
@@ -53,6 +55,7 @@ namespace ALB
 
     /**
      * Trait that checks if the given class implements bool owns(const Block&) const
+     * \ingroup group_traits
      */
     template<typename T>
     struct has_owns
@@ -86,7 +89,9 @@ namespace ALB
      * expand as well.
      * Example: typename Traits::enabled<Traits::has_expand<Allocator>::value>::type expand(Block& b, size_t delta) {}
      *          The result type of the method expand is ugly long, but without static_if, it is not possible to hide a
+     
      *          signature during compile time for a SFINAE construct.
+     * \ingroup group_traits
      */
     template <typename T, bool>
     struct enable_result_to;
@@ -111,6 +116,7 @@ namespace ALB
      * 
      * It's usage is not absolute safe, because it would mean to unroll all possible parameter combinations.
      * But all currently available allocator should work.
+     * \ingroup group_traits
      */
     template<class T1, class T2>
     struct both_same_base : std::false_type
@@ -156,6 +162,10 @@ namespace ALB
     struct both_same_base<Allocator<A1, P1,P2,P3, P4>, Allocator<A2, P5, P6, P7, P8>> : std::true_type
     {};
 
+    /**
+    * This class implements or hides, depending on the Allocators properties, the expand
+    * operation.
+    */
     template <class Allocator, typename Enabled = void>
     struct Expander;
 
@@ -174,6 +184,11 @@ namespace ALB
     };
 
 
+    /**
+    * This class implements or hides, depending on the Allocators properties, the deallocateAll
+    * operation.
+    * \ingroup group_traits
+    */
     template <class Allocator, typename Enabled = void>
     struct AllDeallocator;
 
@@ -188,8 +203,5 @@ namespace ALB
     struct AllDeallocator<Allocator, typename std::enable_if<!has_deallocateAll<Allocator>::value>::type> {
       static void doIt(Allocator&) {}
     };
-
-
-
   }
 }
