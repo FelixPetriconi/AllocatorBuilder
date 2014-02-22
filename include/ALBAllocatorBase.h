@@ -38,9 +38,7 @@ namespace ALB
       ptr = nullptr;
       length = 0;
     }
-#if _MSC_VER > 1700 
-    explicit
-#endif      
+
     /**
      * Bool operator to make the Allocator code better readable
      */

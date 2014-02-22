@@ -10,6 +10,7 @@
 #include "ALBAllocatorBase.h"
 
 #include <memory>
+#include <algorithm>
 
 void ALB::Helper::blockCopy(const ALB::Block& source, ALB::Block& destination)
 {
