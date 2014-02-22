@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: ALB::SharedCascadingAllocators&lt; Allocator &gt; Class Template Reference</title>
+<title>Allocator Builder: ALB::SharedCascadingAllocators&lt; Allocator &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,7 +95,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_shared_cascading_alloc
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,7 +110,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_shared_cascading_alloc
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_a_l_b_1_1_shared_cascading_allocators-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ALB::SharedCascadingAllocators&lt; Allocator &gt; Class Template Reference</div>  </div>
+<div class="title">ALB::SharedCascadingAllocators&lt; Allocator &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -144,7 +145,7 @@ class ALB::SharedCascadingAllocators&lt; Allocator &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00027">27</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00028">28</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a99fbbb79afb5ac5ffb9bd22aeee87d3b"></a>
 <div class="memitem">
@@ -170,7 +171,7 @@ template&lt;typename Allocator &gt; </div>
 </div><div class="memdoc">
 <p>Frees all allocated memory! </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00058">58</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00059">59</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 
 </div>
 </div>
@@ -200,7 +201,7 @@ template&lt;typename Allocator &gt; </div>
 </div><div class="memdoc">
 <p>Sends the request to the first allocator, if it cannot fulfill the request then the next Allocator is created and so on </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00072">72</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00073">73</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 
 </div>
 </div>
@@ -229,7 +230,7 @@ template&lt;typename Allocator &gt; </div>
 </div><div class="memdoc">
 <p>Frees the given block and resets it </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00107">107</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00108">108</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 
 </div>
 </div>
@@ -276,7 +277,7 @@ template&lt;typename Allocator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00162">162</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00163">163</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 
 </div>
 </div>
@@ -312,7 +313,7 @@ template&lt;typename Allocator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if one of the allocator owns it. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00180">180</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00181">181</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +360,7 @@ template&lt;typename Allocator &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00133">133</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html#l00134">134</a> of file <a class="el" href="_a_l_b_shared_cascading_allocators_8h_source.html">ALBSharedCascadingAllocators.h</a>.</p>
 
 </div>
 </div>
@@ -372,7 +373,7 @@ template&lt;typename Allocator &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_shared_cascading_allocators.html">SharedCascadingAllocators</a></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

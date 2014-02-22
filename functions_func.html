@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: Class Members - Functions</title>
+<title>Allocator Builder: Class Members - Functions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -111,7 +112,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -150,7 +151,6 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>deallocateAll()
 : <a class="el" href="class_a_l_b_1_1_bucketizer.html#a9af5628eecadf9c1571e9af60811f8aa">ALB::Bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt;</a>
-, <a class="el" href="class_a_l_b_1_1_fallback_allocator.html#aab8e6fe1060044e67d703d839eeb7a54">ALB::FallbackAllocator&lt; Primary, Fallback &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_segregator.html#a4c33bae27627765883d43340f1048f28">ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_stack_allocator.html#af30614edb839f0b38786fcade1eacb9f">ALB::StackAllocator&lt; MaxSize, Alignment &gt;</a>
 </li>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="class_a_l_b_1_1_bucketizer.html#a456fd44e9d59e098274d071b137091fa">ALB::Bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">ALB::FallbackAllocator&lt; Primary, Fallback &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_mallocator.html#a610c51f7d81d78a89a7192795fd458b6">ALB::Mallocator</a>
-, <a class="el" href="class_a_l_b_1_1_segregator.html#a99a2b650fa1cd22e3e813f328faa802f">ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</a>
+, <a class="el" href="group__group__shared.html#ga99a2b650fa1cd22e3e813f328faa802f">ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_shared_cascading_allocators.html#a2860fb89826c089b7b758d3f6ff9e52d">ALB::SharedCascadingAllocators&lt; Allocator &gt;</a>
 </li>
 <li>reset()
@@ -215,7 +215,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:51 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

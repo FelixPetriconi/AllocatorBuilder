@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt; Class Template Reference</title>
+<title>Allocator Builder: ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,7 +95,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_segregator.html','');}
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -122,8 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a65b1e12e321616c968924903d31b8309"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0954dfe35cab2d4b2ca73a2078bd712"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_segregator.html#af0954dfe35cab2d4b2ca73a2078bd712">deallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
 <tr class="separator:af0954dfe35cab2d4b2ca73a2078bd712"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99a2b650fa1cd22e3e813f328faa802f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_segregator.html#a99a2b650fa1cd22e3e813f328faa802f">reallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b, size_t n)</td></tr>
-<tr class="separator:a99a2b650fa1cd22e3e813f328faa802f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga99a2b650fa1cd22e3e813f328faa802f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__shared.html#ga99a2b650fa1cd22e3e813f328faa802f">reallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b, size_t n)</td></tr>
+<tr class="separator:ga99a2b650fa1cd22e3e813f328faa802f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1ab10bb5c5e04fe09440c74b08f1cb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
 <a class="el" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand</a><br class="typebreak"/>
 &lt; SmallAllocator &gt;::value||<a class="el" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand</a><br class="typebreak"/>
@@ -261,7 +262,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </div><div class="memdoc">
 <p>Deallocates all memory. This is available if one of the allocators implement it. </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00156">156</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00157">157</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
 
 </div>
 </div>
@@ -308,7 +309,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00114">114</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00115">115</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
 
 </div>
 </div>
@@ -344,54 +345,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if one of the allocator owns it. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00143">143</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a99a2b650fa1cd22e3e813f328faa802f"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="class_a_l_b_1_1_segregator.html">ALB::Segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::reallocate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Reallocates the given block to the given size. If the new size crosses the Threshold, then a memory move will be performed. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>The block to be changed </td></tr>
-    <tr><td class="paramname">n</td><td>The new size </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
-
-<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00076">76</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_segregator_8h_source.html#l00144">144</a> of file <a class="el" href="_a_l_b_segregator_8h_source.html">ALBSegregator.h</a>.</p>
 
 </div>
 </div>
@@ -404,7 +358,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_segregator.html">Segregator</a></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

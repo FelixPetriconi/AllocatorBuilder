@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: ALB::FallbackAllocator&lt; Primary, Fallback &gt; Class Template Reference</title>
+<title>Allocator Builder: ALB::FallbackAllocator&lt; Primary, Fallback &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,7 +95,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_fallback_allocator.htm
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,7 +109,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_fallback_allocator.htm
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_a_l_b_1_1_fallback_allocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ALB::FallbackAllocator&lt; Primary, Fallback &gt; Class Template Reference</div>  </div>
+<div class="title">ALB::FallbackAllocator&lt; Primary, Fallback &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -134,27 +135,28 @@ Public Member Functions</h2></td></tr>
 ::value &amp;&amp;<a class="el" href="struct_a_l_b_1_1_traits_1_1has__owns.html">Traits::has_owns</a><br class="typebreak"/>
 &lt; Fallback &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_fallback_allocator.html#a021ded85c7ff732727bf567b6558717c">owns</a> (const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
 <tr class="separator:a021ded85c7ff732727bf567b6558717c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab8e6fe1060044e67d703d839eeb7a54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt; void, <br class="typebreak"/>
+<tr class="memitem:aab8e6fe1060044e67d703d839eeb7a54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab8e6fe1060044e67d703d839eeb7a54"></a>
+<a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt; void, <br class="typebreak"/>
 <a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a><br class="typebreak"/>
 &lt; Primary &gt;::value <br class="typebreak"/>
 &amp;&amp;<a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; Fallback &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_fallback_allocator.html#aab8e6fe1060044e67d703d839eeb7a54">deallocateAll</a> ()</td></tr>
+&lt; Fallback &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><b>deallocateAll</b> ()</td></tr>
 <tr class="separator:aab8e6fe1060044e67d703d839eeb7a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Primary, class Fallback&gt;<br/>
 class ALB::FallbackAllocator&lt; Primary, Fallback &gt;</h3>
 
-<p>As long as possible all allocation requested are handled by the Primary allocator. But when it fails, the allocations are done by the Fallback </p>
+<p>All allocation requests are passed to the Primary allocator. Only if this cannot fulfill the request, it is passed to the Fallback allocator </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Primary</td><td>The allocator that gets the first try </td></tr>
-    <tr><td class="paramname">Fallback</td><td>The allocator that has something to do, when the Primary failed </td></tr>
+    <tr><td class="paramname">Primary</td><td>The allocator that gets all requests by default </td></tr>
+    <tr><td class="paramname">Fallback</td><td>The allocator that get the requests, if the Primary failed. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00023">23</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00024">24</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="acac954bec0c10eeb3aefaf2e4e13e901"></a>
 <div class="memitem">
@@ -179,15 +181,15 @@ template&lt;class Primary , class Fallback &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The specified amount of bytes is requested from the Primary. If it fails then the Fallback steps in place. </p>
+<p>Allocates the requested number of bytes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>The number of bytes </td></tr>
+    <tr><td class="paramname">n</td><td>The number of bytes. Depending on the alignment of the allocator, the block might contain a bigger size </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00035">35</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00037">37</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -214,37 +216,15 @@ template&lt;class Primary , class Fallback &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Frees the specified block and resets it. </p>
+<p>Frees the memory of the provided block and resets it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The block describing the memory to be freed. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00049">49</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aab8e6fe1060044e67d703d839eeb7a54"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Primary , class Fallback &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;void, <a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a>&lt;Primary&gt;::value &amp;&amp; <a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a>&lt;Fallback&gt;::value &gt;::type <a class="el" href="class_a_l_b_1_1_fallback_allocator.html">ALB::FallbackAllocator</a>&lt; Primary, Fallback &gt;::deallocateAll </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Deallocates all memory by the allocators that implements it. </p>
-
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00135">135</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00052">52</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -281,17 +261,17 @@ template&lt;class Primary , class Fallback &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>It tries to expand insito. This method is only available if at least the Primary or the Fallback implements it </p>
+<p>Expands the given block by the given amount of bytes. This method is only available if at least one of the allocators implements it </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">b</td><td>The block that should be expanded </td></tr>
-    <tr><td class="paramname">delta</td><td>The amount of bytes for expansion </td></tr>
+    <tr><td class="paramname">delta</td><td>The number of bytes that should be appended </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True, if the operation could be performed successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00098">98</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00101">101</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -318,16 +298,16 @@ template&lt;class Primary , class Fallback &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks for the ownership of the block This method is only available if Primary and Fallback implement it </p>
+<p>Checks for the ownership of the given block This method is only available, if both allocators implements it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b</td><td>The block that should be checked. </td></tr>
+    <tr><td class="paramname">b</td><td>The block which ownership shall be checked. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>If the block is owned by one of the allocators. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the block comes from one of the allocators. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00126">126</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00125">125</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -364,17 +344,17 @@ template&lt;class Primary , class Fallback &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>First it tries to reallocate in place, if this fails then a cross reallocation is performed </p>
+<p>Reallocates the given block to the given size. If the Primary cannot handle the request, then a memory move is done. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">b</td><td>The block to be reallocated </td></tr>
-    <tr><td class="paramname">n</td><td>The new size </td></tr>
+    <tr><td class="paramname">n</td><td>The new size (Zero means deallocation.) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00067">67</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_fallback_allocator_8h_source.html#l00070">70</a> of file <a class="el" href="_a_l_b_fallback_allocator_8h_source.html">ALBFallbackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +367,7 @@ template&lt;class Primary , class Fallback &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_fallback_allocator.html">FallbackAllocator</a></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

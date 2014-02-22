@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: ALB::AllocatorWithStats&lt; Allocator, Flags &gt; Class Template Reference</title>
+<title>Allocator Builder: ALB::AllocatorWithStats&lt; Allocator, Flags &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,7 +95,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_allocator_with_stats.h
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,7 +109,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_allocator_with_stats.h
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_a_l_b_1_1_allocator_with_stats-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ALB::AllocatorWithStats&lt; Allocator, Flags &gt; Class Template Reference</div>  </div>
+<div class="title">ALB::AllocatorWithStats&lt; Allocator, Flags &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -144,7 +145,7 @@ class ALB::AllocatorWithStats&lt; Allocator, Flags &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00182">182</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00183">183</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a0b4fc57f6f03edf45df1b0bb9eb59bd9"></a>
 <div class="memitem">
@@ -172,7 +173,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::all&gt; </div>
 <p>The number of specified bytes gets allocated by the underlying Allocator. Depending on the specified </p>
 <dl class="section see"><dt>See Also</dt><dd>Flag, the allocating statistic information is stored. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00262">262</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00263">263</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -202,7 +203,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::all&gt; </div>
 <p>The specified block gets freed by the underlaying Allocator Depending on the specified </p>
 <dl class="section see"><dt>See Also</dt><dd>Flag, the deallocating statistic information is stored. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00276">276</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00277">277</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -242,7 +243,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::all&gt; </div>
 <p>The given block is passed to the underlying Allocator to be expanded This method is only available if the underlying allocator implements it. Depending on the specified </p>
 <dl class="section see"><dt>See Also</dt><dd>Flag, the <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">expand</a> statistic information is stored. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00337">337</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00338">338</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -272,7 +273,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::all&gt; </div>
 <p>The given block is passed to the underlying Allocator to be checked for ownership. This method is only available if the underlying Allocator implements it. Depending on the specified </p>
 <dl class="section see"><dt>See Also</dt><dd>Flag, the ownc statistic information is stored. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00325">325</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00326">326</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -312,7 +313,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::all&gt; </div>
 <p>The specified block gets reallocated by the underlaying Allocator Depending on the specified </p>
 <dl class="section see"><dt>See Also</dt><dd>Flag, the reallocating statistic information is stored. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00287">287</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00288">288</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -325,7 +326,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::all&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

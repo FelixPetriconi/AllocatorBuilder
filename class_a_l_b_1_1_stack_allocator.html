@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: ALB::StackAllocator&lt; MaxSize, Alignment &gt; Class Template Reference</title>
+<title>Allocator Builder: ALB::StackAllocator&lt; MaxSize, Alignment &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,7 +95,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_stack_allocator.html',
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -110,7 +111,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_stack_allocator.html',
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_a_l_b_1_1_stack_allocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ALB::StackAllocator&lt; MaxSize, Alignment &gt; Class Template Reference</div>  </div>
+<div class="title">ALB::StackAllocator&lt; MaxSize, Alignment &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -167,7 +168,7 @@ class ALB::StackAllocator&lt; MaxSize, Alignment &gt;</h3>
 <dd>
 <a class="el" href="class_a_l_b_1_1_stack_allocator.html#ac5654d7d37824e2441b9fa03327e8bdf">expand</a> is aligned by this value </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00026">26</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00027">27</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="af30614edb839f0b38786fcade1eacb9f"></a>
 <div class="memitem">
@@ -193,7 +194,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 </div><div class="memdoc">
 <p>Sets all possibly provided memory to free. Be warned that all usage of previously allocated blocks results in unpredictable results! </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00164">164</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00165">165</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -240,7 +241,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, if the operation was successful or false if not enough memory is left </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00130">130</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00131">131</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -275,7 +276,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00155">155</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00156">156</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +289,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_stack_allocator.html">StackAllocator</a></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

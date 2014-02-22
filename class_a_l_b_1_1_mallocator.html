@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: ALB::Mallocator Class Reference</title>
+<title>Allocator Builder: ALB::Mallocator Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,7 +95,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_mallocator.html','');}
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,7 +109,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_mallocator.html','');}
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_a_l_b_1_1_mallocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ALB::Mallocator Class Reference</div>  </div>
+<div class="title">ALB::Mallocator Class Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -124,9 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a66e44c718d80942512db613c44e918e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class implements a facade to the system ::malloc(). </p>
+<div class="textblock"><p>This class implements a facade against the system ::malloc() </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00019">19</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00020">20</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a2cb5763d9d4f147f185027337bb69ac6"></a>
 <div class="memitem">
@@ -158,7 +159,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> with memory information </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00028">28</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00030">30</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 
 </div>
 </div>
@@ -191,7 +192,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00056">56</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00062">62</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 
 </div>
 </div>
@@ -236,7 +237,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00038">38</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00044">44</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 
 </div>
 </div>
@@ -249,7 +250,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_mallocator.html">Mallocator</a></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

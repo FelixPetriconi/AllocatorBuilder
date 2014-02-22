@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ALB: include/ALBAllocatorWithStats.h Source File</title>
+<title>Allocator Builder: include/ALBAllocatorWithStats.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -29,9 +29,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ALB
+   <div id="projectname">Allocator Builder
    </div>
-   <div id="projectbrief">Allocator Builder</div>
+   <div id="projectbrief">Policy Based C++ Template Allocator Library</div>
   </td>
  </tr>
  </tbody>
@@ -46,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_a_l_b_allocator_with_stats_8h_source.
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -158,166 +159,166 @@ $(document).ready(function(){initNavTree('_a_l_b_allocator_with_stats_8h_source.
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">      size_t X() const { return _##X; }</span></div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keywordtype">unsigned</span> Flags = ALB::StatsOptions::all&gt;</div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html">  182</a></span>&#160;  <span class="keyword">class </span><a class="code" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a> {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    Allocator _allocator;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#define MEMBER_ACCESSORS                   \</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numOwns)               \</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numAllocate)           \</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numAllocateOK)         \</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numExpand)             \</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numExpandOK)           \</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numReallocate)         \</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numReallocateOK)       \</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numReallocateInPlace)  \</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numDeallocate)         \</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numDeallocateAll)      \</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesAllocated)        \</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesDeallocated)      \</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesExpanded)         \</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesContracted)       \</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesMoved)            \</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesSlack)            \</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesHighTide)</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  MEMBER_ACCESSORS</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor">#undef MEMBER_ACCESSOR</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#undef MEMBER_ACCESSORS</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">void</span> up(ALB::StatsOptions option, T&amp; value) {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        value++;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    }</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordtype">void</span> upOK(ALB::StatsOptions option, T&amp; value, <span class="keywordtype">bool</span> ok) {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option &amp;&amp; ok)</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        value++;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    }</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">void</span> add(ALB::StatsOptions option, T&amp; value, <span class="keyword">typename</span> std::make_signed&lt;T&gt;::type delta) {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        value += delta;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordtype">void</span> updateHighTide() {</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; StatsOptions::bytesHighTide)</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">size_t</span> currentlyAllocated = _bytesAllocated - _bytesDeallocated;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">if</span> (_bytesHighTide &lt; currentlyAllocated) {</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;          _bytesHighTide = currentlyAllocated;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a>() </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;      : _numOwns(0)</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      , _numAllocate(0)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      , _numAllocateOK(0)</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      , _numExpand(0)</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      , _numExpandOK(0)</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      , _numReallocate(0)</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;      , _numReallocateOK(0)</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      , _numReallocateInPlace(0)</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      , _numDeallocate(0)</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      , _numDeallocateAll(0)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      , _bytesAllocated(0)</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      , _bytesDeallocated(0)</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      , _bytesExpanded(0)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;      , _bytesContracted(0)</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      , _bytesMoved(0)</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      , _bytesSlack(0)</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      , _bytesHighTide(0)</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    {}</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">  262</a></span>&#160;    <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      <span class="keyword">auto</span> result = _allocator.allocate(n);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      up(StatsOptions::numAllocate, _numAllocate);</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      upOK(StatsOptions::numAllocateOK, _numAllocateOK, n &gt; 0 &amp;&amp; result);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;      add(StatsOptions::bytesAllocated, _bytesAllocated, result.length);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      updateHighTide();</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">  276</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">deallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b) {</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      up(StatsOptions::numDeallocate, _numDeallocate);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      add(StatsOptions::bytesDeallocated, _bytesDeallocated, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      _allocator.deallocate(b);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    }</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">  287</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">reallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      <span class="keyword">auto</span> originalBlock = b;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      up(StatsOptions::numReallocate, _numReallocate);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;      <span class="keywordflow">if</span> (!_allocator.reallocate(b, n))</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;      {</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      }</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;      up(StatsOptions::numReallocateOK, _numReallocateOK);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;      std::make_signed&lt;size_t&gt;::type delta = b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> - originalBlock.length;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a> == originalBlock.ptr) {</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        up(StatsOptions::numReallocateInPlace, _numReallocateInPlace);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">if</span> (delta &gt; 0) {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;          add(StatsOptions::bytesAllocated, _bytesAllocated, delta);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;          add(StatsOptions::bytesExpanded, _bytesExpanded, delta);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        }</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;          add(StatsOptions::bytesDeallocated, _bytesDeallocated, -delta);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;          add(StatsOptions::bytesContracted, _bytesContracted, -delta);</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;      }  <span class="comment">// was moved to a new location</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        add(StatsOptions::bytesAllocated, _bytesAllocated, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        add(StatsOptions::bytesMoved, _bytesMoved, originalBlock.length);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        add(StatsOptions::bytesDeallocated, _bytesDeallocated, originalBlock.length);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      }</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      updateHighTide();</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    }</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to&lt;bool, Traits::has_owns&lt;Allocator&gt;::value</a>&gt;::type </div>
-<div class="line"><a name="l00325"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">  325</a></span>&#160;    <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">owns</a>(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;      up(StatsOptions::numOwns, _numOwns);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      <span class="keywordflow">return</span> _allocator.owns(b);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to&lt;bool, Traits::has_expand&lt;Allocator&gt;::value</a>&gt;::type </div>
-<div class="line"><a name="l00337"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">  337</a></span>&#160;    <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">expand</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> delta) {</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      up(StatsOptions::numExpand, _numExpand);</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      <span class="keyword">auto</span> oldLength = b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="keyword">auto</span> result = _allocator.expand(b, delta);</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      <span class="keywordflow">if</span> (result)</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      {</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        up(StatsOptions::numExpandOK, _numExpandOK);</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        add(StatsOptions::bytesExpanded, _bytesExpanded, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> - oldLength);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        add(StatsOptions::bytesAllocated, _bytesAllocated, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> - oldLength);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        updateHighTide();</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      }</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    }</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  };</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;}</div>
-<div class="ttc" id="struct_a_l_b_1_1_block_html_ae0af7d2dddf135a228c54faa1deff61e"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">ALB::Block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00055">ALBAllocatorBase.h:55</a></div></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keywordtype">unsigned</span> Flags = ALB::StatsOptions::all&gt;</div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html">  183</a></span>&#160;  <span class="keyword">class </span><a class="code" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a> {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    Allocator _allocator;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#define MEMBER_ACCESSORS                   \</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numOwns)               \</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numAllocate)           \</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numAllocateOK)         \</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numExpand)             \</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numExpandOK)           \</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numReallocate)         \</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numReallocateOK)       \</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numReallocateInPlace)  \</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numDeallocate)         \</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(numDeallocateAll)      \</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesAllocated)        \</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesDeallocated)      \</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesExpanded)         \</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesContracted)       \</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesMoved)            \</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesSlack)            \</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytesHighTide)</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  MEMBER_ACCESSORS</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="preprocessor">#undef MEMBER_ACCESSOR</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#undef MEMBER_ACCESSORS</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">void</span> up(ALB::StatsOptions option, T&amp; value) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        value++;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordtype">void</span> upOK(ALB::StatsOptions option, T&amp; value, <span class="keywordtype">bool</span> ok) {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option &amp;&amp; ok)</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        value++;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordtype">void</span> add(ALB::StatsOptions option, T&amp; value, <span class="keyword">typename</span> std::make_signed&lt;T&gt;::type delta) {</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        value += delta;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordtype">void</span> updateHighTide() {</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; StatsOptions::bytesHighTide)</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      {</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">size_t</span> currentlyAllocated = _bytesAllocated - _bytesDeallocated;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keywordflow">if</span> (_bytesHighTide &lt; currentlyAllocated) {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;          _bytesHighTide = currentlyAllocated;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      }</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    }</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a>() </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      : _numOwns(0)</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      , _numAllocate(0)</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      , _numAllocateOK(0)</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      , _numExpand(0)</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      , _numExpandOK(0)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;      , _numReallocate(0)</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      , _numReallocateOK(0)</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      , _numReallocateInPlace(0)</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      , _numDeallocate(0)</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      , _numDeallocateAll(0)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;      , _bytesAllocated(0)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      , _bytesDeallocated(0)</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;      , _bytesExpanded(0)</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      , _bytesContracted(0)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;      , _bytesMoved(0)</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      , _bytesSlack(0)</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      , _bytesHighTide(0)</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    {}</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">  263</a></span>&#160;    <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      <span class="keyword">auto</span> result = _allocator.allocate(n);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      up(StatsOptions::numAllocate, _numAllocate);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;      upOK(StatsOptions::numAllocateOK, _numAllocateOK, n &gt; 0 &amp;&amp; result);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      add(StatsOptions::bytesAllocated, _bytesAllocated, result.length);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      updateHighTide();</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    }</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">  277</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">deallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b) {</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      up(StatsOptions::numDeallocate, _numDeallocate);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      add(StatsOptions::bytesDeallocated, _bytesDeallocated, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;      _allocator.deallocate(b);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    }</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">  288</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">reallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      <span class="keyword">auto</span> originalBlock = b;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;      up(StatsOptions::numReallocate, _numReallocate);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;      <span class="keywordflow">if</span> (!_allocator.reallocate(b, n))</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;      {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;      }</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;      up(StatsOptions::numReallocateOK, _numReallocateOK);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;      std::make_signed&lt;size_t&gt;::type delta = b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> - originalBlock.length;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a> == originalBlock.ptr) {</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        up(StatsOptions::numReallocateInPlace, _numReallocateInPlace);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keywordflow">if</span> (delta &gt; 0) {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;          add(StatsOptions::bytesAllocated, _bytesAllocated, delta);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;          add(StatsOptions::bytesExpanded, _bytesExpanded, delta);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;          add(StatsOptions::bytesDeallocated, _bytesDeallocated, -delta);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;          add(StatsOptions::bytesContracted, _bytesContracted, -delta);</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        }</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      }  <span class="comment">// was moved to a new location</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        add(StatsOptions::bytesAllocated, _bytesAllocated, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        add(StatsOptions::bytesMoved, _bytesMoved, originalBlock.length);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        add(StatsOptions::bytesDeallocated, _bytesDeallocated, originalBlock.length);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      }</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      updateHighTide();</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    }</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to&lt;bool, Traits::has_owns&lt;Allocator&gt;::value</a>&gt;::type </div>
+<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">  326</a></span>&#160;    <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">owns</a>(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      up(StatsOptions::numOwns, _numOwns);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;      <span class="keywordflow">return</span> _allocator.owns(b);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    }</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to&lt;bool, Traits::has_expand&lt;Allocator&gt;::value</a>&gt;::type </div>
+<div class="line"><a name="l00338"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">  338</a></span>&#160;    <a class="code" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">expand</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> delta) {</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      up(StatsOptions::numExpand, _numExpand);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="keyword">auto</span> oldLength = b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      <span class="keyword">auto</span> result = _allocator.expand(b, delta);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      <span class="keywordflow">if</span> (result)</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      {</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        up(StatsOptions::numExpandOK, _numExpandOK);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        add(StatsOptions::bytesExpanded, _bytesExpanded, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> - oldLength);</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        add(StatsOptions::bytesAllocated, _bytesAllocated, b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> - oldLength);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        updateHighTide();</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;      }</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;      <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;  };</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;}</div>
+<div class="ttc" id="struct_a_l_b_1_1_block_html_ae0af7d2dddf135a228c54faa1deff61e"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">ALB::Block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00053">ALBAllocatorBase.h:53</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html"><div class="ttname"><a href="struct_a_l_b_1_1_block.html">ALB::Block</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00020">ALBAllocatorBase.h:20</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a261c0ad7f56fa1368900f61db96664df"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a></div><div class="ttdeci">bool reallocate(Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00287">ALBAllocatorWithStats.h:287</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a0b4fc57f6f03edf45df1b0bb9eb59bd9"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">ALB::AllocatorWithStats::allocate</a></div><div class="ttdeci">Block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00262">ALBAllocatorWithStats.h:262</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_af9024553acf56e5214c8f880b7c9b385"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_expand&lt; Allocator &gt;::value &gt;::type expand(Block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00337">ALBAllocatorWithStats.h:337</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_block_html_a40cbaa26797c0cbe0f87a02e5dcdb4fd"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ALB::Block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00052">ALBAllocatorBase.h:52</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a327a0a14c0515cd53261b904fa141170"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">ALB::AllocatorWithStats::owns</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_owns&lt; Allocator &gt;::value &gt;::type owns(const Block &amp;b) const </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00325">ALBAllocatorWithStats.h:325</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a073c264c418fe0463b560e692883031c"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">ALB::AllocatorWithStats::deallocate</a></div><div class="ttdeci">void deallocate(Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00276">ALBAllocatorWithStats.h:276</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1enable__result__to_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">ALB::Traits::enable_result_to</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00092">ALBTraits.h:92</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html">ALB::AllocatorWithStats</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00182">ALBAllocatorWithStats.h:182</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a261c0ad7f56fa1368900f61db96664df"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a></div><div class="ttdeci">bool reallocate(Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00288">ALBAllocatorWithStats.h:288</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a0b4fc57f6f03edf45df1b0bb9eb59bd9"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">ALB::AllocatorWithStats::allocate</a></div><div class="ttdeci">Block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00263">ALBAllocatorWithStats.h:263</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_af9024553acf56e5214c8f880b7c9b385"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_expand&lt; Allocator &gt;::value &gt;::type expand(Block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00338">ALBAllocatorWithStats.h:338</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_block_html_a40cbaa26797c0cbe0f87a02e5dcdb4fd"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ALB::Block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00050">ALBAllocatorBase.h:50</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a327a0a14c0515cd53261b904fa141170"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">ALB::AllocatorWithStats::owns</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_owns&lt; Allocator &gt;::value &gt;::type owns(const Block &amp;b) const </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00326">ALBAllocatorWithStats.h:326</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html_a073c264c418fe0463b560e692883031c"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">ALB::AllocatorWithStats::deallocate</a></div><div class="ttdeci">void deallocate(Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00277">ALBAllocatorWithStats.h:277</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1enable__result__to_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">ALB::Traits::enable_result_to</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00097">ALBTraits.h:97</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_allocator_with_stats_html"><div class="ttname"><a href="class_a_l_b_1_1_allocator_with_stats.html">ALB::AllocatorWithStats</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_with_stats_8h_source.html#l00183">ALBAllocatorWithStats.h:183</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>ALBAllocatorWithStats.h</b></li>
-    <li class="footer">Generated on Fri Feb 21 2014 23:58:45 for ALB by
+    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['shared_20allocators',['Shared Allocators',['../group__group__shared.html',1,'']]],
   ['segregator',['Segregator',['../class_a_l_b_1_1_segregator.html',1,'ALB']]],
   ['sharedcascadingallocators',['SharedCascadingAllocators',['../class_a_l_b_1_1_shared_cascading_allocators.html',1,'ALB']]],
   ['sharedfreelist',['SharedFreeList',['../class_a_l_b_1_1_shared_free_list.html',1,'ALB']]],
