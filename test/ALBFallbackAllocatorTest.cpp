@@ -12,6 +12,7 @@
 #include "ALBFallbackAllocator.h"
 #include "ALBTestHelpers.h"
 #include "ALBStackAllocator.h"
+#include "ALBSharedHeap.h"
 #include "ALBMallocator.h"
 
 using namespace ALB::TestHelpers;
@@ -146,5 +147,48 @@ TEST_F(FallbackAllocatorTest, ThatExpandingOfABlockOwnedByTheFallbackIsRejectedB
   EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 64);
 }
 
+TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsOwnsTest, ThatOwnsIsProcessedCorrectly)
+{
+  ALB::FallbackAllocator<ALB::StackAllocator<32, 4>, ALB::SharedHeap<ALB::Mallocator, 64, 4>> sut;
+
+  auto memFromPrimary = sut.allocate(32);
+  auto memFromFallback = sut.allocate(64);
+
+  EXPECT_TRUE(sut.owns(memFromPrimary));
+  EXPECT_TRUE(sut.owns(memFromFallback));
+
+  EXPECT_FALSE(sut.owns(ALB::Block()));
+}
+
+TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsExpandTest, ThatExpandIsProcessedCorrectly)
+{
+  ALB::FallbackAllocator<ALB::StackAllocator<32, 4>, ALB::SharedHeap<ALB::Mallocator, 64, 4>> sut;
+
+  auto memFromPrimary = sut.allocate(16);
+  auto memFromFallback = sut.allocate(32);
+
+  EXPECT_TRUE(sut.expand(memFromPrimary, 16));
+  EXPECT_TRUE(sut.expand(memFromFallback, 16));
+}
+
+TEST(FallbackAllocatorWithOnlyPrimaryImplementsExpandTest, ThatExpandIsProcessedCorrectly)
+{
+  ALB::FallbackAllocator<ALB::StackAllocator<32, 4>, ALB::Mallocator> sut;
+
+  auto memFromPrimary = sut.allocate(16);
+  auto memFromFallback = sut.allocate(32);
+
+  EXPECT_TRUE(sut.expand(memFromPrimary, 16));
+  EXPECT_FALSE(sut.expand(memFromFallback, 16));
+}
+
+TEST(FallbackAllocatorWithOnlyPrimaryImplementsExpandTest, ThatExpandFailsIfPrimaryIsOutOfMemory)
+{
+  ALB::FallbackAllocator<ALB::StackAllocator<32, 4>, ALB::Mallocator> sut;
+
+  auto memFromPrimary = sut.allocate(32);
+
+  EXPECT_FALSE(sut.expand(memFromPrimary, 16));
+}
 
 
