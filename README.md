@@ -3,8 +3,13 @@ AllocatorBuilder
 
 A highly composable, policy based C++ allocator based on ideas from [Andrei Alexandrescu](http://erdani.com/), presented at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.
 
-The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of allocators to handle in a fast way memory allocations and deallocations. 
+The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and deallocations. 
 All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
+
+A second idea behind this allocator library is, that one can compose for every use case a special designed one. 
+Example use cases:
+  * Collect statistic information about the memory usage profile.
+  * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.
 
 So the appropached is every allocator returns such a Block
 ```C++
@@ -44,15 +49,16 @@ Everybody would agree that this is not nice! So what if one could encapsulate th
 const int STACK_THRESHOLD = 1024;
 int neededBytes = 42
 
-typedef FallbackAllocator<StackAllocator<STACK_THRESHOLD>, Mallocator<>> LocalAllocator; 
+typedef FallbackAllocator<StackAllocator<STACK_THRESHOLD>, Mallocator> LocalAllocator; 
 LocalAllocator localAllocator;
 
 auto block = localAllocator.allocate(neededBytes);
-SCOPED_EXIT { localAllocator.deallocate(block); };
-
 auto p = static_cast<char*>(block.ptr);
 
 // ... work with p[0..neededBytes-1]
+
+localAllocator.deallocate(block); // better to be deleted by a scope finalizer
+
 ```  
 So, isn't this nicer? 
   
@@ -119,10 +125,6 @@ Installation Win
   
 ToDo
 ----
-  * Add UnitTests (Edge cases detected by code coverage tool)
-  * Add FreeList
-  * Finalize AllocatorWithStats (File stats is missing)
-  * Add CascadingAllocators
-  * Compile and test on Posix system
+  See issue list of [open enhancements] (https://github.com/FelixPetriconi/AllocatorBuilder/issues?labels=enhancement&page=1&state=open)
 
 
