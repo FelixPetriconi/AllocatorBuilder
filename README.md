@@ -69,7 +69,10 @@ Content
   * SharedCascadingAllocator - Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory
   * SharedHeap - A thread safe heap with minimal overhead and as far as possible in a lock-free way.
   * StackAllocator - Provides a memory access, taken from the stack
-  
+
+Documentation
+-------------
+  Online Documentation is available on [GitHub] (http://felixpetriconi.github.io/AllocatorBuilder/index.html) as well.
 
 Author 
 ------
@@ -80,6 +83,7 @@ Contributions
 -------------
 
 Contributions are welcome! Please make a forke and request for integration.
+
   
 License
 -------
@@ -100,7 +104,7 @@ Requirements
 
 Platform
 --------
-  No platform specific features used, but tested so far only with MS Visual Studio 2012
+  No platform specific features used, but tested so far only with MS Visual Studio 2012 and 2013
 
 Installation Win
 ----------------
