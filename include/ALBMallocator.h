@@ -20,6 +20,7 @@ namespace ALB
   class Mallocator {
 
   public:
+    static const bool supports_truncated_deallocation = false;
     /**
      * Allocates the specified number of bytes.
      * If the system cannot allocate the specified amount of memory then

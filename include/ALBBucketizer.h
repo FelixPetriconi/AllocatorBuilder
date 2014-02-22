@@ -32,6 +32,7 @@ namespace ALB
   template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
   class Bucketizer {
   public:
+    static const bool supports_truncated_deallocation = false;
     static_assert(MinSize < MaxSize, "MinSize must be smaller than MaxSize");
     static_assert((MaxSize - MinSize + 1) % StepSize == 0, "Incorrect ranges or step size!");
 

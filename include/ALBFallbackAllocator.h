@@ -29,6 +29,8 @@ namespace ALB
       "Primary- and Fallback-Allocator cannot be both of base!");
 
   public:
+    static const bool supports_truncated_deallocation = Primary::supports_truncated_deallocation &&
+      Fallback::supports_truncated_deallocation;;
     /**
      * Allocates the requested number of bytes.
      * @param n The number of bytes. Depending on the alignment of the allocator, the block

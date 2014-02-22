@@ -18,9 +18,7 @@ namespace ALB
    * The SharedFreeList allocator serves a pool of memory blocks and holds them in a list of free blocks
    * Each block's MinSize and MaxSize define the area of blocks sizes that are handled with this allocator.
    * It held until PoolSize blocks. More requested deallocations a forwarded to the Allocator for deallocation.
-   * NumberOfBatchAllocations specifies how blocks are allocated by the Allocator. It must be ensured that
-   * the Allocator can handle deallocations of sub allocated blocks. (TODO: add static_assert to ensure this
-   * at compile time.)
+   * NumberOfBatchAllocations specifies how blocks are allocated by the Allocator. 
    * MinSize and MaxSize can be set at runtime by instantiating this with ALB::DynamicSetSize.
    * Except the moment of instantiation, this allocator is thread safe and all operations are lock free.
    * \ingroup group_allocators group_shared
@@ -37,6 +35,7 @@ namespace ALB
     Helper::Dynastic<(MaxSize == DynamicSetSize? DynamicSetSize : MaxSize), DynamicSetSize> _upperBound;
   
   public:
+    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
     SharedFreeList() : _root(PoolSize) {}
 
     SharedFreeList(size_t minSize, size_t maxSize) 
@@ -77,31 +76,42 @@ namespace ALB
       BOOST_ASSERT_MSG(_upperBound.value() != -1,
         "The upper bound was not initialized!");
 
-      if (_lowerBound.value() <= n && n <= _upperBound.value() && !_root.empty()) {
+      if (_lowerBound.value() <= n && n <= _upperBound.value()) {
         void* freeBlock = nullptr;
 
         if (_root.pop(freeBlock)) {
-          return Block(freeBlock, _upperBound.value() - 1);
+          return Block(freeBlock, _upperBound.value());
         }        
         else {
-          // allocating in a bunch to gain of having the allocator code in the cache
           size_t blockSize = _upperBound.value();
-          auto batchAllocatedBlocks = _allocator.allocate(blockSize * NumberOfBatchAllocations);
-          if (batchAllocatedBlocks) {
-            // we use the very first block directly so we start at 1
-            for (size_t i = 1; i < NumberOfBatchAllocations; i++) {
-              if (!_root.push(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize)) {
-                BOOST_ASSERT(false);
-                _allocator.deallocate(Block(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize, blockSize));
+          if (supports_truncated_deallocation) {
+            // allocating in a bunch to gain of having the allocator code in the cache
+            auto batchAllocatedBlocks = _allocator.allocate(blockSize * NumberOfBatchAllocations);
+            if (batchAllocatedBlocks) {
+              // we use the very first block directly so we start at 1
+              for (size_t i = 1; i < NumberOfBatchAllocations; i++) {
+                if (!_root.push(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize)) {
+                  BOOST_ASSERT(false);
+                  _allocator.deallocate(Block(static_cast<char*>(batchAllocatedBlocks.ptr) + i * blockSize, blockSize));
+                }
+              }
+              // returning the first within block
+              return Block(batchAllocatedBlocks.ptr, blockSize);
+            }
+            return _allocator.allocate(blockSize);
+          }
+          else {
+            for (size_t i = 0; i < NumberOfBatchAllocations - 1; i++) {
+              auto b = _allocator.allocate(blockSize);
+              if (!_root.push(b.ptr)) { // the list is full in the meantime, so we exit early
+                return b;
               }
             }
-            // returning the first within block
-            return Block(batchAllocatedBlocks.ptr, blockSize);
+            return _allocator.allocate(blockSize);
           }
-          return _allocator.allocate(blockSize);
         }
       }
-      return _allocator.allocate(static_cast<size_t>(_upperBound.value()));
+      return Block();
     }
 
     bool reallocate(Block& b, size_t n) {
@@ -109,13 +119,22 @@ namespace ALB
         return true;
       }
 
-      return _allocator.reallocate(b, n);
+      return false;
     }
 
-    bool owns(const Block& block) const {
-      return _lowerBound.value() <= block.length && block.length <= _upperBound.value();
+    /**
+     * Checks the ownership of the given block
+     * @param b The block to check
+     * @return True, it is owned by this allocator
+     */
+    bool owns(const Block& b) const {
+      return b && _lowerBound.value() <= b.length && b.length <= _upperBound.value();
     }
 
+    /**
+     * Appends the block to the free list if it is not filled up. The given block is reset
+     * @param b The block to free
+     */
     void deallocate(Block& b) {
       if (b && owns(b)) {
         if (_root.push(b.ptr))

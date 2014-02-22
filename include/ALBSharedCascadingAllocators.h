@@ -51,6 +51,7 @@ namespace ALB
     }
 
   public:
+    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
     SharedCascadingAllocators() : _root(nullptr) {}
 
     /**

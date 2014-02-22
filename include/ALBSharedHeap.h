@@ -59,6 +59,7 @@ namespace ALB
     Allocator _allocator;
 
   public:
+    static const bool supports_truncated_deallocation = true;
     typename typedef Allocator allocator;
 
     

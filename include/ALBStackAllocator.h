@@ -33,6 +33,7 @@ namespace ALB
     }
 
   public:
+    static const bool supports_truncated_deallocation = true;
     typename typedef StackAllocator allocator;
     static const size_t max_size = MaxSize;
     static const size_t alignment = Alignment;

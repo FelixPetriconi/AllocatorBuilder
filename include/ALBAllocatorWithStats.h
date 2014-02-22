@@ -235,6 +235,7 @@ namespace ALB {
     }
 
   public:
+    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
     AllocatorWithStats() 
       : _numOwns(0)
       , _numAllocate(0)

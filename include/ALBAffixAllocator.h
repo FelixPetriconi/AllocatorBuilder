@@ -76,6 +76,7 @@ namespace ALB
     }
 
   public:
+    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
     typedef Allocator allocator;
     typename typedef Prefix prefix;
     typename typedef Sufix sufix;

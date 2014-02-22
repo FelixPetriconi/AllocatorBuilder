@@ -60,6 +60,7 @@ namespace ALB
 #endif
 
   public:
+    static const bool supports_truncated_deallocation = false;
     /**
      * Allocates rounded up to the defined alignment the number of bytes.
      * If the system cannot allocate the specified amount of memory then
