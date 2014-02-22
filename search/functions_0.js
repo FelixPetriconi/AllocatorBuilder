@@ -1,0 +1,4 @@
+var searchData=
+[
+  ['allocate',['allocate',['../class_a_l_b_1_1_affix_allocator.html#a4d47d7e748027286b365a063b68e93e7',1,'ALB::AffixAllocator::allocate()'],['../class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa',1,'ALB::AlignedMallocator::allocate()'],['../class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9',1,'ALB::AllocatorWithStats::allocate()'],['../class_a_l_b_1_1_bucketizer.html#a896c627dab1824366b036d4882744377',1,'ALB::Bucketizer::allocate()'],['../class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901',1,'ALB::FallbackAllocator::allocate()'],['../class_a_l_b_1_1_mallocator.html#a2cb5763d9d4f147f185027337bb69ac6',1,'ALB::Mallocator::allocate()'],['../class_a_l_b_1_1_segregator.html#a65b1e12e321616c968924903d31b8309',1,'ALB::Segregator::allocate()'],['../class_a_l_b_1_1_shared_cascading_allocators.html#a7f2eeddcf8a424e6e7f7f5f2e4c6a812',1,'ALB::SharedCascadingAllocators::allocate()']]]
+];
