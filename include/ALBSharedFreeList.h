@@ -115,7 +115,7 @@ namespace ALB
     }
 
     bool reallocate(Block& b, size_t n) {
-      if (Helper::Reallocator::isHandledDefault(*this, b, n)) {
+      if (Helper::Reallocator<SharedFreeList>::isHandledDefault(*this, b, n)) {
         return true;
       }
 

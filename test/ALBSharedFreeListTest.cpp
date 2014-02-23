@@ -19,6 +19,9 @@ class SharedFreeListTest :
     ALB::SharedFreeList<ALB::Mallocator, 0, 16 >>
 {
 protected:
+  void TearDown() {
+    deallocateAndCheckBlockIsThenEmpty(mem);
+  }
   ALB::Block mem;
 };
 
@@ -27,8 +30,6 @@ TEST_F(SharedFreeListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
   mem = sut.allocate(16);
   EXPECT_NE(nullptr, mem.ptr);
   EXPECT_EQ(16, mem.length);
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
 TEST_F(SharedFreeListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
@@ -39,8 +40,6 @@ TEST_F(SharedFreeListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWit
 
   mem = sut.allocate(8);
   EXPECT_EQ(oldPtr, mem.ptr);
-
-  deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
 TEST_F(SharedFreeListTest, ThatSeveralDeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
@@ -62,6 +61,37 @@ TEST_F(SharedFreeListTest, ThatSeveralDeallocatedMemBlockGetsReusedWhenNewAlloca
   deallocateAndCheckBlockIsThenEmpty(mem1);
   deallocateAndCheckBlockIsThenEmpty(mem2);
 }
+
+TEST_F(SharedFreeListTest, ThatReallocatingAnEmptyBlockResultsToBlockOfBoundsSize)
+{
+  EXPECT_TRUE(sut.reallocate(mem, 8));
+  EXPECT_EQ(16, mem.length);
+}
+
+
+TEST_F(SharedFreeListTest, ThatReallocatingAFilledBlockToNonZeroIsRejected)
+{
+  mem = sut.allocate(8);
+  EXPECT_FALSE(sut.reallocate(mem, 2));
+  EXPECT_EQ(16, mem.length);
+}
+
+TEST_F(SharedFreeListTest, ThatBlocksOutsideTheBoundsAreNotRecognizedAsOwned)
+{
+  EXPECT_FALSE(sut.owns(ALB::Block()));
+  EXPECT_FALSE(sut.owns(ALB::Block(nullptr, 64)));
+
+  ALB::SharedFreeList<ALB::Mallocator, 16, 32> sutNotStartingAtZero;
+  EXPECT_FALSE(sutNotStartingAtZero.owns(ALB::Block(nullptr, 15)));
+  EXPECT_FALSE(sutNotStartingAtZero.owns(ALB::Block(nullptr, 33)));
+}
+
+TEST_F(SharedFreeListTest, ThatAProvidedBlockIsRecongizedAOwned)
+{
+  mem = sut.allocate(16);
+  EXPECT_TRUE(sut.owns(mem));
+}
+
 
 TEST(SharedFreeListWithParametrizedTest, ThatUpperAndLowerBoundIsSet)
 {

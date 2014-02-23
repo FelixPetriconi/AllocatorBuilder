@@ -29,6 +29,9 @@ namespace ALB
      * @return Block with memory information
      */
     Block allocate(size_t n) {
+      if (n == 0) {
+        return Block();
+      }
       void *p = ::malloc(n);
       if (p != nullptr) {
         return Block(p, n);
