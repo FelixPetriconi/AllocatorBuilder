@@ -348,6 +348,7 @@ namespace ALB {
         if (_root) {
           _root->previous = stat;
           stat->next = _root;
+          stat->previous = nullptr;
           _root = stat;
         }
         else {
