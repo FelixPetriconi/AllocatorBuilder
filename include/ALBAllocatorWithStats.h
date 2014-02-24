@@ -6,6 +6,8 @@
 //
 // Authors: 
 //          http://erdani.com, Andrei Alexandrescu
+//          Implementation in D from 
+//          https://github.com/andralex/phobos/blob/allocator/std/allocator.d
 //          http://petriconi.net, Felix Petriconi
 //
 //////////////////////////////////////////////////////////////////
