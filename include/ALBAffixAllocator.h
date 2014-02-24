@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <memory>
 #include <boost/assert.hpp>
 
 #ifdef _MSC_VER
@@ -59,14 +60,6 @@ namespace ALB
       return reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length - sufix_size);
     }
 
-    Prefix* outerToPrefix(const Block& b) const {
-      return reinterpret_cast<Prefix*>(static_cast<Prefix*>(b.ptr) - 1);
-    }
-
-    Sufix* outerToSufix(const Block& b) const {
-      return reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length);
-    }
-
     Block toInnerBlock(const Block& b) const {
       return Block(static_cast<char*>(b.ptr) - prefix_size, b.length + prefix_size + sufix_size);
     }
@@ -85,7 +78,28 @@ namespace ALB
     static const size_t sufix_size = std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value? 0 : sizeof(Sufix);
 
     /**
-     * Allocates a @see Block of n bytes. Actually a Block of n + sizeof(Prefix) + sizeof(Sufix)
+     * This Method returns on a given block the prefix
+     * @param b The block that was prefixed. The result is absolute unpredictable
+     *          if a block is passed, that is not owned by this allocator!
+     * @return Pointer to the Prefix before the given block
+     */
+    Prefix* outerToPrefix(const Block& b) const {
+      return b? reinterpret_cast<Prefix*>(static_cast<Prefix*>(b.ptr) - 1) : nullptr;
+    }
+
+    /**
+    * This Method returns on a given block the sufix
+    * @param b The block that was sufixed. The result is absolute unpredictable
+    *          if a block is passed, that is not owned by this allocator!
+    * @return Pointer to the sufix before the given block
+    */
+    Sufix* outerToSufix(const Block& b) const {
+      return b? reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length) : nullptr;
+    }
+
+
+    /**
+     * Allocates a Block of n bytes. Actually a Block of n + sizeof(Prefix) + sizeof(Sufix)
      * bytes is allocated. Depending of the defines Prefix and Sufix types objects of this
      * gets instantiated before and/or beyond the returned Block. 
      * If Zero bytes are allocated then no allocation at all takes places and an empty Block
@@ -114,18 +128,13 @@ namespace ALB
     /**
      * The given block gets deallocated. If Prefix or Sufix are defined then their d'tor(s) are 
      * called.
-     * @param b The @see Block that should be freed. An assertion is raised, if the block
+     * @param b The Block that should be freed. An assertion is raised, if the block
      *          is not owned by the underlying Allocator
      */
     void deallocate(Block& b) {
       if (!b) {
         return;
       }    
-      if (!owns(b)) {
-        BOOST_ASSERT_MSG(false, "It is not wise to let me deallocate a foreign Block!");
-        return;
-      }
-
       if (prefix_size > 0) {
         outerToPrefix(b)->~Prefix();
       }
@@ -139,7 +148,7 @@ namespace ALB
     /**
      * If the underlying Allocator defines ::owns() this method is available.
      * It returns true, if the given block is owned by this allocator.
-     * @param b The @see Block that should be checked for ownership
+     * @param b The Block that should be checked for ownership
      */
     typename Traits::enable_result_to<bool, Traits::has_owns<Allocator>::value>::type owns(const Block& b) const {
       return b && _allocator.owns(toInnerBlock(b));
@@ -204,8 +213,30 @@ namespace ALB
       }
       return false;
     }
-
   };
+
+  namespace Traits {
+
+    template <class Allocator, typename T>
+    struct AffixExtractor {
+      static T* prefix(Allocator&, const Block&) {
+        return nullptr;
+      }
+      static T* sufix(Allocator&, const Block&) {
+        return nullptr;
+      }
+    };
+
+    template <class A, typename Prefix, typename Sufix, typename T>
+    struct AffixExtractor<AffixAllocator<A, Prefix, Sufix>, T> {
+      static Prefix* prefix(AffixAllocator<A, Prefix, Sufix>& allocator, const Block& b) {
+        return allocator.outerToPrefix(b);
+      }
+      static Sufix* sufix(AffixAllocator<A, Prefix, Sufix>& allocator, const Block& b) {
+        return allocator.outerToSufix(b);
+      }
+    };
+  }
 }
 
 #ifdef _MSC_VER

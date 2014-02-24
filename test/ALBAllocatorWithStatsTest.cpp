@@ -17,12 +17,13 @@
 class AllocatorWithStatsTest : public ::testing::Test
 {
 public:
-  ALB::AllocatorWithStats<
+  typedef ALB::AllocatorWithStats<
     ALB::FallbackAllocator<
-      ALB::StackAllocator<64, 4>, 
-      ALB::Mallocator
+    ALB::StackAllocator<128, 4>,
+    ALB::Mallocator
     >
-  > sut;
+  > AllocatorUnderTest;
+  AllocatorUnderTest sut;
 };
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)

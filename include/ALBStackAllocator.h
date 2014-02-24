@@ -19,8 +19,8 @@ namespace ALB
    * By design it is n
    * @tparam MaxSize The maximum number of bytes that can be allocated by this
    *         allocator
-   * @tparam Alignment Each memory allocation request by @see #allocate, @see 
-   *         #reallocate and @see #expand is aligned by this value
+   * @tparam Alignment Each memory allocation request by  #allocate,  
+   *         #reallocate and  #expand is aligned by this value
    * \ingroup group_allocators
    */
   template <size_t MaxSize, size_t Alignment = 4>

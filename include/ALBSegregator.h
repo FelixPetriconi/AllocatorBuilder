@@ -19,7 +19,7 @@ namespace ALB
    * This allocator separates the allocation requested depending on a threshold
    * between the Small- and the LargeAllocator
    * @tparam Threshold The edge until all allocations go to the SmallAllocator
-   * @tparam SmallAllocator This gets all allocations below the @see Threshold
+   * @tparam SmallAllocator This gets all allocations below the  Threshold
    * @tparam LargeAllocator This gets all allocations starting with the Threshold
    */
   template <size_t Threshold, class SmallAllocator, class LargeAllocator>

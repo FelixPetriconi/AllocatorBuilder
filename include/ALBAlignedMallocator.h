@@ -15,7 +15,7 @@ namespace ALB
 {
   /**
    * This class implements a facade to the system ::malloc(). According the template 
-   * parameter @see DefaultAlignment the allocated values are aligned to the specific
+   * parameter DefaultAlignment the allocated values are aligned to the specific
    * boundary in bytes. Normally this should be a multiple of at least 4 bytes.
    * @tparam DefaultAlignment Specified the alignment in bytes of all allocation and
    *         reallocations.

@@ -203,5 +203,24 @@ namespace ALB
     struct AllDeallocator<Allocator, typename std::enable_if<!has_deallocateAll<Allocator>::value>::type> {
       static void doIt(Allocator&) {}
     };
+
+    /**
+     * Traits that defines "type" A or B depending on the passed bool
+     * @tparam A This type is defined if the bool is true
+     * @tparam B This type is defined if the bool is false
+     * @tparam bool Selects between the passed template parameter A or B
+     */
+    template <class A, class B, bool>
+    struct type_switch;
+
+    template <class A, class B>
+    struct type_switch<A, B, true> {
+      typename typedef A type;
+    };
+
+    template <class A, class B>
+    struct type_switch<A, B, false> {
+      typename typedef B type;
+    };
   }
 }

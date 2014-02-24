@@ -53,7 +53,7 @@ namespace ALB
      * Allocates the requested number of bytes. The request is forwarded to
      * the bucket with which edges are at [min,max] bytes.
      * @param n The number of bytes to be allocated
-     * @return The @see Block describing the allocated memory
+     * @return The  Block describing the allocated memory
      */
     Block allocate(size_t n) {
       size_t i = 0;
@@ -80,7 +80,7 @@ namespace ALB
      * If the length of the given block and the specified new size crosses the
      * boundary of a bucket, then content memory of the block is moved to the 
      * new bucket item
-     * @param b Then @see Block its size should be changed
+     * @param b Then  Block its size should be changed
      * @param n The new size of the block.
      * @return True, if the reallocation was successful.
      */
