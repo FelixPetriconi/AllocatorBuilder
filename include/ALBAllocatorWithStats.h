@@ -127,7 +127,7 @@ namespace ALB {
     /**
      * Instructs AllocatorWithStats to store the size asked by the caller for
      * each allocation. All per-allocation data is stored just before the actually
-     * allocation AffixAllocator.
+     * allocation by using an AffixAllocator.
     */
     callerSize = 1u << 17,
     /**
@@ -160,7 +160,7 @@ namespace ALB {
   };
 
 /// Use this macro if you want to store the caller information
-#define ALLOCATE_WITH_CALLER_INFO(A, N) A.allocate(N, __FILE__, __FUNCTION__, __LINE__)
+#define ALLOCATE(A, N) A.allocate(N, __FILE__, __FUNCTION__, __LINE__)
 
 /// Simple way to define member and accessors
 #define MEMBER_ACCESSOR(X)          \
@@ -369,14 +369,16 @@ namespace ALB {
       add(StatsOptions::bytesDeallocated, _bytesDeallocated, b.length);
 
       if (b && has_per_allocation_state) {
-        AllocationInfo* stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
+        auto stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
         if (stat->previous) {
           stat->previous->next = stat->next;
         }
         if (stat->next){
           stat->next->previous = stat->previous;
         }
-        if (stat == _root) _root = stat->previous;
+        if (stat == _root) {
+          _root = stat->previous;
+        }
       }
       _allocator.deallocate(b);
     }
@@ -411,6 +413,19 @@ namespace ALB {
         add(StatsOptions::bytesAllocated, _bytesAllocated, b.length);
         add(StatsOptions::bytesMoved, _bytesMoved, originalBlock.length);
         add(StatsOptions::bytesDeallocated, _bytesDeallocated, originalBlock.length);
+
+        if (b && has_per_allocation_state) {
+          auto stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
+          if (stat->next) {
+            stat->next->previous = stat;
+          }
+          if (stat->previous) {
+            stat->previous->next = stat;
+          }
+          if (stat == _root) {
+            _root = stat;
+          }
+        }
       }
       updateHighTide();
       return true;
@@ -446,6 +461,10 @@ namespace ALB {
         add(StatsOptions::bytesExpanded, _bytesExpanded, b.length - oldLength);
         add(StatsOptions::bytesAllocated, _bytesAllocated, b.length - oldLength);
         updateHighTide();
+        if (b && has_per_allocation_state) {
+          auto stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
+
+        }
       }
       return result;
     }

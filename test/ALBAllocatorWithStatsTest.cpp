@@ -14,17 +14,45 @@
 #include "ALBFallbackAllocator.h"
 #include "ALBMallocator.h"
 
-class AllocatorWithStatsTest : public ::testing::Test
+namespace 
 {
-public:
   typedef ALB::AllocatorWithStats<
     ALB::FallbackAllocator<
     ALB::StackAllocator<128, 4>,
     ALB::Mallocator
     >
   > AllocatorUnderTest;
+}
+
+bool operator==(const AllocatorUnderTest::AllocationInfo& lhs, const AllocatorUnderTest::AllocationInfo& rhs) {
+  return ::strcmp(lhs.callerFile, rhs.callerFile) == 0 &&
+    ::strcmp(lhs.callerFunction, rhs.callerFunction) == 0 &&
+    lhs.callerSize == rhs.callerSize;
+}
+
+
+class AllocatorWithStatsTest : public ::testing::Test
+{
+protected:
+  
+  AllocatorUnderTest::AllocationInfo createCallerExpectation(const char* file, const char* function, size_t size) {
+    AllocatorUnderTest::AllocationInfo expectedCallerInfo;
+    expectedCallerInfo.callerFile = file;
+    expectedCallerInfo.callerFunction = function;
+    expectedCallerInfo.callerSize = size;
+    return expectedCallerInfo;
+  }
+
+  std::vector<AllocatorUnderTest::AllocationInfo> extractRealAllocations(const AllocatorUnderTest::Allocations& a) {
+    std::vector<AllocatorUnderTest::AllocationInfo> result;
+    std::copy(a.cbegin(), a.cend(), std::back_inserter(result));
+    std::reverse(result.begin(), result.end());
+    return result;
+  }
+
   AllocatorUnderTest sut;
 };
+
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
 {
@@ -48,8 +76,7 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
 
   EXPECT_TRUE(sut.allocations().empty());
 
-  int allocationLineNumber(0);
-  auto mem = ALLOCATE_WITH_CALLER_INFO(sut, 0); allocationLineNumber = __LINE__;
+  auto mem = ALLOCATE(sut, 0); 
 
   EXPECT_EQ(1, sut.numAllocate());
   EXPECT_EQ(0, sut.numAllocateOK());
@@ -94,8 +121,8 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
 {
-  int allocationLineNumber(0);
-  auto mem = ALLOCATE_WITH_CALLER_INFO(sut, 4); allocationLineNumber = __LINE__;
+  auto expectedCallerInfo = createCallerExpectation(__FILE__, __FUNCTION__, 4);
+  auto mem = ALLOCATE(sut, 4); expectedCallerInfo.callerLine = __LINE__;
 
   EXPECT_EQ(1, sut.numAllocate());
   EXPECT_EQ(1, sut.numAllocateOK());
@@ -118,10 +145,7 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   {
     const auto allocations = sut.allocations();
     EXPECT_FALSE(allocations.empty());
-    EXPECT_EQ(allocationLineNumber, allocations.cbegin()->callerLine);
-    EXPECT_EQ(mem.length, allocations.cbegin()->callerSize);
-    EXPECT_STREQ(__FUNCTION__, allocations.cbegin()->callerFunction);
-    EXPECT_STREQ(__FILE__, allocations.cbegin()->callerFile);
+    EXPECT_TRUE(expectedCallerInfo == *(allocations.cbegin()));
   }
 
   sut.deallocate(mem);
@@ -149,11 +173,12 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
 
 TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsAreCorrect)
 {
-  int allocationLineNumber1(0);
-  auto mem1st = ALLOCATE_WITH_CALLER_INFO(sut, 4); allocationLineNumber1 = __LINE__;
+  std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
+  expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 4) );
+  auto mem1st = ALLOCATE(sut, 4); expectedCallerInfo[0].callerLine = __LINE__;
 
-  int allocationLineNumber2(0);
-  auto mem2nd = ALLOCATE_WITH_CALLER_INFO(sut, 8); allocationLineNumber2 = __LINE__;
+  expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 8) );
+  auto mem2nd = ALLOCATE(sut, 8); expectedCallerInfo[1].callerLine = __LINE__;
 
   EXPECT_EQ(2, sut.numAllocate());
   EXPECT_EQ(2, sut.numAllocateOK());
@@ -176,20 +201,13 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
   {
     const auto allocations = sut.allocations();
     EXPECT_FALSE(allocations.empty());
-    auto firstAllocation = allocations.cbegin();
-    auto secondAllocation = firstAllocation;
-    firstAllocation++;
-    ASSERT_NE(secondAllocation, allocations.cend());
-
-    EXPECT_EQ(4, firstAllocation->callerSize);
-    EXPECT_EQ(allocationLineNumber1, firstAllocation->callerLine);
-    EXPECT_STREQ(__FUNCTION__, firstAllocation->callerFunction);
-    EXPECT_STREQ(__FILE__, firstAllocation->callerFile);
-
-    EXPECT_EQ(8, secondAllocation->callerSize);
-    EXPECT_EQ(allocationLineNumber2, secondAllocation->callerLine);
-    EXPECT_STREQ(__FUNCTION__, secondAllocation->callerFunction);
-    EXPECT_STREQ(__FILE__, secondAllocation->callerFile);
+    
+    auto realAllocations = extractRealAllocations(allocations);
+    EXPECT_TRUE(std::equal(std::begin(expectedCallerInfo), 
+                          std::end(expectedCallerInfo), 
+                          std::begin(realAllocations),
+                          [](const AllocatorUnderTest::AllocationInfo& lhs, const AllocatorUnderTest::AllocationInfo& rhs) {
+                          return rhs == lhs;  }));
   }
   
   sut.deallocate(mem1st);
@@ -215,12 +233,8 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
   {
     const auto allocations = sut.allocations();
     EXPECT_FALSE(allocations.empty());
-    auto secondAllocation = allocations.cbegin();
-
-    EXPECT_EQ(8, secondAllocation->callerSize);
-    EXPECT_EQ(allocationLineNumber2, secondAllocation->callerLine);
-    EXPECT_STREQ(__FUNCTION__, secondAllocation->callerFunction);
-    EXPECT_STREQ(__FILE__, secondAllocation->callerFile);
+    auto realAllocations = extractRealAllocations(allocations);
+    EXPECT_TRUE(expectedCallerInfo[1] == realAllocations[0]);
   }
 
   sut.deallocate(mem2nd);
@@ -249,7 +263,8 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
 {
-  auto mem = sut.allocate(4);
+  auto expectedCallerInfo = createCallerExpectation(__FILE__, __FUNCTION__, 4);
+  auto mem = ALLOCATE(sut, 4); expectedCallerInfo.callerLine = __LINE__;
 
   EXPECT_TRUE(sut.reallocate(mem, 16));
 
@@ -271,6 +286,12 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(16, sut.bytesHighTide());
 
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+    EXPECT_TRUE(expectedCallerInfo == *(allocations.cbegin()));
+  }
+
   sut.deallocate(mem);
   EXPECT_EQ(1, sut.numAllocate());
   EXPECT_EQ(1, sut.numAllocateOK());
@@ -289,15 +310,63 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
   EXPECT_EQ(0, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(16, sut.bytesHighTide());
+
+  EXPECT_TRUE(sut.allocations().empty());
+}
+
+TEST_F(AllocatorWithStatsTest, ThatTheDeallocationOfThe2ndAllocationOfThreeLeavesThe1stAnd3rdAllocationsInPlace)
+{
+  std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
+  expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 4) );
+  auto mem1st = ALLOCATE(sut, 4); expectedCallerInfo[0].callerLine = __LINE__;
+
+  expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 8) );
+  auto mem2nd = ALLOCATE(sut, 8); expectedCallerInfo[1].callerLine = __LINE__;
+
+  expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 12) );
+  auto mem3rd = ALLOCATE(sut, 12); expectedCallerInfo[2].callerLine = __LINE__;
+
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+
+    auto realAllocations = extractRealAllocations(allocations);
+    EXPECT_TRUE(std::equal(std::begin(expectedCallerInfo),
+                          std::end(expectedCallerInfo),
+                          realAllocations.begin(),
+                          [](const AllocatorUnderTest::AllocationInfo& lhs, const AllocatorUnderTest::AllocationInfo& rhs) {
+                          return rhs == lhs;  }));
+  }
+
+  sut.deallocate(mem2nd);
+
+  {
+    expectedCallerInfo.erase(expectedCallerInfo.begin() + 1);
+
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+
+    auto realAllocations = extractRealAllocations(allocations);
+    EXPECT_TRUE(std::equal(std::begin(expectedCallerInfo),
+      std::end(expectedCallerInfo),
+      realAllocations.begin(),
+      [](const AllocatorUnderTest::AllocationInfo& lhs, const AllocatorUnderTest::AllocationInfo& rhs) {
+      return rhs == lhs;  }));
+  }
 }
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
 {
-  auto mem = sut.allocate(4);
+  std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
+  expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
+  auto mem1st = ALLOCATE(sut, 4); expectedCallerInfo[0].callerLine = __LINE__;
 
-  EXPECT_TRUE(sut.reallocate(mem, 128));
-  EXPECT_EQ(1, sut.numAllocate());
-  EXPECT_EQ(1, sut.numAllocateOK());
+  expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
+  auto mem2nd = ALLOCATE(sut, 8); expectedCallerInfo[1].callerLine = __LINE__;
+
+  EXPECT_TRUE(sut.reallocate(mem2nd, 128));
+  EXPECT_EQ(2, sut.numAllocate());
+  EXPECT_EQ(2, sut.numAllocateOK());
   EXPECT_EQ(0, sut.numExpand());
   EXPECT_EQ(0, sut.numExpandOK());
   EXPECT_EQ(1, sut.numReallocate());
@@ -306,18 +375,30 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
   EXPECT_EQ(0, sut.numDeallocate());
   EXPECT_EQ(0, sut.numDeallocateAll());
   EXPECT_EQ(0, sut.numOwns());
-  EXPECT_EQ(132, sut.bytesAllocated());
-  EXPECT_EQ(4, sut.bytesDeallocated());
+  EXPECT_EQ(140, sut.bytesAllocated());
+  EXPECT_EQ(8, sut.bytesDeallocated());
   EXPECT_EQ(0, sut.bytesExpanded());
   EXPECT_EQ(0, sut.bytesContracted());
-  EXPECT_EQ(4, sut.bytesMoved());
+  EXPECT_EQ(8, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
-  EXPECT_EQ(128, sut.bytesHighTide());
+  EXPECT_EQ(132, sut.bytesHighTide());
 
-  sut.deallocate(mem);
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
 
-  EXPECT_EQ(1, sut.numAllocate());
-  EXPECT_EQ(1, sut.numAllocateOK());
+    auto realAllocations = extractRealAllocations(allocations);
+    EXPECT_TRUE(std::equal(std::begin(expectedCallerInfo),
+      std::end(expectedCallerInfo),
+      realAllocations.begin(),
+      [](const AllocatorUnderTest::AllocationInfo& lhs, const AllocatorUnderTest::AllocationInfo& rhs) {
+      return rhs == lhs;  }));
+  }
+
+  sut.deallocate(mem1st);
+
+  EXPECT_EQ(2, sut.numAllocate());
+  EXPECT_EQ(2, sut.numAllocateOK());
   EXPECT_EQ(0, sut.numExpand());
   EXPECT_EQ(0, sut.numExpandOK());
   EXPECT_EQ(1, sut.numReallocate());
@@ -326,13 +407,20 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
   EXPECT_EQ(1, sut.numDeallocate());
   EXPECT_EQ(0, sut.numDeallocateAll());
   EXPECT_EQ(0, sut.numOwns());
-  EXPECT_EQ(132, sut.bytesAllocated());
-  EXPECT_EQ(132, sut.bytesDeallocated());
+  EXPECT_EQ(140, sut.bytesAllocated());
+  EXPECT_EQ(12, sut.bytesDeallocated());
   EXPECT_EQ(0, sut.bytesExpanded());
   EXPECT_EQ(0, sut.bytesContracted());
-  EXPECT_EQ(4, sut.bytesMoved());
+  EXPECT_EQ(8, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
-  EXPECT_EQ(128, sut.bytesHighTide());
+  EXPECT_EQ(132, sut.bytesHighTide());
+
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+    EXPECT_TRUE(expectedCallerInfo[1] == *(allocations.cbegin()));
+  }
+
 }
 
 TEST_F(AllocatorWithStatsTest, ThatDecreasingReallocatingInPlaceIsStored)
