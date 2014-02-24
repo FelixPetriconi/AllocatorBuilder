@@ -46,7 +46,10 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(0, sut.bytesHighTide());
 
-  auto mem = sut.allocate(0);
+  EXPECT_TRUE(sut.allocations().empty());
+
+  int allocationLineNumber(0);
+  auto mem = ALLOCATE_WITH_CALLER_INFO(sut, 0); allocationLineNumber = __LINE__;
 
   EXPECT_EQ(1, sut.numAllocate());
   EXPECT_EQ(0, sut.numAllocateOK());
@@ -65,6 +68,7 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
   EXPECT_EQ(0, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(0, sut.bytesHighTide());
+  EXPECT_TRUE(sut.allocations().empty());
 
   sut.deallocate(mem);
 
@@ -85,11 +89,14 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
   EXPECT_EQ(0, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(0, sut.bytesHighTide());
+  EXPECT_TRUE(sut.allocations().empty());
 }
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
 {
-  auto mem = sut.allocate(4);
+  int allocationLineNumber(0);
+  auto mem = ALLOCATE_WITH_CALLER_INFO(sut, 4); allocationLineNumber = __LINE__;
+
   EXPECT_EQ(1, sut.numAllocate());
   EXPECT_EQ(1, sut.numAllocateOK());
   EXPECT_EQ(0, sut.numExpand());
@@ -107,6 +114,15 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   EXPECT_EQ(0, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(4, sut.bytesHighTide());
+
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+    EXPECT_EQ(allocationLineNumber, allocations.cbegin()->callerLine);
+    EXPECT_EQ(mem.length, allocations.cbegin()->callerSize);
+    EXPECT_STREQ(__FUNCTION__, allocations.cbegin()->callerFunction);
+    EXPECT_STREQ(__FILE__, allocations.cbegin()->callerFile);
+  }
 
   sut.deallocate(mem);
 
@@ -127,7 +143,109 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   EXPECT_EQ(0, sut.bytesMoved());
   EXPECT_EQ(0, sut.bytesSlack());
   EXPECT_EQ(4, sut.bytesHighTide());
+
+  EXPECT_TRUE(sut.allocations().empty());
 }
+
+TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsAreCorrect)
+{
+  int allocationLineNumber1(0);
+  auto mem1st = ALLOCATE_WITH_CALLER_INFO(sut, 4); allocationLineNumber1 = __LINE__;
+
+  int allocationLineNumber2(0);
+  auto mem2nd = ALLOCATE_WITH_CALLER_INFO(sut, 8); allocationLineNumber2 = __LINE__;
+
+  EXPECT_EQ(2, sut.numAllocate());
+  EXPECT_EQ(2, sut.numAllocateOK());
+  EXPECT_EQ(0, sut.numExpand());
+  EXPECT_EQ(0, sut.numExpandOK());
+  EXPECT_EQ(0, sut.numReallocate());
+  EXPECT_EQ(0, sut.numReallocateOK());
+  EXPECT_EQ(0, sut.numReallocateInPlace());
+  EXPECT_EQ(0, sut.numDeallocate());
+  EXPECT_EQ(0, sut.numDeallocateAll());
+  EXPECT_EQ(0, sut.numOwns());
+  EXPECT_EQ(12, sut.bytesAllocated());
+  EXPECT_EQ(0, sut.bytesDeallocated());
+  EXPECT_EQ(0, sut.bytesExpanded());
+  EXPECT_EQ(0, sut.bytesContracted());
+  EXPECT_EQ(0, sut.bytesMoved());
+  EXPECT_EQ(0, sut.bytesSlack());
+  EXPECT_EQ(12, sut.bytesHighTide());
+
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+    auto firstAllocation = allocations.cbegin();
+    auto secondAllocation = firstAllocation;
+    firstAllocation++;
+    ASSERT_NE(secondAllocation, allocations.cend());
+
+    EXPECT_EQ(4, firstAllocation->callerSize);
+    EXPECT_EQ(allocationLineNumber1, firstAllocation->callerLine);
+    EXPECT_STREQ(__FUNCTION__, firstAllocation->callerFunction);
+    EXPECT_STREQ(__FILE__, firstAllocation->callerFile);
+
+    EXPECT_EQ(8, secondAllocation->callerSize);
+    EXPECT_EQ(allocationLineNumber2, secondAllocation->callerLine);
+    EXPECT_STREQ(__FUNCTION__, secondAllocation->callerFunction);
+    EXPECT_STREQ(__FILE__, secondAllocation->callerFile);
+  }
+  
+  sut.deallocate(mem1st);
+
+  EXPECT_EQ(2, sut.numAllocate());
+  EXPECT_EQ(2, sut.numAllocateOK());
+  EXPECT_EQ(0, sut.numExpand());
+  EXPECT_EQ(0, sut.numExpandOK());
+  EXPECT_EQ(0, sut.numReallocate());
+  EXPECT_EQ(0, sut.numReallocateOK());
+  EXPECT_EQ(0, sut.numReallocateInPlace());
+  EXPECT_EQ(1, sut.numDeallocate());
+  EXPECT_EQ(0, sut.numDeallocateAll());
+  EXPECT_EQ(0, sut.numOwns());
+  EXPECT_EQ(12, sut.bytesAllocated());
+  EXPECT_EQ(4, sut.bytesDeallocated());
+  EXPECT_EQ(0, sut.bytesExpanded());
+  EXPECT_EQ(0, sut.bytesContracted());
+  EXPECT_EQ(0, sut.bytesMoved());
+  EXPECT_EQ(0, sut.bytesSlack());
+  EXPECT_EQ(12, sut.bytesHighTide());
+  
+  {
+    const auto allocations = sut.allocations();
+    EXPECT_FALSE(allocations.empty());
+    auto secondAllocation = allocations.cbegin();
+
+    EXPECT_EQ(8, secondAllocation->callerSize);
+    EXPECT_EQ(allocationLineNumber2, secondAllocation->callerLine);
+    EXPECT_STREQ(__FUNCTION__, secondAllocation->callerFunction);
+    EXPECT_STREQ(__FILE__, secondAllocation->callerFile);
+  }
+
+  sut.deallocate(mem2nd);
+
+  EXPECT_EQ(2, sut.numAllocate());
+  EXPECT_EQ(2, sut.numAllocateOK());
+  EXPECT_EQ(0, sut.numExpand());
+  EXPECT_EQ(0, sut.numExpandOK());
+  EXPECT_EQ(0, sut.numReallocate());
+  EXPECT_EQ(0, sut.numReallocateOK());
+  EXPECT_EQ(0, sut.numReallocateInPlace());
+  EXPECT_EQ(2, sut.numDeallocate());
+  EXPECT_EQ(0, sut.numDeallocateAll());
+  EXPECT_EQ(0, sut.numOwns());
+  EXPECT_EQ(12, sut.bytesAllocated());
+  EXPECT_EQ(12, sut.bytesDeallocated());
+  EXPECT_EQ(0, sut.bytesExpanded());
+  EXPECT_EQ(0, sut.bytesContracted());
+  EXPECT_EQ(0, sut.bytesMoved());
+  EXPECT_EQ(0, sut.bytesSlack());
+  EXPECT_EQ(12, sut.bytesHighTide());
+
+  EXPECT_TRUE(sut.allocations().empty());
+}
+
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
 {

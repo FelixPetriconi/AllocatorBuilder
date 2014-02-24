@@ -14,6 +14,7 @@
 #include "ALBAllocatorBase.h"
 #include "ALBAffixAllocator.h"
 #include <chrono>
+#include <boost/iterator/iterator_facade.hpp>
 
 namespace ALB {
 
@@ -158,8 +159,10 @@ namespace ALB {
     all = (1u << 22) - 1      
   };
 
+/// Use this macro if you want to store the caller information
 #define ALLOCATE_WITH_CALLER_INFO(A, N) A.allocate(N, __FILE__, __FUNCTION__, __LINE__)
 
+/// Simple way to define member and accessors
 #define MEMBER_ACCESSOR(X)          \
     private:                        \
       size_t  _##X;                 \
@@ -266,6 +269,43 @@ namespace ALB {
       AllocationInfo* previous, *next;
     };
 
+    class AllocationInfoIterator : public boost::iterator_facade<
+      AllocationInfoIterator
+      , AllocationInfo
+      , boost::forward_traversal_tag
+    > {
+      friend class boost::iterator_core_access;
+
+      void increment() { _node = _node->next; }
+
+      bool equal(AllocationInfoIterator const& rhs) const { 
+        return this->_node == rhs._node; 
+      }
+
+      AllocationInfo& dereference() const { return *_node; }
+
+      AllocationInfo* _node;
+
+    public:
+      AllocationInfoIterator() : _node(nullptr) {}
+
+      explicit AllocationInfoIterator(AllocationInfo* p) : _node(p) {}
+    };    
+
+    class Allocations {
+      const AllocationInfoIterator _begin;
+      const AllocationInfoIterator _end;
+
+    public:
+      Allocations(AllocationInfo* root) : _begin(root) {}
+      typedef AllocationInfo value_type;
+      typedef AllocationInfoIterator iterator;
+      typedef AllocationInfoIterator const_iterator;
+      const_iterator cbegin() const { return _begin; }
+      const_iterator cend() const { return _end; }
+      bool empty() const { return _begin == _end; }
+    };
+    
     AllocatorWithStats() 
       : _root(nullptr)
       , _numOwns(0)
@@ -407,6 +447,10 @@ namespace ALB {
         updateHighTide();
       }
       return result;
+    }
+
+    Allocations allocations() const {
+      return Allocations(_root);
     }
   };
 }
