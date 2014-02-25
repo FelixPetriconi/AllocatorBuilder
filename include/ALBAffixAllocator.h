@@ -205,7 +205,7 @@ namespace ALB
 
       if (!b) {
         b = allocate(delta);
-        return b;
+        return static_cast<bool>(b);
       }
 
       auto oldBlock = b;

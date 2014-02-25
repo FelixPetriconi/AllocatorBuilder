@@ -42,8 +42,15 @@ namespace ALB
     /**
      * Bool operator to make the Allocator code better readable
      */
+#if _MSC_VER > 1700
+    explicit
+#endif
     operator bool() const { 
       return length != 0; 
+    }
+
+    bool operator==(const Block& rhs) const {
+      return ptr == rhs.ptr && length == rhs.length;
     }
 
     /// This points to the start address of the described memory block

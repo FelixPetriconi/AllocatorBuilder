@@ -501,23 +501,16 @@ TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedReallocationIsStore
 
   sut.deallocate(mem);
 
-  EXPECT_EQ(1, sut.numAllocate());
-  EXPECT_EQ(1, sut.numAllocateOK());
-  EXPECT_EQ(0, sut.numExpand());
-  EXPECT_EQ(0, sut.numExpandOK());
-  EXPECT_EQ(1, sut.numReallocate());
-  EXPECT_EQ(0, sut.numReallocateOK());
-  EXPECT_EQ(0, sut.numReallocateInPlace());
-  EXPECT_EQ(1, sut.numDeallocate());
-  EXPECT_EQ(0, sut.numDeallocateAll());
-  EXPECT_EQ(0, sut.numOwns());
-  EXPECT_EQ(4, sut.bytesAllocated());
-  EXPECT_EQ(4, sut.bytesDeallocated());
-  EXPECT_EQ(0, sut.bytesExpanded());
-  EXPECT_EQ(0, sut.bytesContracted());
-  EXPECT_EQ(0, sut.bytesMoved());
-  EXPECT_EQ(0, sut.bytesSlack());
-  EXPECT_EQ(4, sut.bytesHighTide());
+  auto afterDeallocationEverything =
+    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    .withNumAllocate(1)
+    .withNumAllocateOK(1)
+    .withNumDeallocate(1)
+    .withNumReallocate(1)
+    .withBytesAllocated(4)
+    .withBytesDeallocated(4)
+    .withBytesHighTide(4).build();
+  afterDeallocationEverything.checkThatExpectationsAreFulfilled();
 }
 
 TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedExpandingIsStored)
@@ -526,43 +519,28 @@ TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedExpandingIsStored)
 
   EXPECT_FALSE(sut.expand(mem, 64));
 
-  EXPECT_EQ(1, sut.numAllocate());
-  EXPECT_EQ(1, sut.numAllocateOK());
-  EXPECT_EQ(1, sut.numExpand());
-  EXPECT_EQ(0, sut.numExpandOK());
-  EXPECT_EQ(0, sut.numReallocate());
-  EXPECT_EQ(0, sut.numReallocateOK());
-  EXPECT_EQ(0, sut.numReallocateInPlace());
-  EXPECT_EQ(0, sut.numDeallocate());
-  EXPECT_EQ(0, sut.numDeallocateAll());
-  EXPECT_EQ(0, sut.numOwns());
-  EXPECT_EQ(4, sut.bytesAllocated());
-  EXPECT_EQ(0, sut.bytesDeallocated());
-  EXPECT_EQ(0, sut.bytesExpanded());
-  EXPECT_EQ(0, sut.bytesContracted());
-  EXPECT_EQ(0, sut.bytesMoved());
-  EXPECT_EQ(0, sut.bytesSlack());
-  EXPECT_EQ(4, sut.bytesHighTide());
+  auto afterAFailedExpansionOf4To64Bytes =
+    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    .withNumAllocate(1)
+    .withNumAllocateOK(1)
+    .withNumExpand(1)
+    .withBytesAllocated(4)
+    .withBytesHighTide(4).build();
+
+  afterAFailedExpansionOf4To64Bytes.checkThatExpectationsAreFulfilled();
 
   sut.deallocate(mem);
+  auto afterDeallocatinEverything =
+    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    .withNumAllocate(1)
+    .withNumAllocateOK(1)
+    .withNumDeallocate(1)
+    .withNumExpand(1)
+    .withBytesAllocated(4)
+    .withBytesDeallocated(4)
+    .withBytesHighTide(4).build();
 
-  EXPECT_EQ(1, sut.numAllocate());
-  EXPECT_EQ(1, sut.numAllocateOK());
-  EXPECT_EQ(1, sut.numExpand());
-  EXPECT_EQ(0, sut.numExpandOK());
-  EXPECT_EQ(0, sut.numReallocate());
-  EXPECT_EQ(0, sut.numReallocateOK());
-  EXPECT_EQ(0, sut.numReallocateInPlace());
-  EXPECT_EQ(1, sut.numDeallocate());
-  EXPECT_EQ(0, sut.numDeallocateAll());
-  EXPECT_EQ(0, sut.numOwns());
-  EXPECT_EQ(4, sut.bytesAllocated());
-  EXPECT_EQ(4, sut.bytesDeallocated());
-  EXPECT_EQ(0, sut.bytesExpanded());
-  EXPECT_EQ(0, sut.bytesContracted());
-  EXPECT_EQ(0, sut.bytesMoved());
-  EXPECT_EQ(0, sut.bytesSlack());
-  EXPECT_EQ(4, sut.bytesHighTide());
+  afterDeallocatinEverything.checkThatExpectationsAreFulfilled();
 }
 
 
