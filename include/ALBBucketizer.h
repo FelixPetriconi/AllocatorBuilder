@@ -20,7 +20,7 @@ namespace ALB
    * within the range of [MinSize, MaxSize)
    * Eg MinSize = 17, MaxSize = 64, StepSize = 16 => 
    *    BucketsSize[17, 32][33 48][48 64]
-   * It plays very well together with @FreeList or @SharedFreeList
+   * It plays very well together with ALB::FreeList or ALB::SharedFreeList
    * After instantiation any instance is as far thread safe as the Allocator is thread
    * safe.
    * @tparam Allocator Specifies which shall be handled in a bucketized way
@@ -53,7 +53,7 @@ namespace ALB
      * Allocates the requested number of bytes. The request is forwarded to
      * the bucket with which edges are at [min,max] bytes.
      * @param n The number of bytes to be allocated
-     * @return The  Block describing the allocated memory
+     * @return The Block describing the allocated memory
      */
     Block allocate(size_t n) {
       size_t i = 0;
@@ -108,7 +108,7 @@ namespace ALB
 
     /**
      * Frees the given block and resets it.
-     * @param b The block, its  meory should be freed
+     * @param b The block, its memory should be freed
      */
     void deallocate(Block& b) {
       if (!b) {
@@ -124,7 +124,9 @@ namespace ALB
     }
 
     /**
-     * Deallocates the complete 
+     * Deallocates all resources. Beware of possible dangling pointers!
+     * This method is only available if Allocator::deallocateAll is available
+     * 
      */
     typename Traits::enable_result_to<void, Traits::has_deallocateAll<Allocator>::value>::type
     deallocateAll() {

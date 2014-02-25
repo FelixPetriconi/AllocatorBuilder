@@ -16,14 +16,15 @@ namespace ALB
 {
   /**
    * This class can be used as Prefix and/or Suffix with the AffixAllocator to detect
-   * buffer underruns or overflows.
+   * buffer under-runs or overflows.
    * @tparam T must be an integral type. A guard with its size is used
    * @tparam Pattern this pattern is put into the memory as guard e.g. 0xdeadbeef 
    *\ingroup group_helpers
    */
   template <typename T, size_t Pattern>
   class MemoryCorruptionDetector {
-    static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t), "Memory check not for valid types");
+    static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t), 
+      "Memory check not for valid types");
     
     T _pattern;
   public:

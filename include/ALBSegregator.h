@@ -33,7 +33,8 @@ namespace ALB
       "Small- and Large-Allocator cannot be both of base!");
 
   public:
-    static const bool supports_truncated_deallocation = SmallAllocator::supports_truncated_deallocation &&
+    static const bool supports_truncated_deallocation = 
+      SmallAllocator::supports_truncated_deallocation &&
       LargeAllocator::supports_truncated_deallocation;
     /**
      * Allocates the specified number of bytes. If the operation was not successful

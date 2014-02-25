@@ -33,11 +33,13 @@
 namespace ALB
 {
   /**
-   * The SharedHeap implements a classic heap with a pre-allocated size of _numberOfChunks.value() * _chunkSize.value()
-   * It has a overhead of one bit per block and linear complexity for allocation and deallocation
-   * operations.
+   * The SharedHeap implements a classic heap with a pre-allocated size of 
+   * _numberOfChunks.value() * _chunkSize.value()
+   * It has a overhead of one bit per block and linear complexity for allocation 
+   * and deallocation operations.
    * It is thread safe, except the moment of instantiation.
-   * As far as possible only a shared lock + an atomic operation is used during the memory operations
+   * As far as possible only a shared lock + an atomic operation is used during 
+   * the memory operations
    * \ingroup group_allocators group_shared
    */
   template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
@@ -99,7 +101,9 @@ namespace ALB
     }
 
     bool owns(const Block& b) const {
-      return b && _buffer.ptr <= b.ptr && b.ptr < (static_cast<char*>(_buffer.ptr) + _buffer.length);
+      return b && 
+        _buffer.ptr <= b.ptr && 
+        b.ptr < (static_cast<char*>(_buffer.ptr) + _buffer.length);
     }
 
     Block allocate(size_t n) {
@@ -107,7 +111,8 @@ namespace ALB
         return Block();
       }
 
-      if ( n > _chunkSize.value() * _numberOfChunks.value()) { // The heap cannot handle such a big request
+      // The heap cannot handle such a big request
+      if ( n > _chunkSize.value() * _numberOfChunks.value()) { 
         return Block();
       }
 
@@ -252,8 +257,12 @@ namespace ALB
     };
 
     BlockContext blockToContext(const Block& b) {
-      const int blockIndex = static_cast<int>( (static_cast<char*>(b.ptr) - static_cast<char*>(_buffer.ptr)) / _chunkSize.value() );
-      return BlockContext(blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / _chunkSize.value()));
+      const int blockIndex = 
+        static_cast<int>( (static_cast<char*>(b.ptr) - 
+        static_cast<char*>(_buffer.ptr)) / _chunkSize.value() );
+
+      return BlockContext(blockIndex / 64, blockIndex % 64, 
+                          static_cast<int>(b.length / _chunkSize.value()));
     }
 
     template <bool Used>
@@ -273,7 +282,9 @@ namespace ALB
     bool testAndSetWithinSingleRegister(const BlockContext& context) {
       BOOST_ASSERT(context.subIndex + context.usedChunks <= 64);
 
-      uint64_t mask = (context.usedChunks == 64)? all_set : ( ((1uLL << context.usedChunks) - 1) << context.subIndex);
+      uint64_t mask = (context.usedChunks == 64)? all_set : 
+        ( ((1uLL << context.usedChunks) - 1) << context.subIndex);
+
       uint64_t currentRegister, newRegister;
       do {
         currentRegister = _control[context.registerIndex].load();
@@ -381,14 +392,16 @@ namespace ALB
 
     Block allocateWithinASingleControlRegister(size_t numberOfBlocks)
     {
-      // we must assume that we may find a free location, but that it is later already used during the set operation
+      // we must assume that we may find a free location, but that it is later 
+      // already used during the set operation
       do {
         // first we have to look for at least one free block
         int controlIndex = 0;
         while (controlIndex < _controlSize) {
           auto currentControlRegister = _control[controlIndex].load();
 
-          if (currentControlRegister != 0) { // == 0 means that all blocks are in use and no need to search further
+          // == 0 means that all blocks are in use and no need to search further
+          if (currentControlRegister != 0) { 
             uint64_t mask = (numberOfBlocks == 64)? all_set : ((1uLL << numberOfBlocks) - 1);
 
             int i = 0;
@@ -401,7 +414,9 @@ namespace ALB
 
                 if (CAS(_control[controlIndex], currentControlRegister, newControlRegister)) {
                   size_t ptrOffset = (controlIndex * 64 + i ) * _chunkSize.value();
-                  return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * _chunkSize.value());
+                  
+                  return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, 
+                               numberOfBlocks * _chunkSize.value());
                 }
               }
               i++;
@@ -432,13 +447,16 @@ namespace ALB
 
         if (CAS_P(freeChunk, const_cast<uint64_t&>(all_set), all_zero)) {
           size_t ptrOffset = ( (freeChunk - _control) * 64) * _chunkSize.value();
-          return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * _chunkSize.value());
+
+          return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, 
+                       numberOfBlocks * _chunkSize.value());
         }
       } while (true);
     }
 
     Block allocateMultipleCompleteControlRegisters(size_t numberOfBlocks) {
-      // This branch works on multiple chunks at the same time and so a real lock is necessary.
+      // This branch works on multiple chunks at the same time and so a real 
+      // lock is necessary.
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
 
       const int neededChunks = static_cast<int>(numberOfBlocks / 64);
@@ -460,7 +478,8 @@ namespace ALB
       }
 
       size_t ptrOffset = ( (freeFirstChunk - _control) * 64) * _chunkSize.value();
-      return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * _chunkSize.value());
+      return Block(static_cast<char*>(_buffer.ptr) + ptrOffset, 
+                   numberOfBlocks * _chunkSize.value());
     }
 
     Block allocateWithRegisterOverlap(size_t numberOfBlocks) {
@@ -469,12 +488,14 @@ namespace ALB
         "Current assumption that std::atomic has no overhead on integral types is not fullfilled!");
 
       auto p = reinterpret_cast<unsigned char*>(_control);
-      const auto lastp = reinterpret_cast<unsigned char*>(_control) + _controlSize * sizeof(uint64_t);
+      const auto lastp = reinterpret_cast<unsigned char*>(_control) + 
+        _controlSize * sizeof(uint64_t);
 
       int freeBlocksCount(0);
       unsigned char* chunkStart = nullptr;
 
-      // This branch works on multiple chunks at the same time and so a real lock is necessary.
+      // This branch works on multiple chunks at the same time and so a real 
+      // lock is necessary.
       boost::unique_lock< boost::shared_mutex > guard(_mutex);
 
       while (p < lastp) {
@@ -496,8 +517,12 @@ namespace ALB
       };
 
       if (p != lastp && freeBlocksCount >= numberOfBlocks) {
-        size_t ptrOffset = (chunkStart - reinterpret_cast<unsigned char*>(_control)) * 8 * _chunkSize.value();
-        Block result(static_cast<char*>(_buffer.ptr) + ptrOffset, numberOfBlocks * _chunkSize.value());
+        size_t ptrOffset = (chunkStart - 
+          reinterpret_cast<unsigned char*>(_control)) * 8 * _chunkSize.value();
+
+        Block result(static_cast<char*>(_buffer.ptr) + ptrOffset, 
+                     numberOfBlocks * _chunkSize.value());
+
         setOverMultipleRegisters<SharedHelpers::NullLock, false>(blockToContext(result));
         return result;
       }
@@ -523,4 +548,4 @@ namespace ALB
 }
 
 #undef CAS
-#undef CAD_P
+#undef CAS_P

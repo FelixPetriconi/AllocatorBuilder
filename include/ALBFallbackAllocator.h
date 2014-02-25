@@ -14,8 +14,8 @@
 namespace ALB
 {
   /**
-   * All allocation requests are passed to the Primary allocator. Only if this cannot fulfill the 
-   * request, it is passed to the Fallback allocator
+   * All allocation requests are passed to the Primary allocator. Only if this 
+   * cannot fulfill the request, it is passed to the Fallback allocator
    * @tparam Primary The allocator that gets all requests by default
    * @tparam Fallback The allocator that get the requests, if the Primary failed.
    * \ingroup group_allocators group_shared
@@ -26,15 +26,16 @@ namespace ALB
     typedef Fallback fallback_allocator;
 
     static_assert( !Traits::both_same_base<Primary, Fallback>::value, 
-      "Primary- and Fallback-Allocator cannot be both of base!");
+      "Primary- and Fallback-Allocator cannot be both of the same base!");
 
   public:
-    static const bool supports_truncated_deallocation = Primary::supports_truncated_deallocation &&
+    static const bool supports_truncated_deallocation = 
+      Primary::supports_truncated_deallocation &&
       Fallback::supports_truncated_deallocation;;
     /**
      * Allocates the requested number of bytes.
-     * @param n The number of bytes. Depending on the alignment of the allocator, the block
-     *          might contain a bigger size
+     * @param n The number of bytes. Depending on the alignment of the allocator, 
+     *          the block might contain a bigger size
      */
     Block allocate(size_t n) {
       if (n == 0) {
@@ -63,8 +64,8 @@ namespace ALB
     }
 
     /**
-     * Reallocates the given block to the given size. If the Primary cannot handle the request, then a
-     * memory move is done.
+     * Reallocates the given block to the given size. If the Primary cannot handle 
+     * the request, then a memory move is done.
      * @param b The block to be reallocated
      * @param n The new size (Zero means deallocation.)
      * @return True if the operation was successful

@@ -68,9 +68,9 @@ namespace ALB
         return;
       }
 
-      // If it was the most recent allocated MemoryBlock, then we can re-use the memory. Otherwise
-      // this freed MemoryBlock is not available for further allocations. Since all happens on the stack
-      // this is not a leak!
+      // If it was the most recent allocated MemoryBlock, then we can re-use the 
+      // memory. Otherwise this freed MemoryBlock is not available for further 
+      // allocations. Since all happens on the stack this is not a leak!
       if (isLastUsedBlock(b)) {
         _p = static_cast<char*>(b.ptr);
       }
@@ -112,8 +112,8 @@ namespace ALB
       }
 
       auto newBlock = allocate(alignedLength); 
-      // we cannot deallocate the old block, because it is in between used ones, so we have to 
-      // "leak" here.
+      // we cannot deallocate the old block, because it is in between used ones,
+      //  so we have to "leak" here.
       if (newBlock) {
         Helper::blockCopy(b, newBlock);
         b = newBlock;

@@ -15,7 +15,7 @@
 namespace ALB
 {
   /**
-   * Value type to describe a memory block and it's length
+   * The value type to describe a memory block and it's length
    */
   struct Block {
     Block() : ptr(nullptr), length(0) {}
@@ -63,7 +63,8 @@ namespace ALB
 
   namespace Helper {
     /**
-     * Copies std::min(source.length, destination.length) bytes from source to destination
+     * Copies std::min(source.length, destination.length) bytes from source to 
+     * destination
      * \ingroup group_helpers
      */
     void blockCopy(const ALB::Block& source, ALB::Block& destination);
@@ -79,12 +80,15 @@ namespace ALB
     }
 
     /**
-     * Allocates a new block of n bytes with newAllocator, copies min(b.length, n) bytes to it,
-     * deallocates the old block b, and returns the new block.
+     * Allocates a new block of n bytes with newAllocator, copies min(b.length, n) 
+     * bytes to it, deallocates the old block b, and returns the new block.
      * \ingroup group_helpers
      */
     template <class OldAllocator, class NewAllocator>
-    bool reallocateWithCopy(OldAllocator& oldAllocator, NewAllocator& newAllocator, Block& b, size_t n)
+    bool reallocateWithCopy(OldAllocator& oldAllocator, 
+                            NewAllocator& newAllocator, 
+                            Block& b, 
+                            size_t n)
     {
       auto newBlock = newAllocator.allocate(n);
       if (!newBlock) {
@@ -101,16 +105,20 @@ namespace ALB
      * If available it uses ::expand() of the allocator.
      * (With C++11 this could be done with a partial specialized function,
      * but VS 2012 does not support this.)
+     * @tparam Allocator The allocator that should be used during the reallocation
      * \ingroup group_helpers
      */
     template <class Allocator, typename Enabled = void>
     struct Reallocator;
 
     /**
-     * Specialization for Allocators that implements ::expand()
+     * Specialization for Allocators that implements Allocator::expand()
+     * @tparam Allocator The allocator that should be used during the reallocation
+     * \ingroup group_helpers
      */
     template <class Allocator>
-    struct Reallocator<Allocator, typename std::enable_if<Traits::has_expand<Allocator>::value>::type>
+    struct Reallocator<Allocator, 
+      typename std::enable_if<Traits::has_expand<Allocator>::value>::type>
     {
       static bool isHandledDefault(Allocator& allocator, Block& b, size_t n)
       {
@@ -135,10 +143,13 @@ namespace ALB
     };
 
     /**
-     * Specialization for Allocators, that don't implement ::expand()
+     * Specialization for Allocators, that don't implement Allocator::expand()
+     * @tparam Allocator The allocator that should be used during the reallocation
+     * \ingroup group_helpers
      */
     template <class Allocator>
-    struct Reallocator<Allocator, typename std::enable_if<!Traits::has_expand<Allocator>::value>::type>
+    struct Reallocator<Allocator, 
+      typename std::enable_if<!Traits::has_expand<Allocator>::value>::type>
     {
       static bool isHandledDefault(Allocator& allocator, Block& b, size_t n)
       {
@@ -158,9 +169,9 @@ namespace ALB
     };
 
     /**
-     * Simple generic value type that is either compile time constant or dynamically set-able
-     * depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then value can be changed
-     * during runtime.
+     * Simple generic value type that is either compile time constant or dynamically 
+     * set-able depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then 
+     * value can be changed during runtime.
      * @Author Andrei Alexandrescu
      * \ingroup group_helpers
      */

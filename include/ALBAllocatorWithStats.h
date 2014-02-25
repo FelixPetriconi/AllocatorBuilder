@@ -38,54 +38,56 @@ namespace ALB {
   */
   enum StatsOptions : unsigned {
     /**
-    * Counts the number of calls to #owns).
+    * Counts the number of calls to ALB::AllocatorWithStats::owns.
     */
     NumOwns = 1u << 0,
     /**
-    * Counts the number of calls to #allocate. All calls are counted,
-    * including requests for zero bytes or failed requests.
+    * Counts the number of calls to ALB::AllocatorWithStats::allocate. 
+    * All calls are counted, including requests for zero bytes or failed requests.
     */
     NumAllocate = 1u << 1,
     /**
-    * Counts the number of calls to #allocate that succeeded, i.e. they were
-    * for more than zero bytes and returned a non-null block.
+    * Counts the number of calls to ALB::AllocatorWithStats::allocate 
+    * that succeeded, i.e. they wherefor more than zero bytes and returned a 
+    * non-null block.
     */
     NumAllocateOK = 1u << 2,
     /**
-    * Counts the number of calls to #expand, regardless of arguments or
-    * result.
+    * Counts the number of calls to ALB::AllocatorWithStats::expand, regardless 
+    * of arguments or result.
     */
     NumExpand = 1u << 3,
     /**
-    * Counts the number of calls to #expand that resulted in a successful
-    * expansion.
+    * Counts the number of calls to ALB::AllocatorWithStats::expand that resulted 
+    * in a successful expansion.
     */
     NumExpandOK = 1u << 4,
     /**
-    * Counts the number of calls to #reallocate, regardless of arguments or
-    * result.
+    * Counts the number of calls to ALB::AllocatorWithStats::reallocate, 
+    * regardless of arguments or result.
     */
     NumReallocate = 1u << 5,
     /**
-    * Counts the number of calls to #reallocate that succeeded. (Reallocations
-    * to zero bytes count as successful.)
+    * Counts the number of calls to ALB::AllocatorWithStats::reallocate that 
+    * succeeded. (Reallocations to zero bytes count as successful.)
     */
     NumReallocateOK = 1u << 6,
     /**
-    * Counts the number of calls to #reallocate that resulted in an in-place
-    * reallocation (no memory moved). If this number is close to the total number
-    * of reallocations, that indicates the allocator finds room at the current
-    * block's end in a large fraction of the cases, but also that internal
-    * fragmentation may be high (the size of the unit of allocation is large
-    * compared to the typical allocation size of the application).
+    * Counts the number of calls to ALB::AllocatorWithStats::reallocate that 
+    * resulted in an in-place reallocation (no memory moved). If this number 
+    * is close to the total number of reallocations, that indicates the allocator 
+    * finds room at the current block's end in a large fraction of the cases, but 
+    * also that internal fragmentation may be high (the size of the unit of 
+    * allocation is large compared to the typical allocation size of the 
+    * application).
     */
     NumReallocateInPlace = 1u << 7,
     /**
-    * Counts the number of calls to #deallocate.
+    * Counts the number of calls to ALB::AllocatorWithStats::deallocate.
     */
     NumDeallocate = 1u << 8,
     /**
-    * Counts the number of calls to #deallocateAll.
+    * Counts the number of calls to ALB::AllocatorWithStats::deallocateAll.
     */
     NumDeallocateAll = 1u << 9,
     /**
@@ -93,40 +95,43 @@ namespace ALB {
     */
     NumAll = (1u << 10) - 1,
     /**
-    * Tracks total cumulative bytes allocated by means of #allocate,
-    * #expand, and #reallocate (when resulting in an expansion). This
+    * Tracks total cumulative bytes allocated by means of 
+    * ALB::AllocatorWithStats::allocate, ALB::AllocatorWithStats::expand, and 
+    * ALB::AllocatorWithStats::reallocate (when resulting in an expansion). This
     * number always grows and indicates allocation traffic. To compute bytes
-    * currently allocated, subtract #bytesDeallocated (below) from
-    * #bytesAllocated.
+    * currently allocated, subtract ALB::AllocatorWithStats::bytesDeallocated (below) 
+    * from ALB::AllocatorWithStats::bytesAllocated.
     */
     BytesAllocated = 1u << 10,
     /**
-    * Tracks total cumulative bytes deallocated by means of #deallocate and
-    * #reallocate (when resulting in a contraction). This number always grows
-    * and indicates deallocation traffic.
-    */
+     * Tracks total cumulative bytes deallocated by means of 
+     * ALB::AllocatorWithStats::deallocate and ALB::AllocatorWithStats::reallocate 
+     * (when resulting in a contraction). This number always grows and indicates 
+     * deallocation traffic.
+     */
     BytesDeallocated = 1u << 11,
     /**
-    * Tracks the sum of all @delta values in calls of the form
-    * #expand(b, delta)) that succeed (return @return).
-    */
+     * Tracks the sum of all delta values in calls of the form
+     * ALB::AllocatorWithStats::expand(b, delta)) that succeed.
+     */
     BytesExpanded = 1u << 12,
     /**
-    * Tracks the sum of all (b.length - s) with (b.length > s) in calls of
-    * the form #reallocate(b, s)) that succeed (return $(D true)).
-    */
+     * Tracks the sum of all (b.length - s) with (b.length > s) in calls of
+     * the form ALB::AllocatorWithStats::reallocate(b, s)) that succeed.
+     */
     BytesContracted = 1u << 13,
     /**
-    * Tracks the sum of all bytes moved as a result of calls to @reallocate that
-    * were unable to reallocate in place. A large number (relative to
-    * bytesAllocated)) indicates that the application should use larger
-    * preallocations.
-    */
+     * Tracks the sum of all bytes moved as a result of calls to 
+     * ALB::AllocatorWithStats::reallocate that
+     * were unable to reallocate in place. A large number (relative to
+     * bytesAllocated)) indicates that the application should use larger
+     * preallocations.
+     */
     BytesMoved = 1u << 14,
     /**
-    * Measures the sum of extra bytes allocated beyond the bytes requested, i.e.
-    * the $(WEB goo.gl/YoKffF, internal fragmentation). This is the current
-    * effective number of slack bytes, and it goes up and down with time.
+     * Measures the sum of extra bytes allocated beyond the bytes requested, i.e.
+     * the http://goo.gl/YoKffF, internal fragmentation). This is the current
+     * effective number of slack bytes, and it goes up and down with time.
     */
     BytesSlack = 1u << 15,
     /**
@@ -150,7 +155,7 @@ namespace ALB {
     */
     CallerFile = 1u << 18,
     /**
-    * Instructs AllocatorWithStats to store the caller __FUNCTION__ for
+    * Instructs AllocatorWithStats to store the caller function name for
     * each allocation.
     */
     CallerFunction = 1u << 19,
@@ -181,7 +186,7 @@ namespace ALB {
    * 
    * In case that caller information shall be collected, the Allocator
    * parameter is encapsulated with an #AffixAllocator. In this case
-   * AllocatorWithStats::AllocationInfo is in used as Prefix and so all
+   * ALB::AllocatorWithStats::AllocationInfo is in used as Prefix and so all
    * caller information is prepended to every allocated block.
    * Be aware that collecting of caller informations adds on top of each allocation
    * sizeof(AllocatorWithStats::AllocationInfo) bytes! 
@@ -204,6 +209,12 @@ namespace ALB {
       const char*   callerFile;
       const char*   callerFunction;
       int           callerLine;
+      bool operator== (const AllocationInfo& rhs) const {
+        return ::strcmp(callerFile, rhs.callerFile) == 0 &&
+        ::strcmp(callerFunction, rhs.callerFunction) == 0 &&
+        callerSize == rhs.callerSize;
+      }
+
       std::chrono::time_point<std::chrono::system_clock> callerTime;
       AllocationInfo* previous, *next;
     };

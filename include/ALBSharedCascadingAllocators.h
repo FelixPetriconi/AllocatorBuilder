@@ -51,7 +51,9 @@ namespace ALB
     }
 
   public:
-    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+    static const bool supports_truncated_deallocation = 
+      Allocator::supports_truncated_deallocation;
+    
     SharedCascadingAllocators() : _root(nullptr) {}
 
     /**
@@ -154,7 +156,7 @@ namespace ALB
     }
 
     /**
-     * Tries to expand the given block insito by the specified number óf bytes
+     * Tries to expand the given block insito by the specified number of bytes
      * This is only available if the Allocator implements it
      * @param b The block to be expanded
      * @param delta The amount of bytes
