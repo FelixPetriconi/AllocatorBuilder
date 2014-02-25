@@ -19,148 +19,6 @@
 #include <boost/iterator/iterator_facade.hpp>
 
 namespace ALB {
-
-  /**
-   * The following options define what statistics shall be collected during runtime
-   * Directly taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
-   */
-  enum StatsOptions : unsigned { 
-    /**
-     * Counts the number of calls to #owns).
-     */
-    numOwns = 1u << 0,
-    /**
-     * Counts the number of calls to #allocate. All calls are counted,
-     * including requests for zero bytes or failed requests.
-    */
-    numAllocate = 1u << 1,
-    /**
-     * Counts the number of calls to #allocate that succeeded, i.e. they were
-     * for more than zero bytes and returned a non-null block.
-     */
-    numAllocateOK = 1u << 2,
-    /**
-     * Counts the number of calls to #expand, regardless of arguments or
-     * result.
-     */
-    numExpand = 1u << 3,
-    /**
-     * Counts the number of calls to #expand that resulted in a successful
-     * expansion.
-     */
-    numExpandOK = 1u << 4,
-    /**
-     * Counts the number of calls to #reallocate, regardless of arguments or
-     * result.
-     */
-    numReallocate = 1u << 5,
-    /**
-     * Counts the number of calls to #reallocate that succeeded. (Reallocations
-     * to zero bytes count as successful.)
-     */
-    numReallocateOK = 1u << 6,
-    /**
-     * Counts the number of calls to #reallocate that resulted in an in-place
-     * reallocation (no memory moved). If this number is close to the total number
-     * of reallocations, that indicates the allocator finds room at the current
-     * block's end in a large fraction of the cases, but also that internal
-     * fragmentation may be high (the size of the unit of allocation is large
-     * compared to the typical allocation size of the application).
-     */
-    numReallocateInPlace = 1u << 7,
-    /**
-     * Counts the number of calls to #deallocate.
-     */
-    numDeallocate = 1u << 8,
-    /**
-     * Counts the number of calls to #deallocateAll.
-     */
-    numDeallocateAll = 1u << 9,
-    /**
-     * Chooses all numXxx)flags.
-     */
-    numAll = (1u << 10) - 1,
-    /**
-     * Tracks total cumulative bytes allocated by means of #allocate,
-     * #expand, and #reallocate (when resulting in an expansion). This
-     * number always grows and indicates allocation traffic. To compute bytes
-     * currently allocated, subtract #bytesDeallocated (below) from
-     * #bytesAllocated.
-     */
-    bytesAllocated = 1u << 10,
-    /**
-     * Tracks total cumulative bytes deallocated by means of #deallocate and
-     * #reallocate (when resulting in a contraction). This number always grows
-     * and indicates deallocation traffic.
-     */
-    bytesDeallocated = 1u << 11,
-    /**
-     * Tracks the sum of all @delta values in calls of the form
-     * #expand(b, delta)) that succeed (return @return).
-     */
-    bytesExpanded = 1u << 12,
-    /**
-     * Tracks the sum of all (b.length - s) with (b.length > s) in calls of
-     * the form #reallocate(b, s)) that succeed (return $(D true)).
-     */
-    bytesContracted = 1u << 13,
-    /**
-     * Tracks the sum of all bytes moved as a result of calls to @reallocate that
-     * were unable to reallocate in place. A large number (relative to 
-     * bytesAllocated)) indicates that the application should use larger
-     * preallocations.
-     */
-    bytesMoved = 1u << 14,
-    /**
-     * Measures the sum of extra bytes allocated beyond the bytes requested, i.e.
-     * the $(WEB goo.gl/YoKffF, internal fragmentation). This is the current
-     * effective number of slack bytes, and it goes up and down with time.
-     */
-    bytesSlack = 1u << 15,
-    /**
-     * Measures the maximum bytes allocated over the time. This is useful for
-     * dimensioning allocators.
-     */
-    bytesHighTide = 1u << 16,
-    /**
-     * Chooses all byteXxx flags.
-     */
-    bytesAll = ((1u << 17) - 1) & ~numAll,
-    /**
-     * Instructs AllocatorWithStats to store the size asked by the caller for
-     * each allocation. All per-allocation data is stored just before the actually
-     * allocation by using an AffixAllocator.
-    */
-    callerSize = 1u << 17,
-    /**
-     * Instructs AllocatorWithStats to store the caller's file for each
-     * allocation.
-     */
-    callerFile = 1u << 18,
-    /**
-     * Instructs AllocatorWithStats to store the caller __FUNCTION__ for
-     * each allocation.
-     */
-    callerFunction = 1u << 19,
-    /**
-     * Instructs AllocatorWithStats to store the caller's line for each
-     * allocation.
-     */
-    callerLine = 1u << 20,
-    /**
-     * Instructs AllocatorWithStats to store the time of each allocation.
-     */
-    callerTime = 1u << 21,
-    /**
-     * Chooses all callerXxx flags.
-     */
-    callerAll = ((1u << 22) - 1) & ~numAll & ~bytesAll,
-    /**
-     * Combines all flags above.
-     */
-    all = (1u << 22) - 1      
-  };
-
 /// Use this macro if you want to store the caller information
 #define ALLOCATE(A, N) A.allocate(N, __FILE__, __FUNCTION__, __LINE__)
 
@@ -173,34 +31,228 @@ namespace ALB {
 
 
   /**
+  * The following options define what statistics shall be collected during runtime
+  * taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
+  * and adapted to this implementation.
+  */
+  enum StatsOptions : unsigned {
+    /**
+    * Counts the number of calls to #owns).
+    */
+    NumOwns = 1u << 0,
+    /**
+    * Counts the number of calls to #allocate. All calls are counted,
+    * including requests for zero bytes or failed requests.
+    */
+    NumAllocate = 1u << 1,
+    /**
+    * Counts the number of calls to #allocate that succeeded, i.e. they were
+    * for more than zero bytes and returned a non-null block.
+    */
+    NumAllocateOK = 1u << 2,
+    /**
+    * Counts the number of calls to #expand, regardless of arguments or
+    * result.
+    */
+    NumExpand = 1u << 3,
+    /**
+    * Counts the number of calls to #expand that resulted in a successful
+    * expansion.
+    */
+    NumExpandOK = 1u << 4,
+    /**
+    * Counts the number of calls to #reallocate, regardless of arguments or
+    * result.
+    */
+    NumReallocate = 1u << 5,
+    /**
+    * Counts the number of calls to #reallocate that succeeded. (Reallocations
+    * to zero bytes count as successful.)
+    */
+    NumReallocateOK = 1u << 6,
+    /**
+    * Counts the number of calls to #reallocate that resulted in an in-place
+    * reallocation (no memory moved). If this number is close to the total number
+    * of reallocations, that indicates the allocator finds room at the current
+    * block's end in a large fraction of the cases, but also that internal
+    * fragmentation may be high (the size of the unit of allocation is large
+    * compared to the typical allocation size of the application).
+    */
+    NumReallocateInPlace = 1u << 7,
+    /**
+    * Counts the number of calls to #deallocate.
+    */
+    NumDeallocate = 1u << 8,
+    /**
+    * Counts the number of calls to #deallocateAll.
+    */
+    NumDeallocateAll = 1u << 9,
+    /**
+    * Chooses all numXxx)flags.
+    */
+    NumAll = (1u << 10) - 1,
+    /**
+    * Tracks total cumulative bytes allocated by means of #allocate,
+    * #expand, and #reallocate (when resulting in an expansion). This
+    * number always grows and indicates allocation traffic. To compute bytes
+    * currently allocated, subtract #bytesDeallocated (below) from
+    * #bytesAllocated.
+    */
+    BytesAllocated = 1u << 10,
+    /**
+    * Tracks total cumulative bytes deallocated by means of #deallocate and
+    * #reallocate (when resulting in a contraction). This number always grows
+    * and indicates deallocation traffic.
+    */
+    BytesDeallocated = 1u << 11,
+    /**
+    * Tracks the sum of all @delta values in calls of the form
+    * #expand(b, delta)) that succeed (return @return).
+    */
+    BytesExpanded = 1u << 12,
+    /**
+    * Tracks the sum of all (b.length - s) with (b.length > s) in calls of
+    * the form #reallocate(b, s)) that succeed (return $(D true)).
+    */
+    BytesContracted = 1u << 13,
+    /**
+    * Tracks the sum of all bytes moved as a result of calls to @reallocate that
+    * were unable to reallocate in place. A large number (relative to
+    * bytesAllocated)) indicates that the application should use larger
+    * preallocations.
+    */
+    BytesMoved = 1u << 14,
+    /**
+    * Measures the sum of extra bytes allocated beyond the bytes requested, i.e.
+    * the $(WEB goo.gl/YoKffF, internal fragmentation). This is the current
+    * effective number of slack bytes, and it goes up and down with time.
+    */
+    BytesSlack = 1u << 15,
+    /**
+    * Measures the maximum bytes allocated over the time. This is useful for
+    * dimensioning allocators.
+    */
+    BytesHighTide = 1u << 16,
+    /**
+    * Chooses all byteXxx flags.
+    */
+    BytesAll = ((1u << 17) - 1) & ~NumAll,
+    /**
+    * Instructs AllocatorWithStats to store the size asked by the caller for
+    * each allocation. All per-allocation data is stored just before the actually
+    * allocation by using an AffixAllocator.
+    */
+    CallerSize = 1u << 17,
+    /**
+    * Instructs AllocatorWithStats to store the caller's file for each
+    * allocation.
+    */
+    CallerFile = 1u << 18,
+    /**
+    * Instructs AllocatorWithStats to store the caller __FUNCTION__ for
+    * each allocation.
+    */
+    CallerFunction = 1u << 19,
+    /**
+    * Instructs AllocatorWithStats to store the caller's line for each
+    * allocation.
+    */
+    CallerLine = 1u << 20,
+    /**
+    * Instructs AllocatorWithStats to store the time of each allocation.
+    */
+    CallerTime = 1u << 21,
+    /**
+    * Chooses all callerXxx flags.
+    */
+    CallerAll = ((1u << 22) - 1) & ~NumAll & ~BytesAll,
+    /**
+    * Combines all flags above.
+    */
+    All = (1u << 22) - 1
+  };
+
+  /**
    * This Allocator serves as a facade in front of the specified allocator to collect
    * statistics during runtime about all operations done on this instance.
-   * Be aware that collecting of caller informations can easily consume lot's
-   * of memory! With a good optimizing compiler only the code for the enabled
+   * This is an implementation that is not intended to be used in a shared
+   * environment.
+   * 
+   * In case that caller information shall be collected, the Allocator
+   * parameter is encapsulated with an #AffixAllocator. In this case
+   * AllocatorWithStats::AllocationInfo is in used as Prefix and so all
+   * caller information is prepended to every allocated block.
+   * Be aware that collecting of caller informations adds on top of each allocation
+   * sizeof(AllocatorWithStats::AllocationInfo) bytes! 
+   * With a good optimizing compiler only the code for the enabled
    * statistic information gets created.
    * @tparam Allocator The allocator that performs all allocations
    * @tparam Flags Specifies what kind of statistics get collected
    * \ingroup group_allocators
    */
-  template <class Allocator, unsigned Flags = ALB::StatsOptions::all>
+  template <class Allocator, unsigned Flags = ALB::StatsOptions::All>
   class AllocatorWithStats {
-    // in case that we store allocation state, we use an AffixAllocator to store
-    // the additional informations as a Prefix
   public:
-    struct AllocationInfo;
-  private:
+    /**
+     * In case that we store allocation state, we use an AffixAllocator to store
+     * the additional informations as a Prefix
+     */ 
+    struct AllocationInfo {
+      size_t        callerSize;
+      const char*   callerFile;
+      const char*   callerFunction;
+      int           callerLine;
+      std::chrono::time_point<std::chrono::system_clock> callerTime;
+      AllocationInfo* previous, *next;
+    };
+
+    /**
+     * This container implements a facade over all currently available AllocationInfo
+     * The AllocatorWithStats owns all elements and changing any element has
+     * undefined behavior!
+     */
+    class Allocations {
+      /**
+      * Iterator for #Allocations elements
+      */
+      class AllocationInfoIterator :
+        public boost::iterator_facade<AllocationInfoIterator, AllocationInfo, boost::forward_traversal_tag> {
+        friend class boost::iterator_core_access;
+
+        void increment() { _node = _node->next; }
+
+        bool equal(AllocationInfoIterator const& rhs) const { return this->_node == rhs._node; }
+
+        AllocationInfo& dereference() const { return *_node; }
+
+        AllocationInfo* _node;
+
+      public:
+        AllocationInfoIterator() : _node(nullptr) {}
+
+        explicit AllocationInfoIterator(AllocationInfo* p) : _node(p) {}
+      };
+
+
+      const AllocationInfoIterator _begin;
+      const AllocationInfoIterator _end;
+
+    public:
+      Allocations(AllocationInfo* root) : _begin(root) {}
+      typedef AllocationInfo value_type;
+      typedef AllocationInfoIterator const_iterator;
+      const_iterator cbegin() const { return _begin; }
+      const_iterator cend() const { return _end; }
+      bool empty() const { return _begin == _end; }
+    };
+
     static const bool HasPerAllocationState =
-      (Flags & (StatsOptions::callerTime |
-      StatsOptions::callerFile |
-      StatsOptions::callerLine)) != 0;
+      (Flags & (StatsOptions::CallerTime |
+      StatsOptions::CallerFile |
+      StatsOptions::CallerLine)) != 0;
 
-    typename Traits::type_switch<
-      AffixAllocator<Allocator, AllocationInfo>, 
-      Allocator, 
-      HasPerAllocationState>::type _allocator;
-
-    AllocationInfo* _root;
-
+    // Simplification for defining all members and accessors.
+    // There is potential to improve this with boost.preprocessor
 #define MEMBER_ACCESSORS                   \
     MEMBER_ACCESSOR(numOwns)               \
     MEMBER_ACCESSOR(numAllocate)           \
@@ -220,93 +272,14 @@ namespace ALB {
     MEMBER_ACCESSOR(bytesSlack)            \
     MEMBER_ACCESSOR(bytesHighTide)
 
-
   MEMBER_ACCESSORS
 
 #undef MEMBER_ACCESSOR
 #undef MEMBER_ACCESSORS
 
-    template <typename T>
-    void up(ALB::StatsOptions option, T& value) {
-      if (Flags & option)
-        value++;
-    }
-    template <typename T>
-    void upOK(ALB::StatsOptions option, T& value, bool ok) {
-      if (Flags & option && ok)
-        value++;
-    }
-    template <typename T>
-    void add(ALB::StatsOptions option, T& value, typename std::make_signed<T>::type delta) {
-      if (Flags & option)
-        value += delta;
-    }
-    template <typename T>
-    void set(ALB::StatsOptions option, T& value, T t) {
-      if (Flags & option)
-        value = std::move(t);
-    }
-
-
-    void updateHighTide() {
-      if (Flags & StatsOptions::bytesHighTide)
-      {
-        const size_t currentlyAllocated = _bytesAllocated - _bytesDeallocated;
-        if (_bytesHighTide < currentlyAllocated) {
-          _bytesHighTide = currentlyAllocated;
-        }
-      }
-    }
-
-  public:
     static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
     static const bool has_per_allocation_state = HasPerAllocationState;
 
-    struct AllocationInfo {
-      size_t        callerSize;
-      const char*   callerFile;
-      const char*   callerFunction;
-      int           callerLine;
-      std::chrono::time_point<std::chrono::system_clock> callerTime;
-      AllocationInfo* previous, *next;
-    };
-
-    class AllocationInfoIterator : public boost::iterator_facade<
-      AllocationInfoIterator
-      , AllocationInfo
-      , boost::forward_traversal_tag
-    > {
-      friend class boost::iterator_core_access;
-
-      void increment() { _node = _node->next; }
-
-      bool equal(AllocationInfoIterator const& rhs) const { 
-        return this->_node == rhs._node; 
-      }
-
-      AllocationInfo& dereference() const { return *_node; }
-
-      AllocationInfo* _node;
-
-    public:
-      AllocationInfoIterator() : _node(nullptr) {}
-
-      explicit AllocationInfoIterator(AllocationInfo* p) : _node(p) {}
-    };    
-
-    class Allocations {
-      const AllocationInfoIterator _begin;
-      const AllocationInfoIterator _end;
-
-    public:
-      Allocations(AllocationInfo* root) : _begin(root) {}
-      typedef AllocationInfo value_type;
-      typedef AllocationInfoIterator iterator;
-      typedef AllocationInfoIterator const_iterator;
-      const_iterator cbegin() const { return _begin; }
-      const_iterator cend() const { return _end; }
-      bool empty() const { return _begin == _end; }
-    };
     
     AllocatorWithStats() 
       : _root(nullptr)
@@ -333,27 +306,33 @@ namespace ALB {
      * The number of specified bytes gets allocated by the underlying Allocator.
      * Depending on the specified Flag, the allocating statistic information 
      * is stored.
+     * @param n The requested number of bytes
+     * @file The file name of the caller location (Only stored if CallerFile is enabled)
+     * @function The callers function (Only stored if CallerFunction is enabled)
+     * @line The callers line in source code (Only stored if CallerLine is enabled)
      */
     Block allocate(size_t n, const char* file = nullptr, const char* function = nullptr, int line = 0) {
       auto result = _allocator.allocate(n);
-      up(StatsOptions::numAllocate, _numAllocate);
-      upOK(StatsOptions::numAllocateOK, _numAllocateOK, n > 0 && result);
-      add(StatsOptions::bytesAllocated, _bytesAllocated, result.length);
+      up(StatsOptions::NumAllocate, _numAllocate);
+      upOK(StatsOptions::NumAllocateOK, _numAllocateOK, n > 0 && result);
+      add(StatsOptions::BytesAllocated, _bytesAllocated, result.length);
       updateHighTide();
+
       if (result && has_per_allocation_state) {
         AllocationInfo* stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, result);
-        set(StatsOptions::callerSize, stat->callerSize, n);
-        set(StatsOptions::callerFile, stat->callerFile, file);
-        set(StatsOptions::callerFunction, stat->callerFunction, function);
-        set(StatsOptions::callerLine, stat->callerLine, line);
-        set(StatsOptions::callerTime, stat->callerTime, std::chrono::system_clock::now());
+        set(StatsOptions::CallerSize, stat->callerSize, n);
+        set(StatsOptions::CallerFile, stat->callerFile, file);
+        set(StatsOptions::CallerFunction, stat->callerFunction, function);
+        set(StatsOptions::CallerLine, stat->callerLine, line);
+        set(StatsOptions::CallerTime, stat->callerTime, std::chrono::system_clock::now());
+        // push into caller info stack
         if (_root) {
           _root->previous = stat;
           stat->next = _root;
           stat->previous = nullptr;
           _root = stat;
         }
-        else {
+        else { // create the new stack
           stat->previous = nullptr;
           stat->next = nullptr;
           _root = stat;
@@ -361,14 +340,16 @@ namespace ALB {
       }
       return result;
     }
+
     /**
      * The specified block gets freed by the underlaying Allocator
      * Depending on the specified Flag, the deallocating statistic information
      * is stored.
+     * @param b Block to be freed
      */
     void deallocate(Block& b) {
-      up(StatsOptions::numDeallocate, _numDeallocate);
-      add(StatsOptions::bytesDeallocated, _bytesDeallocated, b.length);
+      up(StatsOptions::NumDeallocate, _numDeallocate);
+      add(StatsOptions::BytesDeallocated, _bytesDeallocated, b.length);
 
       if (b && has_per_allocation_state) {
         auto stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
@@ -389,32 +370,35 @@ namespace ALB {
      * The specified block gets reallocated by the underlaying Allocator
      * Depending on the specified Flag, the reallocating statistic information 
      * is stored.
+     * @param b The block that should be reallocated.
+     * @param n The new size. If zero, then a deallocation takes place
+     * @return True, if the operation was successful
      */
     bool reallocate(Block& b, size_t n) {
       auto originalBlock = b;
-      up(StatsOptions::numReallocate, _numReallocate);
+      up(StatsOptions::NumReallocate, _numReallocate);
 
       if (!_allocator.reallocate(b, n))
       {
         return false;
       }
-      up(StatsOptions::numReallocateOK, _numReallocateOK);
+      up(StatsOptions::NumReallocateOK, _numReallocateOK);
       std::make_signed<size_t>::type delta = b.length - originalBlock.length;
       if (b.ptr == originalBlock.ptr) {
-        up(StatsOptions::numReallocateInPlace, _numReallocateInPlace);
+        up(StatsOptions::NumReallocateInPlace, _numReallocateInPlace);
         if (delta > 0) {
-          add(StatsOptions::bytesAllocated, _bytesAllocated, delta);
-          add(StatsOptions::bytesExpanded, _bytesExpanded, delta);
+          add(StatsOptions::BytesAllocated, _bytesAllocated, delta);
+          add(StatsOptions::BytesExpanded, _bytesExpanded, delta);
         }
         else {
-          add(StatsOptions::bytesDeallocated, _bytesDeallocated, -delta);
-          add(StatsOptions::bytesContracted, _bytesContracted, -delta);
+          add(StatsOptions::BytesDeallocated, _bytesDeallocated, -delta);
+          add(StatsOptions::BytesContracted, _bytesContracted, -delta);
         }
       }  // was moved to a new location
       else {
-        add(StatsOptions::bytesAllocated, _bytesAllocated, b.length);
-        add(StatsOptions::bytesMoved, _bytesMoved, originalBlock.length);
-        add(StatsOptions::bytesDeallocated, _bytesDeallocated, originalBlock.length);
+        add(StatsOptions::BytesAllocated, _bytesAllocated, b.length);
+        add(StatsOptions::BytesMoved, _bytesMoved, originalBlock.length);
+        add(StatsOptions::BytesDeallocated, _bytesDeallocated, originalBlock.length);
 
         if (b && has_per_allocation_state) {
           auto stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
@@ -437,12 +421,12 @@ namespace ALB {
      * The given block is passed to the underlying Allocator to be checked
      * for ownership. 
      * This method is only available if the underlying Allocator implements it.
-     * Depending on the specified Flag, the ownc statistic information 
+     * Depending on the specified Flag, only the owns statistic information 
      * is stored.
      */
     typename Traits::enable_result_to<bool, Traits::has_owns<Allocator>::value>::type 
     owns(const Block& b) const {
-      up(StatsOptions::numOwns, _numOwns);
+      up(StatsOptions::NumOwns, _numOwns);
       return _allocator.owns(b);
     }
 
@@ -454,14 +438,14 @@ namespace ALB {
      */
     typename Traits::enable_result_to<bool, Traits::has_expand<Allocator>::value>::type 
     expand(Block& b, size_t delta) {
-      up(StatsOptions::numExpand, _numExpand);
+      up(StatsOptions::NumExpand, _numExpand);
       auto oldLength = b.length;
       auto result = _allocator.expand(b, delta);
       if (result)
       {
-        up(StatsOptions::numExpandOK, _numExpandOK);
-        add(StatsOptions::bytesExpanded, _bytesExpanded, b.length - oldLength);
-        add(StatsOptions::bytesAllocated, _bytesAllocated, b.length - oldLength);
+        up(StatsOptions::NumExpandOK, _numExpandOK);
+        add(StatsOptions::BytesExpanded, _bytesExpanded, b.length - oldLength);
+        add(StatsOptions::BytesAllocated, _bytesAllocated, b.length - oldLength);
         updateHighTide();
         if (b && has_per_allocation_state) {
           auto stat = Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
@@ -474,5 +458,45 @@ namespace ALB {
     Allocations allocations() const {
       return Allocations(_root);
     }
+
+  private:
+    template <typename T>
+    void up(ALB::StatsOptions option, T& value) {
+      if (Flags & option)
+        value++;
+    }
+    template <typename T>
+    void upOK(ALB::StatsOptions option, T& value, bool ok) {
+      if (Flags & option && ok)
+        value++;
+    }
+    template <typename T>
+    void add(ALB::StatsOptions option, T& value, typename std::make_signed<T>::type delta) {
+      if (Flags & option)
+        value += delta;
+    }
+    template <typename T>
+    void set(ALB::StatsOptions option, T& value, T t) {
+      if (Flags & option)
+        value = std::move(t);
+    }
+
+
+    void updateHighTide() {
+      if (Flags & StatsOptions::BytesHighTide)
+      {
+        const size_t currentlyAllocated = _bytesAllocated - _bytesDeallocated;
+        if (_bytesHighTide < currentlyAllocated) {
+          _bytesHighTide = currentlyAllocated;
+        }
+      }
+    }
+
+    typename Traits::type_switch<
+      AffixAllocator<Allocator, AllocationInfo>,
+      Allocator,
+      HasPerAllocationState>::type _allocator;
+
+    AllocationInfo* _root;
   };
 }
