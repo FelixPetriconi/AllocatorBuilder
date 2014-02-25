@@ -47,9 +47,16 @@ namespace ALB
     static const bool supports_truncated_deallocation = 
       Allocator::supports_truncated_deallocation;
 
-
     SharedFreeList() : _root(PoolSize) {}
 
+    /**
+     * Constructs a SharedFreeList with the specified bounding edges
+     * This c'tor is just available if the template parameter MinSize
+     * and MaxSize are set to DynamicSetSize. (Otherwise the compiler
+     * will tell ;-)
+     * @param minSize The lower boundary accepted by this Allocator
+     * @param maxSize The upper boundary accepted by this Allocator
+     */
     SharedFreeList(size_t minSize, size_t maxSize) 
       : _root(PoolSize) 
     {
@@ -57,6 +64,13 @@ namespace ALB
       _upperBound.value(maxSize);
     }
 
+    /**
+     * Set the min and max boundary of this allocator. This method is 
+     * just available if the template parameter MinSize and MaxSize 
+     * are set to DynamicSetSize. (Otherwise the compiler will tell ;-)
+     * @param minSize The lower boundary accepted by this Allocator
+     * @param maxSize The upper boundary accepted by this Allocator
+     */
     void setMinMax(size_t minSize, size_t maxSize) {
       BOOST_ASSERT_MSG(_lowerBound.value() == -1, 
         "Changing the lower bound during after initialization is not wise!");
@@ -67,14 +81,24 @@ namespace ALB
       _upperBound.value(maxSize);
     }
 
+    /**
+     * Returns the lower boundary
+     */
     size_t min_size() const {
       return _lowerBound.value();
     }
 
+    /**
+     * Returns the upper boundary
+     */
     size_t max_size() const {
       return _upperBound.value();
     }
 
+    /**
+     * Frees all resources. Beware of using allocated blocks given by
+     * this allocator after calling this.
+     */
     ~SharedFreeList() {
       void* curBlock = nullptr;
       while (_root.pop(curBlock)) {
@@ -82,6 +106,17 @@ namespace ALB
       }
     }
 
+    /**
+     * Provides a block. If it is available in the pool, then this will be
+     * reused. If the pool is empty, then a new block will be created and
+     * returned. The passed size n must be within the boundary of the 
+     * allocator, otherwise an empty block will returned.
+     * Depending on the parameter NumberOfBatchAllocations not only one new
+     * block is allocated, but as many as specified.
+     * @param n The number of requested bytes. The result is aligned to the
+     *          upper boundary.
+     * @return The allocated block
+     */
     Block allocate(size_t n) {
       BOOST_ASSERT_MSG(_lowerBound.value() != -1, 
         "The lower bound was not initialized!");
@@ -130,6 +165,14 @@ namespace ALB
       return Block();
     }
 
+    /**
+     * Reallocates the given block. In this case only trivial case can lead to
+     * a positive result. In general reallocation to a different size > 0 is not
+     * supported by this allocator.
+     * @param b The block to reallocate
+     * @param n The new size
+     * @return True, if the reallocation was successful.
+     */
     bool reallocate(Block& b, size_t n) {
       if (Helper::Reallocator<SharedFreeList>::isHandledDefault(*this, b, n)) {
         return true;
