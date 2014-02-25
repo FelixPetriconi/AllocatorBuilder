@@ -17,11 +17,12 @@ set(HEADERS
   ../include/ALBAllocatorWithStats.h
   ../include/ALBBucketizer.h
   ../include/ALBFallbackAllocator.h
+  ../include/ALBHelperStack.h
   ../include/ALBMallocator.h
   ../include/ALBMemmoryCorruptionDetector.h
   ../include/ALBSegregator.h
   ../include/ALBSharedCascadingAllocators.h
-  ../include/ALBSharedFreeList.h
+  ../include/ALBFreeList.h
   ../include/ALBSharedHeap.h
   ../include/ALBStackAllocator.h
   ../include/ALBTraits.h

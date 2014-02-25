@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 
 #include "ALBTestHelpers.h"
-#include "ALBSharedFreeList.h"
+#include "ALBFreeList.h"
 #include "ALBMallocator.h"
 #include "ALBStackAllocator.h"
 

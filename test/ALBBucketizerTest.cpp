@@ -12,7 +12,7 @@
 #include <gtest/gtest.h>
 #include "ALBTestHelpers.h"
 #include "ALBBucketizer.h"
-#include "ALBSharedFreeList.h"
+#include "ALBFreeList.h"
 #include "ALBMallocator.h"
 
 using namespace ALB::TestHelpers;
