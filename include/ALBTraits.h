@@ -209,6 +209,7 @@ namespace ALB
      * @tparam A This type is defined if the bool is true
      * @tparam B This type is defined if the bool is false
      * @tparam bool Selects between the passed template parameter A or B
+     * \ingroup group_traits
      */
     template <class A, class B, bool>
     struct type_switch;

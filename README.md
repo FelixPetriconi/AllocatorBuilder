@@ -1,5 +1,5 @@
-AllocatorBuilder
-================
+Allocator Builder {#mainpage}
+=================
 
 A highly composable, policy based C++ allocator based on ideas from [Andrei Alexandrescu](http://erdani.com/), presented at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.
 
@@ -13,7 +13,7 @@ Example use cases:
   * Wait free allocations in a single threaded environmemt
 
 So the appropached is every allocator returns such a Block
-~~~{C++}
+~~~
 struct Block {
   void* ptr;
   size_t length;
@@ -21,7 +21,7 @@ struct Block {
 ~~~
 
 And request goes this way:
-~~~{C++}
+~~~
 auto myMemBlock = allocator.allocate(42);
 ~~~
 
@@ -30,7 +30,7 @@ Motivation
 Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)
 
 So the code could look like this
-~~~{C++} 
+~~~ 
 const int STACK_THRESHOLD = 1024;
 int neededBytes = 42
 bool wouldFitOnTheStack = neededBytes < STACK_THRESHOLD;
@@ -46,7 +46,7 @@ if (!p) {
 ~~~
 
 Everybody would agree that this is not nice! So what if one could encapsulate this into something like:
-~~~{C++}
+~~~
 const int STACK_THRESHOLD = 1024;
 int neededBytes = 42
 

@@ -34,6 +34,7 @@ namespace ALB {
   * The following options define what statistics shall be collected during runtime
   * taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
   * and adapted to this implementation.
+  * \ingroup group_stats
   */
   enum StatsOptions : unsigned {
     /**
@@ -188,7 +189,7 @@ namespace ALB {
    * statistic information gets created.
    * @tparam Allocator The allocator that performs all allocations
    * @tparam Flags Specifies what kind of statistics get collected
-   * \ingroup group_allocators
+   * \ingroup group_allocators group_stats
    */
   template <class Allocator, unsigned Flags = ALB::StatsOptions::All>
   class AllocatorWithStats {
@@ -196,6 +197,7 @@ namespace ALB {
     /**
      * In case that we store allocation state, we use an AffixAllocator to store
      * the additional informations as a Prefix
+     * \ingroup group_stats
      */ 
     struct AllocationInfo {
       size_t        callerSize;
@@ -210,13 +212,15 @@ namespace ALB {
      * This container implements a facade over all currently available AllocationInfo
      * The AllocatorWithStats owns all elements and changing any element has
      * undefined behavior!
+     * \ingroup group_stats
      */
     class Allocations {
       /**
       * Iterator for #Allocations elements
       */
-      class AllocationInfoIterator :
-        public boost::iterator_facade<AllocationInfoIterator, AllocationInfo, boost::forward_traversal_tag> {
+      class AllocationInfoIterator : public boost::iterator_facade<
+        AllocationInfoIterator, AllocationInfo, boost::forward_traversal_tag> {
+
         friend class boost::iterator_core_access;
 
         void increment() { _node = _node->next; }
@@ -233,16 +237,19 @@ namespace ALB {
         explicit AllocationInfoIterator(AllocationInfo* p) : _node(p) {}
       };
 
-
       const AllocationInfoIterator _begin;
       const AllocationInfoIterator _end;
 
     public:
-      Allocations(AllocationInfo* root) : _begin(root) {}
       typedef AllocationInfo value_type;
       typedef AllocationInfoIterator const_iterator;
+
+      Allocations(AllocationInfo* root) : _begin(root) {}
+
       const_iterator cbegin() const { return _begin; }
+
       const_iterator cend() const { return _end; }
+
       bool empty() const { return _begin == _end; }
     };
 
@@ -455,33 +462,57 @@ namespace ALB {
       return result;
     }
 
+    /**
+     * Accessor to all currently outstanding memory allocations. The ownership
+     * of all elements belong to this class.
+     * @return A container with all AllocationInfos
+     */
     Allocations allocations() const {
       return Allocations(_root);
     }
 
   private:
+    /**
+     * Increases the given value by one if the passed option is set
+     */
     template <typename T>
     void up(ALB::StatsOptions option, T& value) {
       if (Flags & option)
         value++;
     }
+
+    /**
+     * Increases the given value by one if the passed option is set and the bool
+     * is set to true
+     */
     template <typename T>
     void upOK(ALB::StatsOptions option, T& value, bool ok) {
       if (Flags & option && ok)
         value++;
     }
+
+    /**
+     * Adds the given delta value to the passed value, if the given option is
+     * set. Delta can be negative
+     */
     template <typename T>
     void add(ALB::StatsOptions option, T& value, typename std::make_signed<T>::type delta) {
       if (Flags & option)
         value += delta;
     }
+
+    /**
+     * Sets the given value to the passed reference, if the passed option is set
+     */
     template <typename T>
     void set(ALB::StatsOptions option, T& value, T t) {
       if (Flags & option)
         value = std::move(t);
     }
 
-
+    /**
+     * If the high tide information shall be collected, it is recalculated
+     */
     void updateHighTide() {
       if (Flags & StatsOptions::BytesHighTide)
       {
@@ -492,6 +523,10 @@ namespace ALB {
       }
     }
 
+    /**
+     * Depending on setting that caller information shall be collected
+     * an AffixAllocator or the specified Allocator directly is used.
+     */
     typename Traits::type_switch<
       AffixAllocator<Allocator, AllocationInfo>,
       Allocator,
