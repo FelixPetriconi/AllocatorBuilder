@@ -143,11 +143,7 @@ protected:
 
   void checkTheAllocationCallerExpectations(const std::vector<typename Allocator::AllocationInfo>& expectations,
     const std::vector<typename Allocator::AllocationInfo>& realAllocations) {
-    EXPECT_TRUE(std::equal(std::begin(expectations), 
-      std::end(expectations), 
-      std::begin(realAllocations),
-      [](const typename Allocator::AllocationInfo& lhs, const typename Allocator::AllocationInfo& rhs) {
-        return rhs == lhs;  }));
+    EXPECT_EQ(expectations, realAllocations);
   }
 
   Allocator sut;
