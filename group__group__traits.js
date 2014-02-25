@@ -1,5 +1,6 @@
 var group__group__traits =
 [
+    [ "AffixExtractor", "struct_a_l_b_1_1_traits_1_1_affix_extractor.html", null ],
     [ "has_expand", "struct_a_l_b_1_1_traits_1_1has__expand.html", null ],
     [ "has_deallocateAll", "struct_a_l_b_1_1_traits_1_1has__deallocate_all.html", null ],
     [ "has_owns", "struct_a_l_b_1_1_traits_1_1has__owns.html", null ],

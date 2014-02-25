@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('struct_a_l_b_1_1_helper_1_1_reallocato
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('struct_a_l_b_1_1_helper_1_1_reallocato
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra659dbe28d66e9c67f6b18f9b601f7b4a.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ALB::Helper::Reallocator&lt; Allocator, typename std::enable_if&lt;!Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt; Struct Template Reference</div>  </div>
+<div class="title">ALB::Helper::Reallocator&lt; Allocator, typename std::enable_if&lt;!Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt; Struct Template Reference<div class="ingroups"><a class="el" href="group__group__helpers.html">Helpers</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -124,9 +124,15 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isHandledDefau
 <div class="textblock"><h3>template&lt;class Allocator&gt;<br/>
 struct ALB::Helper::Reallocator&lt; Allocator, typename std::enable_if&lt;!Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;</h3>
 
-<p>Specialization for Allocators, that don't implement ::expand() </p>
+<p>Specialization for Allocators, that don't implement Allocator::expand() </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Allocator</td><td>The allocator that should be used during the reallocation </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00141">141</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00158">158</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/<a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a></li>
 </ul>
@@ -136,7 +142,7 @@ struct ALB::Helper::Reallocator&lt; Allocator, typename std::enable_if&lt;!Trait
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><b>Helper</b></li><li class="navelem"><a class="el" href="struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html">Reallocator< Allocator, typename std::enable_if<!Traits::has_expand< Allocator >::value >::type ></a></li>
-    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 22:11:37 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

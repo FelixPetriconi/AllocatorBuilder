@@ -1,6 +1,8 @@
 var group__group__helpers =
 [
     [ "Reallocator", "struct_a_l_b_1_1_helper_1_1_reallocator.html", null ],
+    [ "Reallocator< Allocator, typename std::enable_if< Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html", null ],
+    [ "Reallocator< Allocator, typename std::enable_if<!Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html", null ],
     [ "Dynastic", "struct_a_l_b_1_1_helper_1_1_dynastic.html", [
       [ "value", "struct_a_l_b_1_1_helper_1_1_dynastic.html#aa650827e9088162ebbb6f8f584ec51a0", null ]
     ] ],

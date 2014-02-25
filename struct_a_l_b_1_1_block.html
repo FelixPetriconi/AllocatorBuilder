@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('struct_a_l_b_1_1_block.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -126,20 +126,21 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5aedc131025524587d8bdb9ede34b8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7393b8a3ec2f975e47108bd30490f2ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_l_b_1_1_block.html#a7393b8a3ec2f975e47108bd30490f2ca">operator bool</a> () const </td></tr>
 <tr class="separator:a7393b8a3ec2f975e47108bd30490f2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11f52d763f30a28151897d16135b97fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11f52d763f30a28151897d16135b97fe"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;rhs) const </td></tr>
+<tr class="separator:a11f52d763f30a28151897d16135b97fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a40cbaa26797c0cbe0f87a02e5dcdb4fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40cbaa26797c0cbe0f87a02e5dcdb4fd"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a></td></tr>
-<tr class="memdesc:a40cbaa26797c0cbe0f87a02e5dcdb4fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This points to the start address of the described memory block. <br/></td></tr>
 <tr class="separator:a40cbaa26797c0cbe0f87a02e5dcdb4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0af7d2dddf135a228c54faa1deff61e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0af7d2dddf135a228c54faa1deff61e"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a></td></tr>
-<tr class="memdesc:ae0af7d2dddf135a228c54faa1deff61e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This describes the length of the reserved bytes. <br/></td></tr>
 <tr class="separator:ae0af7d2dddf135a228c54faa1deff61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Value type to describe a memory block and it's length </p>
+<div class="textblock"><p>The value type to describe a memory block and it's length </p>
 
 <p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00020">20</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -192,7 +193,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 </div><div class="memdoc">
 <p>Bool operator to make the Allocator code better readable </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00045">45</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00048">48</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
 
 </div>
 </div>
@@ -231,7 +232,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="struct_a_l_b_1_1_block.html">Block</a></li>
-    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 22:11:37 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

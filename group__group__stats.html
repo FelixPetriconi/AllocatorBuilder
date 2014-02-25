@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group__group__stats.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -166,56 +166,55 @@ Enumerations</h2></td></tr>
 <p>The following options define what statistics shall be collected during runtime taken from <a href="https://github.com/andralex/phobos/blob/allocator/std/allocator.d">https://github.com/andralex/phobos/blob/allocator/std/allocator.d</a> and adapted to this implementation. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a4f956c92c151f2fe823782dd8f0b435b"></a>NumOwns</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #owns). </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">ALB::AllocatorWithStats::owns</a>. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a8f1af9db100dd3f44e5b5c099c939168"></a>NumAllocate</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #allocate. All calls are counted, including requests for zero bytes or failed requests. </p>
+<p>Counts the number of calls to ALB::AllocatorWithStats::allocate. All calls are counted, including requests for zero bytes or failed requests. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a797be8934a625a37372fec409b2a5433"></a>NumAllocateOK</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #allocate that succeeded, i.e. they were for more than zero bytes and returned a non-null block. </p>
+<p>Counts the number of calls to ALB::AllocatorWithStats::allocate that succeeded, i.e. they wherefor more than zero bytes and returned a non-null block. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a025d859db4a1ac5d7ceada6cb48d3b66"></a>NumExpand</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #expand, regardless of arguments or result. </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a>, regardless of arguments or result. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31ab06c5cdeec1a55fa0a9b40ab12a9a47b"></a>NumExpandOK</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #expand that resulted in a successful expansion. </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a> that resulted in a successful expansion. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a5adc0916c7123886adec0eb291b11384"></a>NumReallocate</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #reallocate, regardless of arguments or result. </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a>, regardless of arguments or result. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a47a2f930e9049714300fc70dc0ad1d35"></a>NumReallocateOK</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #reallocate that succeeded. (Reallocations to zero bytes count as successful.) </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> that succeeded. (Reallocations to zero bytes count as successful.) </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a001736c85cb98e5a693062b0c259d687"></a>NumReallocateInPlace</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #reallocate that resulted in an in-place reallocation (no memory moved). If this number is close to the total number of reallocations, that indicates the allocator finds room at the current block's end in a large fraction of the cases, but also that internal fragmentation may be high (the size of the unit of allocation is large compared to the typical allocation size of the application). </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> that resulted in an in-place reallocation (no memory moved). If this number is close to the total number of reallocations, that indicates the allocator finds room at the current block's end in a large fraction of the cases, but also that internal fragmentation may be high (the size of the unit of allocation is large compared to the typical allocation size of the application). </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31abf214511407fb19a5cc6f835b4d4c5b7"></a>NumDeallocate</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #deallocate. </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">ALB::AllocatorWithStats::deallocate</a>. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31abe56d6b6c1963d96e4068baa3a87e767"></a>NumDeallocateAll</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to #deallocateAll. </p>
+<p>Counts the number of calls to ALB::AllocatorWithStats::deallocateAll. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a2e00df59e2d24acf1a74fa8540419d3b"></a>NumAll</em>&#160;</td><td class="fielddoc">
 <p>Chooses all numXxx)flags. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a6c5bf8d0c5053d57110f8254d2c66796"></a>BytesAllocated</em>&#160;</td><td class="fielddoc">
-<p>Tracks total cumulative bytes allocated by means of #allocate, #expand, and #reallocate (when resulting in an expansion). This number always grows and indicates allocation traffic. To compute bytes currently allocated, subtract #bytesDeallocated (below) from #bytesAllocated. </p>
+<p>Tracks total cumulative bytes allocated by means of ALB::AllocatorWithStats::allocate, <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a>, and <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> (when resulting in an expansion). This number always grows and indicates allocation traffic. To compute bytes currently allocated, subtract ALB::AllocatorWithStats::bytesDeallocated (below) from ALB::AllocatorWithStats::bytesAllocated. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a4d6331c1b283bfda919df9534991dbc0"></a>BytesDeallocated</em>&#160;</td><td class="fielddoc">
-<p>Tracks total cumulative bytes deallocated by means of #deallocate and #reallocate (when resulting in a contraction). This number always grows and indicates deallocation traffic. </p>
+<p>Tracks total cumulative bytes deallocated by means of <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">ALB::AllocatorWithStats::deallocate</a> and <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> (when resulting in a contraction). This number always grows and indicates deallocation traffic. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a8bbd8ff13c2b26d3999d3c44fd782d20"></a>BytesExpanded</em>&#160;</td><td class="fielddoc">
-<p>Tracks the sum of all  values in calls of the form #expand(b, delta)) that succeed (return </p>
-<dl class="section return"><dt>Returns</dt><dd>). </dd></dl>
+<p>Tracks the sum of all delta values in calls of the form ALB::AllocatorWithStats::expand(b, delta)) that succeed. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31ac9cfd5b2bba25f5d585be1dec37872e4"></a>BytesContracted</em>&#160;</td><td class="fielddoc">
-<p>Tracks the sum of all (b.length - s) with (b.length &gt; s) in calls of the form #reallocate(b, s)) that succeed (return $(D true)). </p>
+<p>Tracks the sum of all (b.length - s) with (b.length &gt; s) in calls of the form ALB::AllocatorWithStats::reallocate(b, s)) that succeed. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a7c2e9ffefdd0444fbb92c0953c63dd10"></a>BytesMoved</em>&#160;</td><td class="fielddoc">
-<p>Tracks the sum of all bytes moved as a result of calls to  that were unable to reallocate in place. A large number (relative to bytesAllocated)) indicates that the application should use larger preallocations. </p>
+<p>Tracks the sum of all bytes moved as a result of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> that were unable to reallocate in place. A large number (relative to bytesAllocated)) indicates that the application should use larger preallocations. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a7b635e9d7333bcbec388ff3579702e69"></a>BytesSlack</em>&#160;</td><td class="fielddoc">
-<p>Measures the sum of extra bytes allocated beyond the bytes requested, i.e. the $(WEB goo.gl/YoKffF, internal fragmentation). This is the current effective number of slack bytes, and it goes up and down with time. </p>
+<p>Measures the sum of extra bytes allocated beyond the bytes requested, i.e. the <a href="http://goo.gl/YoKffF,">http://goo.gl/YoKffF,</a> internal fragmentation). This is the current effective number of slack bytes, and it goes up and down with time. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a087d32ae3c70cd346eb7a5e28b9b66a9"></a>BytesHighTide</em>&#160;</td><td class="fielddoc">
 <p>Measures the maximum bytes allocated over the time. This is useful for dimensioning allocators. </p>
@@ -230,7 +229,7 @@ Enumerations</h2></td></tr>
 <p>Instructs <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a> to store the caller's file for each allocation. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31abfd59a955ddca4f0c917ce033dbe5cfc"></a>CallerFunction</em>&#160;</td><td class="fielddoc">
-<p>Instructs <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a> to store the caller <b>FUNCTION</b> for each allocation. </p>
+<p>Instructs <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a> to store the caller function name for each allocation. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a92099433d5439b92b718bf0fb24bda3a"></a>CallerLine</em>&#160;</td><td class="fielddoc">
 <p>Instructs <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a> to store the caller's line for each allocation. </p>
@@ -255,7 +254,7 @@ Enumerations</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 22:11:36 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

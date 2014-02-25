@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_allocator_with_stats.h
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -159,7 +159,7 @@ static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_per_
 class ALB::AllocatorWithStats&lt; Allocator, Flags &gt;</h3>
 
 <p>This Allocator serves as a facade in front of the specified allocator to collect statistics during runtime about all operations done on this instance. This is an implementation that is not intended to be used in a shared environment.</p>
-<p>In case that caller information shall be collected, the Allocator parameter is encapsulated with an #AffixAllocator. In this case <a class="el" href="struct_a_l_b_1_1_allocator_with_stats_1_1_allocation_info.html">AllocatorWithStats::AllocationInfo</a> is in used as Prefix and so all caller information is prepended to every allocated block. Be aware that collecting of caller informations adds on top of each allocation sizeof(AllocatorWithStats::AllocationInfo) bytes! With a good optimizing compiler only the code for the enabled statistic information gets created. </p>
+<p>In case that caller information shall be collected, the Allocator parameter is encapsulated with an #AffixAllocator. In this case <a class="el" href="struct_a_l_b_1_1_allocator_with_stats_1_1_allocation_info.html">ALB::AllocatorWithStats::AllocationInfo</a> is in used as Prefix and so all caller information is prepended to every allocated block. Be aware that collecting of caller informations adds on top of each allocation sizeof(AllocatorWithStats::AllocationInfo) bytes! With a good optimizing compiler only the code for the enabled statistic information gets created. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Allocator</td><td>The allocator that performs all allocations </td></tr>
@@ -168,7 +168,7 @@ class ALB::AllocatorWithStats&lt; Allocator, Flags &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00195">195</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00200">200</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a76753785339df30af3d328c6f4d1f5fd"></a>
 <div class="memitem">
@@ -195,7 +195,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
 <p>Accessor to all currently outstanding memory allocations. The ownership of all elements belong to this class. </p>
 <dl class="section return"><dt>Returns</dt><dd>A container with all AllocationInfos </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00470">470</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00481">481</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -230,7 +230,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00357">357</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00368">368</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -269,7 +269,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
 </div><div class="memdoc">
 <p>The given block is passed to the underlying Allocator to be expanded This method is only available if the underlying allocator implements it. Depending on the specified Flag, the expand statistic information is stored. </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00447">447</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00458">458</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +298,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
 </div><div class="memdoc">
 <p>The given block is passed to the underlying Allocator to be checked for ownership. This method is only available if the underlying Allocator implements it. Depending on the specified Flag, only the owns statistic information is stored. </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00435">435</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00446">446</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -345,7 +345,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00384">384</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00395">395</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -374,7 +374,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
 <div class="line">      <a class="code" href="group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31ac743c351c4b3c436035bf7720fdea18d">StatsOptions::CallerFile</a> |</div>
 <div class="line">      <a class="code" href="group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a92099433d5439b92b718bf0fb24bda3a">StatsOptions::CallerLine</a>)) != 0</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00256">256</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00267">267</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +387,7 @@ template&lt;class Allocator , unsigned Flags = ALB::StatsOptions::All&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_allocator_with_stats.html">AllocatorWithStats</a></li>
-    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 22:11:37 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('_a_l_b_allocator_base_8h_source.html',
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -134,122 +134,134 @@ $(document).ready(function(){initNavTree('_a_l_b_allocator_base_8h_source.html',
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      length = 0;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_block.html#a7393b8a3ec2f975e47108bd30490f2ca">   45</a></span>&#160;    <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keywordflow">return</span> length != 0; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">   50</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#if _MSC_VER &gt; 1700</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span>    <span class="keyword">explicit</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_block.html#a7393b8a3ec2f975e47108bd30490f2ca">   48</a></span>&#160;<span class="preprocessor"></span>    <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordflow">return</span> length != 0; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">   53</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  };</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; rhs)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">return</span> ptr == rhs.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a> &amp;&amp; length == rhs.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> DynamicSetSize = -2;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">   57</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">   60</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  };</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">namespace </span>Helper {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__group__helpers.html#gadb124c89dd4a23de1d63422debe5602d">blockCopy</a>(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">ALB::Block</a>&amp; source, <a class="code" href="struct_a_l_b_1_1_block.html">ALB::Block</a>&amp; destination);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> DynamicSetSize = -2;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="group__group__helpers.html#gada8579089c409953440d8547e6179da0">   76</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code" href="group__group__helpers.html#gada8579089c409953440d8547e6179da0">roundToAlignment</a>(<span class="keywordtype">size_t</span> basis, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keyword">auto</span> remainder = n % basis;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="keywordflow">return</span> n + ((remainder == 0)? 0 : (basis - remainder));</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> OldAllocator, <span class="keyword">class</span> NewAllocator&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">   87</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">reallocateWithCopy</a>(OldAllocator&amp; oldAllocator, NewAllocator&amp; newAllocator, <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keyword">auto</span> newBlock = newAllocator.allocate(n);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keywordflow">if</span> (!newBlock) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <a class="code" href="group__group__helpers.html#gadb124c89dd4a23de1d63422debe5602d">blockCopy</a>(b, newBlock);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      oldAllocator.deallocate(b);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      b = newBlock;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keyword">typename</span> Enabled = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">  107</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Reallocator</a>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html">  113</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Reallocator</a>&lt;Allocator, typename std::enable_if&lt;Traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> isHandledDefault(Allocator&amp; allocator, <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">if</span> (b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> == n) {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;          allocator.deallocate(b);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;          b = allocator.allocate(n);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">if</span> (n &gt; b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;          <span class="keywordflow">if</span> (allocator.expand(b, n - b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>)) {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;          }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    };</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html">  141</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Reallocator</a>&lt;Allocator, typename std::enable_if&lt;!Traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> isHandledDefault(Allocator&amp; allocator, <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keywordflow">if</span> (b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> == n) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">namespace </span>Helper {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__group__helpers.html#gadb124c89dd4a23de1d63422debe5602d">blockCopy</a>(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">ALB::Block</a>&amp; source, <a class="code" href="struct_a_l_b_1_1_block.html">ALB::Block</a>&amp; destination);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="group__group__helpers.html#gada8579089c409953440d8547e6179da0">   84</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code" href="group__group__helpers.html#gada8579089c409953440d8547e6179da0">roundToAlignment</a>(<span class="keywordtype">size_t</span> basis, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keyword">auto</span> remainder = n % basis;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keywordflow">return</span> n + ((remainder == 0)? 0 : (basis - remainder));</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> OldAllocator, <span class="keyword">class</span> NewAllocator&gt;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">   95</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">reallocateWithCopy</a>(OldAllocator&amp; oldAllocator, </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                            NewAllocator&amp; newAllocator, </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                            <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                            <span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keyword">auto</span> newBlock = newAllocator.allocate(n);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keywordflow">if</span> (!newBlock) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <a class="code" href="group__group__helpers.html#gadb124c89dd4a23de1d63422debe5602d">blockCopy</a>(b, newBlock);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      oldAllocator.deallocate(b);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      b = newBlock;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keyword">typename</span> Enabled = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">  119</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Reallocator</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html">  127</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Reallocator</a>&lt;Allocator, </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      typename std::enable_if&lt;Traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> isHandledDefault(Allocator&amp; allocator, <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      {</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordflow">if</span> (b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> == n) {</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        }</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;          allocator.deallocate(b);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;          b = allocator.allocate(n);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">if</span> (n &gt; b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;          <span class="keywordflow">if</span> (allocator.expand(b, n - b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a>)) {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;          }</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;          allocator.deallocate(b);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;          b = allocator.allocate(n);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        }</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      }</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    };</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> v, <span class="keywordtype">size_t</span> DynamicEnableSwitch&gt;</div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">  168</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">Dynastic</a> {</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      <span class="keywordtype">size_t</span> value()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> v; }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    };</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> DynamicEnableSwitch&gt;</div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html">  173</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">Dynastic</a> &lt;DynamicEnableSwitch, DynamicEnableSwitch&gt; {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keywordtype">size_t</span> _v;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      <a class="code" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">Dynastic</a>() : _v(-1) {}</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      <span class="keywordtype">size_t</span> value()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _v; }</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      <span class="keywordtype">void</span> value(<span class="keywordtype">size_t</span> w) { _v = w; }</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    };</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  } <span class="comment">// namespace Helper</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}</div>
-<div class="ttc" id="struct_a_l_b_1_1_block_html_ae0af7d2dddf135a228c54faa1deff61e"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">ALB::Block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00053">ALBAllocatorBase.h:53</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_helper_1_1_dynastic_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_dynastic.html">ALB::Helper::Dynastic</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00168">ALBAllocatorBase.h:168</a></div></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    };</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html">  158</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Reallocator</a>&lt;Allocator, </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      typename std::enable_if&lt;!Traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> isHandledDefault(Allocator&amp; allocator, <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">if</span> (b.<a class="code" href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">length</a> == n) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;          allocator.deallocate(b);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;          b = allocator.allocate(n);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    };</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> v, <span class="keywordtype">size_t</span> DynamicEnableSwitch&gt;</div>
+<div class="line"><a name="l00186"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">  186</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">Dynastic</a> {</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;      <span class="keywordtype">size_t</span> value()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> v; }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    };</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> DynamicEnableSwitch&gt;</div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html">  191</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">Dynastic</a> &lt;DynamicEnableSwitch, DynamicEnableSwitch&gt; {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      <span class="keywordtype">size_t</span> _v;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;      <a class="code" href="struct_a_l_b_1_1_helper_1_1_dynastic.html">Dynastic</a>() : _v(-1) {}</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      <span class="keywordtype">size_t</span> value()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _v; }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <span class="keywordtype">void</span> value(<span class="keywordtype">size_t</span> w) { _v = w; }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    };</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  } <span class="comment">// namespace Helper</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;}</div>
+<div class="ttc" id="struct_a_l_b_1_1_block_html_ae0af7d2dddf135a228c54faa1deff61e"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e">ALB::Block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00060">ALBAllocatorBase.h:60</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_helper_1_1_dynastic_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_dynastic.html">ALB::Helper::Dynastic</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00186">ALBAllocatorBase.h:186</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html"><div class="ttname"><a href="struct_a_l_b_1_1_block.html">ALB::Block</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00020">ALBAllocatorBase.h:20</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html_a89c964ba7f7bc7583f02278c41381f7c"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a89c964ba7f7bc7583f02278c41381f7c">ALB::Block::~Block</a></div><div class="ttdeci">~Block()</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00032">ALBAllocatorBase.h:32</a></div></div>
-<div class="ttc" id="group__group__helpers_html_ga53853ebb6a8e25448cb83d6b6b3caedb"><div class="ttname"><a href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">ALB::Helper::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00087">ALBAllocatorBase.h:87</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_block_html_a40cbaa26797c0cbe0f87a02e5dcdb4fd"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ALB::Block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00050">ALBAllocatorBase.h:50</a></div></div>
+<div class="ttc" id="group__group__helpers_html_ga53853ebb6a8e25448cb83d6b6b3caedb"><div class="ttname"><a href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">ALB::Helper::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00095">ALBAllocatorBase.h:95</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_block_html_a40cbaa26797c0cbe0f87a02e5dcdb4fd"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ALB::Block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00057">ALBAllocatorBase.h:57</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html_a5aedc131025524587d8bdb9ede34b8e6"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a5aedc131025524587d8bdb9ede34b8e6">ALB::Block::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00037">ALBAllocatorBase.h:37</a></div></div>
 <div class="ttc" id="group__group__helpers_html_gadb124c89dd4a23de1d63422debe5602d"><div class="ttname"><a href="group__group__helpers.html#gadb124c89dd4a23de1d63422debe5602d">ALB::Helper::blockCopy</a></div><div class="ttdeci">void blockCopy(const ALB::Block &amp;source, ALB::Block &amp;destination)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8cpp_source.html#l00015">ALBAllocatorBase.cpp:15</a></div></div>
-<div class="ttc" id="group__group__helpers_html_gada8579089c409953440d8547e6179da0"><div class="ttname"><a href="group__group__helpers.html#gada8579089c409953440d8547e6179da0">ALB::Helper::roundToAlignment</a></div><div class="ttdeci">size_t roundToAlignment(size_t basis, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00076">ALBAllocatorBase.h:76</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_helper_1_1_reallocator_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_reallocator.html">ALB::Helper::Reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00107">ALBAllocatorBase.h:107</a></div></div>
+<div class="ttc" id="group__group__helpers_html_gada8579089c409953440d8547e6179da0"><div class="ttname"><a href="group__group__helpers.html#gada8579089c409953440d8547e6179da0">ALB::Helper::roundToAlignment</a></div><div class="ttdeci">size_t roundToAlignment(size_t basis, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00084">ALBAllocatorBase.h:84</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_helper_1_1_reallocator_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_reallocator.html">ALB::Helper::Reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00119">ALBAllocatorBase.h:119</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>ALBAllocatorBase.h</b></li>
-    <li class="footer">Generated on Tue Feb 25 2014 10:48:57 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 22:11:36 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
