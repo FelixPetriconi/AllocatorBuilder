@@ -17,6 +17,8 @@ var annotated =
         [ "UniqueLock", "class_a_l_b_1_1_shared_helpers_1_1_unique_lock.html", "class_a_l_b_1_1_shared_helpers_1_1_unique_lock" ]
       ] ],
       [ "Traits", null, [
+        [ "AffixExtractor", "struct_a_l_b_1_1_traits_1_1_affix_extractor.html", null ],
+        [ "AffixExtractor< AffixAllocator< A, Prefix, Sufix >, T >", "struct_a_l_b_1_1_traits_1_1_affix_extractor_3_01_affix_allocator_3_01_a_00_01_prefix_00_01_sufix_01_4_00_01_t_01_4.html", null ],
         [ "is_stackallocator", "struct_a_l_b_1_1_traits_1_1is__stackallocator.html", null ],
         [ "is_stackallocator< StackAllocator< P1, P2 > >", "struct_a_l_b_1_1_traits_1_1is__stackallocator_3_01_stack_allocator_3_01_p1_00_01_p2_01_4_01_4.html", null ],
         [ "has_expand", "struct_a_l_b_1_1_traits_1_1has__expand.html", null ],
@@ -42,7 +44,10 @@ var annotated =
         [ "Expander< Allocator, typename std::enable_if<!has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_9has__ex78e9716fbe5698c2f4156c787ff275da.html", null ],
         [ "AllDeallocator", "struct_a_l_b_1_1_traits_1_1_all_deallocator.html", null ],
         [ "AllDeallocator< Allocator, typename std::enable_if< has_deallocateAll< Allocator >::value >::type >", "struct_a_l_b_1_1_traits_1_1_all_deallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_0e9d613367db971f9d4283e6863843e0f.html", null ],
-        [ "AllDeallocator< Allocator, typename std::enable_if<!has_deallocateAll< Allocator >::value >::type >", "struct_a_l_b_1_1_traits_1_1_all_deallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_999fc6e9454b76989c8309085962d2a1a.html", null ]
+        [ "AllDeallocator< Allocator, typename std::enable_if<!has_deallocateAll< Allocator >::value >::type >", "struct_a_l_b_1_1_traits_1_1_all_deallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_999fc6e9454b76989c8309085962d2a1a.html", null ],
+        [ "type_switch", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
+        [ "type_switch< A, B, true >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4" ],
+        [ "type_switch< A, B, false >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4.html", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4" ]
       ] ],
       [ "AffixAllocator", "class_a_l_b_1_1_affix_allocator.html", "class_a_l_b_1_1_affix_allocator" ],
       [ "AlignedMallocator", "class_a_l_b_1_1_aligned_mallocator.html", "class_a_l_b_1_1_aligned_mallocator" ],

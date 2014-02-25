@@ -7,6 +7,8 @@ var group__group__allocators =
       [ "allocate", "class_a_l_b_1_1_affix_allocator.html#a4d47d7e748027286b365a063b68e93e7", null ],
       [ "deallocate", "class_a_l_b_1_1_affix_allocator.html#ae7bc7cb502e07da1732bb15b8637ff5b", null ],
       [ "expand", "class_a_l_b_1_1_affix_allocator.html#a97f5e58bc85248387a07c3cab1cc85c8", null ],
+      [ "outerToPrefix", "class_a_l_b_1_1_affix_allocator.html#a029fecf8963e73e4017691654e7b142c", null ],
+      [ "outerToSufix", "class_a_l_b_1_1_affix_allocator.html#a2d78b033caeb930a7f2e6120243d8ccc", null ],
       [ "owns", "class_a_l_b_1_1_affix_allocator.html#ab5d89f392385f487225995790360e4fd", null ],
       [ "reallocate", "class_a_l_b_1_1_affix_allocator.html#a8f7e8e078b5fed1e7fdc6ad9fb0bca73", null ]
     ] ],
@@ -17,7 +19,8 @@ var group__group__allocators =
     ] ],
     [ "AllocatorWithStats", "class_a_l_b_1_1_allocator_with_stats.html", [
       [ "AllocatorWithStats", "class_a_l_b_1_1_allocator_with_stats.html#aec6bc31c6e71e1da03176854f2193648", null ],
-      [ "allocate", "class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9", null ],
+      [ "allocate", "class_a_l_b_1_1_allocator_with_stats.html#a44c4bedd48aa689a994bf3dd7759c9c4", null ],
+      [ "allocations", "class_a_l_b_1_1_allocator_with_stats.html#a76753785339df30af3d328c6f4d1f5fd", null ],
       [ "deallocate", "class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c", null ],
       [ "expand", "class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385", null ],
       [ "owns", "class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170", null ],
@@ -63,7 +66,7 @@ var group__group__allocators =
       [ "deallocate", "class_a_l_b_1_1_shared_free_list.html#ae7b168c673c4165ee064c37e76e1c67b", null ],
       [ "max_size", "class_a_l_b_1_1_shared_free_list.html#ae0d103b10239dfa18b0e799ba577d966", null ],
       [ "min_size", "class_a_l_b_1_1_shared_free_list.html#a0a02c0305d90307fdb4db8e929140f19", null ],
-      [ "owns", "class_a_l_b_1_1_shared_free_list.html#aca5f1547a6b694688e71baa037cd9aad", null ],
+      [ "owns", "class_a_l_b_1_1_shared_free_list.html#ad257931913993ca803778b1c69287ea7", null ],
       [ "reallocate", "class_a_l_b_1_1_shared_free_list.html#a43ff781834aea06976953024a96d8b09", null ],
       [ "setMinMax", "class_a_l_b_1_1_shared_free_list.html#a3110c693f9416d0a8713f7fe5c101273", null ]
     ] ],

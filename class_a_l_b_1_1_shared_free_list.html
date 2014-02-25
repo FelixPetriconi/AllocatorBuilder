@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_shared_free_list.html'
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -107,6 +106,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_shared_free_list.html'
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_a_l_b_1_1_shared_free_list-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ALB::SharedFreeList&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -135,21 +135,97 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>max_size</b> () con
 <tr class="memitem:a43ff781834aea06976953024a96d8b09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43ff781834aea06976953024a96d8b09"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</b> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b, size_t n)</td></tr>
 <tr class="separator:a43ff781834aea06976953024a96d8b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca5f1547a6b694688e71baa037cd9aad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca5f1547a6b694688e71baa037cd9aad"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>owns</b> (const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;block) const </td></tr>
-<tr class="separator:aca5f1547a6b694688e71baa037cd9aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7b168c673c4165ee064c37e76e1c67b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7b168c673c4165ee064c37e76e1c67b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>deallocate</b> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
+<tr class="memitem:ad257931913993ca803778b1c69287ea7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_shared_free_list.html#ad257931913993ca803778b1c69287ea7">owns</a> (const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b) const </td></tr>
+<tr class="separator:ad257931913993ca803778b1c69287ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7b168c673c4165ee064c37e76e1c67b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_shared_free_list.html#ae7b168c673c4165ee064c37e76e1c67b">deallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
 <tr class="separator:ae7b168c673c4165ee064c37e76e1c67b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a38b28032299b5585686c46ebd1ea6f72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38b28032299b5585686c46ebd1ea6f72"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = Allocator::supports_truncated_deallocation</td></tr>
+<tr class="separator:a38b28032299b5585686c46ebd1ea6f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024, size_t NumberOfBatchAllocations = 8&gt;<br/>
 class ALB::SharedFreeList&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;</h3>
 
-<p>The <a class="el" href="class_a_l_b_1_1_shared_free_list.html">SharedFreeList</a> allocator serves a pool of memory blocks and holds them in a list of free blocks Each block's MinSize and MaxSize define the area of blocks sizes that are handled with this allocator. It held until PoolSize blocks. More requested deallocations a forwarded to the Allocator for deallocation. NumberOfBatchAllocations specifies how blocks are allocated by the Allocator. It must be ensured that the Allocator can handle deallocations of sub allocated blocks. (TODO: add static_assert to ensure this at compile time.) MinSize and MaxSize can be set at runtime by instantiating this with ALB::DynamicSetSize. Except the moment of instantiation, this allocator is thread safe and all operations are lock free. </p>
+<p>The <a class="el" href="class_a_l_b_1_1_shared_free_list.html">SharedFreeList</a> allocator serves a pool of memory blocks and holds them in a list of free blocks Each block's MinSize and MaxSize define the area of blocks sizes that are handled with this allocator. It held until PoolSize blocks. More requested deallocations a forwarded to the Allocator for deallocation. NumberOfBatchAllocations specifies how blocks are allocated by the Allocator. MinSize and MaxSize can be set at runtime by instantiating this with ALB::DynamicSetSize. Except the moment of instantiation, this allocator is thread safe and all operations are lock free. </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_free_list_8h_source.html#l00029">29</a> of file <a class="el" href="_a_l_b_shared_free_list_8h_source.html">ALBSharedFreeList.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="_a_l_b_shared_free_list_8h_source.html#l00027">27</a> of file <a class="el" href="_a_l_b_shared_free_list_8h_source.html">ALBSharedFreeList.h</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae7b168c673c4165ee064c37e76e1c67b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator , int MinSize, int MaxSize, size_t PoolSize = 1024, size_t NumberOfBatchAllocations = 8&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_a_l_b_1_1_shared_free_list.html">ALB::SharedFreeList</a>&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;::deallocate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Appends the block to the free list if it is not filled up. The given block is reset </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The block to free </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_a_l_b_shared_free_list_8h_source.html#l00138">138</a> of file <a class="el" href="_a_l_b_shared_free_list_8h_source.html">ALBSharedFreeList.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad257931913993ca803778b1c69287ea7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator , int MinSize, int MaxSize, size_t PoolSize = 1024, size_t NumberOfBatchAllocations = 8&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_a_l_b_1_1_shared_free_list.html">ALB::SharedFreeList</a>&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;::owns </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks the ownership of the given block </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The block to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True, it is owned by this allocator </dd></dl>
+
+<p>Definition at line <a class="el" href="_a_l_b_shared_free_list_8h_source.html#l00130">130</a> of file <a class="el" href="_a_l_b_shared_free_list_8h_source.html">ALBSharedFreeList.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="_a_l_b_shared_free_list_8h_source.html">ALBSharedFreeList.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -158,7 +234,7 @@ class ALB::SharedFreeList&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBat
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_shared_free_list.html">SharedFreeList</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

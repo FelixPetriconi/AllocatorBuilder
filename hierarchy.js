@@ -1,10 +1,14 @@
 var hierarchy =
 [
     [ "ALB::AffixAllocator< Allocator, Prefix, Sufix >", "class_a_l_b_1_1_affix_allocator.html", null ],
+    [ "ALB::Traits::AffixExtractor< Allocator, T >", "struct_a_l_b_1_1_traits_1_1_affix_extractor.html", null ],
+    [ "ALB::Traits::AffixExtractor< AffixAllocator< A, Prefix, Sufix >, T >", "struct_a_l_b_1_1_traits_1_1_affix_extractor_3_01_affix_allocator_3_01_a_00_01_prefix_00_01_sufix_01_4_00_01_t_01_4.html", null ],
     [ "ALB::AlignedMallocator< DefaultAlignment >", "class_a_l_b_1_1_aligned_mallocator.html", null ],
     [ "ALB::Traits::AllDeallocator< Allocator, Enabled >", "struct_a_l_b_1_1_traits_1_1_all_deallocator.html", null ],
     [ "ALB::Traits::AllDeallocator< Allocator, typename std::enable_if< has_deallocateAll< Allocator >::value >::type >", "struct_a_l_b_1_1_traits_1_1_all_deallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_0e9d613367db971f9d4283e6863843e0f.html", null ],
     [ "ALB::Traits::AllDeallocator< Allocator, typename std::enable_if<!has_deallocateAll< Allocator >::value >::type >", "struct_a_l_b_1_1_traits_1_1_all_deallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_999fc6e9454b76989c8309085962d2a1a.html", null ],
+    [ "ALB::AllocatorWithStats< Allocator, Flags >::AllocationInfo", "struct_a_l_b_1_1_allocator_with_stats_1_1_allocation_info.html", null ],
+    [ "ALB::AllocatorWithStats< Allocator, Flags >::Allocations", "class_a_l_b_1_1_allocator_with_stats_1_1_allocations.html", null ],
     [ "ALB::AllocatorWithStats< Allocator, Flags >", "class_a_l_b_1_1_allocator_with_stats.html", null ],
     [ "ALB::Block", "struct_a_l_b_1_1_block.html", null ],
     [ "ALB::Bucketizer< Allocator, MinSize, MaxSize, StepSize >", "class_a_l_b_1_1_bucketizer.html", null ],
@@ -65,5 +69,9 @@ var hierarchy =
       [ "ALB::Traits::both_same_base< T1, T1 >", "struct_a_l_b_1_1_traits_1_1both__same__base_3_01_t1_00_01_t1_01_4.html", null ],
       [ "ALB::Traits::is_stackallocator< StackAllocator< P1, P2 > >", "struct_a_l_b_1_1_traits_1_1is__stackallocator_3_01_stack_allocator_3_01_p1_00_01_p2_01_4_01_4.html", null ]
     ] ],
+    [ "ALB::Traits::type_switch< A, B, bool >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
+    [ "ALB::Traits::type_switch< A, B, false >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4.html", null ],
+    [ "ALB::Traits::type_switch< A, B, true >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html", null ],
+    [ "ALB::Traits::type_switch< ALB::AffixAllocator< Allocator, ALB::AllocatorWithStats::AllocationInfo >, Allocator, HasPerAllocationState >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
     [ "ALB::SharedHelpers::UniqueLock", "class_a_l_b_1_1_shared_helpers_1_1_unique_lock.html", null ]
 ];

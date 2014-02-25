@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -92,7 +91,7 @@ $(document).ready(function(){initNavTree('_a_l_b_aligned_mallocator_8h_source.ht
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -158,42 +157,43 @@ $(document).ready(function(){initNavTree('_a_l_b_aligned_mallocator_8h_source.ht
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">   68</a></span>&#160;    <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> <a class="code" href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#ifdef _MSC_VER      </span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"></span>      <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>(_aligned_malloc(n, DefaultAlignment), n);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>      <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>(<span class="keywordtype">void</span> *memalign(DefaultAlignment, n), n);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif      </span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor"></span>    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_aligned_mallocator.html#a3082d083c71d03999c8bdaca1c4ce732">   85</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_a_l_b_1_1_aligned_mallocator.html#a3082d083c71d03999c8bdaca1c4ce732">reallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Helper::Reallocator&lt;AlignedMallocator&gt;::isHandledDefault</a>(*<span class="keyword">this</span>, b, n)) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keywordflow">return</span> alignedReallocate(b, n);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_aligned_mallocator.html#ab9cede543ad3295073793d2713b4e4c9">   97</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_a_l_b_1_1_aligned_mallocator.html#ab9cede543ad3295073793d2713b4e4c9">deallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">if</span> (b) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#ifdef _MSC_VER        </span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor"></span>        _aligned_free(b.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor"></span>        ::free(b.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif        </span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor"></span>        b.<a class="code" href="struct_a_l_b_1_1_block.html#a5aedc131025524587d8bdb9ede34b8e6">reset</a>();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  };</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">   69</a></span>&#160;    <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> <a class="code" href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#ifdef _MSC_VER      </span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span>      <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>(_aligned_malloc(n, DefaultAlignment), n);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span>      <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>(<span class="keywordtype">void</span> *memalign(DefaultAlignment, n), n);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif      </span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor"></span>    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_aligned_mallocator.html#a3082d083c71d03999c8bdaca1c4ce732">   86</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_a_l_b_1_1_aligned_mallocator.html#a3082d083c71d03999c8bdaca1c4ce732">reallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Helper::Reallocator&lt;AlignedMallocator&gt;::isHandledDefault</a>(*<span class="keyword">this</span>, b, n)) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keywordflow">return</span> alignedReallocate(b, n);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_aligned_mallocator.html#ab9cede543ad3295073793d2713b4e4c9">   98</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_a_l_b_1_1_aligned_mallocator.html#ab9cede543ad3295073793d2713b4e4c9">deallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">if</span> (b) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#ifdef _MSC_VER        </span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span>        _aligned_free(b.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a>);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor"></span>        ::free(b.<a class="code" href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ptr</a>);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif        </span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor"></span>        b.<a class="code" href="struct_a_l_b_1_1_block.html#a5aedc131025524587d8bdb9ede34b8e6">reset</a>();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  };</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html"><div class="ttname"><a href="struct_a_l_b_1_1_block.html">ALB::Block</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00020">ALBAllocatorBase.h:20</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html_ab9cede543ad3295073793d2713b4e4c9"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html#ab9cede543ad3295073793d2713b4e4c9">ALB::AlignedMallocator::deallocate</a></div><div class="ttdeci">void deallocate(Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00097">ALBAlignedMallocator.h:97</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html_ab9cede543ad3295073793d2713b4e4c9"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html#ab9cede543ad3295073793d2713b4e4c9">ALB::AlignedMallocator::deallocate</a></div><div class="ttdeci">void deallocate(Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00098">ALBAlignedMallocator.h:98</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html_a40cbaa26797c0cbe0f87a02e5dcdb4fd"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a40cbaa26797c0cbe0f87a02e5dcdb4fd">ALB::Block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00050">ALBAllocatorBase.h:50</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html_a3082d083c71d03999c8bdaca1c4ce732"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html#a3082d083c71d03999c8bdaca1c4ce732">ALB::AlignedMallocator::reallocate</a></div><div class="ttdeci">bool reallocate(Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00085">ALBAlignedMallocator.h:85</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html_a3082d083c71d03999c8bdaca1c4ce732"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html#a3082d083c71d03999c8bdaca1c4ce732">ALB::AlignedMallocator::reallocate</a></div><div class="ttdeci">bool reallocate(Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00086">ALBAlignedMallocator.h:86</a></div></div>
 <div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html">ALB::AlignedMallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00025">ALBAlignedMallocator.h:25</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html_a5aedc131025524587d8bdb9ede34b8e6"><div class="ttname"><a href="struct_a_l_b_1_1_block.html#a5aedc131025524587d8bdb9ede34b8e6">ALB::Block::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00037">ALBAllocatorBase.h:37</a></div></div>
 <div class="ttc" id="group__group__helpers_html_gadb124c89dd4a23de1d63422debe5602d"><div class="ttname"><a href="group__group__helpers.html#gadb124c89dd4a23de1d63422debe5602d">ALB::Helper::blockCopy</a></div><div class="ttdeci">void blockCopy(const ALB::Block &amp;source, ALB::Block &amp;destination)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8cpp_source.html#l00015">ALBAllocatorBase.cpp:15</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html_aee1b78f3ebe01e9337e27cad514300aa"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">ALB::AlignedMallocator::allocate</a></div><div class="ttdeci">Block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00068">ALBAlignedMallocator.h:68</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_aligned_mallocator_html_aee1b78f3ebe01e9337e27cad514300aa"><div class="ttname"><a href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">ALB::AlignedMallocator::allocate</a></div><div class="ttdeci">Block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_aligned_mallocator_8h_source.html#l00069">ALBAlignedMallocator.h:69</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_helper_1_1_reallocator_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_reallocator.html">ALB::Helper::Reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00107">ALBAllocatorBase.h:107</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('_a_l_b_aligned_mallocator_8h_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>ALBAlignedMallocator.h</b></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:57 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

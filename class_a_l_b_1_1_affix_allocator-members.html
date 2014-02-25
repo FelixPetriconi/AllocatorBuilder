@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_affix_allocator.html',
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -116,18 +115,21 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_affix_allocator.html',
   <tr bgcolor="#f0f0f0"><td class="entry"><b>allocator</b> typedef (defined in <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#ae7bc7cb502e07da1732bb15b8637ff5b">deallocate</a>(Block &amp;b)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a97f5e58bc85248387a07c3cab1cc85c8">expand</a>(Block &amp;b, size_t delta)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a029fecf8963e73e4017691654e7b142c">outerToPrefix</a>(const Block &amp;b) const </td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a2d78b033caeb930a7f2e6120243d8ccc">outerToSufix</a>(const Block &amp;b) const </td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#ab5d89f392385f487225995790360e4fd">owns</a>(const Block &amp;b) const </td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>prefix</b> typedef (defined in <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>prefix_size</b> (defined in <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a8f7e8e078b5fed1e7fdc6ad9fb0bca73">reallocate</a>(Block &amp;b, size_t n)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>sufix</b> typedef (defined in <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>sufix_size</b> (defined in <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>supports_truncated_deallocation</b> (defined in <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>)</td><td class="entry"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

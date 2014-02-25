@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_shared_heap.html','');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,6 +108,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_shared_heap.html','');
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_a_l_b_1_1_shared_heap-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ALB::SharedHeap&lt; Allocator, NumberOfChunks, ChunkSize &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -152,6 +152,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</b> (<a cl
 <tr class="memitem:ab4a4dfe01958f926a6edc924cd6b8e84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4a4dfe01958f926a6edc924cd6b8e84"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>expand</b> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b, size_t delta)</td></tr>
 <tr class="separator:ab4a4dfe01958f926a6edc924cd6b8e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4044fcfc8641610b371d59a0aa0ca947"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4044fcfc8641610b371d59a0aa0ca947"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = true</td></tr>
+<tr class="separator:a4044fcfc8641610b371d59a0aa0ca947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator, size_t NumberOfChunks, size_t ChunkSize&gt;<br/>
@@ -169,7 +175,7 @@ class ALB::SharedHeap&lt; Allocator, NumberOfChunks, ChunkSize &gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_shared_heap.html">SharedHeap</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

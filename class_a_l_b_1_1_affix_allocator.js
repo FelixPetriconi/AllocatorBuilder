@@ -6,6 +6,8 @@ var class_a_l_b_1_1_affix_allocator =
     [ "allocate", "class_a_l_b_1_1_affix_allocator.html#a4d47d7e748027286b365a063b68e93e7", null ],
     [ "deallocate", "class_a_l_b_1_1_affix_allocator.html#ae7bc7cb502e07da1732bb15b8637ff5b", null ],
     [ "expand", "class_a_l_b_1_1_affix_allocator.html#a97f5e58bc85248387a07c3cab1cc85c8", null ],
+    [ "outerToPrefix", "class_a_l_b_1_1_affix_allocator.html#a029fecf8963e73e4017691654e7b142c", null ],
+    [ "outerToSufix", "class_a_l_b_1_1_affix_allocator.html#a2d78b033caeb930a7f2e6120243d8ccc", null ],
     [ "owns", "class_a_l_b_1_1_affix_allocator.html#ab5d89f392385f487225995790360e4fd", null ],
     [ "reallocate", "class_a_l_b_1_1_affix_allocator.html#a8f7e8e078b5fed1e7fdc6ad9fb0bca73", null ]
 ];

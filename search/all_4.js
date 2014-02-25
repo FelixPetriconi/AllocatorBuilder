@@ -1,4 +1,10 @@
 var searchData=
 [
-  ['fallbackallocator',['FallbackAllocator',['../class_a_l_b_1_1_fallback_allocator.html',1,'ALB']]]
+  ['enable_5fresult_5fto',['enable_result_to',['../struct_a_l_b_1_1_traits_1_1enable__result__to.html',1,'ALB::Traits']]],
+  ['enable_5fresult_5fto_3c_20t_2c_20false_20_3e',['enable_result_to&lt; T, false &gt;',['../struct_a_l_b_1_1_traits_1_1enable__result__to_3_01_t_00_01false_01_4.html',1,'ALB::Traits']]],
+  ['enable_5fresult_5fto_3c_20t_2c_20true_20_3e',['enable_result_to&lt; T, true &gt;',['../struct_a_l_b_1_1_traits_1_1enable__result__to_3_01_t_00_01true_01_4.html',1,'ALB::Traits']]],
+  ['expand',['expand',['../class_a_l_b_1_1_affix_allocator.html#a97f5e58bc85248387a07c3cab1cc85c8',1,'ALB::AffixAllocator::expand()'],['../class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385',1,'ALB::AllocatorWithStats::expand()'],['../class_a_l_b_1_1_fallback_allocator.html#aeb4d91dbe444fbe17fa52d3f0e185bed',1,'ALB::FallbackAllocator::expand()'],['../class_a_l_b_1_1_segregator.html#ac1ab10bb5c5e04fe09440c74b08f1cb3',1,'ALB::Segregator::expand()'],['../class_a_l_b_1_1_shared_cascading_allocators.html#a3faf788e38e8c75363a98868948cf1a1',1,'ALB::SharedCascadingAllocators::expand()'],['../class_a_l_b_1_1_stack_allocator.html#ac5654d7d37824e2441b9fa03327e8bdf',1,'ALB::StackAllocator::expand()']]],
+  ['expander',['Expander',['../struct_a_l_b_1_1_traits_1_1_expander.html',1,'ALB::Traits']]],
+  ['expander_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20has_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Expander&lt; Allocator, typename std::enable_if&lt; has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../struct_a_l_b_1_1_traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_01has__e5f60cfbfe389218e39f5d67270125058.html',1,'ALB::Traits']]],
+  ['expander_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21has_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Expander&lt; Allocator, typename std::enable_if&lt;!has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../struct_a_l_b_1_1_traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_9has__ex78e9716fbe5698c2f4156c787ff275da.html',1,'ALB::Traits']]]
 ];

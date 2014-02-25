@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_bucketizer.html','');}
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -147,6 +146,9 @@ Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>_buckets</b> [nu
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a56f934c592b129c6b66e0f7786140eb5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56f934c592b129c6b66e0f7786140eb5"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = false</td></tr>
+<tr class="separator:a56f934c592b129c6b66e0f7786140eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e14d8de5674f25ec7732d47770b6921"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e14d8de5674f25ec7732d47770b6921"></a>
 static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_buckets</b> = (MaxSize - MinSize + 1) / StepSize</td></tr>
 <tr class="separator:a6e14d8de5674f25ec7732d47770b6921"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,10 +209,9 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The </dd></dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> describing the allocated memory </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> describing the allocated memory </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00057">57</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00058">58</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -245,7 +246,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00112">112</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00113">113</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -273,7 +274,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 </div><div class="memdoc">
 <p>Deallocates the complete </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00129">129</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00130">130</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -309,7 +310,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true, if the block is owned by one of the bucket items </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00073">73</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00074">74</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -349,20 +350,14 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 <p>Forwards the reallocation of the given block to the corresponding bucket item If the length of the given block and the specified new size crosses the boundary of a bucket, then content memory of the block is moved to the new bucket item </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b</td><td>Then </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> its size should be changed </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
+    <tr><td class="paramname">b</td><td>Then <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> its size should be changed </td></tr>
     <tr><td class="paramname">n</td><td>The new size of the block. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the reallocation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00086">86</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00087">87</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +370,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_bucketizer.html">Bucketizer</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

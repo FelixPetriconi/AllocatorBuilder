@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -92,7 +91,7 @@ $(document).ready(function(){initNavTree('_a_l_b_traits_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -268,8 +267,21 @@ $(document).ready(function(){initNavTree('_a_l_b_traits_8h_source.html','');});
 <div class="line"><a name="l00203"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_traits_1_1_all_deallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_999fc6e9454b76989c8309085962d2a1a.html">  203</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_traits_1_1_all_deallocator.html">AllDeallocator</a>&lt;Allocator, typename std::enable_if&lt;!has_deallocateAll&lt;Allocator&gt;::value&gt;::type&gt; {</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">void</span> doIt(Allocator&amp;) {}</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    };</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;}</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> A, <span class="keyword">class</span> B, <span class="keywordtype">bool</span>&gt;</div>
+<div class="line"><a name="l00215"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_traits_1_1type__switch.html">  215</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_traits_1_1type__switch.html">type_switch</a>;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> A, <span class="keyword">class</span> B&gt;</div>
+<div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html">  218</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_traits_1_1type__switch.html">type_switch</a>&lt;A, B, true&gt; {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      <span class="keyword">typename</span> <span class="keyword">typedef</span> A type;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    };</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> A, <span class="keyword">class</span> B&gt;</div>
+<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4.html">  223</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_a_l_b_1_1_traits_1_1type__switch.html">type_switch</a>&lt;A, B, false&gt; {</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      <span class="keyword">typename</span> <span class="keyword">typedef</span> B type;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    };</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;}</div>
 <div class="ttc" id="struct_a_l_b_1_1_block_html"><div class="ttname"><a href="struct_a_l_b_1_1_block.html">ALB::Block</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00020">ALBAllocatorBase.h:20</a></div></div>
 <div class="ttc" id="class_a_l_b_1_1_traits_1_1_disabled_html"><div class="ttname"><a href="class_a_l_b_1_1_traits_1_1_disabled.html">ALB::Traits::Disabled</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00075">ALBTraits.h:75</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__deallocate_all_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">ALB::Traits::has_deallocateAll</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00043">ALBTraits.h:43</a></div></div>
@@ -279,13 +291,14 @@ $(document).ready(function(){initNavTree('_a_l_b_traits_8h_source.html','');});
 <div class="ttc" id="struct_a_l_b_1_1_traits_1_1enable__result__to_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">ALB::Traits::enable_result_to</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00097">ALBTraits.h:97</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_traits_1_1both__same__base_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1both__same__base.html">ALB::Traits::both_same_base</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00122">ALBTraits.h:122</a></div></div>
 <div class="ttc" id="struct_a_l_b_1_1_traits_1_1_expander_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1_expander.html">ALB::Traits::Expander</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00170">ALBTraits.h:170</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1type__switch_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1type__switch.html">ALB::Traits::type_switch</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00215">ALBTraits.h:215</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>ALBTraits.h</b></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

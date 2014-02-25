@@ -7,6 +7,8 @@ var group__group__shared =
       [ "allocate", "class_a_l_b_1_1_affix_allocator.html#a4d47d7e748027286b365a063b68e93e7", null ],
       [ "deallocate", "class_a_l_b_1_1_affix_allocator.html#ae7bc7cb502e07da1732bb15b8637ff5b", null ],
       [ "expand", "class_a_l_b_1_1_affix_allocator.html#a97f5e58bc85248387a07c3cab1cc85c8", null ],
+      [ "outerToPrefix", "class_a_l_b_1_1_affix_allocator.html#a029fecf8963e73e4017691654e7b142c", null ],
+      [ "outerToSufix", "class_a_l_b_1_1_affix_allocator.html#a2d78b033caeb930a7f2e6120243d8ccc", null ],
       [ "owns", "class_a_l_b_1_1_affix_allocator.html#ab5d89f392385f487225995790360e4fd", null ],
       [ "reallocate", "class_a_l_b_1_1_affix_allocator.html#a8f7e8e078b5fed1e7fdc6ad9fb0bca73", null ]
     ] ],
@@ -55,7 +57,7 @@ var group__group__shared =
       [ "deallocate", "class_a_l_b_1_1_shared_free_list.html#ae7b168c673c4165ee064c37e76e1c67b", null ],
       [ "max_size", "class_a_l_b_1_1_shared_free_list.html#ae0d103b10239dfa18b0e799ba577d966", null ],
       [ "min_size", "class_a_l_b_1_1_shared_free_list.html#a0a02c0305d90307fdb4db8e929140f19", null ],
-      [ "owns", "class_a_l_b_1_1_shared_free_list.html#aca5f1547a6b694688e71baa037cd9aad", null ],
+      [ "owns", "class_a_l_b_1_1_shared_free_list.html#ad257931913993ca803778b1c69287ea7", null ],
       [ "reallocate", "class_a_l_b_1_1_shared_free_list.html#a43ff781834aea06976953024a96d8b09", null ],
       [ "setMinMax", "class_a_l_b_1_1_shared_free_list.html#a3110c693f9416d0a8713f7fe5c101273", null ]
     ] ],

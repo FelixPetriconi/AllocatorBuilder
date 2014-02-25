@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['mallocator',['Mallocator',['../class_a_l_b_1_1_mallocator.html',1,'ALB']]],
-  ['memorycorruptiondetector',['MemoryCorruptionDetector',['../class_a_l_b_1_1_memory_corruption_detector.html',1,'ALB']]]
+  ['length',['length',['../struct_a_l_b_1_1_block.html#ae0af7d2dddf135a228c54faa1deff61e',1,'ALB::Block']]]
 ];

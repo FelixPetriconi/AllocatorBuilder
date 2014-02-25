@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Allocator Builder: Main Page</title>
+<title>Allocator Builder: Allocator Builder</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -87,7 +86,7 @@ $(document).ready(function(){initNavTree('index.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -98,15 +97,116 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Allocator Builder Documentation</div>  </div>
+<div class="title">Allocator Builder </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><p>A highly composable, policy based C++ allocator based on ideas from <a href="http://erdani.com/">Andrei Alexandrescu</a>, presented at the <a href="http://cppandbeyond.com/">C++ and Beyond 2013</a> seminar.</p>
+<p>The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and deallocations. All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.</p>
+<p>A second idea behind this allocator library is, that one can compose for every use case a special designed one. Example use cases:</p>
+<ul>
+<li>Collect statistic information about the memory usage profile.</li>
+<li>Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.</li>
+<li>Wait free allocations in a single threaded environmemt</li>
+</ul>
+<p>So the appropached is every allocator returns such a Block </p>
+<div class="fragment"><div class="line"><span class="keyword">struct </span>Block {</div>
+<div class="line">  <span class="keywordtype">void</span>* ptr;</div>
+<div class="line">  <span class="keywordtype">size_t</span> length;</div>
+<div class="line">};</div>
+</div><!-- fragment --><p>And request goes this way: </p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> myMemBlock = allocator.allocate(42);</div>
+</div><!-- fragment --><h2>Motivation </h2>
+<p>Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)</p>
+<p>So the code could look like this </p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
+<div class="line"><span class="keywordtype">int</span> neededBytes = 42</div>
+<div class="line"><span class="keywordtype">bool</span> wouldFitOnTheStack = neededBytes &lt; STACK_THRESHOLD;</div>
+<div class="line"><span class="keywordtype">char</span>* p = wouldFitOnStack? : (<span class="keywordtype">char</span>*):alloca(neededBytes) : <span class="keyword">nullptr</span>;</div>
+<div class="line"></div>
+<div class="line">std::unique_ptr&lt;char[]&gt; heapAllocated(!wouldFitOnStack? <span class="keyword">new</span> <span class="keywordtype">char</span>[neededBytes] : <span class="keyword">nullptr</span>);</div>
+<div class="line"></div>
+<div class="line"><span class="keywordflow">if</span> (!p) {</div>
+<div class="line">  p = heapAllocated.get();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ... work with p[0..neededBytes-1]</span></div>
+</div><!-- fragment --><p>Everybody would agree that this is not nice! So what if one could encapsulate this into something like: </p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
+<div class="line"><span class="keywordtype">int</span> neededBytes = 42</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">typedef</span> FallbackAllocator&lt;StackAllocator&lt;STACK_THRESHOLD&gt;, Mallocator&gt; LocalAllocator; </div>
+<div class="line">LocalAllocator localAllocator;</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">auto</span> block = localAllocator.allocate(neededBytes);</div>
+<div class="line"><span class="keyword">auto</span> p = <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(block.ptr);</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// ... work with p[0..neededBytes-1]</span></div>
+<div class="line"></div>
+<div class="line">localAllocator.deallocate(block); <span class="comment">// better to be deleted by a scope finalizer</span></div>
+</div><!-- fragment --><p> So, isn't this much cleaner?</p>
+<h2>Allocator Overview </h2>
+<table class="doxtable">
+<tr>
+<th>Allocator </th><th>Description  </th></tr>
+<tr>
+<td>AffixAllocator </td><td>Allows to automatically pre- and sufix allocated regions. </td></tr>
+<tr>
+<td>AllocatorWithStats </td><td>An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide </td></tr>
+<tr>
+<td>Bucketizer </td><td>Manages a bunch of Allocators with increasing bucket size </td></tr>
+<tr>
+<td>FallbackAllocator </td><td>Either the default Allocator can handle a request, otherwise it is passed to a fallback Allocator </td></tr>
+<tr>
+<td>Mallocator </td><td>Provides and interface to systems ::malloc() </td></tr>
+<tr>
+<td>Segregator </td><td>Separates allocation requests depending on a threshold to Allocator A or B </td></tr>
+<tr>
+<td>SharedFreeList </td><td>Manages a list of freed memory blocks in a list for faster reusage in a thread safe manner </td></tr>
+<tr>
+<td>SharedCascadingAllocator </td><td>Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory </td></tr>
+<tr>
+<td>SharedHeap </td><td>A thread safe heap with minimal overhead and as far as possible in a lock-free way. </td></tr>
+<tr>
+<td>StackAllocator </td><td>Provides a memory access, taken from the stack </td></tr>
+</table>
+<h2>Documentation </h2>
+<p>Online Documentation is available on <a href="http://felixpetriconi.github.io/AllocatorBuilder/index.html">GitHub</a> as well.</p>
+<h2>Author </h2>
+<p>Felix Petriconi</p>
+<h2>Contributions </h2>
+<p>Contributions are welcome! Please make a forke and request for integration.</p>
+<h2>License </h2>
+<p>Boost 1.0 License</p>
+<h2>Version </h2>
+<p>0.1.0</p>
+<h2>Prerequisits </h2>
+<ul>
+<li>C++ 11 (partly, as far as Visual Studio 2012 supports it)</li>
+<li>boost 1.55.0 (lockfree, thread, assert)</li>
+<li>CMake 2.8 or later</li>
+<li>GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)</li>
+</ul>
+<h2>Platform </h2>
+<p>No platform specific features used, but tested so far only with MS Visual Studio 2012 and 2013</p>
+<h2>Installation Win </h2>
+<ul>
+<li>Have boost installed and the standard libs be build, install into D:</li>
+<li>Clone into eg D:</li>
+<li>Create a build folder, eg D:</li>
+<li>Open a command promt in that alb_build folder</li>
+<li>Have CMake in the path</li>
+<li>Execute cmake -G "Visual Studio 11 Win64" ..</li>
+<li>Open created solution in ..sln</li>
+<li>Compile and run all test (if necessary add D: to search path)</li>
+</ul>
+<h2>ToDo </h2>
+<p>See issue list of <a href="https://github.com/FelixPetriconi/AllocatorBuilder/issues?labels=enhancement&amp;page=1&amp;state=open">open enhancements</a> </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:51 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

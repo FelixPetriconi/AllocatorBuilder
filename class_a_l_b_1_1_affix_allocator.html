@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_affix_allocator.html',
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -131,6 +130,10 @@ typedef Sufix&#160;</td><td class="memItemRight" valign="bottom"><b>sufix</b></t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a029fecf8963e73e4017691654e7b142c"><td class="memItemLeft" align="right" valign="top">Prefix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a029fecf8963e73e4017691654e7b142c">outerToPrefix</a> (const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b) const </td></tr>
+<tr class="separator:a029fecf8963e73e4017691654e7b142c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d78b033caeb930a7f2e6120243d8ccc"><td class="memItemLeft" align="right" valign="top">Sufix *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a2d78b033caeb930a7f2e6120243d8ccc">outerToSufix</a> (const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b) const </td></tr>
+<tr class="separator:a2d78b033caeb930a7f2e6120243d8ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d47d7e748027286b365a063b68e93e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_a_l_b_1_1_block.html">Block</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#a4d47d7e748027286b365a063b68e93e7">allocate</a> (size_t n)</td></tr>
 <tr class="separator:a4d47d7e748027286b365a063b68e93e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7bc7cb502e07da1732bb15b8637ff5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_affix_allocator.html#ae7bc7cb502e07da1732bb15b8637ff5b">deallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
@@ -148,6 +151,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a76802ef83e44362967802d1305c08036"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76802ef83e44362967802d1305c08036"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = Allocator::supports_truncated_deallocation</td></tr>
+<tr class="separator:a76802ef83e44362967802d1305c08036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a369ea8e47f41a4320b4e4cf41c1d7df3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a369ea8e47f41a4320b4e4cf41c1d7df3"></a>
 static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>prefix_size</b> = std::is_same&lt;Prefix, <a class="el" href="struct_a_l_b_1_1_affix_allocator_helper_1_1_no_affix.html">AffixAllocatorHelper::NoAffix</a>&gt;::value? 0 : sizeof(Prefix)</td></tr>
 <tr class="separator:a369ea8e47f41a4320b4e4cf41c1d7df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,13 +175,13 @@ class ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00051">51</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00052">52</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a4d47d7e748027286b365a063b68e93e7"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocatorHelper::NoAffix&gt; </div>
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -194,8 +200,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Allocates a </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> of n bytes. Actually a <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> of n + sizeof(Prefix) + sizeof(Sufix) bytes is allocated. Depending of the defines Prefix and Sufix types objects of this gets instantiated before and/or beyond the returned <a class="el" href="struct_a_l_b_1_1_block.html">Block</a>. If Zero bytes are allocated then no allocation at all takes places and an empty <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> is returned. </dd></dl>
+<p>Allocates a <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> of n bytes. Actually a <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> of n + sizeof(Prefix) + sizeof(Sufix) bytes is allocated. Depending of the defines Prefix and Sufix types objects of this gets instantiated before and/or beyond the returned <a class="el" href="struct_a_l_b_1_1_block.html">Block</a>. If Zero bytes are allocated then no allocation at all takes places and an empty <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> is returned. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Specifies the number of requested bytes. n or more bytes are returned, depending on the alignment of the underlying Allocator. </td></tr>
@@ -203,7 +208,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00095">95</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00110">110</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -211,7 +216,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocatorHelper::NoAffix&gt; </div>
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -233,13 +238,12 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <p>The given block gets deallocated. If Prefix or Sufix are defined then their d'tor(s) are called. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b</td><td>The </td></tr>
+    <tr><td class="paramname">b</td><td>The <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> that should be freed. An assertion is raised, if the block is not owned by the underlying Allocator </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> that should be freed. An assertion is raised, if the block is not owned by the underlying Allocator </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00119">119</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00134">134</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -247,7 +251,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocatorHelper::NoAffix&gt; </div>
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -286,7 +290,79 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00183">183</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00193">193</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a029fecf8963e73e4017691654e7b142c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Prefix* <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator</a>&lt; Allocator, Prefix, Sufix &gt;::outerToPrefix </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This Method returns on a given block the prefix </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The block that was prefixed. The result is absolute unpredictable if a block is passed, that is not owned by this allocator! </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the Prefix before the given block </dd></dl>
+
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00086">86</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2d78b033caeb930a7f2e6120243d8ccc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sufix* <a class="el" href="class_a_l_b_1_1_affix_allocator.html">ALB::AffixAllocator</a>&lt; Allocator, Prefix, Sufix &gt;::outerToSufix </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This Method returns on a given block the sufix </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The block that was sufixed. The result is absolute unpredictable if a block is passed, that is not owned by this allocator! </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the sufix before the given block </dd></dl>
+
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00096">96</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -294,7 +370,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocatorHelper::NoAffix&gt; </div>
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -316,13 +392,12 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <p>If the underlying Allocator defines ::owns() this method is available. It returns true, if the given block is owned by this allocator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b</td><td>The </td></tr>
+    <tr><td class="paramname">b</td><td>The <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> that should be checked for ownership </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> that should be checked for ownership </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00143">143</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00153">153</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -330,7 +405,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocatorHelper::NoAffix&gt; </div>
+template&lt;class Allocator, typename Prefix, typename Sufix = AffixAllocatorHelper::NoAffix&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -369,7 +444,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00154">154</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_affix_allocator_8h_source.html#l00164">164</a> of file <a class="el" href="_a_l_b_affix_allocator_8h_source.html">ALBAffixAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +457,7 @@ template&lt;class Allocator , typename Prefix , typename Sufix  = AffixAllocator
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_affix_allocator.html">AffixAllocator</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

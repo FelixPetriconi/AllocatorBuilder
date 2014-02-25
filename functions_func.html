@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -112,7 +111,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -128,12 +127,14 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>allocate()
 : <a class="el" href="class_a_l_b_1_1_affix_allocator.html#a4d47d7e748027286b365a063b68e93e7">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_aligned_mallocator.html#aee1b78f3ebe01e9337e27cad514300aa">ALB::AlignedMallocator&lt; DefaultAlignment &gt;</a>
-, <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a0b4fc57f6f03edf45df1b0bb9eb59bd9">ALB::AllocatorWithStats&lt; Allocator, Flags &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_bucketizer.html#a896c627dab1824366b036d4882744377">ALB::Bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">ALB::FallbackAllocator&lt; Primary, Fallback &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_mallocator.html#a2cb5763d9d4f147f185027337bb69ac6">ALB::Mallocator</a>
 , <a class="el" href="class_a_l_b_1_1_segregator.html#a65b1e12e321616c968924903d31b8309">ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_shared_cascading_allocators.html#a7f2eeddcf8a424e6e7f7f5f2e4c6a812">ALB::SharedCascadingAllocators&lt; Allocator &gt;</a>
+</li>
+<li>allocations()
+: <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a76753785339df30af3d328c6f4d1f5fd">ALB::AllocatorWithStats&lt; Allocator, Flags &gt;</a>
 </li>
 </ul>
 
@@ -148,6 +149,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="class_a_l_b_1_1_mallocator.html#a66e44c718d80942512db613c44e918e8">ALB::Mallocator</a>
 , <a class="el" href="class_a_l_b_1_1_segregator.html#af0954dfe35cab2d4b2ca73a2078bd712">ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_shared_cascading_allocators.html#a07f58810adfccc9bd9d006a7a585273f">ALB::SharedCascadingAllocators&lt; Allocator &gt;</a>
+, <a class="el" href="class_a_l_b_1_1_shared_free_list.html#ae7b168c673c4165ee064c37e76e1c67b">ALB::SharedFreeList&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;</a>
 </li>
 <li>deallocateAll()
 : <a class="el" href="class_a_l_b_1_1_bucketizer.html#a9af5628eecadf9c1571e9af60811f8aa">ALB::Bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt;</a>
@@ -173,6 +175,12 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>operator bool()
 : <a class="el" href="struct_a_l_b_1_1_block.html#a7393b8a3ec2f975e47108bd30490f2ca">ALB::Block</a>
 </li>
+<li>outerToPrefix()
+: <a class="el" href="class_a_l_b_1_1_affix_allocator.html#a029fecf8963e73e4017691654e7b142c">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>
+</li>
+<li>outerToSufix()
+: <a class="el" href="class_a_l_b_1_1_affix_allocator.html#a2d78b033caeb930a7f2e6120243d8ccc">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>
+</li>
 <li>owns()
 : <a class="el" href="class_a_l_b_1_1_affix_allocator.html#ab5d89f392385f487225995790360e4fd">ALB::AffixAllocator&lt; Allocator, Prefix, Sufix &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">ALB::AllocatorWithStats&lt; Allocator, Flags &gt;</a>
@@ -180,6 +188,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="class_a_l_b_1_1_fallback_allocator.html#a021ded85c7ff732727bf567b6558717c">ALB::FallbackAllocator&lt; Primary, Fallback &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_segregator.html#abd74872387b36256b952bb0928ec3b2b">ALB::Segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_shared_cascading_allocators.html#a7af25820f53c6d0b8fcfe98caacc99a3">ALB::SharedCascadingAllocators&lt; Allocator &gt;</a>
+, <a class="el" href="class_a_l_b_1_1_shared_free_list.html#ad257931913993ca803778b1c69287ea7">ALB::SharedFreeList&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;</a>
 , <a class="el" href="class_a_l_b_1_1_stack_allocator.html#a5d3098a175bb891844ca2afe33746395">ALB::StackAllocator&lt; MaxSize, Alignment &gt;</a>
 </li>
 </ul>
@@ -215,7 +224,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:51 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

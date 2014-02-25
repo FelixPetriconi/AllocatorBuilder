@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_stack_allocator.html',
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -143,6 +142,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</b> (<a cl
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:af58d6317ad1c351e3d4a7702ffd3d6a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af58d6317ad1c351e3d4a7702ffd3d6a3"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = true</td></tr>
+<tr class="separator:af58d6317ad1c351e3d4a7702ffd3d6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8475a643ddb498bb5dcef5ce2ce401e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8475a643ddb498bb5dcef5ce2ce401e9"></a>
 static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>max_size</b> = MaxSize</td></tr>
 <tr class="separator:a8475a643ddb498bb5dcef5ce2ce401e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,15 +160,10 @@ class ALB::StackAllocator&lt; MaxSize, Alignment &gt;</h3>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">MaxSize</td><td>The maximum number of bytes that can be allocated by this allocator </td></tr>
-    <tr><td class="paramname">Alignment</td><td>Each memory allocation request by </td></tr>
+    <tr><td class="paramname">Alignment</td><td>Each memory allocation request by #allocate, #reallocate and <a class="el" href="class_a_l_b_1_1_stack_allocator.html#ac5654d7d37824e2441b9fa03327e8bdf">expand</a> is aligned by this value </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See Also</dt><dd>#allocate, </dd>
-<dd>
-#reallocate and </dd>
-<dd>
-<a class="el" href="class_a_l_b_1_1_stack_allocator.html#ac5654d7d37824e2441b9fa03327e8bdf">expand</a> is aligned by this value </dd></dl>
 
 <p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00027">27</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -194,7 +191,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 </div><div class="memdoc">
 <p>Sets all possibly provided memory to free. Be warned that all usage of previously allocated blocks results in unpredictable results! </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00165">165</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00166">166</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -241,7 +238,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, if the operation was successful or false if not enough memory is left </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00131">131</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00132">132</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -276,7 +273,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00156">156</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_stack_allocator_8h_source.html#l00157">157</a> of file <a class="el" href="_a_l_b_stack_allocator_8h_source.html">ALBStackAllocator.h</a>.</p>
 
 </div>
 </div>
@@ -289,7 +286,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_stack_allocator.html">StackAllocator</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -45,7 +45,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -95,7 +94,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_mallocator.html','');}
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -107,6 +106,7 @@ $(document).ready(function(){initNavTree('class_a_l_b_1_1_mallocator.html','');}
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_a_l_b_1_1_mallocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ALB::Mallocator Class Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -123,6 +123,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a610c51f7d81d78a89a7192795fd458b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66e44c718d80942512db613c44e918e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_mallocator.html#a66e44c718d80942512db613c44e918e8">deallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
 <tr class="separator:a66e44c718d80942512db613c44e918e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ab978362f8db729e1f55b10f46a765ed3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab978362f8db729e1f55b10f46a765ed3"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = false</td></tr>
+<tr class="separator:ab978362f8db729e1f55b10f46a765ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class implements a facade against the system ::malloc() </p>
@@ -159,7 +165,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct_a_l_b_1_1_block.html">Block</a> with memory information </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00030">30</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00031">31</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 
 </div>
 </div>
@@ -192,7 +198,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00062">62</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00066">66</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 
 </div>
 </div>
@@ -237,7 +243,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00044">44</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_mallocator_8h_source.html#l00048">48</a> of file <a class="el" href="_a_l_b_mallocator_8h_source.html">ALBMallocator.h</a>.</p>
 
 </div>
 </div>
@@ -250,7 +256,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_mallocator.html">Mallocator</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 16:42:50 for Allocator Builder by
+    <li class="footer">Generated on Tue Feb 25 2014 10:48:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
