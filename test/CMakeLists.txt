@@ -27,7 +27,7 @@ set(SOURCE
 	ALBMallocatorTest.cpp
 	ALBSegregatorTest.cpp
 	ALBSharedCascadingAllocatorsTest.cpp
-	ALBSharedFreeListTest.cpp
+	ALBFreeListTest.cpp
 	ALBSharedHeapTest
 	ALBStackAllocatorTest.cpp
 	ALBTestHelpers.cpp

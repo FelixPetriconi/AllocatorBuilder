@@ -21,7 +21,7 @@ namespace Helper {
  * \tparam T The element type to be put into the stack
  * \tparam MaxSize The maximum number of elements that can be put into the stack
  */
-template <typename T, size_t MaxSize> 
+template <typename T, unsigned MaxSize> 
 class stack {
   static_assert(std::has_trivial_assign<T>::value,
     "T must be trivially copyable");
@@ -38,9 +38,9 @@ public:
   stack() : _pos(-1) {}
 
   bool push(T v) {
-    if (_pos < MaxSize - 1) {
+    if (_pos < static_cast<int>(MaxSize) - 1) {
       _pos++;
-      _elements = std::move(v);
+      _elements[_pos] = std::move(v);
       return true;
     }
     return false;
