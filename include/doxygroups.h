@@ -1,4 +1,4 @@
-#ifdef _DOXYGROUPS_
+#ifndef _DOXYGROUPS_
 #define _DOXYGROUPS_
 
 /**
