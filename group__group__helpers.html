@@ -196,8 +196,25 @@ template&lt;class OldAllocator , class NewAllocator &gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Allocates a new block of n bytes with newAllocator, copies min(b.length, n) bytes to it, deallocates the old block b, and returns the new block. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">OldAllocator</td><td>The allocator that allocated the passed block </td></tr>
+    <tr><td class="paramname">NewAllocator</td><td>The allocator that should be used for the new allocation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oldAllocator</td><td>The instance of the allocator that allocated in the past the block. The behavior is undefined if the block was not allocated by it! </td></tr>
+    <tr><td class="paramname">newAllocator</td><td>The instance that should be used for the new allocation </td></tr>
+    <tr><td class="paramname">b</td><td>The block that should be reallocated by a move of its content </td></tr>
+    <tr><td class="paramname">n</td><td>The new size of the block </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00095">95</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00113">113</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
 
 </div>
 </div>
@@ -234,7 +251,7 @@ template&lt;class OldAllocator , class NewAllocator &gt; </div>
 </div><div class="memdoc">
 <p>Returns a upper rounded value of multiples of a </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00084">84</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_base_8h_source.html#l00092">92</a> of file <a class="el" href="_a_l_b_allocator_base_8h_source.html">ALBAllocatorBase.h</a>.</p>
 
 </div>
 </div>
@@ -243,7 +260,7 @@ template&lt;class OldAllocator , class NewAllocator &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Feb 25 2014 22:11:36 for Allocator Builder by
+    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

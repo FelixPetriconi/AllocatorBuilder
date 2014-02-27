@@ -133,10 +133,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a456fd44e9d59e098274d071b137091fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7762c1a0b0453b0cb67921c80a3208b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_bucketizer.html#a7762c1a0b0453b0cb67921c80a3208b5">deallocate</a> (<a class="el" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b)</td></tr>
 <tr class="separator:a7762c1a0b0453b0cb67921c80a3208b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af5628eecadf9c1571e9af60811f8aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt; void, <br class="typebreak"/>
+<tr class="memitem:af010a2585c28e8bf3593898b31d78ba3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt; void, <br class="typebreak"/>
 <a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; Allocator &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_bucketizer.html#a9af5628eecadf9c1571e9af60811f8aa">deallocateAll</a> ()</td></tr>
-<tr class="separator:a9af5628eecadf9c1571e9af60811f8aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+&lt; Allocator &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_l_b_1_1_bucketizer.html#af010a2585c28e8bf3593898b31d78ba3">deallocateAll</a> ()</td></tr>
+<tr class="separator:af010a2585c28e8bf3593898b31d78ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -166,18 +166,18 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>step_s
 <div class="textblock"><h3>template&lt;class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize&gt;<br/>
 class ALB::Bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt;</h3>
 
-<p>The <a class="el" href="class_a_l_b_1_1_bucketizer.html">Bucketizer</a> is intended to hold allocators with StepSize increasing buckets, within the range of [MinSize, MaxSize) Eg MinSize = 17, MaxSize = 64, StepSize = 16 =&gt; BucketsSize[17, 32][33 48][48 64] It plays very well together with ALB::FreeList or <a class="el" href="class_a_l_b_1_1_shared_free_list.html">ALB::SharedFreeList</a> After instantiation any instance is as far thread safe as the Allocator is thread safe. </p>
+<p>The <a class="el" href="class_a_l_b_1_1_bucketizer.html">Bucketizer</a> is intended to hold allocators with StepSize increasing buckets, within the range of [MinSize, MaxSize) E.g. MinSize = 17, MaxSize = 64, StepSize = 16 =&gt; BucketsSize[17, 32][33 48][48 64] It plays very well together with <a class="el" href="class_a_l_b_1_1_free_list.html">ALB::FreeList</a> or <a class="el" href="class_a_l_b_1_1_shared_free_list.html">ALB::SharedFreeList</a> After instantiation any instance is as far thread safe as the Allocator is thread safe. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Allocator</td><td>Specifies which shall be handled in a bucketized way </td></tr>
     <tr><td class="paramname">MinSize</td><td>The minimum size of the first bucket item </td></tr>
     <tr><td class="paramname">MaxSize</td><td>The upper size of the last bucket item </td></tr>
-    <tr><td class="paramname">StepSize</td><td>The equi distant step size of the size of all buckets </td></tr>
+    <tr><td class="paramname">StepSize</td><td>The equidistant step size of the size of all buckets </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00033">33</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00035">35</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a896c627dab1824366b036d4882744377"></a>
 <div class="memitem">
@@ -211,7 +211,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> describing the allocated memory </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00058">58</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00062">62</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -246,11 +246,11 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00113">113</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00119">119</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9af5628eecadf9c1571e9af60811f8aa"></a>
+<a class="anchor" id="af010a2585c28e8bf3593898b31d78ba3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -260,7 +260,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;void, <a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a>&lt;Allocator&gt;::value&gt;::type <a class="el" href="class_a_l_b_1_1_bucketizer.html">ALB::Bucketizer</a>&lt; Allocator, MinSize, MaxSize, StepSize &gt;::deallocateAll </td>
+          <td class="memname"><a class="el" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt; void, <a class="el" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll</a>&lt;Allocator&gt;::value&gt;::type <a class="el" href="class_a_l_b_1_1_bucketizer.html">ALB::Bucketizer</a>&lt; Allocator, MinSize, MaxSize, StepSize &gt;::deallocateAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -274,7 +274,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 </div><div class="memdoc">
 <p>Deallocates all resources. Beware of possible dangling pointers! This method is only available if Allocator::deallocateAll is available </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00132">132</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00139">139</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -310,7 +310,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true, if the block is owned by one of the bucket items </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00074">74</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00078">78</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -347,7 +347,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Forwards the reallocation of the given block to the corresponding bucket item If the length of the given block and the specified new size crosses the boundary of a bucket, then content memory of the block is moved to the new bucket item </p>
+<p>Forwards the reallocation of the given block to the corresponding bucket item. If the length of the given block and the specified new size crosses the boundary of a bucket, then content memory of the block is moved to the new bucket item </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">b</td><td>Then <a class="el" href="struct_a_l_b_1_1_block.html">Block</a> its size should be changed </td></tr>
@@ -357,7 +357,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the reallocation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00087">87</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_bucketizer_8h_source.html#l00092">92</a> of file <a class="el" href="_a_l_b_bucketizer_8h_source.html">ALBBucketizer.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +370,7 @@ template&lt;class Allocator , size_t MinSize, size_t MaxSize, size_t StepSize&gt
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_bucketizer.html">Bucketizer</a></li>
-    <li class="footer">Generated on Tue Feb 25 2014 22:11:37 for Allocator Builder by
+    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

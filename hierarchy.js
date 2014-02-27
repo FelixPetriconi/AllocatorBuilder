@@ -14,10 +14,10 @@ var hierarchy =
     [ "ALB::Bucketizer< Allocator, MinSize, MaxSize, StepSize >", "class_a_l_b_1_1_bucketizer.html", null ],
     [ "ALB::Traits::Disabled", "class_a_l_b_1_1_traits_1_1_disabled.html", null ],
     [ "ALB::Helper::Dynastic< v, DynamicEnableSwitch >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
-    [ "ALB::Helper::Dynastic< (MaxSize==DynamicSetSize?DynamicSetSize:MaxSize), DynamicSetSize >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
-    [ "ALB::Helper::Dynastic< (MinSize==DynamicSetSize?DynamicSetSize:MinSize), DynamicSetSize >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
     [ "ALB::Helper::Dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", null ],
     [ "ALB::Helper::Dynastic<(ChunkSize==DynamicSetSize?0:ChunkSize), 0 >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
+    [ "ALB::Helper::Dynastic<(MaxSize==DynamicSetSize?DynamicSetSize:MaxSize), DynamicSetSize >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
+    [ "ALB::Helper::Dynastic<(MinSize==DynamicSetSize?DynamicSetSize:MinSize), DynamicSetSize >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
     [ "ALB::Helper::Dynastic<(NumberOfChunks==DynamicSetSize?0:NumberOfChunks), 0 >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
     [ "ALB::Traits::enable_result_to< T, bool >", "struct_a_l_b_1_1_traits_1_1enable__result__to.html", null ],
     [ "ALB::Traits::enable_result_to< T, false >", "struct_a_l_b_1_1_traits_1_1enable__result__to_3_01_t_00_01false_01_4.html", null ],
@@ -31,6 +31,13 @@ var hierarchy =
     [ "false_type", null, [
       [ "ALB::Traits::both_same_base< T1, T2 >", "struct_a_l_b_1_1_traits_1_1both__same__base.html", null ],
       [ "ALB::Traits::is_stackallocator< T >", "struct_a_l_b_1_1_traits_1_1is__stackallocator.html", null ]
+    ] ],
+    [ "ALB::FreeListBase< Shared, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "class_a_l_b_1_1_free_list_base.html", null ],
+    [ "ALB::FreeListBase< false, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "class_a_l_b_1_1_free_list_base.html", [
+      [ "ALB::FreeList< Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "class_a_l_b_1_1_free_list.html", null ]
+    ] ],
+    [ "ALB::FreeListBase< true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "class_a_l_b_1_1_free_list_base.html", [
+      [ "ALB::SharedFreeList< Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "class_a_l_b_1_1_shared_free_list.html", null ]
     ] ],
     [ "ALB::Traits::has_deallocateAll< T >", "struct_a_l_b_1_1_traits_1_1has__deallocate_all.html", null ],
     [ "ALB::Traits::has_expand< T >", "struct_a_l_b_1_1_traits_1_1has__expand.html", null ],
@@ -49,12 +56,12 @@ var hierarchy =
     [ "ALB::Helper::Reallocator< Allocator, typename std::enable_if< Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html", null ],
     [ "ALB::Helper::Reallocator< Allocator, typename std::enable_if<!Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html", null ],
     [ "ALB::SharedCascadingAllocators< Allocator >", "class_a_l_b_1_1_shared_cascading_allocators.html", null ],
-    [ "ALB::SharedFreeList< Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "class_a_l_b_1_1_shared_free_list.html", null ],
     [ "ALB::SharedHeap< Allocator, NumberOfChunks, ChunkSize >", "class_a_l_b_1_1_shared_heap.html", null ],
     [ "ALB::SharedHelpers::SharedLock", "class_a_l_b_1_1_shared_helpers_1_1_shared_lock.html", null ],
     [ "SmallAllocator", null, [
       [ "ALB::Segregator< Threshold, SmallAllocator, LargeAllocator >", "class_a_l_b_1_1_segregator.html", null ]
     ] ],
+    [ "ALB::Helper::stack< T, MaxSize >", "class_a_l_b_1_1_helper_1_1stack.html", null ],
     [ "ALB::StackAllocator< MaxSize, Alignment >", "class_a_l_b_1_1_stack_allocator.html", null ],
     [ "true_type", null, [
       [ "ALB::Traits::both_same_base< Allocator< A1 >, Allocator< A2 > >", "struct_a_l_b_1_1_traits_1_1both__same__base_3_01_allocator_3_01_a1_01_4_00_01_allocator_3_01_a2_01_4_01_4.html", null ],
@@ -73,5 +80,6 @@ var hierarchy =
     [ "ALB::Traits::type_switch< A, B, false >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4.html", null ],
     [ "ALB::Traits::type_switch< A, B, true >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html", null ],
     [ "ALB::Traits::type_switch< ALB::AffixAllocator< Allocator, ALB::AllocatorWithStats::AllocationInfo >, Allocator, HasPerAllocationState >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
+    [ "ALB::Traits::type_switch< boost::lockfree::stack< void *, boost::lockfree::fixed_sized< true >, boost::lockfree::capacity< PoolSize > >, Helper::stack< void *, PoolSize >, Shared >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
     [ "ALB::SharedHelpers::UniqueLock", "class_a_l_b_1_1_shared_helpers_1_1_unique_lock.html", null ]
 ];

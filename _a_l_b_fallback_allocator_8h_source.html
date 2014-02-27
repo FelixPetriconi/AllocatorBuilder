@@ -110,124 +110,130 @@ $(document).ready(function(){initNavTree('_a_l_b_fallback_allocator_8h_source.ht
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Authors: http://petriconi.net, Felix Petriconi </span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Authors: http://petriconi.net, Felix Petriconi</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"></span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;ALBAllocatorBase.h&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>ALB</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Primary, <span class="keyword">class</span> Fallback&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html">   24</a></span>&#160;  <span class="keyword">class </span><a class="code" href="class_a_l_b_1_1_fallback_allocator.html">FallbackAllocator</a> : <span class="keyword">public</span> Primary, <span class="keyword">public</span> Fallback {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">typedef</span> Primary primary_allocator;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">typedef</span> Fallback fallback_allocator;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    static_assert( !<a class="code" href="struct_a_l_b_1_1_traits_1_1both__same__base.html">Traits::both_same_base&lt;Primary, Fallback&gt;::value</a>, </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>ALB {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> Primary, <span class="keyword">class</span> Fallback&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_a_l_b_1_1_fallback_allocator.html">FallbackAllocator</a> : <span class="keyword">public</span> Primary, <span class="keyword">public</span> Fallback {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">typedef</span> Primary primary_allocator;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">typedef</span> Fallback fallback_allocator;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  static_assert(</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      !<a class="code" href="struct_a_l_b_1_1_traits_1_1both__same__base.html">Traits::both_same_base&lt;Primary, Fallback&gt;::value</a>,</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;      <span class="stringliteral">&quot;Primary- and Fallback-Allocator cannot be both of the same base!&quot;</span>);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation = </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation =</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      Primary::supports_truncated_deallocation &amp;&amp;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      Fallback::supports_truncated_deallocation;;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">   40</a></span>&#160;    <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> result( Primary::allocate(n) );</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordflow">if</span> (!result)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        result = Fallback::allocate(n);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29">   55</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29">deallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordflow">if</span> (Primary::owns(b))</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        Primary::deallocate(b);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">else</span> </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        Fallback::deallocate(b);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">   73</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">reallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordflow">if</span> (Primary::owns(b)) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Helper::Reallocator&lt;Primary&gt;::isHandledDefault</a>(static_cast&lt;Primary&amp;&gt;(*<span class="keyword">this</span>), b, n)) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      } </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Helper::Reallocator&lt;Fallback&gt;::isHandledDefault</a>(static_cast&lt;Fallback&amp;&gt;(*<span class="keyword">this</span>), b, n)) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keywordflow">if</span> (Primary::owns(b)) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">if</span> (Primary::reallocate(b, n)) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">Helper::reallocateWithCopy</a>(static_cast&lt;Primary&amp;&gt;(*<span class="keyword">this</span>), static_cast&lt;Fallback&amp;&gt;(*<span class="keyword">this</span>), b, n);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      Fallback::supports_truncated_deallocation;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  ;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">   41</a></span>&#160;  <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> result(Primary::allocate(n));</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">if</span> (!result)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      result = Fallback::allocate(n);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29">   56</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29">deallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span> (Primary::owns(b))</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      Primary::deallocate(b);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      Fallback::deallocate(b);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">   74</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">reallocate</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b, <span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">if</span> (Primary::owns(b)) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Helper::Reallocator&lt;Primary&gt;::isHandledDefault</a>(</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;              static_cast&lt;Primary &amp;&gt;(*<span class="keyword">this</span>), b, n)) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_helper_1_1_reallocator.html">Helper::Reallocator&lt;Fallback&gt;::isHandledDefault</a>(</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;              static_cast&lt;Fallback &amp;&gt;(*<span class="keyword">this</span>), b, n)) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">if</span> (Primary::owns(b)) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keywordflow">if</span> (Primary::reallocate(b, n)) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">return</span> Fallback::reallocate(b, n);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">Helper::reallocateWithCopy</a>(static_cast&lt;Primary &amp;&gt;(*<span class="keyword">this</span>),</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                        static_cast&lt;Fallback &amp;&gt;(*<span class="keyword">this</span>), b, n);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;bool,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Primary&gt;::value</a> || <a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Fallback&gt;::value</a></div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#aeb4d91dbe444fbe17fa52d3f0e185bed">  104</a></span>&#160;    &gt;::type <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#aeb4d91dbe444fbe17fa52d3f0e185bed">expand</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b, <span class="keywordtype">size_t</span> delta) </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">if</span> (Primary::owns(b)) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Primary&gt;::value</a>) {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1_expander.html">Traits::Expander&lt;Primary&gt;::doIt</a>(static_cast&lt;Primary&amp;&gt;(*<span class="keyword">this</span>), b, delta);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Fallback&gt;::value</a>) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1_expander.html">Traits::Expander&lt;Fallback&gt;::doIt</a>(static_cast&lt;Fallback&amp;&gt;(*<span class="keyword">this</span>), b, delta);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> Fallback::reallocate(b, n);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a> &lt; bool,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Primary&gt;::value</a> ||</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;          <a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Fallback&gt;::value</a> &gt;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a585d9131fbbdf4b00bdc785b4c20f327">  109</a></span>&#160;              ::type <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a585d9131fbbdf4b00bdc785b4c20f327">expand</a>(<a class="code" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b, <span class="keywordtype">size_t</span> delta) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">if</span> (Primary::owns(b)) {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Primary&gt;::value</a>) {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1_expander.html">Traits::Expander&lt;Primary&gt;::doIt</a>(static_cast&lt;Primary &amp;&gt;(*<span class="keyword">this</span>), b,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                               delta);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;bool, </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <a class="code" href="struct_a_l_b_1_1_traits_1_1has__owns.html">Traits::has_owns&lt;Primary&gt;::value</a> &amp;&amp; <a class="code" href="struct_a_l_b_1_1_traits_1_1has__owns.html">Traits::has_owns&lt;Fallback&gt;::value</a></div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a021ded85c7ff732727bf567b6558717c">  128</a></span>&#160;    &gt;::type <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a021ded85c7ff732727bf567b6558717c">owns</a>(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a>&amp; b) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keywordflow">return</span> Primary::owns(b) || Fallback::owns(b);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;void,</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;      <a class="code" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll&lt;Primary&gt;::value</a> &amp;&amp; <a class="code" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll&lt;Fallback&gt;::value</a></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    &gt;::type  deallocateAll() {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      Primary::deallocateAll();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      Fallback::deallocateAll();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  };</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
-<div class="ttc" id="struct_a_l_b_1_1_block_html"><div class="ttname"><a href="struct_a_l_b_1_1_block.html">ALB::Block</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00020">ALBAllocatorBase.h:20</a></div></div>
-<div class="ttc" id="group__group__helpers_html_ga53853ebb6a8e25448cb83d6b6b3caedb"><div class="ttname"><a href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">ALB::Helper::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00095">ALBAllocatorBase.h:95</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a4e64e7c58925d167e1ce846041ffad29"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29">ALB::FallbackAllocator::deallocate</a></div><div class="ttdeci">void deallocate(Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00055">ALBFallbackAllocator.h:55</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a021ded85c7ff732727bf567b6558717c"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a021ded85c7ff732727bf567b6558717c">ALB::FallbackAllocator::owns</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_owns&lt; Primary &gt;::value &amp;&amp;Traits::has_owns&lt; Fallback &gt;::value &gt;::type owns(const Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00128">ALBFallbackAllocator.h:128</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__deallocate_all_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">ALB::Traits::has_deallocateAll</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00043">ALBTraits.h:43</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html">ALB::FallbackAllocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00024">ALBFallbackAllocator.h:24</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__expand_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__expand.html">ALB::Traits::has_expand</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00025">ALBTraits.h:25</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__owns_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__owns.html">ALB::Traits::has_owns</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00061">ALBTraits.h:61</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1enable__result__to_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">ALB::Traits::enable_result_to</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00097">ALBTraits.h:97</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1both__same__base_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1both__same__base.html">ALB::Traits::both_same_base</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00122">ALBTraits.h:122</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_traits_1_1_expander_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1_expander.html">ALB::Traits::Expander</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00170">ALBTraits.h:170</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a75b4aa460e1afd2e7be8456af5e688a4"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">ALB::FallbackAllocator::reallocate</a></div><div class="ttdeci">bool reallocate(Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00073">ALBFallbackAllocator.h:73</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_aeb4d91dbe444fbe17fa52d3f0e185bed"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#aeb4d91dbe444fbe17fa52d3f0e185bed">ALB::FallbackAllocator::expand</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_expand&lt; Primary &gt;::value||Traits::has_expand&lt; Fallback &gt;::value &gt;::type expand(Block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00104">ALBFallbackAllocator.h:104</a></div></div>
-<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_acac954bec0c10eeb3aefaf2e4e13e901"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">ALB::FallbackAllocator::allocate</a></div><div class="ttdeci">Block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00040">ALBFallbackAllocator.h:40</a></div></div>
-<div class="ttc" id="struct_a_l_b_1_1_helper_1_1_reallocator_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_reallocator.html">ALB::Helper::Reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00119">ALBAllocatorBase.h:119</a></div></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="struct_a_l_b_1_1_traits_1_1has__expand.html">Traits::has_expand&lt;Fallback&gt;::value</a>) {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1_expander.html">Traits::Expander&lt;Fallback&gt;::doIt</a>(static_cast&lt;Fallback &amp;&gt;(*<span class="keyword">this</span>), b,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                                              delta);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;bool,</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                                    <a class="code" href="struct_a_l_b_1_1_traits_1_1has__owns.html">Traits::has_owns&lt;Primary&gt;::value</a> &amp;&amp;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                                        <a class="code" href="struct_a_l_b_1_1_traits_1_1has__owns.html">Traits::has_owns&lt;Fallback&gt;::value</a>&gt;::type</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_fallback_allocator.html#a6deef45403b5da48f0ad5c474109f2db">  134</a></span>&#160;  <a class="code" href="class_a_l_b_1_1_fallback_allocator.html#a6deef45403b5da48f0ad5c474109f2db">owns</a>(<span class="keyword">const</span> <a class="code" href="struct_a_l_b_1_1_block.html">Block</a> &amp;b) {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">return</span> Primary::owns(b) || Fallback::owns(b);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="keyword">typename</span> <a class="code" href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">Traits::enable_result_to</a>&lt;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;      void, <a class="code" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll&lt;Primary&gt;::value</a> &amp;&amp;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                <a class="code" href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">Traits::has_deallocateAll&lt;Fallback&gt;::value</a>&gt;::type</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  deallocateAll() {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    Primary::deallocateAll();</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    Fallback::deallocateAll();</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;};</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
+<div class="ttc" id="struct_a_l_b_1_1_block_html"><div class="ttname"><a href="struct_a_l_b_1_1_block.html">ALB::Block</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00019">ALBAllocatorBase.h:19</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a6deef45403b5da48f0ad5c474109f2db"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a6deef45403b5da48f0ad5c474109f2db">ALB::FallbackAllocator::owns</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_owns&lt; Primary &gt;::value &amp;&amp;Traits::has_owns&lt; Fallback &gt;::value &gt;::type owns(const Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00134">ALBFallbackAllocator.h:134</a></div></div>
+<div class="ttc" id="group__group__helpers_html_ga53853ebb6a8e25448cb83d6b6b3caedb"><div class="ttname"><a href="group__group__helpers.html#ga53853ebb6a8e25448cb83d6b6b3caedb">ALB::Helper::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00113">ALBAllocatorBase.h:113</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a4e64e7c58925d167e1ce846041ffad29"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29">ALB::FallbackAllocator::deallocate</a></div><div class="ttdeci">void deallocate(Block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00056">ALBFallbackAllocator.h:56</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__deallocate_all_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__deallocate_all.html">ALB::Traits::has_deallocateAll</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00041">ALBTraits.h:41</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html">ALB::FallbackAllocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00023">ALBFallbackAllocator.h:23</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__expand_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__expand.html">ALB::Traits::has_expand</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00022">ALBTraits.h:22</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1has__owns_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1has__owns.html">ALB::Traits::has_owns</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00060">ALBTraits.h:60</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1enable__result__to_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1enable__result__to.html">ALB::Traits::enable_result_to</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00099">ALBTraits.h:99</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1both__same__base_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1both__same__base.html">ALB::Traits::both_same_base</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00121">ALBTraits.h:121</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_traits_1_1_expander_html"><div class="ttname"><a href="struct_a_l_b_1_1_traits_1_1_expander.html">ALB::Traits::Expander</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_traits_8h_source.html#l00157">ALBTraits.h:157</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a75b4aa460e1afd2e7be8456af5e688a4"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4">ALB::FallbackAllocator::reallocate</a></div><div class="ttdeci">bool reallocate(Block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00074">ALBFallbackAllocator.h:74</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_acac954bec0c10eeb3aefaf2e4e13e901"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901">ALB::FallbackAllocator::allocate</a></div><div class="ttdeci">Block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00041">ALBFallbackAllocator.h:41</a></div></div>
+<div class="ttc" id="struct_a_l_b_1_1_helper_1_1_reallocator_html"><div class="ttname"><a href="struct_a_l_b_1_1_helper_1_1_reallocator.html">ALB::Helper::Reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_allocator_base_8h_source.html#l00133">ALBAllocatorBase.h:133</a></div></div>
+<div class="ttc" id="class_a_l_b_1_1_fallback_allocator_html_a585d9131fbbdf4b00bdc785b4c20f327"><div class="ttname"><a href="class_a_l_b_1_1_fallback_allocator.html#a585d9131fbbdf4b00bdc785b4c20f327">ALB::FallbackAllocator::expand</a></div><div class="ttdeci">Traits::enable_result_to&lt; bool, Traits::has_expand&lt; Primary &gt;::value||Traits::has_expand&lt; Fallback &gt;::value &gt;::type expand(Block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_fallback_allocator_8h_source.html#l00109">ALBFallbackAllocator.h:109</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>ALBFallbackAllocator.h</b></li>
-    <li class="footer">Generated on Tue Feb 25 2014 22:11:36 for Allocator Builder by
+    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

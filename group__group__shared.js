@@ -22,7 +22,7 @@ var group__group__shared =
       [ "Bucketizer", "class_a_l_b_1_1_bucketizer.html#aedd86bf42ccc602aac811f518a33186c", null ],
       [ "allocate", "class_a_l_b_1_1_bucketizer.html#a896c627dab1824366b036d4882744377", null ],
       [ "deallocate", "class_a_l_b_1_1_bucketizer.html#a7762c1a0b0453b0cb67921c80a3208b5", null ],
-      [ "deallocateAll", "class_a_l_b_1_1_bucketizer.html#a9af5628eecadf9c1571e9af60811f8aa", null ],
+      [ "deallocateAll", "class_a_l_b_1_1_bucketizer.html#af010a2585c28e8bf3593898b31d78ba3", null ],
       [ "owns", "class_a_l_b_1_1_bucketizer.html#acced4fe860c0f557c6e4e960731d5a3c", null ],
       [ "reallocate", "class_a_l_b_1_1_bucketizer.html#a456fd44e9d59e098274d071b137091fa", null ],
       [ "_buckets", "class_a_l_b_1_1_bucketizer.html#a7ea26bcba12bb68c1d2ef340d5b9c6c5", null ]
@@ -30,10 +30,26 @@ var group__group__shared =
     [ "FallbackAllocator", "class_a_l_b_1_1_fallback_allocator.html", [
       [ "allocate", "class_a_l_b_1_1_fallback_allocator.html#acac954bec0c10eeb3aefaf2e4e13e901", null ],
       [ "deallocate", "class_a_l_b_1_1_fallback_allocator.html#a4e64e7c58925d167e1ce846041ffad29", null ],
-      [ "deallocateAll", "class_a_l_b_1_1_fallback_allocator.html#aab8e6fe1060044e67d703d839eeb7a54", null ],
-      [ "expand", "class_a_l_b_1_1_fallback_allocator.html#aeb4d91dbe444fbe17fa52d3f0e185bed", null ],
-      [ "owns", "class_a_l_b_1_1_fallback_allocator.html#a021ded85c7ff732727bf567b6558717c", null ],
+      [ "deallocateAll", "class_a_l_b_1_1_fallback_allocator.html#a02a50efe4b963f5e3ce51b7d2172e48d", null ],
+      [ "expand", "class_a_l_b_1_1_fallback_allocator.html#a585d9131fbbdf4b00bdc785b4c20f327", null ],
+      [ "owns", "class_a_l_b_1_1_fallback_allocator.html#a6deef45403b5da48f0ad5c474109f2db", null ],
       [ "reallocate", "class_a_l_b_1_1_fallback_allocator.html#a75b4aa460e1afd2e7be8456af5e688a4", null ]
+    ] ],
+    [ "FreeListBase", "class_a_l_b_1_1_free_list_base.html", [
+      [ "FreeListBase", "class_a_l_b_1_1_free_list_base.html#a5c629309d23403b424a763d17063a0cc", null ],
+      [ "FreeListBase", "class_a_l_b_1_1_free_list_base.html#abdcaafc16ac45698fd5d6e58697b6180", null ],
+      [ "~FreeListBase", "class_a_l_b_1_1_free_list_base.html#a04b66d817279a3d491c0cb80e18738ad", null ],
+      [ "allocate", "class_a_l_b_1_1_free_list_base.html#abf189954f6fd4154fdfb14393a4cca3c", null ],
+      [ "deallocate", "class_a_l_b_1_1_free_list_base.html#a9622f7e1b5af02232eb1c210cc617850", null ],
+      [ "max_size", "class_a_l_b_1_1_free_list_base.html#aa4c6f01bb7f51b332bd02e11c62e912a", null ],
+      [ "min_size", "class_a_l_b_1_1_free_list_base.html#ad738ae90bff523f3f47582c5420bd31a", null ],
+      [ "owns", "class_a_l_b_1_1_free_list_base.html#ab77ccf141a5704d4e2b88328956951b3", null ],
+      [ "reallocate", "class_a_l_b_1_1_free_list_base.html#a619b735560b5c2030efa77f90dd4ed0e", null ],
+      [ "setMinMax", "class_a_l_b_1_1_free_list_base.html#a6a57d63d3d0c3c37d90b0c95c7dc2a9e", null ]
+    ] ],
+    [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html", [
+      [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html#a18265a268c6d486df2e3e07259fe8e70", null ],
+      [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html#af26a128883b7410c004eda8536e244ae", null ]
     ] ],
     [ "Mallocator", "class_a_l_b_1_1_mallocator.html", [
       [ "allocate", "class_a_l_b_1_1_mallocator.html#a2cb5763d9d4f147f185027337bb69ac6", null ],
@@ -41,30 +57,23 @@ var group__group__shared =
       [ "reallocate", "class_a_l_b_1_1_mallocator.html#a610c51f7d81d78a89a7192795fd458b6", null ]
     ] ],
     [ "SharedCascadingAllocators", "class_a_l_b_1_1_shared_cascading_allocators.html", [
+      [ "allocator", "class_a_l_b_1_1_shared_cascading_allocators.html#aedbccec6d6ac0eeca8bb7d12e16ec59f", null ],
       [ "SharedCascadingAllocators", "class_a_l_b_1_1_shared_cascading_allocators.html#a9c71598378503f9887c705ae4c7e652b", null ],
+      [ "SharedCascadingAllocators", "class_a_l_b_1_1_shared_cascading_allocators.html#ab8be7b4d6aecbbc425074e568b61c31a", null ],
       [ "~SharedCascadingAllocators", "class_a_l_b_1_1_shared_cascading_allocators.html#a99fbbb79afb5ac5ffb9bd22aeee87d3b", null ],
       [ "allocate", "class_a_l_b_1_1_shared_cascading_allocators.html#a7f2eeddcf8a424e6e7f7f5f2e4c6a812", null ],
       [ "deallocate", "class_a_l_b_1_1_shared_cascading_allocators.html#a07f58810adfccc9bd9d006a7a585273f", null ],
+      [ "deallocateAll", "class_a_l_b_1_1_shared_cascading_allocators.html#a281c918cccf6eb1f0f6b9039f6bb7966", null ],
       [ "expand", "class_a_l_b_1_1_shared_cascading_allocators.html#a3faf788e38e8c75363a98868948cf1a1", null ],
+      [ "operator=", "class_a_l_b_1_1_shared_cascading_allocators.html#a658db9aa0ddc6178fe439cd917abb0d3", null ],
       [ "owns", "class_a_l_b_1_1_shared_cascading_allocators.html#a7af25820f53c6d0b8fcfe98caacc99a3", null ],
       [ "reallocate", "class_a_l_b_1_1_shared_cascading_allocators.html#a2860fb89826c089b7b758d3f6ff9e52d", null ]
-    ] ],
-    [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html", [
-      [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html#a18265a268c6d486df2e3e07259fe8e70", null ],
-      [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html#af26a128883b7410c004eda8536e244ae", null ],
-      [ "~SharedFreeList", "class_a_l_b_1_1_shared_free_list.html#a931e9d0dcb0edef561760ef0a34b9042", null ],
-      [ "allocate", "class_a_l_b_1_1_shared_free_list.html#ae834254343bfe713a3ff7e467005f2a6", null ],
-      [ "deallocate", "class_a_l_b_1_1_shared_free_list.html#ae7b168c673c4165ee064c37e76e1c67b", null ],
-      [ "max_size", "class_a_l_b_1_1_shared_free_list.html#ae0d103b10239dfa18b0e799ba577d966", null ],
-      [ "min_size", "class_a_l_b_1_1_shared_free_list.html#a0a02c0305d90307fdb4db8e929140f19", null ],
-      [ "owns", "class_a_l_b_1_1_shared_free_list.html#ad257931913993ca803778b1c69287ea7", null ],
-      [ "reallocate", "class_a_l_b_1_1_shared_free_list.html#a43ff781834aea06976953024a96d8b09", null ],
-      [ "setMinMax", "class_a_l_b_1_1_shared_free_list.html#a3110c693f9416d0a8713f7fe5c101273", null ]
     ] ],
     [ "SharedHeap", "class_a_l_b_1_1_shared_heap.html", [
       [ "allocator", "class_a_l_b_1_1_shared_heap.html#ab87729639f9a411e8dfcf7bdc9471116", null ],
       [ "SharedHeap", "class_a_l_b_1_1_shared_heap.html#a8c9bef00c2899c17f4fead3a69a47ddc", null ],
       [ "SharedHeap", "class_a_l_b_1_1_shared_heap.html#a8b5486a9861941c741929e55b7cab0cd", null ],
+      [ "SharedHeap", "class_a_l_b_1_1_shared_heap.html#a97b9447f4735352fe86a2c53cdfacfc5", null ],
       [ "~SharedHeap", "class_a_l_b_1_1_shared_heap.html#afff69bcfbe3c017aac852758e9e438e8", null ],
       [ "allocate", "class_a_l_b_1_1_shared_heap.html#a55705dd05477ab1a873b1aadaa73b80d", null ],
       [ "chunk_size", "class_a_l_b_1_1_shared_heap.html#ac5958bd4acf285fff5b014182120a7a4", null ],
@@ -72,6 +81,7 @@ var group__group__shared =
       [ "deallocateAll", "class_a_l_b_1_1_shared_heap.html#a4453d52d0558fac8cd71796a847408d5", null ],
       [ "expand", "class_a_l_b_1_1_shared_heap.html#ab4a4dfe01958f926a6edc924cd6b8e84", null ],
       [ "number_of_chunk", "class_a_l_b_1_1_shared_heap.html#ab1a5d4860199d2461d04fdac785c1e65", null ],
+      [ "operator=", "class_a_l_b_1_1_shared_heap.html#aab6325d52465c1d5ab0071d3b94555e3", null ],
       [ "owns", "class_a_l_b_1_1_shared_heap.html#a3bb85c77814b9b5b907a27c6e8949a69", null ],
       [ "reallocate", "class_a_l_b_1_1_shared_heap.html#ab7eb2ef19bfb51703dbfb9fd6b04f2f3", null ]
     ] ],

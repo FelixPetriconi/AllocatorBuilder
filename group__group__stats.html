@@ -169,10 +169,10 @@ Enumerations</h2></td></tr>
 <p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a327a0a14c0515cd53261b904fa141170">ALB::AllocatorWithStats::owns</a>. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a8f1af9db100dd3f44e5b5c099c939168"></a>NumAllocate</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to ALB::AllocatorWithStats::allocate. All calls are counted, including requests for zero bytes or failed requests. </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a44c4bedd48aa689a994bf3dd7759c9c4">ALB::AllocatorWithStats::allocate</a>. All calls are counted, including requests for zero bytes or failed requests. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a797be8934a625a37372fec409b2a5433"></a>NumAllocateOK</em>&#160;</td><td class="fielddoc">
-<p>Counts the number of calls to ALB::AllocatorWithStats::allocate that succeeded, i.e. they wherefor more than zero bytes and returned a non-null block. </p>
+<p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a44c4bedd48aa689a994bf3dd7759c9c4">ALB::AllocatorWithStats::allocate</a> that succeeded, i.e. they wherefor more than zero bytes and returned a non-null block. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a025d859db4a1ac5d7ceada6cb48d3b66"></a>NumExpand</em>&#160;</td><td class="fielddoc">
 <p>Counts the number of calls to <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a>, regardless of arguments or result. </p>
@@ -199,7 +199,7 @@ Enumerations</h2></td></tr>
 <p>Chooses all numXxx)flags. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a6c5bf8d0c5053d57110f8254d2c66796"></a>BytesAllocated</em>&#160;</td><td class="fielddoc">
-<p>Tracks total cumulative bytes allocated by means of ALB::AllocatorWithStats::allocate, <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a>, and <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> (when resulting in an expansion). This number always grows and indicates allocation traffic. To compute bytes currently allocated, subtract ALB::AllocatorWithStats::bytesDeallocated (below) from ALB::AllocatorWithStats::bytesAllocated. </p>
+<p>Tracks total cumulative bytes allocated by means of <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a44c4bedd48aa689a994bf3dd7759c9c4">ALB::AllocatorWithStats::allocate</a>, <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#af9024553acf56e5214c8f880b7c9b385">ALB::AllocatorWithStats::expand</a>, and <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> (when resulting in an expansion). This number always grows and indicates allocation traffic. To compute bytes currently allocated, subtract ALB::AllocatorWithStats::bytesDeallocated (below) from ALB::AllocatorWithStats::bytesAllocated. </p>
 </td></tr>
 <tr><td class="fieldname"><em><a class="anchor" id="gga747ad72b3677849a6ee1c7a67c7fbf31a4d6331c1b283bfda919df9534991dbc0"></a>BytesDeallocated</em>&#160;</td><td class="fielddoc">
 <p>Tracks total cumulative bytes deallocated by means of <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a073c264c418fe0463b560e692883031c">ALB::AllocatorWithStats::deallocate</a> and <a class="el" href="class_a_l_b_1_1_allocator_with_stats.html#a261c0ad7f56fa1368900f61db96664df">ALB::AllocatorWithStats::reallocate</a> (when resulting in a contraction). This number always grows and indicates deallocation traffic. </p>
@@ -245,7 +245,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00039">39</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html#l00040">40</a> of file <a class="el" href="_a_l_b_allocator_with_stats_8h_source.html">ALBAllocatorWithStats.h</a>.</p>
 
 </div>
 </div>
@@ -254,7 +254,7 @@ Enumerations</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Feb 25 2014 22:11:36 for Allocator Builder by
+    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

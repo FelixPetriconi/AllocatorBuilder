@@ -128,6 +128,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b5486a9861941c741929e55b7cab0cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b5486a9861941c741929e55b7cab0cd"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SharedHeap</b> (size_t numberOfChunks, size_t chunkSize)</td></tr>
 <tr class="separator:a8b5486a9861941c741929e55b7cab0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97b9447f4735352fe86a2c53cdfacfc5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97b9447f4735352fe86a2c53cdfacfc5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SharedHeap</b> (<a class="el" href="class_a_l_b_1_1_shared_heap.html">SharedHeap</a> &amp;&amp;x)</td></tr>
+<tr class="separator:a97b9447f4735352fe86a2c53cdfacfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab6325d52465c1d5ab0071d3b94555e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab6325d52465c1d5ab0071d3b94555e3"></a>
+<a class="el" href="class_a_l_b_1_1_shared_heap.html">SharedHeap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="class_a_l_b_1_1_shared_heap.html">SharedHeap</a> &amp;&amp;x)</td></tr>
+<tr class="separator:aab6325d52465c1d5ab0071d3b94555e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1a5d4860199d2461d04fdac785c1e65"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1a5d4860199d2461d04fdac785c1e65"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_chunk</b> () const </td></tr>
 <tr class="separator:ab1a5d4860199d2461d04fdac785c1e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,7 +171,7 @@ class ALB::SharedHeap&lt; Allocator, NumberOfChunks, ChunkSize &gt;</h3>
 
 <p>The <a class="el" href="class_a_l_b_1_1_shared_heap.html">SharedHeap</a> implements a classic heap with a pre-allocated size of _numberOfChunks.value() * _chunkSize.value() It has a overhead of one bit per block and linear complexity for allocation and deallocation operations. It is thread safe, except the moment of instantiation. As far as possible only a shared lock + an atomic operation is used during the memory operations </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_shared_heap_8h_source.html#l00046">46</a> of file <a class="el" href="_a_l_b_shared_heap_8h_source.html">ALBSharedHeap.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_shared_heap_8h_source.html#l00048">48</a> of file <a class="el" href="_a_l_b_shared_heap_8h_source.html">ALBSharedHeap.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="_a_l_b_shared_heap_8h_source.html">ALBSharedHeap.h</a></li>
 </ul>
@@ -175,7 +181,7 @@ class ALB::SharedHeap&lt; Allocator, NumberOfChunks, ChunkSize &gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_shared_heap.html">SharedHeap</a></li>
-    <li class="footer">Generated on Tue Feb 25 2014 22:11:37 for Allocator Builder by
+    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

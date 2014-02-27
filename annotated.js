@@ -9,7 +9,8 @@ var annotated =
         [ "Reallocator< Allocator, typename std::enable_if< Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html", null ],
         [ "Reallocator< Allocator, typename std::enable_if<!Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html", null ],
         [ "Dynastic", "struct_a_l_b_1_1_helper_1_1_dynastic.html", "struct_a_l_b_1_1_helper_1_1_dynastic" ],
-        [ "Dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", "struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4" ]
+        [ "Dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", "struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4" ],
+        [ "stack", "class_a_l_b_1_1_helper_1_1stack.html", "class_a_l_b_1_1_helper_1_1stack" ]
       ] ],
       [ "SharedHelpers", null, [
         [ "NullLock", "class_a_l_b_1_1_shared_helpers_1_1_null_lock.html", "class_a_l_b_1_1_shared_helpers_1_1_null_lock" ],
@@ -55,11 +56,13 @@ var annotated =
       [ "AllocatorWithStats", "class_a_l_b_1_1_allocator_with_stats.html", "class_a_l_b_1_1_allocator_with_stats" ],
       [ "Bucketizer", "class_a_l_b_1_1_bucketizer.html", "class_a_l_b_1_1_bucketizer" ],
       [ "FallbackAllocator", "class_a_l_b_1_1_fallback_allocator.html", "class_a_l_b_1_1_fallback_allocator" ],
+      [ "FreeListBase", "class_a_l_b_1_1_free_list_base.html", "class_a_l_b_1_1_free_list_base" ],
+      [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html", "class_a_l_b_1_1_shared_free_list" ],
+      [ "FreeList", "class_a_l_b_1_1_free_list.html", "class_a_l_b_1_1_free_list" ],
       [ "Mallocator", "class_a_l_b_1_1_mallocator.html", "class_a_l_b_1_1_mallocator" ],
       [ "MemoryCorruptionDetector", "class_a_l_b_1_1_memory_corruption_detector.html", "class_a_l_b_1_1_memory_corruption_detector" ],
       [ "Segregator", "class_a_l_b_1_1_segregator.html", "class_a_l_b_1_1_segregator" ],
       [ "SharedCascadingAllocators", "class_a_l_b_1_1_shared_cascading_allocators.html", "class_a_l_b_1_1_shared_cascading_allocators" ],
-      [ "SharedFreeList", "class_a_l_b_1_1_shared_free_list.html", "class_a_l_b_1_1_shared_free_list" ],
       [ "SharedHeap", "class_a_l_b_1_1_shared_heap.html", "class_a_l_b_1_1_shared_heap" ],
       [ "StackAllocator", "class_a_l_b_1_1_stack_allocator.html", "class_a_l_b_1_1_stack_allocator" ]
     ] ]
