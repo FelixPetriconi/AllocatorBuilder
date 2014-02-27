@@ -16,6 +16,10 @@
 #include <boost/thread.hpp>
 #include <boost/assert.hpp>
 
+#ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
+#include <boost/noncopyable.hpp>
+#endif
+
 #ifdef min
 #undef min
 #endif
@@ -41,13 +45,18 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
-class SharedHeap {
+class SharedHeap 
+#ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
+  : boost::noncopyable
+#endif
+{
   const uint64_t all_set;
   const uint64_t all_zero;
 
   Helper::Dynastic<(NumberOfChunks == DynamicSetSize ? 0 : NumberOfChunks), 0>
-  _numberOfChunks;
-  Helper::Dynastic<(ChunkSize == DynamicSetSize ? 0 : ChunkSize), 0> _chunkSize;
+    _numberOfChunks;
+  Helper::Dynastic<(ChunkSize == DynamicSetSize ? 0 : ChunkSize), 0> 
+    _chunkSize;
 
   Block _buffer;
   Block _controlBuffer;
@@ -59,6 +68,17 @@ class SharedHeap {
   boost::shared_mutex _mutex;
   Allocator _allocator;
 
+  void shrink() {
+    _allocator.deallocate(_controlBuffer);
+    _allocator.deallocate(_buffer);
+    _control = nullptr;
+  }
+
+#ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
+  SharedHeap(const SharedHeap&) = delete;
+  const SharedHeap& operator=(const SharedHeap&) = delete;
+#endif
+
 public:
   static const bool supports_truncated_deallocation = true;
   typename typedef Allocator allocator;
@@ -66,12 +86,35 @@ public:
   SharedHeap() : all_set(static_cast<uint64_t>(-1)), all_zero(0) { init(); }
 
   SharedHeap(size_t numberOfChunks, size_t chunkSize)
-      : all_set(static_cast<uint64_t>(-1)), all_zero(0) {
-
+    : all_set(static_cast<uint64_t>(-1))
+    , all_zero(0) {
     _numberOfChunks.value(Helper::roundToAlignment(64, numberOfChunks));
     _chunkSize.value(Helper::roundToAlignment(4, chunkSize));
-
     init();
+  }
+
+  SharedHeap(SharedHeap&& x) {
+    *this = std::move(x);
+  }
+
+  SharedHeap& operator=(SharedHeap&& x) {
+    if (this == &x) {
+      return *this;
+    }
+    boost::unique_lock<boost::shared_mutex> guardThis(_mutex);
+    shrink();
+    boost::unique_lock<boost::shared_mutex> guardX(x._mutex);
+    _numberOfChunks = std::move(x._numberOfChunks);
+    _chunkSize      = std::move(x._chunkSize);
+    _buffer         = std::move(x._buffer);
+    _controlBuffer  = std::move(x._controlBuffer);
+    _control        = std::move(x._control);
+    _controlSize    = std::move(x._controlSize);
+    _allocator      = std::move(x._allocator);
+    
+    x._control = nullptr;
+    
+    return *this;
   }
 
   size_t number_of_chunk() const { return _numberOfChunks.value(); }
@@ -80,11 +123,7 @@ public:
 
   ~SharedHeap() {
     boost::unique_lock<boost::shared_mutex> guard(_mutex);
-
-    _allocator.deallocate(_controlBuffer);
-    _allocator.deallocate(_buffer);
-
-    _control = nullptr;
+    shrink();
   }
 
   bool owns(const Block &b) const {

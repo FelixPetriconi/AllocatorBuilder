@@ -56,10 +56,6 @@ TEST_F(TCascadingAllocatorsTest,  BruteForceSingleAllocationWithinTwoRunningThre
     TestParams> singleMemoryAccessTest(sut, maxUsedBytes);
 
   singleMemoryAccessTest.check();  
-
-  auto allDeallocatedCheck = sut.allocate(512*64);
-  EXPECT_TRUE((bool)allDeallocatedCheck);
-  sut.deallocate(allDeallocatedCheck);
 }
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceWithSeveralAllocatedBlocksWithinTwoRunningThreads)
@@ -77,8 +73,4 @@ TEST_F(TCascadingAllocatorsTest,  BruteForceWithSeveralAllocatedBlocksWithinTwoR
     TestParams> multipleMemoryAccessTest(sut, maxUsedBytes);
 
   multipleMemoryAccessTest.check();
-
-  auto allDeallocatedCheck = sut.allocate(512*64);
-  EXPECT_TRUE((bool)allDeallocatedCheck);
-  sut.deallocate(allDeallocatedCheck);
 }

@@ -21,6 +21,17 @@ struct Block {
 
   Block(void *ptr, size_t length) : ptr(ptr), length(length) {}
 
+  Block(Block&& x) {
+    *this = std::move(x);
+  }
+
+  Block& operator=(Block&& x) {
+    ptr = x.ptr;
+    length = x.length;
+    x.reset();
+    return *this;
+  }
+
   /**
    * During destruction of any of this instance, the described memory
    * is not freed!

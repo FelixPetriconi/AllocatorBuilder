@@ -11,31 +11,57 @@
 
 #include "ALBAllocatorBase.h"
 #include <boost/assert.hpp>
+#include <boost/config.hpp>
 #include <mutex>
-#include <atomic>
 
 namespace ALB {
 /**
  * This implements a cascade of allocators. If the first allocator cannot
- * fullfil the given request, then a next one is created and the requested is
+ * fulfill the given request, then a next one is created and the requested is
  * passed to it.
  * This class is thread safe.
- * \tparam Allocator Of this type Allocators get created.
+ * \tparam Allocator of this type Allocators get created.
+ *
  * \ingroup group_allocators group_shared
  */
-template <typename Allocator> class SharedCascadingAllocators {
-  typename typedef Allocator allocator;
-
+template <typename Allocator> 
+class SharedCascadingAllocators 
+#ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
+  : boost::noncopyable
+#endif
+{
   struct Node {
-    Node() : next(nullptr) {}
+    Node() 
+      : next(nullptr)
+      , allocatedThisSize(0)
+      , nextIsInitialized(false) {}
+    
+    Node& operator=(Node&& x) {
+      allocator           = std::move(x.allocator);
+      next                = std::move(x.next);
+      allocatedThisSize   = x.allocatedThisSize;
+      nextIsInitialized   = x.nextIsInitialized;
+
+      x.next              = nullptr;
+      x.allocatedThisSize = 0;
+      x.nextIsInitialized = false;
+      
+      return *this;
+    }
 
     Allocator allocator;
-    std::atomic<Node *> next;
+    Node    *next;
+    size_t allocatedThisSize;
+    bool nextIsInitialized;
   };
 
-  std::atomic<Node *> _root;
+  Node* _root;
+  mutable std::recursive_mutex _mutex;
+
 
   Block allocateNoGrow(size_t n) {
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
+
     Block result;
     Node *p = _root;
     while (p) {
@@ -43,28 +69,91 @@ template <typename Allocator> class SharedCascadingAllocators {
       if (result) {
         return result;
       }
+      if (!p->nextIsInitialized) {
+        break;
+      }
       p = p->next;
     }
     return result;
   }
 
+  void eraseNode(Node* n) {
+    if (n == nullptr) {
+      return;
+    }
+    if (n->next) {
+      if (n->nextIsInitialized) {
+        eraseNode(n->next);
+        Block allocatedBlock(n->next, n->next->allocatedThisSize);
+        n->allocator.deallocate(allocatedBlock);
+      }
+      else {
+        Block allocatedBlock(n->next, *(reinterpret_cast<size_t*>(n->next)));
+        n->allocator.deallocate(allocatedBlock);
+      }
+    }
+  }
+
+  void shrink() {
+    eraseNode(_root);
+    // Finally we have to clear the very first node. Here we use the same trick
+    // as during allocation, we move the allocator to the stack and from there
+    // we delete the first node
+    if (_root != nullptr) {
+      Node stackNode;
+      stackNode = std::move(*_root);
+      Block rootBlock(_root, stackNode.allocatedThisSize);
+      stackNode.allocator.deallocate(rootBlock);
+      _root = nullptr;
+    }
+  }
+
+  Node* findOwningNode(const Block& b) const {
+    Node *p = _root;
+    while (p) {
+      if (p->allocator.owns(b)) {
+        return p;
+      }
+      p = p->next;
+    }
+    return nullptr;
+  }
+
+#ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
+  SharedCascadingAllocators(const SharedCascadingAllocators&) = delete;
+  const SharedCascadingAllocators& operator=(const SharedCascadingAllocators&) = delete;
+#endif
+
 public:
+  typename typedef Allocator allocator;
+
   static const bool supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation;
 
   SharedCascadingAllocators() : _root(nullptr) {}
 
+  SharedCascadingAllocators(SharedCascadingAllocators&& x) {
+    *this = std::move(x);
+  }
+
+  SharedCascadingAllocators& operator=(SharedCascadingAllocators&& x) {
+    if (this == &x) {
+      return *this;
+    }
+    std::lock_guard<std::recursive_mutex> guardThis(_mutex);
+    shrink();
+    std::lock_guard<std::recursive_mutex> guardX(_mutex);
+    _root = std::move(x._root);
+    x._root = nullptr;
+    return *this;
+  }
+
   /**
    * Frees all allocated memory!
    */
   ~SharedCascadingAllocators() {
-    while (_root.load() != nullptr) {
-      Node *old = _root;
-      Node *next = old->next.load();
-      if (_root.compare_exchange_weak(old, next)) {
-        delete old;
-      }
-    }
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
+    shrink();
   }
 
   /**
@@ -78,27 +167,67 @@ public:
     }
 
     // no node at all there
-    if (_root.load() == nullptr) {
-      Node *newNode = new Node;
-      Node *oldNullValue = nullptr;
-      if (!_root.compare_exchange_strong(oldNullValue, newNode)) {
-        // In the meantime an other thread already created a root node
-        delete newNode;
+    if (_root == nullptr) {
+      {
+        std::lock_guard<std::recursive_mutex> guard(_mutex);
+  
+        // Create a temporary node with an allocator on the stack
+        Node newNode = Node();
+        // Use this allocator to create the first node in allocators space
+        auto firstNodeBlock = newNode.allocator.allocate(sizeof(Node));
+        newNode.allocatedThisSize = firstNodeBlock.length;
+        Node* firstRoot = reinterpret_cast<Node*>(firstNodeBlock.ptr);
+        new (firstRoot) Node();
+  
+        // If this allocations fails, then the is no room left and we have to quit
+        if (!firstRoot) {
+          return Block();
+        }
+        // Move the node from the stack to the allocated space
+        *firstRoot = std::move(newNode);
+        auto nextBlock = firstRoot->allocator.allocate(sizeof(Node));
+        BOOST_ASSERT(nextBlock);
+        firstRoot->next = reinterpret_cast<Node*>(nextBlock.ptr);
+        // store temporarily the size of the node at the beginning of the allocated
+        // space
+        *(reinterpret_cast<size_t*>(firstRoot->next)) = nextBlock.length;
+        
+        _root = firstRoot;
       }
-
+ 
       return allocateNoGrow(n);
     }
 
+    
     // a new node must be appended
-    Node *newNode = new Node;
-    Node *oldNullNode = nullptr;
-    Node *p;
-    do {
-      p = _root;
-      while (p->next.load() != nullptr) {
-        p = p->next;
+    {
+      std::lock_guard<std::recursive_mutex> guard(_mutex);
+      auto currentNode = _root;
+      while (currentNode->nextIsInitialized) {
+        currentNode = currentNode->next;
       }
-    } while (!p->next.compare_exchange_strong(oldNullNode, newNode));
+  
+      // There is no next one 
+      if (!currentNode->next) {
+        return Block();
+      }
+  
+      const size_t allocatedSizeOfNextNode = *(reinterpret_cast<size_t*>(currentNode->next));
+      
+      new (currentNode->next) Node();
+      
+      currentNode->allocatedThisSize = allocatedSizeOfNextNode;
+      currentNode->nextIsInitialized = true;
+  
+      // reserve space for the next allocator
+      auto nextBlock = currentNode->next->allocator.allocate(sizeof(Node));
+      if (nextBlock) {
+        currentNode->next->next = reinterpret_cast<Node*>(nextBlock.ptr);
+        // store temporarily the size of the node at the beginning of the allocated
+        // space
+        *(reinterpret_cast<size_t*>(currentNode->next->next)) = nextBlock.length;
+      }
+    }
 
     return allocateNoGrow(n);
   }
@@ -110,19 +239,17 @@ public:
     if (!b) {
       return;
     }
+    
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     if (!owns(b)) {
       BOOST_ASSERT_MSG(false,
                        "It is not wise to let me deallocate a foreign Block!");
       return;
     }
 
-    Node *p = _root;
-    while (p) {
-      if (p->allocator.owns(b)) {
-        p->allocator.deallocate(b);
-        return;
-      }
-      p = p->next.load();
+    Node *p = findOwningNode(b);
+    if (p != nullptr) {
+      p->allocator.deallocate(b);
     }
   }
 
@@ -135,24 +262,22 @@ public:
    * \param True, if the operation was successful
    */
   bool reallocate(Block &b, size_t n) {
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     if (Helper::Reallocator<SharedCascadingAllocators>::isHandledDefault(
             *this, b, n)) {
       return true;
     }
 
-    Node *p = _root;
-    while (p) {
-      if (p->allocator.owns(b)) {
-        if (p->allocator.reallocate(b, n)) {
-          return true;
-        }
-
-        return Helper::reallocateWithCopy(*this, *this, b, n);
-      }
-      p = p->next.load();
+    Node *p = findOwningNode(b);
+    if (p == nullptr) {
+      return false;
     }
-    BOOST_ASSERT(0);
-    return false;
+    
+    if (p->allocator.reallocate(b, n)) {
+      return true;
+    }
+
+    return Helper::reallocateWithCopy(*this, *this, b, n);
   }
 
   /**
@@ -165,15 +290,12 @@ public:
   typename Traits::enable_result_to<bool,
                                     Traits::has_expand<Allocator>::value>::type
   expand(Block &b, size_t delta) {
-    Node *p = _root;
-    while (p) {
-      if (p->allocator.owns(b)) {
-        return p->allocator.expand(b, delta);
-      }
-      p = p->next.load();
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
+    Node *p = findOwningNode(b);
+    if (p == nullptr) {
+      return false;
     }
-    BOOST_ASSERT(0);
-    return false;
+    return p->allocator.expand(b, delta);
   }
 
   /**
@@ -182,14 +304,15 @@ public:
    * \return True, if one of the allocator owns it.
    */
   bool owns(const Block &b) const {
-    Node *p = _root;
-    while (p) {
-      if (p->allocator.owns(b)) {
-        return true;
-      }
-      p = p->next.load();
-    }
-    return false;
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
+    return findOwningNode(b) != nullptr;
+  }
+
+  typename Traits::enable_result_to<bool,
+    Traits::has_deallocateAll<Allocator>::value>::type
+    deallocateAll() {
+      boost::lock_guard<boost::shared_mutex> guard(_mutex);
+    shrink();
   }
 };
 }

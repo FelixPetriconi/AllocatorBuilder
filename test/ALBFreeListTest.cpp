@@ -27,9 +27,9 @@ protected:
 typedef ::testing::Types<
   ALB::SharedFreeList<ALB::Mallocator, 0, 16 >,
   ALB::FreeList<ALB::Mallocator, 0, 16 >
-> TypesToTest;
+> TypesForFreeListTest;
 
-TYPED_TEST_CASE(SharedListTest, TypesToTest);
+TYPED_TEST_CASE(SharedListTest, TypesForFreeListTest);
 
 TYPED_TEST(SharedListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
 {
@@ -99,16 +99,29 @@ TYPED_TEST(SharedListTest, ThatAProvidedBlockIsRecongizedAOwned)
 }
 
 
-TEST(SharedFreeListWithParametrizedTest, ThatUpperAndLowerBoundIsSet)
+
+template <class T>
+class FreeListWithParametrizedTest : public ::testing::Test {
+protected:
+  FreeListWithParametrizedTest() : sut(16, 42) {}
+  T sut;
+};
+
+typedef ::testing::Types<
+  ALB::SharedFreeList<ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>,
+  ALB::FreeList<ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>
+> TypesForFreeListWithParametrizedTest;
+
+TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTest);
+
+TYPED_TEST(FreeListWithParametrizedTest, ThatUpperAndLowerBoundIsSet)
 {
-  ALB::SharedFreeList<ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize> sut(16, 42);
   EXPECT_EQ(16, sut.min_size());
   EXPECT_EQ(42, sut.max_size());
 }
 
-TEST(SharedFreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRejected)
+TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRejected)
 {
-  ALB::SharedFreeList<ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize> sut(16, 42);
   size_t rejectedValues[] = { 0, 4, 15, 43, 64 };
   for (auto i : rejectedValues) {
     auto mem = sut.allocate(i);
@@ -116,7 +129,7 @@ TEST(SharedFreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRe
   }
 }
 
-TEST(SharedFreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAllocatedBlocksAreInLine)
+TEST(FreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAllocatedBlocksAreInLine)
 {
   ALB::SharedFreeList<ALB::StackAllocator<1024>, 0, 16,1024, 4> sut;
   ALB::Block mem[8]; // 0 3 2 1  0 3 2 1 order of allocations
@@ -129,6 +142,7 @@ TEST(SharedFreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAlloc
     mem[i] = sut.allocate(16);
   } // 0 1 2 3 0 1 2 3
   for (size_t i = 0; i < 7; i++) {
-    EXPECT_EQ(static_cast<char*>(mem[i].ptr) + 16, mem[i + 1].ptr) << "Failure at " << i;
+    EXPECT_EQ(static_cast<char*>(mem[i].ptr) + 16, mem[i + 1].ptr) 
+      << "Failure at " << i;
   }
 }
