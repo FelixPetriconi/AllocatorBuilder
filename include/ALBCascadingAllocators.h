@@ -144,8 +144,8 @@ class CascadingAllocatorsBase
   }
 
 #ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  SharedCascadingAllocators(const SharedCascadingAllocators&) = delete;
-  const SharedCascadingAllocators& operator=(const SharedCascadingAllocators&) = delete;
+  CascadingAllocatorsBase(const CascadingAllocatorsBase&) = delete;
+  const CascadingAllocatorsBase& operator=(const CascadingAllocatorsBase&) = delete;
 #endif
 
 public:

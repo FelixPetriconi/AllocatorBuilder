@@ -13,6 +13,7 @@
 #include "ALBFreeList.h"
 #include "ALBMallocator.h"
 #include "ALBStackAllocator.h"
+#include "ALBTestHelpersAllocatorBaseTest.h"
 
 template <class T>
 class SharedListTest : public ALB::TestHelpers::AllocatorBaseTest<T>

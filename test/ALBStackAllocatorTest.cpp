@@ -11,6 +11,7 @@
 
 #include "ALBStackAllocator.h"
 #include "ALBTestHelpers.h"
+#include "ALBTestHelpersAllocatorBaseTest.h"
 
 class StackAllocatorTest: public ALB::TestHelpers::AllocatorBaseTest<ALB::StackAllocator<64,4>>
 {

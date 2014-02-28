@@ -16,6 +16,12 @@ include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
 set(HEADERS
   ALBTestHelpers.h
+  ALBTestHelpersAffixGuard.h
+  ALBTestHelpersAlgorithm.h
+  ALBTestHelpersAllocatorBaseTest.h
+  ALBTestHelpersData.h
+  ALBTestHelpersThread.h
+  ALBTestHelpersUsedMemGenerator.h  
 )
 
 set(SOURCE

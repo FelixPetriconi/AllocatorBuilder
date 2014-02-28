@@ -14,6 +14,8 @@
 #include "ALBStackAllocator.h"
 #include "ALBSharedHeap.h"
 #include "ALBMallocator.h"
+#include "ALBTestHelpersAllocatorBaseTest.h"
+#include "ALBTestHelpersData.h"
 
 using namespace ALB::TestHelpers;
 

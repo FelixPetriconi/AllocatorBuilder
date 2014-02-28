@@ -13,6 +13,7 @@
 #include "ALBTestHelpers.h"
 #include "ALBStackAllocator.h"
 #include "ALBMemmoryCorruptionDetector.h"
+#include "ALBTestHelpersAllocatorBaseTest.h"
 
 namespace
 {

@@ -15,6 +15,10 @@
 #include <thread>
 #include <xutility>
 #include "ALBAffixAllocator.h"
+#include "ALBTestHelpersAllocatorBaseTest.h"
+#include "ALBTestHelpersUsedMemGenerator.h"
+#include "ALBTestHelpersThread.h"
+#include "ALBTestHelpersAffixGuard.h"
 
 using namespace ALB::TestHelpers;
 

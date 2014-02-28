@@ -15,6 +15,7 @@
 #include "ALBMallocator.h"
 #include <thread>
 #include <future>
+#include "ALBTestHelpersThread.h"
 
 class TCascadingAllocatorsTest : public ::testing::Test
 {
