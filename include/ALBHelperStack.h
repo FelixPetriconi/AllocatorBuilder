@@ -20,6 +20,8 @@ namespace Helper {
  * It's intend is to be used as not shared variant in the FreeList
  * \tparam T The element type to be put into the stack
  * \tparam MaxSize The maximum number of elements that can be put into the stack
+ *
+ * \ingroup group_helpers
  */
 template <typename T, unsigned MaxSize> 
 class stack {
