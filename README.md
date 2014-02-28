@@ -61,7 +61,36 @@ auto p = static_cast<char*>(block.ptr);
 localAllocator.deallocate(block); // better to be deleted by a scope finalizer
 ~~~  
 So, isn't this much cleaner? 
-  
+
+
+A more advanced allocator as it is used in [jmalloc](http://www.canonware.com/jemalloc/) would look like:
+~~~
+// This defines a FreeList that is later configured by the Bucketizer to its size
+typedef Freelist<Mallocator, DynamicSetSize, DynamicSetSize> FList;
+
+// All allocation requests up to 3584 bytes are handled by the cascade of FLists.
+// Sizes from 3584 till 4MB are handled by the Heap and all beyond that are forwarded
+// directly to the normal OS
+typedef Segregator<
+  8, Freelist<Mallocator, 0, 8>, Segregator<
+    128, Bucketizer<FList, 1, 128, 16>, Segregator<
+      256, Bucketizer<FList, 129, 256, 32>, Segegator<
+        512, Bucketizer<FList, 257, 512, 64>, Segegator<
+          1024, Bucketizer<FList, 513, 1024, 128>, Segegator<
+            2048, Bucketizer<FList, 1025, 2048, 256>, Segegator<
+              3584, Bucketizer<FList, 2049, 3584, 512>, Segegator<
+                4072 * 1024, CascadingAllocator<Heap<Mallocator, 1018, 4096>>, Mallocator
+              >
+			>
+	      >
+		>
+      >
+	>
+  >
+> AdvancedAllocator;
+
+~~~
+ 
   
 Allocator Overview
 ------------------
