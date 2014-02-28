@@ -11,6 +11,10 @@
 
 #include "ALBAllocatorBase.h"
 #include <boost/assert.hpp>
+#include <boost/config.hpp>
+#ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
+#include <boost/noncopyable.hpp>
+#endif
 
 namespace ALB {
 /**
@@ -22,7 +26,12 @@ namespace ALB {
  *         #reallocate and  #expand is aligned by this value
  * \ingroup group_allocators
  */
-template <size_t MaxSize, size_t Alignment = 4> class StackAllocator {
+template <size_t MaxSize, size_t Alignment = 4> 
+class StackAllocator 
+#ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
+  : boost::noncopyable
+#endif
+{
   char _data[MaxSize];
   char *_p;
 
@@ -162,20 +171,24 @@ public:
   void deallocateAll() { _p = _data; }
 
 private:
-  // disable copy ctor, move ctor and assignment operators
-  StackAllocator(const StackAllocator &);
-  StackAllocator &operator=(const StackAllocator &);
-  StackAllocator(StackAllocator &&);
-  StackAllocator &operator=(StackAllocator &&);
-
+#ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
+# define DELETED
+#else
+# define DELETED =delete
+#endif
+  
+  // disable move ctor and move assignment operators
+  StackAllocator(StackAllocator &&) DELETED;
+  StackAllocator &operator=(StackAllocator &&) DELETED;
   // disable heap allocation
-  void *operator new(size_t);
-  void *operator new[](size_t);
-  void operator delete(void *);
-  void operator delete[](void *);
-
+  void *operator new(size_t)  DELETED;
+  void *operator new[](size_t)  DELETED;
+  void operator delete(void *)  DELETED;
+  void operator delete[](void *)  DELETED;
   // disable address taking
-  StackAllocator *operator&();
+  StackAllocator *operator&() DELETED;
+
+#undef DELETED
 };
 
 namespace Traits {

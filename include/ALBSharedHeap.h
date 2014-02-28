@@ -15,7 +15,7 @@
 #include <atomic>
 #include <boost/thread.hpp>
 #include <boost/assert.hpp>
-
+#include <boost/config.hpp>
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
 #include <boost/noncopyable.hpp>
 #endif
