@@ -15,6 +15,7 @@
 namespace ALB {
 /**
  * The value type to describe a memory block and it's length
+ * \ingroup group_allocators
  */
 struct Block {
   Block() : ptr(nullptr), length(0) {}
@@ -80,6 +81,7 @@ namespace Helper {
 /**
  * Copies std::min(source.length, destination.length) bytes from source to
  * destination
+ *
  * \ingroup group_helpers
  */
 void blockCopy(const ALB::Block &source, ALB::Block &destination);
@@ -128,6 +130,7 @@ bool reallocateWithCopy(OldAllocator &oldAllocator, NewAllocator &newAllocator,
  * (With C++11 this could be done with a partial specialized function,
  * but VS 2012 does not support this.)
  * \tparam Allocator The allocator that should be used during the reallocation
+ *
  * \ingroup group_helpers
  */
 template <class Allocator, typename Enabled = void> struct Reallocator;
@@ -135,6 +138,7 @@ template <class Allocator, typename Enabled = void> struct Reallocator;
 /**
  * Specialization for Allocators that implements Allocator::expand()
  * \tparam Allocator The allocator that should be used during the reallocation
+ *
  * \ingroup group_helpers
  */
 template <class Allocator>
@@ -164,6 +168,7 @@ struct Reallocator<Allocator, typename std::enable_if<
 /**
  * Specialization for Allocators, that don't implement Allocator::expand()
  * \tparam Allocator The allocator that should be used during the reallocation
+ *
  * \ingroup group_helpers
  */
 template <class Allocator>
@@ -191,6 +196,7 @@ struct Reallocator<
  * set-able depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then
  * value can be changed during runtime.
  * @Author Andrei Alexandrescu
+ *
  * \ingroup group_helpers
  */
 template <size_t v, size_t DynamicEnableSwitch> struct Dynastic {

@@ -17,6 +17,7 @@ struct Block;
 namespace Traits {
 /**
  * Trait that checks if the given class implements bool expand(Block&, size_t)
+ *
  * \ingroup group_traits
  */
 template <typename T> struct has_expand {
@@ -36,6 +37,7 @@ public:
 
 /**
  * Trait that checks if the given class implements void deallocateAll()
+ *
  * \ingroup group_traits
  */
 template <typename T> struct has_deallocateAll {
@@ -55,6 +57,7 @@ public:
 
 /**
  * Trait that checks if the given class implements bool owns(const Block&) const
+ *
  * \ingroup group_traits
  */
 template <typename T> struct has_owns {
@@ -108,12 +111,12 @@ template <typename T> struct enable_result_to<T, false> {
 
 /**
  * This traits returns true if both passed types have the same type, resp.
- *template base type
+ * template base type
  *
  * e.g. both_same_base<StackAllocator<32>, StackAllocator<64>>::value == true
  *
  * It's usage is not absolute safe, because it would mean to unroll all possible
- *parameter combinations.
+ * parameter combinations.
  * But all currently available allocator should work.
  * \ingroup group_traits
  */
@@ -153,6 +156,8 @@ struct both_same_base<Allocator<A1, P1, P2, P3, P4>, Allocator<A2, P5, P6, P7, P
 /**
 * This class implements or hides, depending on the Allocators properties, the
 * expand operation.
+* 
+* \ingroup group_traits
 */
 template <class Allocator, typename Enabled = void> struct Expander;
 
@@ -172,8 +177,8 @@ struct Expander<Allocator,
 
 /**
 * This class implements or hides, depending on the Allocators properties, the
-* deallocateAll
-* operation.
+* deallocateAll operation.
+*
 * \ingroup group_traits
 */
 template <class Allocator, typename Enabled = void> struct AllDeallocator;
@@ -197,6 +202,7 @@ struct AllDeallocator<
  * \tparam A This type is defined if the bool is true
  * \tparam B This type is defined if the bool is false
  * \tparam bool Selects between the passed template parameter A or B
+ *
  * \ingroup group_traits
  */
 template <class A, class B, bool> struct type_switch;

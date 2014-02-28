@@ -42,6 +42,7 @@ namespace ALB {
  * It is thread safe, except the moment of instantiation.
  * As far as possible only a shared lock + an atomic operation is used during
  * the memory operations
+ *
  * \ingroup group_allocators group_shared
  */
 template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>

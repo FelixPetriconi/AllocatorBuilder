@@ -29,7 +29,8 @@ namespace ALB {
  * operations are lock free.
  * \tparam Shared Set to true, for a multi threaded usage, otherwise to false
  * \tparam Allocator Then allocator that should be used, when a new resource is
- * \needed
+ *                    needed
+ *
  * \ingroup group_allocators group_shared
  */
 template <bool Shared, class Allocator, int MinSize, int MaxSize,
@@ -214,6 +215,7 @@ public:
 /**
  * This class is a thread safe specialization of the FreeList. For details see
  * ALB::FreeListBase
+ *
  * \ingroup group_allocator group_shared
  */
 template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024,
@@ -229,8 +231,8 @@ public:
 
 /**
 * This class is a single threaded specialization of the FreeList. For details
-* see
-* ALB::FreeListBase
+* see ALB::FreeListBase
+*
 * \ingroup group_allocator
 */
 template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024,

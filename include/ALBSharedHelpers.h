@@ -12,27 +12,42 @@
 #include <boost/thread.hpp>
 
 namespace ALB {
-  namespace SharedHelpers {
+namespace SharedHelpers {
 
-    class NullLock
-    {
-    public:
-      NullLock(boost::shared_mutex&) {}
-    };
+/**
+ * Class that does not lock a given mutex
+ *
+ * \ingroup group_helpers
+ */
+class NullLock
+{
+public:
+  NullLock(boost::shared_mutex&) {}
+};
 
-    class SharedLock
-    {
-      boost::shared_lock<boost::shared_mutex> _lock;
-    public:
-      SharedLock(boost::shared_mutex& m) : _lock(m) {}
-    };
+/**
+ * Class that locks with a shared lock then given mutex
+ *
+ * \ingroup group_helpers
+ */
+class SharedLock
+{
+  boost::shared_lock<boost::shared_mutex> _lock;
+public:
+  SharedLock(boost::shared_mutex& m) : _lock(m) {}
+};
 
-    class UniqueLock
-    {
-      boost::unique_lock<boost::shared_mutex> _lock;
-    public:
-      UniqueLock(boost::shared_mutex& m) : _lock(m) {}
-    };
+/**
+ * Class that locks with a unique lock a given mutex
+ *
+ * \ingroup group_helpers
+ */
+class UniqueLock
+{
+  boost::unique_lock<boost::shared_mutex> _lock;
+public:
+  UniqueLock(boost::shared_mutex& m) : _lock(m) {}
+};
 
-  }
+}
 }

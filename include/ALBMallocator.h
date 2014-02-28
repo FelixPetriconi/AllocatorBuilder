@@ -14,6 +14,7 @@
 namespace ALB {
 /**
  * This class implements a facade against the system ::malloc()
+ *
  * \ingroup group_allocators group_shared
  */
 class Mallocator {

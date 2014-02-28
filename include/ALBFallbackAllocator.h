@@ -17,6 +17,7 @@ namespace ALB {
  * cannot fulfill the request, it is passed to the Fallback allocator
  * \tparam Primary The allocator that gets all requests by default
  * \tparam Fallback The allocator that get the requests, if the Primary failed.
+ *
  * \ingroup group_allocators group_shared
  */
 template <class Primary, class Fallback>

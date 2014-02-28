@@ -20,6 +20,8 @@ namespace ALB {
  * \tparam Threshold The edge until all allocations go to the SmallAllocator
  * \tparam SmallAllocator This gets all allocations below the  Threshold
  * \tparam LargeAllocator This gets all allocations starting with the Threshold
+ * 
+ * \ingroup group_allocators group_shared
  */
 template <size_t Threshold, class SmallAllocator, class LargeAllocator>
 class Segregator : private SmallAllocator, private LargeAllocator {

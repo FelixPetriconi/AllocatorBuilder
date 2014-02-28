@@ -19,6 +19,7 @@ namespace ALB {
  * boundary in bytes. Normally this should be a multiple of at least 4 bytes.
  * \tparam DefaultAlignment Specified the alignment in bytes of all allocation
  *         and reallocations.
+ *
  * \ingroup group_allocators group_shared
  */
 template <size_t DefaultAlignment = 16> class AlignedMallocator {

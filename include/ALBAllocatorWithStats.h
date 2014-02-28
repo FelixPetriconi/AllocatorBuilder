@@ -35,6 +35,7 @@ public:                                                                        \
 * The following options define what statistics shall be collected during runtime
 * taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
 * and adapted to this implementation.
+*
 * \ingroup group_stats
 */
 enum StatsOptions : unsigned {
@@ -197,6 +198,7 @@ enum StatsOptions : unsigned {
  * statistic information gets created.
  * \tparam Allocator The allocator that performs all allocations
  * \tparam Flags Specifies what kind of statistics get collected
+ *
  * \ingroup group_allocators group_stats
  */
 template <class Allocator, unsigned Flags = ALB::StatsOptions::All>
@@ -205,6 +207,7 @@ public:
   /**
    * In case that we store allocation state, we use an AffixAllocator to store
    * the additional informations as a Prefix
+   *
    * \ingroup group_stats
    */
   struct AllocationInfo {
@@ -227,6 +230,7 @@ public:
    * This container implements a facade over all currently available
    * AllocationInfo. The ALB::AllocatorWithStats owns all elements and changing 
    * any element has undefined behavior!
+   *
    * \ingroup group_stats
    */
   class Allocations {
