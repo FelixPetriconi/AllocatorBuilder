@@ -81,11 +81,11 @@ typedef Segregator<
               3584, Bucketizer<FList, 2049, 3584, 512>, Segegator<
                 4072 * 1024, CascadingAllocator<Heap<Mallocator, 1018, 4096>>, Mallocator
               >
-			>
-	      >
-		>
+            >
+          >
+        >
       >
-	>
+    >
   >
 > AdvancedAllocator;
 
