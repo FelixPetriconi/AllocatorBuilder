@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['segregator',['Segregator',['../class_a_l_b_1_1_segregator.html',1,'ALB']]],
-  ['sharedcascadingallocators',['SharedCascadingAllocators',['../class_a_l_b_1_1_shared_cascading_allocators.html',1,'ALB']]],
-  ['sharedfreelist',['SharedFreeList',['../class_a_l_b_1_1_shared_free_list.html',1,'ALB']]],
-  ['sharedheap',['SharedHeap',['../class_a_l_b_1_1_shared_heap.html',1,'ALB']]],
-  ['sharedlock',['SharedLock',['../class_a_l_b_1_1_shared_helpers_1_1_shared_lock.html',1,'ALB::SharedHelpers']]],
-  ['stack',['stack',['../class_a_l_b_1_1_helper_1_1stack.html',1,'ALB::Helper']]],
-  ['stackallocator',['StackAllocator',['../class_a_l_b_1_1_stack_allocator.html',1,'ALB']]]
+  ['reallocator',['Reallocator',['../struct_a_l_b_1_1_helper_1_1_reallocator.html',1,'ALB::Helper']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Reallocator&lt; Allocator, typename std::enable_if&lt; Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html',1,'ALB::Helper']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Reallocator&lt; Allocator, typename std::enable_if&lt;!Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html',1,'ALB::Helper']]]
 ];

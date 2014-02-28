@@ -149,12 +149,12 @@ class ALB::FreeListBase&lt; Shared, Allocator, MinSize, MaxSize, PoolSize, Numbe
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Shared</td><td>Set to true, for a multi threaded usage, otherwise to false </td></tr>
-    <tr><td class="paramname">Allocator</td><td>Then allocator that should be used, when a new resource is  </td></tr>
+    <tr><td class="paramname">Allocator</td><td>Then allocator that should be used, when a new resource is needed </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00037">37</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00038">38</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="abdcaafc16ac45698fd5d6e58697b6180"></a>
 <div class="memitem">
@@ -198,7 +198,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00067">67</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00068">68</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -226,7 +226,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 </div><div class="memdoc">
 <p>Frees all resources. Beware of using allocated blocks given by this allocator after calling this. </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00105">105</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00106">106</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -263,7 +263,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The allocated block </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00123">123</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00124">124</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +298,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00203">203</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00204">204</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +326,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 </div><div class="memdoc">
 <p>Returns the upper boundary </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00099">99</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00100">100</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +354,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 </div><div class="memdoc">
 <p>Returns the lower boundary </p>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00094">94</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00095">95</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -390,7 +390,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, it is owned by this allocator </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00193">193</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00194">194</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -437,7 +437,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the reallocation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00181">181</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00182">182</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -483,7 +483,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00079">79</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00080">80</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -510,7 +510,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      Allocator::supports_truncated_deallocation</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00054">54</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
+<p>Definition at line <a class="el" href="_a_l_b_free_list_8h_source.html#l00055">55</a> of file <a class="el" href="_a_l_b_free_list_8h_source.html">ALBFreeList.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +523,7 @@ template&lt;bool Shared, class Allocator, int MinSize, int MaxSize, size_t PoolS
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ALB</b></li><li class="navelem"><a class="el" href="class_a_l_b_1_1_free_list_base.html">FreeListBase</a></li>
-    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
+    <li class="footer">Generated on Fri Feb 28 2014 16:04:32 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

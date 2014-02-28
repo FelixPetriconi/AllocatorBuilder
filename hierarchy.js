@@ -12,6 +12,13 @@ var hierarchy =
     [ "ALB::AllocatorWithStats< Allocator, Flags >", "class_a_l_b_1_1_allocator_with_stats.html", null ],
     [ "ALB::Block", "struct_a_l_b_1_1_block.html", null ],
     [ "ALB::Bucketizer< Allocator, MinSize, MaxSize, StepSize >", "class_a_l_b_1_1_bucketizer.html", null ],
+    [ "ALB::CascadingAllocatorsBase< Shared, Allocator >", "class_a_l_b_1_1_cascading_allocators_base.html", null ],
+    [ "ALB::CascadingAllocatorsBase< false, Allocator >", "class_a_l_b_1_1_cascading_allocators_base.html", [
+      [ "ALB::CascadingAllocators< Allocator >", "class_a_l_b_1_1_cascading_allocators.html", null ]
+    ] ],
+    [ "ALB::CascadingAllocatorsBase< true, Allocator >", "class_a_l_b_1_1_cascading_allocators_base.html", [
+      [ "ALB::SharedCascadingAllocators< Allocator >", "class_a_l_b_1_1_shared_cascading_allocators.html", null ]
+    ] ],
     [ "ALB::Traits::Disabled", "class_a_l_b_1_1_traits_1_1_disabled.html", null ],
     [ "ALB::Helper::Dynastic< v, DynamicEnableSwitch >", "struct_a_l_b_1_1_helper_1_1_dynastic.html", null ],
     [ "ALB::Helper::Dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "struct_a_l_b_1_1_helper_1_1_dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", null ],
@@ -48,6 +55,7 @@ var hierarchy =
     [ "ALB::Mallocator", "class_a_l_b_1_1_mallocator.html", null ],
     [ "ALB::MemoryCorruptionDetector< T, Pattern >", "class_a_l_b_1_1_memory_corruption_detector.html", null ],
     [ "ALB::AffixAllocatorHelper::NoAffix", "struct_a_l_b_1_1_affix_allocator_helper_1_1_no_affix.html", null ],
+    [ "ALB::Helper::NoAtomic< T >", "class_a_l_b_1_1_helper_1_1_no_atomic.html", null ],
     [ "ALB::SharedHelpers::NullLock", "class_a_l_b_1_1_shared_helpers_1_1_null_lock.html", null ],
     [ "Primary", null, [
       [ "ALB::FallbackAllocator< Primary, Fallback >", "class_a_l_b_1_1_fallback_allocator.html", null ]
@@ -55,7 +63,6 @@ var hierarchy =
     [ "ALB::Helper::Reallocator< Allocator, Enabled >", "struct_a_l_b_1_1_helper_1_1_reallocator.html", null ],
     [ "ALB::Helper::Reallocator< Allocator, typename std::enable_if< Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html", null ],
     [ "ALB::Helper::Reallocator< Allocator, typename std::enable_if<!Traits::has_expand< Allocator >::value >::type >", "struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html", null ],
-    [ "ALB::SharedCascadingAllocators< Allocator >", "class_a_l_b_1_1_shared_cascading_allocators.html", null ],
     [ "ALB::SharedHeap< Allocator, NumberOfChunks, ChunkSize >", "class_a_l_b_1_1_shared_heap.html", null ],
     [ "ALB::SharedHelpers::SharedLock", "class_a_l_b_1_1_shared_helpers_1_1_shared_lock.html", null ],
     [ "SmallAllocator", null, [
@@ -81,5 +88,6 @@ var hierarchy =
     [ "ALB::Traits::type_switch< A, B, true >", "struct_a_l_b_1_1_traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html", null ],
     [ "ALB::Traits::type_switch< ALB::AffixAllocator< Allocator, ALB::AllocatorWithStats::AllocationInfo >, Allocator, HasPerAllocationState >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
     [ "ALB::Traits::type_switch< boost::lockfree::stack< void *, boost::lockfree::fixed_sized< true >, boost::lockfree::capacity< PoolSize > >, Helper::stack< void *, PoolSize >, Shared >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
+    [ "ALB::Traits::type_switch< std::atomic< Node * >, Helper::NoAtomic< Node * >, Shared >", "struct_a_l_b_1_1_traits_1_1type__switch.html", null ],
     [ "ALB::SharedHelpers::UniqueLock", "class_a_l_b_1_1_shared_helpers_1_1_unique_lock.html", null ]
 ];

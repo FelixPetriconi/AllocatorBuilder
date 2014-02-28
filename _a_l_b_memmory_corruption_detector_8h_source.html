@@ -118,29 +118,29 @@ $(document).ready(function(){initNavTree('_a_l_b_memmory_corruption_detector_8h_
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>ALB {</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_memory_corruption_detector.html">   24</a></span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> Pattern&gt; <span class="keyword">class </span><a class="code" href="class_a_l_b_1_1_memory_corruption_detector.html">MemoryCorruptionDetector</a> {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  static_assert(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) &lt; <span class="keyword">sizeof</span>(T) &amp;&amp; <span class="keyword">sizeof</span>(T) &lt;= <span class="keyword">sizeof</span>(uint64_t),</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                <span class="stringliteral">&quot;Memory check not for valid types&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  T _pattern;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">typedef</span> T value_type;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> T pattern = Pattern;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="class_a_l_b_1_1_memory_corruption_detector.html">MemoryCorruptionDetector</a>() : _pattern(Pattern) {}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  ~<a class="code" href="class_a_l_b_1_1_memory_corruption_detector.html">MemoryCorruptionDetector</a>() { BOOST_ASSERT(_pattern == Pattern); }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="ttc" id="class_a_l_b_1_1_memory_corruption_detector_html"><div class="ttname"><a href="class_a_l_b_1_1_memory_corruption_detector.html">ALB::MemoryCorruptionDetector</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_memmory_corruption_detector_8h_source.html#l00024">ALBMemmoryCorruptionDetector.h:24</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="class_a_l_b_1_1_memory_corruption_detector.html">   25</a></span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> Pattern&gt; <span class="keyword">class </span><a class="code" href="class_a_l_b_1_1_memory_corruption_detector.html">MemoryCorruptionDetector</a> {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  static_assert(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) &lt; <span class="keyword">sizeof</span>(T) &amp;&amp; <span class="keyword">sizeof</span>(T) &lt;= <span class="keyword">sizeof</span>(uint64_t),</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="stringliteral">&quot;Memory check not for valid types&quot;</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  T _pattern;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">typedef</span> T value_type;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> T pattern = Pattern;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="class_a_l_b_1_1_memory_corruption_detector.html">MemoryCorruptionDetector</a>() : _pattern(Pattern) {}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  ~<a class="code" href="class_a_l_b_1_1_memory_corruption_detector.html">MemoryCorruptionDetector</a>() { BOOST_ASSERT(_pattern == Pattern); }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<div class="ttc" id="class_a_l_b_1_1_memory_corruption_detector_html"><div class="ttname"><a href="class_a_l_b_1_1_memory_corruption_detector.html">ALB::MemoryCorruptionDetector</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_l_b_memmory_corruption_detector_8h_source.html#l00025">ALBMemmoryCorruptionDetector.h:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><b>ALBMemmoryCorruptionDetector.h</b></li>
-    <li class="footer">Generated on Thu Feb 27 2014 23:09:52 for Allocator Builder by
+    <li class="footer">Generated on Fri Feb 28 2014 16:04:32 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

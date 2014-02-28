@@ -144,7 +144,34 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line"></div>
 <div class="line">localAllocator.deallocate(block); <span class="comment">// better to be deleted by a scope finalizer</span></div>
 </div><!-- fragment --><p> So, isn't this much cleaner?</p>
-<h2>Allocator Overview </h2>
+<p>A more advanced allocator as it is used in <a href="http://www.canonware.com/jemalloc/">jmalloc</a> would look like: </p>
+<div class="fragment"><div class="line"><span class="comment">// This defines a FreeList that is later configured by the Bucketizer to its size</span></div>
+<div class="line"><span class="keyword">typedef</span> Freelist&lt;Mallocator, DynamicSetSize, DynamicSetSize&gt; FList;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// All allocation requests up to 3584 bytes are handled by the cascade of FLists.</span></div>
+<div class="line"><span class="comment">// Sizes from 3584 till 4MB are handled by the Heap and all beyond that are forwarded</span></div>
+<div class="line"><span class="comment">// directly to the normal OS</span></div>
+<div class="line"><span class="keyword">typedef</span> Segregator&lt;</div>
+<div class="line">  8, Freelist&lt;Mallocator, 0, 8&gt;, Segregator&lt;</div>
+<div class="line">    128, Bucketizer&lt;FList, 1, 128, 16&gt;, Segregator&lt;</div>
+<div class="line">      256, Bucketizer&lt;FList, 129, 256, 32&gt;, Segegator&lt;</div>
+<div class="line">        512, Bucketizer&lt;FList, 257, 512, 64&gt;, Segegator&lt;</div>
+<div class="line">          1024, Bucketizer&lt;FList, 513, 1024, 128&gt;, Segegator&lt;</div>
+<div class="line">            2048, Bucketizer&lt;FList, 1025, 2048, 256&gt;, Segegator&lt;</div>
+<div class="line">              3584, Bucketizer&lt;FList, 2049, 3584, 512&gt;, Segegator&lt;</div>
+<div class="line">                4072 * 1024, CascadingAllocator&lt;Heap&lt;Mallocator, 1018, 4096&gt;&gt;, Mallocator</div>
+<div class="line">              &gt;</div>
+<div class="line">            &gt;</div>
+<div class="line">          &gt;</div>
+<div class="line">        &gt;</div>
+<div class="line">      &gt;</div>
+<div class="line">    &gt;</div>
+<div class="line">&lt;blockquote&gt;</div>
+<div class="line"></div>
+<div class="line">AdvancedAllocator;</div>
+<div class="line"></div>
+<div class="line">&lt;/blockquote&gt;</div>
+</div><!-- fragment --><h2>Allocator Overview </h2>
 <table class="doxtable">
 <tr>
 <th>Allocator </th><th>Description  </th></tr>
@@ -206,7 +233,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 27 2014 23:09:53 for Allocator Builder by
+    <li class="footer">Generated on Fri Feb 28 2014 16:04:32 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
