@@ -10,9 +10,9 @@ A second idea behind this allocator library is, that one can compose for every u
 Example use cases:
   * Collect statistic information about the memory usage profile.
   * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.
-  * Wait free allocations in a single threaded environmemt
+  * Wait free allocations in a single threaded environment
 
-So the appropached is every allocator returns such a Block
+So the approach is, every allocator returns such a Block
 ~~~
 struct Block {
   void* ptr;
@@ -86,9 +86,7 @@ typedef Segregator<
         >
       >
     >
-  >
-> AdvancedAllocator;
-
+  >>AdvancedAllocator;
 ~~~
  
   
@@ -100,17 +98,17 @@ Allocator Overview
 | AffixAllocator           | Allows to automatically pre- and sufix allocated regions. |
 | AllocatorWithStats       | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
 | Bucketizer               | Manages a bunch of Allocators with increasing bucket size |
-| FallbackAllocator        | Either the default Allocator can handle a request, otherwise it is passed to a fallback Allocator |
-| Mallocator               | Provides and interface to systems ::malloc() |
+| FallbackAllocator        | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
+| (Aligned)Mallocator      | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
 | Segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
-| SharedFreeList           | Manages a list of freed memory blocks in a list for faster reusage in a thread safe manner |
-| SharedCascadingAllocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory |
-| SharedHeap               | A thread safe heap with minimal overhead and as far as possible in a lock-free way. |
+| (Shared)FreeList         | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
+| (Shared)CascadingAllocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |
+| (Shared)Heap             | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
 | StackAllocator           | Provides a memory access, taken from the stack |
 
 Documentation
 -------------
-  Online Documentation is available on [GitHub] (http://felixpetriconi.github.io/AllocatorBuilder/index.html) as well.
+  Online Documentation is available on [GitHub.io] (http://felixpetriconi.github.io/AllocatorBuilder/index.html) as well.
 
 Author 
 ------
@@ -132,10 +130,10 @@ Version
 -------
   0.1.0
 
-Prerequisits
-------------
+Prerequisites
+-------------
   * C++ 11 (partly, as far as Visual Studio 2012 supports it)
-  * boost 1.55.0 (lockfree, thread, assert)
+  * boost 1.55.0 (lockfree, thread, assert, option)
   * CMake 2.8 or later
   * GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
 
