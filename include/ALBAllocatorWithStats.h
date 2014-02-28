@@ -395,6 +395,11 @@ public:
    */
   bool reallocate(Block &b, size_t n) {
     auto originalBlock = b;
+    bool wasRootBlock(false);
+    if (b && has_per_allocation_state) {
+      wasRootBlock = _root == Traits::AffixExtractor<
+            decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
+    }
     up(StatsOptions::NumReallocate, _numReallocate);
 
     if (!_allocator.reallocate(b, n)) {
@@ -427,7 +432,7 @@ public:
         if (stat->previous) {
           stat->previous->next = stat;
         }
-        if (stat == _root) {
+        if (wasRootBlock) {
           _root = stat;
         }
       }

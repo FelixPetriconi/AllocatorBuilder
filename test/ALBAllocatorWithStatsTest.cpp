@@ -9,6 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 
 #include <gtest/gtest.h>
+#include "ALBTestHelpers.h"
 #include "ALBAllocatorWithStats.h"
 #include "ALBStackAllocator.h"
 #include "ALBFallbackAllocator.h"
@@ -19,7 +20,7 @@ namespace
   typedef ALB::AllocatorWithStats<
     ALB::FallbackAllocator<
     ALB::StackAllocator<128, 4>,
-    ALB::Mallocator
+    ALB::TestHelpers::TestMallocator
     >
   > AllocatorWithStatsThatCanExpand;
 }
@@ -146,7 +147,16 @@ protected:
     EXPECT_EQ(expectations, realAllocations);
   }
 
-  Allocator sut;
+  void SetUp() {
+    sut = new Allocator;
+  }
+
+  void TearDown() {
+    delete sut;
+    EXPECT_EQ(0, ALB::TestHelpers::TestMallocator::currentlyAllocatedBytes());
+  }
+
+  Allocator *sut;
 };
 
 class AllocatorWithStatsTest : public AllocatorWithStatsBaseTest<AllocatorWithStatsThatCanExpand>
@@ -156,33 +166,33 @@ class AllocatorWithStatsTest : public AllocatorWithStatsBaseTest<AllocatorWithSt
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
 {
-  auto beforeAllocation = AllocationExpectationBuilder<AllocatorUnderTest>(sut).build();
+  auto beforeAllocation = AllocationExpectationBuilder<AllocatorUnderTest>(*sut).build();
   beforeAllocation.checkThatExpectationsAreFulfilled();
-  EXPECT_TRUE(sut.allocations().empty());
+  EXPECT_TRUE(sut->allocations().empty());
 
-  auto mem = ALLOCATE(sut, 0); 
+  auto mem = ALLOCATE((*sut), 0); 
 
   auto afterEmptyAllocation = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut).withNumAllocate(1).build();
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut).withNumAllocate(1).build();
   afterEmptyAllocation.checkThatExpectationsAreFulfilled();
-  EXPECT_TRUE(sut.allocations().empty());
+  EXPECT_TRUE(sut->allocations().empty());
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
 
-  auto afterEmptyDeallocation = AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+  auto afterEmptyDeallocation = AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumDeallocate(1).build();
   afterEmptyDeallocation.checkThatExpectationsAreFulfilled();
-  EXPECT_TRUE(sut.allocations().empty());
+  EXPECT_TRUE(sut->allocations().empty());
 }
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
 {
   auto expectedCallerInfo = createCallerExpectation(__FILE__, __FUNCTION__, 4);
-  auto mem = ALLOCATE(sut, 4); expectedCallerInfo.callerLine = __LINE__;
+  auto mem = ALLOCATE((*sut), 4); expectedCallerInfo.callerLine = __LINE__;
   
   auto afterAllocationOf4Bytes = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
       .withNumAllocate(1)
       .withNumAllocateOK(1)
       .withBytesAllocated(4)
@@ -191,15 +201,15 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   afterAllocationOf4Bytes.checkThatExpectationsAreFulfilled();
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
     EXPECT_TRUE(expectedCallerInfo == *(allocations.cbegin()));
   }
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
 
   auto afterDeallocationOfThe4Bytes = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumDeallocate(1)
@@ -209,20 +219,20 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   
   afterDeallocationOfThe4Bytes.checkThatExpectationsAreFulfilled();
 
-  EXPECT_TRUE(sut.allocations().empty());
+  EXPECT_TRUE(sut->allocations().empty());
 }
 
 TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsAreCorrect)
 {
   std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
   expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 4) );
-  auto mem1st = ALLOCATE(sut, 4); expectedCallerInfo[0].callerLine = __LINE__;
+  auto mem1st = ALLOCATE((*sut), 4); expectedCallerInfo[0].callerLine = __LINE__;
 
   expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 8) );
-  auto mem2nd = ALLOCATE(sut, 8); expectedCallerInfo[1].callerLine = __LINE__;
+  auto mem2nd = ALLOCATE((*sut), 8); expectedCallerInfo[1].callerLine = __LINE__;
 
   auto afterAllocationOf4And8Bytes = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(2)
     .withNumAllocateOK(2)
     .withBytesAllocated(12)
@@ -231,17 +241,17 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
   afterAllocationOf4And8Bytes.checkThatExpectationsAreFulfilled();
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
     
     auto realAllocations = extractRealAllocations(allocations);
     checkTheAllocationCallerExpectations(expectedCallerInfo, realAllocations);
   }
   
-  sut.deallocate(mem1st);
+  sut->deallocate(mem1st);
 
   auto afterDeallocationOf4BytesAndStillKeeping8Bytes = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(2)
     .withNumAllocateOK(2)
     .withNumDeallocate(1)
@@ -252,16 +262,16 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
   afterDeallocationOf4BytesAndStillKeeping8Bytes.checkThatExpectationsAreFulfilled();
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
     auto realAllocations = extractRealAllocations(allocations);
     EXPECT_TRUE(expectedCallerInfo[1] == realAllocations[0]);
   }
 
-  sut.deallocate(mem2nd);
+  sut->deallocate(mem2nd);
 
   auto afterDeallocationEverything = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(2)
     .withNumAllocateOK(2)
     .withNumDeallocate(2)
@@ -271,19 +281,19 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
 
   afterDeallocationEverything.checkThatExpectationsAreFulfilled();
 
-  EXPECT_TRUE(sut.allocations().empty());
+  EXPECT_TRUE(sut->allocations().empty());
 }
 
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
 {
   auto expectedCallerInfo = createCallerExpectation(__FILE__, __FUNCTION__, 4);
-  auto mem = ALLOCATE(sut, 4); expectedCallerInfo.callerLine = __LINE__;
+  auto mem = ALLOCATE((*sut), 4); expectedCallerInfo.callerLine = __LINE__;
 
-  EXPECT_TRUE(sut.reallocate(mem, 16));
+  EXPECT_TRUE(sut->reallocate(mem, 16));
 
   auto afterReallocating4BytesTo16 = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumReallocate(1)
@@ -296,15 +306,15 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
   afterReallocating4BytesTo16.checkThatExpectationsAreFulfilled();
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
     EXPECT_TRUE(expectedCallerInfo == *(allocations.cbegin()));
   }
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
 
   auto afterDeallocatingAll = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumDeallocate(1)
@@ -317,55 +327,59 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
     .withBytesHighTide(16).build();
 
   afterDeallocatingAll.checkThatExpectationsAreFulfilled();
-  EXPECT_TRUE(sut.allocations().empty());
+  EXPECT_TRUE(sut->allocations().empty());
 }
 
 TEST_F(AllocatorWithStatsTest, ThatTheDeallocationOfThe2ndAllocationOfThreeLeavesThe1stAnd3rdAllocationsInPlace)
 {
   std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
   expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 4) );
-  auto mem1st = ALLOCATE(sut, 4); expectedCallerInfo[0].callerLine = __LINE__;
+  auto mem1st = ALLOCATE((*sut), 4); expectedCallerInfo[0].callerLine = __LINE__;
 
   expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 8) );
-  auto mem2nd = ALLOCATE(sut, 8); expectedCallerInfo[1].callerLine = __LINE__;
+  auto mem2nd = ALLOCATE((*sut), 8); expectedCallerInfo[1].callerLine = __LINE__;
 
   expectedCallerInfo.push_back( createCallerExpectation(__FILE__, __FUNCTION__, 12) );
-  auto mem3rd = ALLOCATE(sut, 12); expectedCallerInfo[2].callerLine = __LINE__;
+  auto mem3rd = ALLOCATE((*sut), 12); expectedCallerInfo[2].callerLine = __LINE__;
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
 
     auto realAllocations = extractRealAllocations(allocations);
     checkTheAllocationCallerExpectations(expectedCallerInfo, realAllocations);
   }
 
-  sut.deallocate(mem2nd);
+  sut->deallocate(mem2nd);
 
   {
     expectedCallerInfo.erase(expectedCallerInfo.begin() + 1);
 
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
 
     auto realAllocations = extractRealAllocations(allocations);
     checkTheAllocationCallerExpectations(expectedCallerInfo, realAllocations);
   }
+
+  sut->deallocate(mem1st);
+  sut->deallocate(mem3rd);
+  EXPECT_TRUE(sut->allocations().empty());
 }
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
 {
   std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
-  auto mem1st = ALLOCATE(sut, 4); expectedCallerInfo[0].callerLine = __LINE__;
+  auto mem1st = ALLOCATE((*sut), 4); expectedCallerInfo[0].callerLine = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
-  auto mem2nd = ALLOCATE(sut, 8); expectedCallerInfo[1].callerLine = __LINE__;
+  auto mem2nd = ALLOCATE((*sut), 8); expectedCallerInfo[1].callerLine = __LINE__;
 
-  EXPECT_TRUE(sut.reallocate(mem2nd, 128));
+  EXPECT_TRUE(sut->reallocate(mem2nd, 128));
 
   auto afterReallocating8BytesTo128 = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(2)
     .withNumAllocateOK(2)
     .withNumReallocate(1)
@@ -379,17 +393,17 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
 
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
 
     auto realAllocations = extractRealAllocations(allocations);
     checkTheAllocationCallerExpectations(expectedCallerInfo, realAllocations);
   }
 
-  sut.deallocate(mem1st);
+  sut->deallocate(mem1st);
 
   auto afterDeallocatingTheFirstBlock = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(2)
     .withNumAllocateOK(2)
     .withNumDeallocate(1)
@@ -403,21 +417,23 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
   afterDeallocatingTheFirstBlock.checkThatExpectationsAreFulfilled();
 
   {
-    const auto allocations = sut.allocations();
+    const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
     EXPECT_TRUE(expectedCallerInfo[1] == *(allocations.cbegin()));
   }
-
+  
+  sut->deallocate(mem2nd);
+  EXPECT_TRUE(sut->allocations().empty());
 }
 
 TEST_F(AllocatorWithStatsTest, ThatDecreasingReallocatingInPlaceIsStored)
 {
-  auto mem = sut.allocate(32);
+  auto mem = sut->allocate(32);
 
-  EXPECT_TRUE(sut.reallocate(mem, 16));
+  EXPECT_TRUE(sut->reallocate(mem, 16));
   
   auto afterReallocating32BytesTo16 = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumReallocate(1)
@@ -429,10 +445,10 @@ TEST_F(AllocatorWithStatsTest, ThatDecreasingReallocatingInPlaceIsStored)
     .withBytesHighTide(32).build();
   afterReallocating32BytesTo16.checkThatExpectationsAreFulfilled();
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
 
   auto afterDeallocatingEverything = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumDeallocate(1)
@@ -448,12 +464,12 @@ TEST_F(AllocatorWithStatsTest, ThatDecreasingReallocatingInPlaceIsStored)
 
 TEST_F(AllocatorWithStatsTest, ThatSuccessfulExpandingIsStored)
 {
-  auto mem = sut.allocate(4);
+  auto mem = sut->allocate(4);
 
-  EXPECT_TRUE(sut.expand(mem, 16));
+  EXPECT_TRUE(sut->expand(mem, 16));
   
   auto afterExpanding4To16Bytes = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumExpand(1)
@@ -463,9 +479,9 @@ TEST_F(AllocatorWithStatsTest, ThatSuccessfulExpandingIsStored)
     .withBytesHighTide(20).build();
   afterExpanding4To16Bytes.checkThatExpectationsAreFulfilled();
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
   auto afterDeallocatingEveything= 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumExpand(1)
@@ -485,12 +501,12 @@ class AllocatorWithStatsWithLimitedExpandingTest :
 
 TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedReallocationIsStored)
 {
-  auto mem = sut.allocate(4);
+  auto mem = sut->allocate(4);
 
-  EXPECT_FALSE(sut.reallocate(mem, 128));
+  EXPECT_FALSE(sut->reallocate(mem, 128));
 
   auto afterAFailedReallocationOf4To128Bytes = 
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumReallocate(1)
@@ -499,10 +515,10 @@ TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedReallocationIsStore
 
   afterAFailedReallocationOf4To128Bytes.checkThatExpectationsAreFulfilled();
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
 
   auto afterDeallocationEverything =
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumDeallocate(1)
@@ -515,12 +531,12 @@ TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedReallocationIsStore
 
 TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedExpandingIsStored)
 {
-  auto mem = sut.allocate(4);
+  auto mem = sut->allocate(4);
 
-  EXPECT_FALSE(sut.expand(mem, 64));
+  EXPECT_FALSE(sut->expand(mem, 64));
 
   auto afterAFailedExpansionOf4To64Bytes =
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumExpand(1)
@@ -529,9 +545,9 @@ TEST_F(AllocatorWithStatsWithLimitedExpandingTest, ThatFailedExpandingIsStored)
 
   afterAFailedExpansionOf4To64Bytes.checkThatExpectationsAreFulfilled();
 
-  sut.deallocate(mem);
+  sut->deallocate(mem);
   auto afterDeallocatinEverything =
-    AllocationExpectationBuilder<AllocatorUnderTest>(sut)
+    AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
     .withNumAllocate(1)
     .withNumAllocateOK(1)
     .withNumDeallocate(1)

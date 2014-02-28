@@ -19,19 +19,19 @@ set(HEADERS
 )
 
 set(SOURCE
-	ALBAffixAllocatorTest.cpp
-	ALBAllocatorBaseTest.cpp
-    ALBAllocatorWithStatsTest.cpp
-	ALBBucketizerTest.cpp
-	ALBFallbackAllocatorTest.cpp 
-	ALBMallocatorTest.cpp
-	ALBSegregatorTest.cpp
-	ALBSharedCascadingAllocatorsTest.cpp
-	ALBFreeListTest.cpp
-	ALBSharedHeapTest
-	ALBStackAllocatorTest.cpp
-	ALBTestHelpers.cpp
-	main.cpp
+  ALBAffixAllocatorTest.cpp
+  ALBAllocatorBaseTest.cpp
+  ALBAllocatorWithStatsTest.cpp
+  ALBBucketizerTest.cpp
+  ALBCascadingAllocatorsTest.cpp
+  ALBFallbackAllocatorTest.cpp 
+  ALBMallocatorTest.cpp
+  ALBSegregatorTest.cpp    
+  ALBFreeListTest.cpp
+  ALBSharedHeapTest
+  ALBStackAllocatorTest.cpp
+  ALBTestHelpers.cpp
+  main.cpp
 )
 
 add_executable(ALBUnitTest ${SOURCE} ${HEADERS})

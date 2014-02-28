@@ -17,6 +17,8 @@
 
 #include "ALBAllocatorBase.h"
 #include <vector>
+#include <ALBMallocator.h>
+#include <atomic>
 
 namespace ALB
 {
@@ -363,6 +365,41 @@ namespace ALB
         waitAllReady();
         _go.set_value();
         waitAllDone();
+      }
+    };
+
+
+    class TestMallocator{
+      Mallocator _mallocator;
+      static std::atomic<size_t> _allocatedMem;
+
+    public:
+      static const bool supports_truncated_deallocation = false;
+
+      TestMallocator() {}
+
+      Block allocate(size_t n) {
+        auto result = _mallocator.allocate(n);
+        if (result) {
+          _allocatedMem.fetch_add(result.length);
+        }
+        return result;
+      }
+
+      bool reallocate(Block& b, size_t n) {
+        _allocatedMem.fetch_sub(b.length);
+        auto result = _mallocator.reallocate(b, n);
+        _allocatedMem.fetch_add(b.length);
+        return result;
+      }
+
+      void deallocate(Block& b) {
+        _allocatedMem.fetch_sub(b.length);
+        _mallocator.deallocate(b);
+      }
+
+      static size_t currentlyAllocatedBytes() {
+        return _allocatedMem.load();
       }
     };
   }
