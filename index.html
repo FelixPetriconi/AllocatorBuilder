@@ -106,9 +106,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <ul>
 <li>Collect statistic information about the memory usage profile.</li>
 <li>Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.</li>
-<li>Wait free allocations in a single threaded environmemt</li>
+<li>Wait free allocations in a single threaded environment</li>
 </ul>
-<p>So the appropached is every allocator returns such a Block </p>
+<p>So the approach is, every allocator returns such a Block </p>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>Block {</div>
 <div class="line">  <span class="keywordtype">void</span>* ptr;</div>
 <div class="line">  <span class="keywordtype">size_t</span> length;</div>
@@ -166,11 +166,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line">        &gt;</div>
 <div class="line">      &gt;</div>
 <div class="line">    &gt;</div>
-<div class="line">&lt;blockquote&gt;</div>
-<div class="line"></div>
-<div class="line">AdvancedAllocator;</div>
-<div class="line"></div>
-<div class="line">&lt;/blockquote&gt;</div>
+<div class="line">  &gt;&gt;AdvancedAllocator;</div>
 </div><!-- fragment --><h2>Allocator Overview </h2>
 <table class="doxtable">
 <tr>
@@ -182,22 +178,22 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <td>Bucketizer </td><td>Manages a bunch of Allocators with increasing bucket size </td></tr>
 <tr>
-<td>FallbackAllocator </td><td>Either the default Allocator can handle a request, otherwise it is passed to a fallback Allocator </td></tr>
+<td>FallbackAllocator </td><td>Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator </td></tr>
 <tr>
-<td>Mallocator </td><td>Provides and interface to systems ::malloc() </td></tr>
+<td>(Aligned)Mallocator </td><td>Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment </td></tr>
 <tr>
 <td>Segregator </td><td>Separates allocation requests depending on a threshold to Allocator A or B </td></tr>
 <tr>
-<td>SharedFreeList </td><td>Manages a list of freed memory blocks in a list for faster reusage in a thread safe manner </td></tr>
+<td>(Shared)FreeList </td><td>Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) </td></tr>
 <tr>
-<td>SharedCascadingAllocator </td><td>Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory </td></tr>
+<td>(Shared)CascadingAllocator </td><td>Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) </td></tr>
 <tr>
-<td>SharedHeap </td><td>A thread safe heap with minimal overhead and as far as possible in a lock-free way. </td></tr>
+<td>(Shared)Heap </td><td>A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) </td></tr>
 <tr>
 <td>StackAllocator </td><td>Provides a memory access, taken from the stack </td></tr>
 </table>
 <h2>Documentation </h2>
-<p>Online Documentation is available on <a href="http://felixpetriconi.github.io/AllocatorBuilder/index.html">GitHub</a> as well.</p>
+<p>Online Documentation is available on <a href="http://felixpetriconi.github.io/AllocatorBuilder/index.html">GitHub.io</a> as well.</p>
 <h2>Author </h2>
 <p>Felix Petriconi</p>
 <h2>Contributions </h2>
@@ -206,10 +202,10 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>Boost 1.0 License</p>
 <h2>Version </h2>
 <p>0.1.0</p>
-<h2>Prerequisits </h2>
+<h2>Prerequisites </h2>
 <ul>
 <li>C++ 11 (partly, as far as Visual Studio 2012 supports it)</li>
-<li>boost 1.55.0 (lockfree, thread, assert)</li>
+<li>boost 1.55.0 (lockfree, thread, assert, option)</li>
 <li>CMake 2.8 or later</li>
 <li>GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)</li>
 </ul>
@@ -233,7 +229,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 28 2014 16:04:32 for Allocator Builder by
+    <li class="footer">Generated on Fri Feb 28 2014 16:46:41 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
