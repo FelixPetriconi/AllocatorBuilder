@@ -65,7 +65,7 @@ public:
    * \param minSize The lower boundary accepted by this Allocator
    * \param maxSize The upper boundary accepted by this Allocator
    */
-  FreeListBase(size_t minSize, size_t maxSize) {
+  FreeListBase(int minSize, int maxSize) {
     _lowerBound.value(minSize);
     _upperBound.value(maxSize);
   }
@@ -77,7 +77,7 @@ public:
    * \param minSize The lower boundary accepted by this Allocator
    * \param maxSize The upper boundary accepted by this Allocator
    */
-  void setMinMax(size_t minSize, size_t maxSize) {
+  void setMinMax(int minSize, int maxSize) {
     BOOST_ASSERT_MSG(
         _lowerBound.value() == -1,
         "Changing the lower bound during after initialization is not wise!");

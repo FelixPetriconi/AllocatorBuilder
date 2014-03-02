@@ -163,7 +163,7 @@ public:
     size_t numberOfAlignedBytes =
         Helper::roundToAlignment(_chunkSize.value(), n);
     size_t numberOfBlocks = numberOfAlignedBytes / _chunkSize.value();
-    numberOfBlocks = std::max(1uL, numberOfBlocks);
+    numberOfBlocks = std::max(static_cast<size_t>(1), numberOfBlocks);
 
     if (numberOfBlocks < 64) {
       auto result = allocateWithinASingleControlRegister(numberOfBlocks);

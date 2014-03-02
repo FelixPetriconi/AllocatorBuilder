@@ -12,7 +12,9 @@ if(MSVC AND MSVC_VERSION EQUAL 1700)
   add_definitions(-D_VARIADIC_MAX=10)
 endif ()
 
-set(CMAKE_CXX_FLAGS                "-Wall -std=c++11")
+if(CLANG OR GNU)
+  set(CMAKE_CXX_FLAGS                "-Wall -std=c++11")
+endif()
 
 set(BOOST_ROOT D:/boost_1_55_0)
 set(Boost_USE_STATIC_LIBS        OFF)
