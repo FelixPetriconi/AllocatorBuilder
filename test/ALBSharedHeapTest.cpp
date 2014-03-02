@@ -12,8 +12,6 @@
 #include "ALBSharedHeap.h"
 #include "ALBMallocator.h"
 #include "ALBTestHelpers.h"
-#include <thread>
-#include <xutility>
 #include "ALBAffixAllocator.h"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersUsedMemGenerator.h"

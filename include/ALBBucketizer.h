@@ -44,7 +44,7 @@ public:
   static const size_t max_size = MaxSize;
   static const size_t min_size = MinSize;
   static const size_t step_size = StepSize;
-  typename typedef Allocator allocator;
+  typedef Allocator allocator;
 
   Bucketizer() {
     for (size_t i = 0; i < number_of_buckets; i++) {
@@ -149,4 +149,8 @@ private:
     return &_buckets[(v - MinSize) / StepSize];
   }
 };
+
+template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
+const size_t Bucketizer<Allocator, MinSize, MaxSize, StepSize>::number_of_buckets;
+
 }

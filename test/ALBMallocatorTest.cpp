@@ -7,8 +7,6 @@
 // Authors: http://petriconi.net, Felix Petriconi 
 //
 //////////////////////////////////////////////////////////////////
-#pragma once
-
 #include <gtest/gtest.h>
 #include "ALBTestHelpers.h"
 #include "ALBMallocator.h"

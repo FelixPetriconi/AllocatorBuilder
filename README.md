@@ -112,7 +112,7 @@ Documentation
 
 Author 
 ------
-  Felix Petriconi
+  Felix Petriconi (felix at petriconi.net)
   
 
 Contributions

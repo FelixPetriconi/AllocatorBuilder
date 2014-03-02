@@ -10,7 +10,9 @@
 #pragma once
 
 #include <type_traits>
+#include <stddef.h>
 #include "ALBTraits.h"
+#include <utility>
 
 namespace ALB {
 /**
@@ -33,6 +35,10 @@ struct Block {
     return *this;
   }
 
+#ifndef _MSC_VER
+  Block& operator=(const Block&) = default;
+  Block(const Block&) = default;
+#endif
   /**
    * During destruction of any of this instance, the described memory
    * is not freed!
@@ -199,19 +205,19 @@ struct Reallocator<
  *
  * \ingroup group_helpers
  */
-template <size_t v, size_t DynamicEnableSwitch> struct Dynastic {
-  size_t value() const { return v; }
+template <int v, int DynamicEnableSwitch> struct Dynastic {
+  int value() const { return v; }
 };
 
-template <size_t DynamicEnableSwitch>
+template <int DynamicEnableSwitch>
 struct Dynastic<DynamicEnableSwitch, DynamicEnableSwitch> {
 private:
-  size_t _v;
+  int _v;
 
 public:
   Dynastic() : _v(-1) {}
-  size_t value() const { return _v; }
-  void value(size_t w) { _v = w; }
+  int value() const { return _v; }
+  void value(int w) { _v = w; }
 };
 } // namespace Helper
 }

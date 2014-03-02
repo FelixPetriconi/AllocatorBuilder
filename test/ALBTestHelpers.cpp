@@ -25,4 +25,4 @@ void ALB::TestHelpers::EXPECT_MEM_EQ(void* a, void* b, size_t n)
     << " but should be " << (int)*(static_cast<char*>(a) + isDifferentAt);
 }
 
-std::atomic<size_t> ALB::TestHelpers::TestMallocator::_allocatedMem = 0;
+std::atomic<size_t> ALB::TestHelpers::TestMallocator::_allocatedMem;

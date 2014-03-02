@@ -38,7 +38,7 @@ class CascadingAllocatorsBase
 {
   struct Node;
 
-  typename typedef Traits::type_switch<std::atomic<Node*>, 
+  typedef typename Traits::type_switch<std::atomic<Node*>, 
                               Helper::NoAtomic<Node*>, 
                               Shared>::type NodePtr;
 
@@ -149,7 +149,7 @@ class CascadingAllocatorsBase
 #endif
 
 public:
-  typename typedef Allocator allocator;
+  typedef Allocator allocator;
 
   static const bool supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation;

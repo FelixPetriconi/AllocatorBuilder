@@ -106,7 +106,8 @@ public:
   ~FreeListBase() {
     void *curBlock = nullptr;
     while (_root.pop(curBlock)) {
-      _allocator.deallocate(Block(curBlock, _upperBound.value()));
+      Block oldBlock(curBlock, _upperBound.value());
+      _allocator.deallocate(oldBlock);
     }
   }
 
@@ -146,10 +147,10 @@ public:
               if (!_root.push(static_cast<char *>(batchAllocatedBlocks.ptr) +
                               i * blockSize)) {
                 BOOST_ASSERT(false);
-                _allocator.deallocate(
-                    Block(static_cast<char *>(batchAllocatedBlocks.ptr) +
+                ALB::Block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) +
                               i * blockSize,
-                          blockSize));
+                          blockSize);
+                _allocator.deallocate(oldBlock);
               }
             }
             // returning the first within block
@@ -223,10 +224,13 @@ template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024,
 class SharedFreeList : public FreeListBase<true, Allocator, MinSize, MaxSize,
                                            PoolSize, NumberOfBatchAllocations> {
 public:
-  SharedFreeList() : FreeListBase() {}
+  SharedFreeList()
+    : FreeListBase<true, Allocator, MinSize, MaxSize,
+                   PoolSize, NumberOfBatchAllocations>() {}
 
   SharedFreeList(size_t minSize, size_t maxSize)
-      : FreeListBase(minSize, maxSize) {}
+    : FreeListBase<true, Allocator, MinSize, MaxSize,
+                   PoolSize, NumberOfBatchAllocations>(minSize, maxSize) {}
 };
 
 /**
@@ -240,8 +244,13 @@ template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024,
 class FreeList : public FreeListBase<false, Allocator, MinSize, MaxSize,
                                      PoolSize, NumberOfBatchAllocations> {
 public:
-  FreeList() : FreeListBase() {}
+  FreeList() 
+    : FreeListBase<false, Allocator, MinSize, MaxSize,
+                   PoolSize, NumberOfBatchAllocations>() {}
 
-  FreeList(size_t minSize, size_t maxSize) : FreeListBase(minSize, maxSize) {}
+  FreeList(size_t minSize, size_t maxSize) 
+    : FreeListBase<false, Allocator, MinSize, MaxSize,
+                   PoolSize, NumberOfBatchAllocations>(minSize, maxSize) {}
+
 };
 }
