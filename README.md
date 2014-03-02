@@ -118,7 +118,8 @@ Author
 Contributions
 -------------
 
-Contributions are welcome! Please make a forke and request for integration.
+Comments, feedback or contributions are welcome!
+Please forke and request for integration.
 
   
 License
@@ -128,7 +129,7 @@ License
 
 Version
 -------
-  0.1.0
+  0.8.0
 
 Prerequisites
 -------------
@@ -140,14 +141,16 @@ Prerequisites
 
 Platform
 --------
-  No platform specific features used, but tested so far only with MS Visual Studio 2012 and 2013
+  No platform specific features used.
+  * Visual Studio 2012/2013: All unit tests pass
+  * Clang 3.4: Currently under development 
 
 Installation Win
 ----------------
   * Have boost installed and the standard libs be build, install into D:\boost_1_55_0
-  * Clone into eg D:\misc\AllocatorBuilder
+  * Clone into e.g. D:\misc\AllocatorBuilder
   * Create a build folder, eg D:\misc\alb_build
-  * Open a command promt in that alb_build folder
+  * Open a command prompt in that alb_build folder
   * Have CMake in the path
   * Execute cmake -G "Visual Studio 11 Win64" ..\alb_build
   * Open created solution in .\alb_build\AllocatorBuilder.sln
