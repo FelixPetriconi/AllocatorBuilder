@@ -33,8 +33,8 @@ template <class Allocator>
 class TestWorker
 {
   std::unique_ptr<char[]> _reference;
-  const int _maxUsedBytes;
   Allocator& _allocator;
+  const int _maxUsedBytes;
 
   void init() {
     _reference.reset(new char[_maxUsedBytes]);
@@ -91,9 +91,9 @@ template <class Allocator>
 class MultipleAllocationsTester
 {
   std::unique_ptr<char[]> _reference;
-  const int _maxUsedBytes;
   Allocator& _allocator;
-
+  const int _maxUsedBytes;
+  
   void init() {
     _reference.reset(new char[_maxUsedBytes]);
     unsigned char pattern = ::rand() * 255 / RAND_MAX;

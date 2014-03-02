@@ -28,7 +28,7 @@ class UsedMem
 {
   Allocator& _allocator;
   std::vector<Block> _usedBlocks;    
-  template <class Allocator, size_t BytesPerBitMarker>
+  template <class A, size_t B>
   friend class UsedMemGenerator;
 
 public:

@@ -12,7 +12,7 @@ if(MSVC AND MSVC_VERSION EQUAL 1700)
   add_definitions(-D_VARIADIC_MAX=10)
 endif ()
 
-if(CLANG OR GNU)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS                "-Wall -std=c++11")
 endif()
 
