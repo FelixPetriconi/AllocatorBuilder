@@ -310,11 +310,12 @@ public:
   static const bool has_per_allocation_state = HasPerAllocationState;
 
   AllocatorWithStats()
-      : _root(nullptr), _numOwns(0), _numAllocate(0), _numAllocateOK(0),
+      : _numOwns(0), _numAllocate(0), _numAllocateOK(0),
         _numExpand(0), _numExpandOK(0), _numReallocate(0), _numReallocateOK(0),
         _numReallocateInPlace(0), _numDeallocate(0), _numDeallocateAll(0),
         _bytesAllocated(0), _bytesDeallocated(0), _bytesExpanded(0),
-        _bytesContracted(0), _bytesMoved(0), _bytesSlack(0), _bytesHighTide(0) {
+        _bytesContracted(0), _bytesMoved(0), _bytesSlack(0), _bytesHighTide(0),
+        _root(nullptr)  {
   }
 
   /**
@@ -480,10 +481,10 @@ public:
       add(StatsOptions::BytesExpanded, _bytesExpanded, b.length - oldLength);
       add(StatsOptions::BytesAllocated, _bytesAllocated, b.length - oldLength);
       updateHighTide();
-      if (b && has_per_allocation_state) {
-        auto stat = Traits::AffixExtractor<
-            decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
-      }
+      // if (b && has_per_allocation_state) {
+      //   auto stat = Traits::AffixExtractor<
+      //       decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
+      // }
     }
     return result;
   }

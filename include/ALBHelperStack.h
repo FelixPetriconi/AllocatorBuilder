@@ -25,9 +25,9 @@ namespace Helper {
  */
 template <typename T, unsigned MaxSize> 
 class stack {
-  static_assert(std::has_trivial_assign<T>::value,
+  static_assert(boost::has_trivial_assign<T>::value,
     "T must be trivially copyable");
-  static_assert(std::has_trivial_destructor<T>::value,
+  static_assert(boost::has_trivial_destructor<T>::value,
     "T must be trivially destroyable");
 
   T _elements[MaxSize];

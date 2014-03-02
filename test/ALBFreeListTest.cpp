@@ -19,7 +19,7 @@ class SharedListTest : public ALB::TestHelpers::AllocatorBaseTest<T>
 {
 protected:
   void TearDown() {
-    deallocateAndCheckBlockIsThenEmpty(mem);
+    this->deallocateAndCheckBlockIsThenEmpty(this->mem);
   }
   ALB::Block mem;
 };
@@ -33,59 +33,59 @@ TYPED_TEST_CASE(SharedListTest, TypesForFreeListTest);
 
 TYPED_TEST(SharedListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
 {
-  mem = sut.allocate(16);
-  EXPECT_NE(nullptr, mem.ptr);
-  EXPECT_EQ(16, mem.length);
+  this->mem = this->sut.allocate(16);
+  EXPECT_NE(nullptr, this->mem.ptr);
+  EXPECT_EQ(16, this->mem.length);
 }
 
 TYPED_TEST(SharedListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
 {
-  mem = sut.allocate(8);
-  auto oldPtr = mem.ptr;
-  deallocateAndCheckBlockIsThenEmpty(mem);
+  this->mem = this->sut.allocate(8);
+  auto oldPtr = this->mem.ptr;
+  this->deallocateAndCheckBlockIsThenEmpty(this->mem);
 
-  mem = sut.allocate(8);
-  EXPECT_EQ(oldPtr, mem.ptr);
+  this->mem = this->sut.allocate(8);
+  EXPECT_EQ(oldPtr, this->mem.ptr);
 }
 
 TYPED_TEST(SharedListTest, ThatSeveralDeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
 {
-  auto mem1 = sut.allocate(8);
-  auto mem2 = sut.allocate(8);
+  auto mem1 = this->sut.allocate(8);
+  auto mem2 = this->sut.allocate(8);
   auto oldPtr1 = mem1.ptr;
   auto oldPtr2 = mem2.ptr;
 
-  deallocateAndCheckBlockIsThenEmpty(mem1);
-  deallocateAndCheckBlockIsThenEmpty(mem2);
+  this->deallocateAndCheckBlockIsThenEmpty(mem1);
+  this->deallocateAndCheckBlockIsThenEmpty(mem2);
 
-  mem1 = sut.allocate(12);
-  mem2 = sut.allocate(12);
+  mem1 = this->sut.allocate(12);
+  mem2 = this->sut.allocate(12);
 
   EXPECT_EQ(oldPtr2, mem1.ptr);
   EXPECT_EQ(oldPtr1, mem2.ptr);
 
-  deallocateAndCheckBlockIsThenEmpty(mem1);
-  deallocateAndCheckBlockIsThenEmpty(mem2);
+  this->deallocateAndCheckBlockIsThenEmpty(mem1);
+  this->deallocateAndCheckBlockIsThenEmpty(mem2);
 }
 
 TYPED_TEST(SharedListTest, ThatReallocatingAnEmptyBlockResultsToBlockOfBoundsSize)
 {
-  EXPECT_TRUE(sut.reallocate(mem, 8));
-  EXPECT_EQ(16, mem.length);
+  EXPECT_TRUE(this->sut.reallocate(this->mem, 8));
+  EXPECT_EQ(16, this->mem.length);
 }
 
 
 TYPED_TEST(SharedListTest, ThatReallocatingAFilledBlockToNonZeroIsRejected)
 {
-  mem = sut.allocate(8);
-  EXPECT_FALSE(sut.reallocate(mem, 2));
-  EXPECT_EQ(16, mem.length);
+  this->mem = this->sut.allocate(8);
+  EXPECT_FALSE(this->sut.reallocate(this->mem, 2));
+  EXPECT_EQ(16, this->mem.length);
 }
 
 TYPED_TEST(SharedListTest, ThatBlocksOutsideTheBoundsAreNotRecognizedAsOwned)
 {
-  EXPECT_FALSE(sut.owns(ALB::Block()));
-  EXPECT_FALSE(sut.owns(ALB::Block(nullptr, 64)));
+  EXPECT_FALSE(this->sut.owns(ALB::Block()));
+  EXPECT_FALSE(this->sut.owns(ALB::Block(nullptr, 64)));
 
   ALB::SharedFreeList<ALB::Mallocator, 16, 32> sutNotStartingAtZero;
   EXPECT_FALSE(sutNotStartingAtZero.owns(ALB::Block(nullptr, 15)));
@@ -94,8 +94,8 @@ TYPED_TEST(SharedListTest, ThatBlocksOutsideTheBoundsAreNotRecognizedAsOwned)
 
 TYPED_TEST(SharedListTest, ThatAProvidedBlockIsRecongizedAOwned)
 {
-  mem = sut.allocate(16);
-  EXPECT_TRUE(sut.owns(mem));
+  this->mem = this->sut.allocate(16);
+  EXPECT_TRUE(this->sut.owns(this->mem));
 }
 
 
@@ -116,15 +116,15 @@ TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTe
 
 TYPED_TEST(FreeListWithParametrizedTest, ThatUpperAndLowerBoundIsSet)
 {
-  EXPECT_EQ(16, sut.min_size());
-  EXPECT_EQ(42, sut.max_size());
+  EXPECT_EQ(16, this->sut.min_size());
+  EXPECT_EQ(42, this->sut.max_size());
 }
 
 TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRejected)
 {
   size_t rejectedValues[] = { 0, 4, 15, 43, 64 };
   for (auto i : rejectedValues) {
-    auto mem = sut.allocate(i);
+    auto mem = this->sut.allocate(i);
     EXPECT_FALSE(mem);
   }
 }

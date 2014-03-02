@@ -87,8 +87,8 @@ public:
       Allocator::supports_truncated_deallocation;
 
   typedef Allocator allocator;
-  typename typedef Prefix prefix;
-  typename typedef Sufix sufix;
+  typedef Prefix prefix;
+  typedef Sufix sufix;
 
   static const size_t prefix_size =
       std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value
@@ -175,7 +175,8 @@ public:
     if (sufix_size > 0) {
       outerToSufix(b)->~Sufix();
     }
-    _allocator.deallocate(toInnerBlock(b));
+    auto innerBlock(toInnerBlock(b));
+    _allocator.deallocate(innerBlock);
     b.reset();
   }
 

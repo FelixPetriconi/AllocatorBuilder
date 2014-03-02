@@ -30,10 +30,14 @@ template <typename T, size_t Pattern> class MemoryCorruptionDetector {
 
 public:
   typedef T value_type;
-  static const T pattern = Pattern;
+  static const size_t pattern = Pattern;
 
   MemoryCorruptionDetector() : _pattern(Pattern) {}
 
   ~MemoryCorruptionDetector() { BOOST_ASSERT(_pattern == Pattern); }
 };
+
+template <typename T, size_t Pattern>
+const size_t MemoryCorruptionDetector<T,Pattern>::pattern;
+
 }

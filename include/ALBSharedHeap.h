@@ -13,6 +13,7 @@
 #include "ALBSharedHelpers.h"
 
 #include <atomic>
+#include <algorithm>
 #include <boost/thread.hpp>
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
@@ -34,6 +35,23 @@
   ATOMIC->compare_exchange_strong(EXPECT, VALUE)
 
 namespace ALB {
+  namespace Helpers {
+  template <bool Used>
+  uint64_t setUsed(const uint64_t &currentRegister, const uint64_t &mask);
+
+  template <>
+  inline uint64_t setUsed<false>(const uint64_t &currentRegister,
+                          const uint64_t &mask) {
+    return currentRegister & (mask ^ (-1));
+  }
+  template <>
+  inline uint64_t setUsed<true>(const uint64_t &currentRegister,
+                         const uint64_t &mask) {
+    return currentRegister | mask;
+  }
+
+
+  }
 /**
  * The SharedHeap implements a classic heap with a pre-allocated size of
  * _numberOfChunks.value() * _chunkSize.value()
@@ -82,7 +100,7 @@ class SharedHeap
 
 public:
   static const bool supports_truncated_deallocation = true;
-  typename typedef Allocator allocator;
+  typedef Allocator allocator;
 
   SharedHeap() : all_set(static_cast<uint64_t>(-1)), all_zero(0) { init(); }
 
@@ -145,7 +163,7 @@ public:
     size_t numberOfAlignedBytes =
         Helper::roundToAlignment(_chunkSize.value(), n);
     size_t numberOfBlocks = numberOfAlignedBytes / _chunkSize.value();
-    numberOfBlocks = std::max(1uLL, numberOfBlocks);
+    numberOfBlocks = std::max(1uL, numberOfBlocks);
 
     if (numberOfBlocks < 64) {
       auto result = allocateWithinASingleControlRegister(numberOfBlocks);
@@ -289,20 +307,6 @@ private:
   }
 
   template <bool Used>
-  uint64_t setUsed(const uint64_t &currentRegister, const uint64_t &mask);
-
-  template <>
-  uint64_t setUsed<false>(const uint64_t &currentRegister,
-                          const uint64_t &mask) {
-    return currentRegister & (mask ^ all_set);
-  }
-  template <>
-  uint64_t setUsed<true>(const uint64_t &currentRegister,
-                         const uint64_t &mask) {
-    return currentRegister | mask;
-  }
-
-  template <bool Used>
   bool testAndSetWithinSingleRegister(const BlockContext &context) {
     BOOST_ASSERT(context.subIndex + context.usedChunks <= 64);
 
@@ -317,7 +321,7 @@ private:
       if ((currentRegister & mask) != mask) {
         return false;
       }
-      newRegister = setUsed<Used>(currentRegister, mask);
+      newRegister = Helpers::setUsed<Used>(currentRegister, mask);
       boost::shared_lock<boost::shared_mutex> guard(_mutex);
     } while (
         !CAS(_control[context.registerIndex], currentRegister, newRegister));
@@ -341,7 +345,7 @@ private:
       uint64_t currentRegister, newRegister;
       do {
         currentRegister = _control[registerIndex].load();
-        newRegister = setUsed<Used>(currentRegister, mask);
+        newRegister = Helpers::setUsed<Used>(currentRegister, mask);
         LockPolicy guard(_mutex);
       } while (!CAS(_control[registerIndex], currentRegister, newRegister));
 
@@ -410,7 +414,7 @@ private:
     uint64_t currentRegister, newRegister;
     do {
       currentRegister = _control[context.registerIndex].load();
-      newRegister = setUsed<Used>(currentRegister, mask);
+      newRegister = Helpers::setUsed<Used>(currentRegister, mask);
       LockPolicy guard(_mutex);
     } while (
         !CAS(_control[context.registerIndex], currentRegister, newRegister));
@@ -435,7 +439,7 @@ private:
           while (i <= 64 - numberOfBlocks) {
             if ((currentControlRegister & mask) == mask) {
               auto newControlRegister =
-                  setUsed<false>(currentControlRegister, mask);
+                  Helpers::setUsed<false>(currentControlRegister, mask);
 
               boost::shared_lock<boost::shared_mutex> guard(_mutex);
 

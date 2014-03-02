@@ -7,7 +7,6 @@
 // Authors: http://petriconi.net, Felix Petriconi 
 //
 //////////////////////////////////////////////////////////////////
-#pragma once
 
 #include <gtest/gtest.h>
 #include "ALBTestHelpers.h"
@@ -54,7 +53,8 @@ TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlo
   EXPECT_FALSE(mem);
 
   // Just to satisfy the code coverage
-  sut.deallocate(ALB::Block());
+  ALB::Block dummy;
+  sut.deallocate(dummy);
 }
 
 TEST_F(BucketizerTest, ThatAllocatingAtTheLowerEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
@@ -109,8 +109,9 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTh
 
 TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockOutsideTheBoundsBytesReturnsFalse)
 {
-  EXPECT_FALSE(sut.reallocate(ALB::Block(), 1));
-  EXPECT_FALSE(sut.reallocate(ALB::Block(), 65));
+  ALB::Block emptyBlock;
+  EXPECT_FALSE(sut.reallocate(emptyBlock, 1));
+  EXPECT_FALSE(sut.reallocate(emptyBlock, 65));
 }
 
 TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockWithinTheBoundsBytesReturnsAValidBlock)

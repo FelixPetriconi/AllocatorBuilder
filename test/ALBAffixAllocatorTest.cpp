@@ -26,16 +26,16 @@ class AffixAllocatorTest : public ALB::TestHelpers::AllocatorBaseTest<T>
 {
 protected:
   void TearDown() {
-    deallocateAndCheckBlockIsThenEmpty(mem);
+    this->deallocateAndCheckBlockIsThenEmpty(this->mem);
   }
 
   void checkAffixContent() {
     if (T::prefix_size > 0) {
-      EXPECT_EQ(T::prefix::pattern, *(static_cast<T::prefix::value_type*>(mem.ptr) - 1) ) 
+      EXPECT_EQ(T::prefix::pattern, *(static_cast<typename T::prefix::value_type*>(this->mem.ptr) - 1) ) 
         << "Problem with type " << typeid(T).name();
     }
     if (T::sufix_size > 0) {
-      EXPECT_EQ(T::sufix::pattern, *(static_cast<T::sufix::value_type*>(mem.ptr) + mem.length / sizeof(T::sufix::value_type)) ) 
+      EXPECT_EQ(T::sufix::pattern, *(static_cast<typename T::sufix::value_type*>(this->mem.ptr) + this->mem.length / sizeof(typename T::sufix::value_type)) ) 
         << "Problem with type " << typeid(T).name();
     }
   }
@@ -69,101 +69,101 @@ TYPED_TEST_CASE(AffixAllocatorTest, TypesToTest);
 
 TYPED_TEST(AffixAllocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
 {
-  mem = sut.allocate(0);
+  this->mem = this->sut.allocate(0);
 
-  EXPECT_EQ(0, mem.length);
-  EXPECT_EQ(nullptr, mem.ptr);
+  EXPECT_EQ(0, this->mem.length);
+  EXPECT_EQ(nullptr, this->mem.ptr);
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatAFullAllocationReturnsAnEmptyBlockBecauseOfMissingSpaceForTheAffixes)
 {
-  mem = sut.allocate(512);
+  this->mem = this->sut.allocate(512);
 
-  EXPECT_EQ(0, mem.length);
-  EXPECT_EQ(nullptr, mem.ptr);
+  EXPECT_EQ(0, this->mem.length);
+  EXPECT_EQ(nullptr, this->mem.ptr);
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
 {
-  mem = sut.allocate(8);
+  this->mem = this->sut.allocate(8);
   
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(8, this->mem.length);
 
-  checkAffixContent();
+  this->checkAffixContent();
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatASmallAllocatedBlockIncreasingReallocatedIntoANewMemAreaKeepsTheOldMarker)
 {
-  mem = sut.allocate(8);
-  auto memInBetween = sut.allocate(4);
+  this->mem = this->sut.allocate(8);
+  auto memInBetween = this->sut.allocate(4);
 
-  EXPECT_TRUE(sut.reallocate(mem, 16));
+  EXPECT_TRUE(this->sut.reallocate(this->mem, 16));
   
-  EXPECT_EQ(16, mem.length);
-  checkAffixContent();
+  EXPECT_EQ(16, this->mem.length);
+  this->checkAffixContent();
 
-  deallocateAndCheckBlockIsThenEmpty(memInBetween);
+  this->deallocateAndCheckBlockIsThenEmpty(memInBetween);
 }
 
 
 TYPED_TEST(AffixAllocatorTest, ThatALargerAllocatedBlockDecreasingReallocatedKeepsThePositionAndTheOldMarker)
 {
-  mem = sut.allocate(16);
-  auto memInBetween = sut.allocate(4);
-  auto mem1stPointer = mem.ptr;
+  this->mem = this->sut.allocate(16);
+  auto memInBetween = this->sut.allocate(4);
+  auto mem1stPointer = this->mem.ptr;
 
-  EXPECT_TRUE(sut.reallocate(mem, 8));
+  EXPECT_TRUE(this->sut.reallocate(this->mem, 8));
 
-  EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(mem1stPointer, mem.ptr);
-  checkAffixContent();
+  EXPECT_EQ(8, this->mem.length);
+  EXPECT_EQ(mem1stPointer, this->mem.ptr);
+  this->checkAffixContent();
 
-  deallocateAndCheckBlockIsThenEmpty(memInBetween);
+  this->deallocateAndCheckBlockIsThenEmpty(memInBetween);
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedByZeroBytesIsStillAnEmptyBlock)
 {
-  EXPECT_TRUE(sut.expand(mem, 0));
-  EXPECT_EQ(0, mem.length);
+  EXPECT_TRUE(this->sut.expand(this->mem, 0));
+  EXPECT_EQ(0, this->mem.length);
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedByTheSizeOfTheAllocatorsCapacityIsStillAnEmptyBlockBecauseThereIsNoSpaceForTheAffix)
 {
-  EXPECT_FALSE(sut.expand(mem, 512));
-  EXPECT_EQ(0, mem.length);
+  EXPECT_FALSE(this->sut.expand(this->mem, 512));
+  EXPECT_EQ(0, this->mem.length);
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
 {
   size_t sizeThatFitsJustIntoTheAllocator = 512 - TypeParam::prefix_size - TypeParam::sufix_size;
-  EXPECT_TRUE(sut.expand(mem, sizeThatFitsJustIntoTheAllocator));
-  EXPECT_EQ(sizeThatFitsJustIntoTheAllocator, mem.length);
-  checkAffixContent();
+  EXPECT_TRUE(this->sut.expand(this->mem, sizeThatFitsJustIntoTheAllocator));
+  EXPECT_EQ(sizeThatFitsJustIntoTheAllocator, this->mem.length);
+  this->checkAffixContent();
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatAnFilledBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
 {
   auto firstSize = 8;
-  mem = sut.allocate(firstSize);
-  size_t sizeThatFitsJustIntoTheAllocator = 512 - mem.length - TypeParam::prefix_size - TypeParam::sufix_size;
-  EXPECT_TRUE(sut.expand(mem, sizeThatFitsJustIntoTheAllocator));
-  EXPECT_EQ(sizeThatFitsJustIntoTheAllocator + firstSize, mem.length);
-  checkAffixContent();
+  this->mem = this->sut.allocate(firstSize);
+  size_t sizeThatFitsJustIntoTheAllocator = 512 - this->mem.length - TypeParam::prefix_size - TypeParam::sufix_size;
+  EXPECT_TRUE(this->sut.expand(this->mem, sizeThatFitsJustIntoTheAllocator));
+  EXPECT_EQ(sizeThatFitsJustIntoTheAllocator + firstSize, this->mem.length);
+  this->checkAffixContent();
 }
 
 
 TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedBy8BytesHasNowThatSizeAndHasNowMarker)
 {
-  EXPECT_TRUE(sut.expand(mem, 8));
-  EXPECT_EQ(8, mem.length);
-  checkAffixContent();
+  EXPECT_TRUE(this->sut.expand(this->mem, 8));
+  EXPECT_EQ(8, this->mem.length);
+  this->checkAffixContent();
 }
 
 TYPED_TEST(AffixAllocatorTest, ThatFilledBlockedExpandedBy16BytesHasNowThatSizeAndHasNowMarker)
 {
-  mem = sut.allocate(8);
-  EXPECT_TRUE(sut.expand(mem, 16));
-  EXPECT_EQ(24, mem.length);
-  checkAffixContent();
+  this->mem = this->sut.allocate(8);
+  EXPECT_TRUE(this->sut.expand(this->mem, 16));
+  EXPECT_EQ(24, this->mem.length);
+  this->checkAffixContent();
 }
 

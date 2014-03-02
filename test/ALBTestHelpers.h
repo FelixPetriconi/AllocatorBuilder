@@ -140,7 +140,7 @@ namespace ALB
     {
       Allocator& _allocator;
       std::vector<Block> _usedBlocks;    
-      template <class Allocator, size_t BytesPerBitMarker>
+      template <class A, size_t B>
       friend class UsedMemGenerator;
 
     public:
@@ -195,8 +195,8 @@ namespace ALB
     class TestWorker
     {
       std::unique_ptr<char[]> _reference;
-      const int _maxUsedBytes;
       Allocator& _allocator;
+      const int _maxUsedBytes;
 
       void init() {
         _reference.reset(new char[_maxUsedBytes]);
@@ -253,9 +253,9 @@ namespace ALB
     class MultipleAllocationsTester
     {
       std::unique_ptr<char[]> _reference;
-      const int _maxUsedBytes;
       Allocator& _allocator;
-
+      const int _maxUsedBytes;
+      
       void init() {
         _reference.reset(new char[_maxUsedBytes]);
         unsigned char pattern = ::rand() * 255 / RAND_MAX;

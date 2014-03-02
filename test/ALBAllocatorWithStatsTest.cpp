@@ -28,9 +28,8 @@ namespace
 template <class Allocator>
 class AllocationExpectation {
   Allocator& allocator;
-  template <class Allocator> friend class AllocationExpectationBuilder;
+  template <class A> friend class AllocationExpectationBuilder;
 
-  size_t owns;
   size_t numAllocate;
   size_t numAllocateOK;
   size_t numExpand;
@@ -52,7 +51,6 @@ class AllocationExpectation {
 public:
   AllocationExpectation(Allocator& a)
     : allocator(a)
-    , numOwns(0)
     , numAllocate(0)
     , numAllocateOK(0)
     , numExpand(0)
@@ -62,6 +60,7 @@ public:
     , numReallocateInPlace(0)
     , numDeallocate(0)
     , numDeallocateAll(0)
+    , numOwns(0)
     , bytesAllocated(0)
     , bytesDeallocated(0)
     , bytesExpanded(0)
@@ -128,7 +127,7 @@ protected:
   typedef Allocator AllocatorUnderTest;
 
   typename Allocator::AllocationInfo createCallerExpectation(const char* file, const char* function, size_t size) {
-    Allocator::AllocationInfo expectedCallerInfo;
+    typename Allocator::AllocationInfo expectedCallerInfo;
     expectedCallerInfo.callerFile = file;
     expectedCallerInfo.callerFunction = function;
     expectedCallerInfo.callerSize = size;

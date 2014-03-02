@@ -31,7 +31,7 @@ set(SOURCE
   ALBSharedHeapTest
   ALBStackAllocatorTest.cpp
   ALBTestHelpers.cpp
-  main.cpp
+  Main.cpp
 )
 
 add_executable(ALBUnitTest ${SOURCE} ${HEADERS})

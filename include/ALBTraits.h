@@ -23,7 +23,7 @@ namespace Traits {
 template <typename T> struct has_expand {
 private:
   typedef char Yes;
-  typedef struct No {
+  struct No {
     char dummy[2];
   };
 
@@ -43,7 +43,7 @@ public:
 template <typename T> struct has_deallocateAll {
 private:
   typedef char Yes;
-  typedef struct No {
+  struct No {
     char dummy[2];
   };
 
@@ -63,7 +63,7 @@ public:
 template <typename T> struct has_owns {
 private:
   typedef char Yes;
-  typedef struct No {
+  struct No {
     char dummy[2];
   };
 
@@ -208,11 +208,11 @@ struct AllDeallocator<
 template <class A, class B, bool> struct type_switch;
 
 template <class A, class B> struct type_switch<A, B, true> {
-  typename typedef A type;
+  typedef A type;
 };
 
 template <class A, class B> struct type_switch<A, B, false> {
-  typename typedef B type;
+  typedef B type;
 };
 }
 }

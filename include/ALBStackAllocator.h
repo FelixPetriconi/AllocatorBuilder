@@ -42,7 +42,7 @@ class StackAllocator
 
 public:
   static const bool supports_truncated_deallocation = true;
-  typename typedef StackAllocator allocator;
+  typedef StackAllocator allocator;
   static const size_t max_size = MaxSize;
   static const size_t alignment = Alignment;
 
@@ -191,6 +191,11 @@ private:
 
 #undef DELETED
 };
+
+template <size_t MaxSize, size_t Alignment> 
+const size_t StackAllocator<MaxSize, Alignment>::max_size;
+template <size_t MaxSize, size_t Alignment> 
+const size_t StackAllocator<MaxSize, Alignment>::alignment;
 
 namespace Traits {
 template <class T> struct is_stackallocator : std::false_type {};

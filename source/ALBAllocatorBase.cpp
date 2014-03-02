@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <algorithm>
+#include <cstring>
 
 void ALB::Helper::blockCopy(const ALB::Block& source, ALB::Block& destination)
 {

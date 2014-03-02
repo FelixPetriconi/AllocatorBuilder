@@ -38,7 +38,7 @@ class CascadingAllocatorsBase
 {
   struct Node;
 
-  typename typedef Traits::type_switch<std::atomic<Node*>, 
+  typedef typename Traits::type_switch<std::atomic<Node*>, 
                               Helper::NoAtomic<Node*>, 
                               Shared>::type NodePtr;
 
@@ -144,12 +144,12 @@ class CascadingAllocatorsBase
   }
 
 #ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  SharedCascadingAllocators(const SharedCascadingAllocators&) = delete;
-  const SharedCascadingAllocators& operator=(const SharedCascadingAllocators&) = delete;
+  CascadingAllocatorsBase(const CascadingAllocatorsBase&) = delete;
+  const CascadingAllocatorsBase& operator=(const CascadingAllocatorsBase&) = delete;
 #endif
 
 public:
-  typename typedef Allocator allocator;
+  typedef Allocator allocator;
 
   static const bool supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation;
