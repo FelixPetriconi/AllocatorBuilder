@@ -118,8 +118,7 @@ Author
 Contributions
 -------------
 
-Comments, feedback or contributions are welcome!
-Please forke and request for integration.
+  Comments, feedback or contributions are welcome!
 
   
 License
@@ -129,12 +128,12 @@ License
 
 Version
 -------
-  0.8.0
+  0.9.0
 
 Prerequisites
 -------------
   * C++ 11 (partly, as far as Visual Studio 2012 supports it)
-  * boost 1.55.0 (lockfree, thread, assert, option)
+  * boost 1.54.0 (lockfree, thread, assert, option)
   * CMake 2.8 or later
   * GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
 
@@ -143,7 +142,7 @@ Platform
 --------
   No platform specific features used.
   * Visual Studio 2012/2013: All unit tests pass
-  * Clang 3.4: Currently under development 
+  * Clang 3.4: All unit tests pass
 
 Installation Win
 ----------------
