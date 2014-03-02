@@ -34,10 +34,10 @@ TEST_F(TCascadingAllocatorsTest, SingleAllocation)
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceAllocationByOneRunningThread)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 64,8>> AllocatorUnderTest;
+  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 512,64>> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
-  ALB::TestHelpers::TestWorker<AllocatorUnderTest> testWorker(sut, 256);
+  ALB::TestHelpers::TestWorker<AllocatorUnderTest> testWorker(sut, 129);
   testWorker.check();
 }
 

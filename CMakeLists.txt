@@ -13,7 +13,8 @@ if(MSVC AND MSVC_VERSION EQUAL 1700)
 endif ()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS                "-Wall -std=c++11")
+  set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11")
+  set(CMAKE_LINK_FLAGS "-pthreads -fsanitizer=thread")
 endif()
 
 set(BOOST_ROOT D:/boost_1_55_0)
