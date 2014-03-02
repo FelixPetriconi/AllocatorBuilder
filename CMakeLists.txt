@@ -8,12 +8,12 @@ ENDIF(WIN32)
 
 # Visual Studio 2012 only supports up to 8 template parameters in
 # std::tr1::tuple by default, but gtest requires 10
-if(MSVC AND MSVC_VERSION EQUAL 1700)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" AND MSVC_VERSION EQUAL 1700)
   add_definitions(-D_VARIADIC_MAX=10)
 endif ()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS                "-Wall -std=c++11")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 endif()
 
 set(BOOST_ROOT D:/boost_1_55_0)
