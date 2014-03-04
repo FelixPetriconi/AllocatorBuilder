@@ -10,7 +10,8 @@
 
 #pragma once
 
-#include <cassert>
+#include <boost/assert.hpp>
+#include <boost/config/suffix.hpp>
 
 namespace ALB {
 /**
@@ -24,13 +25,13 @@ namespace ALB {
  */
 template <typename T, size_t Pattern> class MemoryCorruptionDetector {
   static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
-                "Memory check not for valid types");
+                "Memory check not for supported types");
 
   T _pattern;
 
 public:
   typedef T value_type;
-  static const size_t pattern = Pattern;
+  BOOST_STATIC_CONSTANT(size_t, pattern = Pattern);
 
   MemoryCorruptionDetector() : _pattern(Pattern) {}
 

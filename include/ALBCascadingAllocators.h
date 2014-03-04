@@ -21,9 +21,8 @@
 #endif
 
 
-
-
 namespace ALB {
+
 /**
  * This implements a cascade of allocators. If the first allocator cannot
  * fulfill the given request, then a next one is created and the requested is

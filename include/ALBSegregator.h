@@ -11,6 +11,8 @@
 
 #include "ALBAllocatorBase.h"
 #include <boost/assert.hpp>
+#include <boost/config/suffix.hpp>
+#include <boost/type_traits/ice.hpp>
 
 namespace ALB {
 
@@ -25,18 +27,18 @@ namespace ALB {
  */
 template <size_t Threshold, class SmallAllocator, class LargeAllocator>
 class Segregator : private SmallAllocator, private LargeAllocator {
-
-  static const size_t threshold = Threshold;
-  typedef SmallAllocator small_allocator;
-  typedef LargeAllocator large_allocator;
-
   static_assert(!Traits::both_same_base<SmallAllocator, LargeAllocator>::value,
                 "Small- and Large-Allocator cannot be both of base!");
 
 public:
-  static const bool supports_truncated_deallocation =
-      SmallAllocator::supports_truncated_deallocation &&
-      LargeAllocator::supports_truncated_deallocation;
+  typedef SmallAllocator small_allocator;
+  typedef LargeAllocator large_allocator;
+
+  BOOST_STATIC_CONSTANT(size_t, threshold = Threshold);
+
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
+      (::boost::type_traits::ice_and<SmallAllocator::supports_truncated_deallocation, 
+      LargeAllocator::supports_truncated_deallocation>::value));
 
   /**
    * Allocates the specified number of bytes. If the operation was not

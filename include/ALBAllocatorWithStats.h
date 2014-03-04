@@ -304,9 +304,10 @@ public:
 #undef MEMBER_ACCESSOR
 #undef MEMBER_ACCESSORS
 
-  static const bool supports_truncated_deallocation =
-      Allocator::supports_truncated_deallocation;
-  static const bool has_per_allocation_state = HasPerAllocationState;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
+      Allocator::supports_truncated_deallocation);
+
+  BOOST_STATIC_CONSTANT(bool, has_per_allocation_state = HasPerAllocationState);
 
   AllocatorWithStats()
       : _numOwns(0), _numAllocate(0), _numAllocateOK(0),
@@ -341,12 +342,14 @@ public:
       AllocationInfo *stat =
           Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
               _allocator, result);
+
       set(StatsOptions::CallerSize, stat->callerSize, n);
       set(StatsOptions::CallerFile, stat->callerFile, file);
       set(StatsOptions::CallerFunction, stat->callerFunction, function);
       set(StatsOptions::CallerLine, stat->callerLine, line);
       set(StatsOptions::CallerTime, stat->callerTime,
           std::chrono::system_clock::now());
+      
       // push into caller info stack
       if (_root) {
         _root->previous = stat;

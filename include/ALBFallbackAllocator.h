@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+
 #include <boost/type_traits/ice.hpp>
 
 namespace ALB {

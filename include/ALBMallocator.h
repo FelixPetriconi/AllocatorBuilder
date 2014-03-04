@@ -10,9 +10,11 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/config/suffix.hpp>
 
 namespace ALB {
-/**
+
+  /**
  * This class implements a facade against the system ::malloc()
  *
  * \ingroup group_allocators group_shared
@@ -20,7 +22,7 @@ namespace ALB {
 class Mallocator {
 
 public:
-  static const bool supports_truncated_deallocation = false;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = false);
   /**
    * Allocates the specified number of bytes.
    * If the system cannot allocate the specified amount of memory then
@@ -70,4 +72,5 @@ public:
     }
   }
 };
+
 }

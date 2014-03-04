@@ -10,8 +10,10 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
+#include <boost/config/suffix.hpp>
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
 #include <boost/noncopyable.hpp>
 #endif
@@ -41,10 +43,13 @@ class StackAllocator
   }
 
 public:
-  static const bool supports_truncated_deallocation = true;
   typedef StackAllocator allocator;
-  static const size_t max_size = MaxSize;
-  static const size_t alignment = Alignment;
+
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = true);
+
+  BOOST_STATIC_CONSTANT(size_t, max_size = MaxSize);
+
+  BOOST_STATIC_CONSTANT(size_t, alignment = Alignment);
 
   StackAllocator() : _p(_data) {}
 
@@ -197,10 +202,5 @@ const size_t StackAllocator<MaxSize, Alignment>::max_size;
 template <size_t MaxSize, size_t Alignment> 
 const size_t StackAllocator<MaxSize, Alignment>::alignment;
 
-namespace Traits {
-template <class T> struct is_stackallocator : std::false_type {};
+}
 
-template <size_t P1, size_t P2>
-struct is_stackallocator<StackAllocator<P1, P2> > : std::true_type {};
-}
-}

@@ -9,9 +9,11 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <boost/lockfree/stack.hpp>
 #include "ALBAllocatorBase.h"
 #include "ALBHelperStack.h"
+#include <boost/lockfree/stack.hpp>
+#include <boost/config/suffix.hpp>
+
 
 namespace ALB {
 /**
@@ -34,11 +36,8 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <bool Shared, class Allocator, size_t MinSize, size_t MaxSize,
-          size_t PoolSize, size_t NumberOfBatchAllocations>
+          unsigned PoolSize, unsigned NumberOfBatchAllocations>
 class FreeListBase {
-  typedef Allocator allocator;
-  static const size_t pool_size = PoolSize;
-
   Allocator _allocator;
 
   typename Traits::type_switch<
@@ -52,8 +51,13 @@ class FreeListBase {
                    DynasticDynamicSet> _upperBound;
 
 public:
-  static const bool supports_truncated_deallocation =
-      Allocator::supports_truncated_deallocation;
+  typedef Allocator allocator;
+  BOOST_STATIC_CONSTANT(unsigned, pool_size = PoolSize);
+  
+  BOOST_STATIC_CONSTANT(unsigned, number_of_batch_allocations = NumberOfBatchAllocations);
+
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
+      Allocator::supports_truncated_deallocation);
 
   FreeListBase() {}
 

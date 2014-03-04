@@ -10,6 +10,7 @@
 #pragma once
 
 #include <type_traits>
+#include <boost/type_traits.hpp>
 
 namespace ALB {
 namespace Helper {

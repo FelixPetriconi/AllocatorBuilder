@@ -42,7 +42,7 @@ namespace ALB {
   template <>
   inline uint64_t setUsed<false>(const uint64_t &currentRegister,
                           const uint64_t &mask) {
-    return currentRegister & (mask ^ (-1));
+    return currentRegister & (mask ^ uint64_t(-1));
   }
   template <>
   inline uint64_t setUsed<true>(const uint64_t &currentRegister,
@@ -99,10 +99,15 @@ class SharedHeap
 #endif
 
 public:
-  static const bool supports_truncated_deallocation = true;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = true);
+
   typedef Allocator allocator;
 
-  SharedHeap() : all_set(static_cast<uint64_t>(-1)), all_zero(0) { init(); }
+  SharedHeap() 
+    : all_set(static_cast<uint64_t>(-1))
+    , all_zero(0) {
+    init();
+  }
 
   SharedHeap(size_t numberOfChunks, size_t chunkSize)
     : all_set(static_cast<uint64_t>(-1))

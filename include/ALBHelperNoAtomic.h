@@ -11,6 +11,7 @@
 
 namespace ALB {
 namespace Helper {
+
 /**
   * Template that mimics (partly) the std::atomic<T> interface, without
   * beeing an atomic.
