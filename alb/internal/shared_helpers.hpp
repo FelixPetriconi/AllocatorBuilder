@@ -11,8 +11,8 @@
 
 #include <boost/thread.hpp>
 
-namespace ALB {
-namespace SharedHelpers {
+namespace alb {
+namespace shared_helpers {
 
 /**
  * Class that does not lock a given mutex

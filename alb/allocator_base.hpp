@@ -15,7 +15,7 @@
 #include <stddef.h>
 #include <boost/config.hpp>
 
-namespace ALB {
+namespace alb {
 /**
  * The value type to describe a memory block and it's length
  * \ingroup group_allocators
@@ -96,7 +96,7 @@ enum DynasticOptions: size_t {
   DynasticDynamicSet = (size_t)-2 
 };
 
-namespace Helper {
+namespace helper {
 
 /**
  * Copies std::min(source.length, destination.length) bytes from source to
@@ -104,7 +104,7 @@ namespace Helper {
  *
  * \ingroup group_helpers
  */
-void blockCopy(const ALB::Block &source, ALB::Block &destination);
+void blockCopy(const alb::Block &source, alb::Block &destination);
 
 
 /**

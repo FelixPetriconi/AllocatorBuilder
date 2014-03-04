@@ -15,14 +15,14 @@
 #include <array>
 
 
-namespace ALB {
+namespace alb {
 /**
  * The Bucketizer is intended to hold allocators with StepSize increasing
  * buckets,
  * within the range of [MinSize, MaxSize)
  * E.g. MinSize = 17, MaxSize = 64, StepSize = 16 =>
  *      BucketsSize[17, 32][33 48][48 64]
- * It plays very well together with ALB::FreeList or ALB::SharedFreeList
+ * It plays very well together with alb::freelist or alb::shared_freelist
  * After instantiation any instance is as far thread safe as the Allocator is
  * thread
  * safe.
@@ -34,7 +34,7 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize>
-class Bucketizer {
+class bucketizer {
 public:
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = false);
 
@@ -55,7 +55,7 @@ public:
 
   Allocator _buckets[number_of_buckets];
 
-  Bucketizer() {
+  bucketizer() {
     for (size_t i = 0; i < number_of_buckets; i++) {
       _buckets[i].setMinMax(MinSize + i * StepSize,
                             MinSize + (i + 1) * StepSize - 1);
@@ -103,13 +103,13 @@ public:
       return false;
     }
 
-    if (Helper::Reallocator<Bucketizer>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<bucketizer>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
     BOOST_ASSERT(owns(b));
 
-    const auto alignedLength = Helper::roundToAlignment(StepSize, n);
+    const auto alignedLength = helper::roundToAlignment(StepSize, n);
     auto currentAllocator = findMatchingAllocator(b.length);
     auto newAllocator = findMatchingAllocator(alignedLength);
 
@@ -117,7 +117,7 @@ public:
       return true;
     }
 
-    return Helper::reallocateWithCopy(*currentAllocator, *newAllocator, b,
+    return helper::reallocateWithCopy(*currentAllocator, *newAllocator, b,
                                       alignedLength);
   }
 
@@ -154,12 +154,12 @@ public:
 private:
   Allocator *findMatchingAllocator(size_t n) {
     BOOST_ASSERT(MinSize <= n && n <= MaxSize);
-    auto v = ALB::Helper::roundToAlignment(StepSize, n);
+    auto v = alb::helper::roundToAlignment(StepSize, n);
     return &_buckets[(v - MinSize) / StepSize];
   }
 };
 
 template <class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize>
-const unsigned Bucketizer<Allocator, MinSize, MaxSize, StepSize>::number_of_buckets;
+const unsigned bucketizer<Allocator, MinSize, MaxSize, StepSize>::number_of_buckets;
 
 }

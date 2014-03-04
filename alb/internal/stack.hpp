@@ -12,8 +12,8 @@
 #include <type_traits>
 #include <boost/type_traits.hpp>
 
-namespace ALB {
-namespace Helper {
+namespace alb {
+namespace helper {
 
 /**
  * Simple stack with the same interface as boost::lockfree::stack with a fixed

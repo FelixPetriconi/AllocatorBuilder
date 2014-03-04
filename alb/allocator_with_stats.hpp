@@ -18,7 +18,7 @@
 #include <chrono>
 #include <boost/iterator/iterator_facade.hpp>
 
-namespace ALB {
+namespace alb {
 
 /// Use this macro if you want to store the caller information
 #define ALLOCATE(A, N) A.allocate(N, __FILE__, __FUNCTION__, __LINE__)
@@ -40,42 +40,42 @@ public:                                                                        \
 */
 enum StatsOptions : unsigned {
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::owns.
+  * Counts the number of calls to alb::allocator_with_stats::owns.
   */
   NumOwns = 1u << 0,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::allocate.
+  * Counts the number of calls to alb::allocator_with_stats::allocate.
   * All calls are counted, including requests for zero bytes or failed requests.
   */
   NumAllocate = 1u << 1,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::allocate
+  * Counts the number of calls to alb::allocator_with_stats::allocate
   * that succeeded, i.e. they wherefor more than zero bytes and returned a
   * non-null block.
   */
   NumAllocateOK = 1u << 2,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::expand, regardless
+  * Counts the number of calls to alb::allocator_with_stats::expand, regardless
   * of arguments or result.
   */
   NumExpand = 1u << 3,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::expand that resulted
+  * Counts the number of calls to alb::allocator_with_stats::expand that resulted
   * in a successful expansion.
   */
   NumExpandOK = 1u << 4,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::reallocate,
+  * Counts the number of calls to alb::allocator_with_stats::reallocate,
   * regardless of arguments or result.
   */
   NumReallocate = 1u << 5,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::reallocate that
+  * Counts the number of calls to alb::allocator_with_stats::reallocate that
   * succeeded. (Reallocations to zero bytes count as successful.)
   */
   NumReallocateOK = 1u << 6,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::reallocate that
+  * Counts the number of calls to alb::allocator_with_stats::reallocate that
   * resulted in an in-place reallocation (no memory moved). If this number
   * is close to the total number of reallocations, that indicates the allocator
   * finds room at the current block's end in a large fraction of the cases, but
@@ -85,11 +85,11 @@ enum StatsOptions : unsigned {
   */
   NumReallocateInPlace = 1u << 7,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::deallocate.
+  * Counts the number of calls to alb::allocator_with_stats::deallocate.
   */
   NumDeallocate = 1u << 8,
   /**
-  * Counts the number of calls to ALB::AllocatorWithStats::deallocateAll.
+  * Counts the number of calls to alb::allocator_with_stats::deallocateAll.
   */
   NumDeallocateAll = 1u << 9,
   /**
@@ -98,33 +98,33 @@ enum StatsOptions : unsigned {
   NumAll = (1u << 10) - 1,
   /**
   * Tracks total cumulative bytes allocated by means of
-  * ALB::AllocatorWithStats::allocate, ALB::AllocatorWithStats::expand, and
-  * ALB::AllocatorWithStats::reallocate (when resulting in an expansion). This
+  * alb::allocator_with_stats::allocate, alb::allocator_with_stats::expand, and
+  * alb::allocator_with_stats::reallocate (when resulting in an expansion). This
   * number always grows and indicates allocation traffic. To compute bytes
-  * currently allocated, subtract ALB::AllocatorWithStats::bytesDeallocated
-  * (below) from ALB::AllocatorWithStats::bytesAllocated.
+  * currently allocated, subtract alb::allocator_with_stats::bytesDeallocated
+  * (below) from alb::allocator_with_stats::bytesAllocated.
   */
   BytesAllocated = 1u << 10,
   /**
    * Tracks total cumulative bytes deallocated by means of
-   * ALB::AllocatorWithStats::deallocate and ALB::AllocatorWithStats::reallocate
+   * alb::allocator_with_stats::deallocate and alb::allocator_with_stats::reallocate
    * (when resulting in a contraction). This number always grows and indicates
    * deallocation traffic.
    */
   BytesDeallocated = 1u << 11,
   /**
    * Tracks the sum of all delta values in calls of the form
-   * ALB::AllocatorWithStats::expand(b, delta)) that succeed.
+   * alb::allocator_with_stats::expand(b, delta)) that succeed.
    */
   BytesExpanded = 1u << 12,
   /**
    * Tracks the sum of all (b.length - s) with (b.length > s) in calls of
-   * the form ALB::AllocatorWithStats::reallocate(b, s)) that succeed.
+   * the form alb::allocator_with_stats::reallocate(b, s)) that succeed.
    */
   BytesContracted = 1u << 13,
   /**
    * Tracks the sum of all bytes moved as a result of calls to
-   * ALB::AllocatorWithStats::reallocate that
+   * alb::allocator_with_stats::reallocate that
    * were unable to reallocate in place. A large number (relative to
    * bytesAllocated)) indicates that the application should use larger
    * preallocations.
@@ -148,7 +148,7 @@ enum StatsOptions : unsigned {
   /**
   * Instructs AllocatorWithStats to store the size asked by the caller for
   * each allocation. All per-allocation data is stored just before the actually
-  * allocation by using an AffixAllocator.
+  * allocation by using an affix_allocator.
   */
   CallerSize = 1u << 17,
   /**
@@ -187,8 +187,8 @@ enum StatsOptions : unsigned {
  * environment.
  *
  * In case that caller information shall be collected, the Allocator
- * parameter is encapsulated with an ALB::AffixAllocator. In this case
- * ALB::AllocatorWithStats::AllocationInfo is in used as Prefix and so all
+ * parameter is encapsulated with an ALB::affix_allocator. In this case
+ * alb::allocator_with_stats::AllocationInfo is in used as Prefix and so all
  * caller information is prepended to every allocated block.
  * Be aware that collecting of caller informations adds on top of each
  * allocation
@@ -200,11 +200,11 @@ enum StatsOptions : unsigned {
  *
  * \ingroup group_allocators group_stats
  */
-template <class Allocator, unsigned Flags = ALB::StatsOptions::All>
-class AllocatorWithStats {
+template <class Allocator, unsigned Flags = alb::StatsOptions::All>
+class allocator_with_stats {
 public:
   /**
-   * In case that we store allocation state, we use an AffixAllocator to store
+   * In case that we store allocation state, we use an affix_allocator to store
    * the additional informations as a Prefix
    *
    * \ingroup group_stats
@@ -227,7 +227,7 @@ public:
 
   /**
    * This container implements a facade over all currently available
-   * AllocationInfo. The ALB::AllocatorWithStats owns all elements and changing 
+   * AllocationInfo. The alb::allocator_with_stats owns all elements and changing 
    * any element has undefined behavior!
    *
    * \ingroup group_stats
@@ -309,7 +309,7 @@ public:
 
   BOOST_STATIC_CONSTANT(bool, has_per_allocation_state = HasPerAllocationState);
 
-  AllocatorWithStats()
+  allocator_with_stats()
       : _numOwns(0), _numAllocate(0), _numAllocateOK(0),
         _numExpand(0), _numExpandOK(0), _numReallocate(0), _numReallocateOK(0),
         _numReallocateInPlace(0), _numDeallocate(0), _numDeallocateAll(0),
@@ -502,7 +502,7 @@ private:
   /**
    * Increases the given value by one if the passed option is set
    */
-  template <typename T> void up(ALB::StatsOptions option, T &value) {
+  template <typename T> void up(alb::StatsOptions option, T &value) {
     if (Flags & option)
       value++;
   }
@@ -511,7 +511,7 @@ private:
    * Increases the given value by one if the passed option is set and the bool
    * is set to true
    */
-  template <typename T> void upOK(ALB::StatsOptions option, T &value, bool ok) {
+  template <typename T> void upOK(alb::StatsOptions option, T &value, bool ok) {
     if (Flags & option && ok)
       value++;
   }
@@ -521,7 +521,7 @@ private:
    * set. Delta can be negative
    */
   template <typename T>
-  void add(ALB::StatsOptions option, T &value,
+  void add(alb::StatsOptions option, T &value,
            typename std::make_signed<T>::type delta) {
     if (Flags & option)
       value += delta;
@@ -530,7 +530,7 @@ private:
   /**
    * Sets the given value to the passed reference, if the passed option is set
    */
-  template <typename T> void set(ALB::StatsOptions option, T &value, T t) {
+  template <typename T> void set(alb::StatsOptions option, T &value, T t) {
     if (Flags & option)
       value = std::move(t);
   }
@@ -549,9 +549,9 @@ private:
 
   /**
    * Depending on setting that caller information shall be collected
-   * an AffixAllocator or the specified Allocator directly is used.
+   * an affix_allocator or the specified Allocator directly is used.
    */
-  typename traits::type_switch<AffixAllocator<Allocator, AllocationInfo>,
+  typename traits::type_switch<affix_allocator<Allocator, AllocationInfo>,
                                Allocator,
                                HasPerAllocationState>::type _allocator;
 

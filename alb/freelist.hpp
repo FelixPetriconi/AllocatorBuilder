@@ -15,10 +15,10 @@
 #include <boost/config/suffix.hpp>
 
 
-namespace ALB {
+namespace alb {
 /**
  * The FreeListBase allocator is a generic implementation of a free list pool
- * Users shall use the ALB::FreeList or the ALB::SharedFreeList.
+ * Users shall use the alb::freelist or the alb::shared_freelist.
  * This class serves a pool of memory blocks and holds them
  * in a list of free blocks Each block's MinSize and MaxSize define the area
  * of blocks sizes that are handled with this allocator.
@@ -37,17 +37,17 @@ namespace ALB {
  */
 template <bool Shared, class Allocator, size_t MinSize, size_t MaxSize,
           unsigned PoolSize, unsigned NumberOfBatchAllocations>
-class FreeListBase {
+class free_list_base {
   Allocator _allocator;
 
   typename traits::type_switch<
       boost::lockfree::stack<void *, boost::lockfree::fixed_sized<true>,
                              boost::lockfree::capacity<PoolSize> >,
-      Helper::stack<void *, PoolSize>, Shared>::type _root;
+      helper::stack<void *, PoolSize>, Shared>::type _root;
 
-  Helper::Dynastic<(MinSize == DynasticDynamicSet ? DynasticDynamicSet : MinSize),
+  helper::Dynastic<(MinSize == DynasticDynamicSet ? DynasticDynamicSet : MinSize),
                    DynasticDynamicSet> _lowerBound;
-  Helper::Dynastic<(MaxSize == DynasticDynamicSet ? DynasticDynamicSet : MaxSize),
+  helper::Dynastic<(MaxSize == DynasticDynamicSet ? DynasticDynamicSet : MaxSize),
                    DynasticDynamicSet> _upperBound;
 
 public:
@@ -59,7 +59,7 @@ public:
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation);
 
-  FreeListBase() {}
+  free_list_base() {}
 
   /**
    * Constructs a FreeListBase with the specified bounding edges
@@ -69,7 +69,7 @@ public:
    * \param minSize The lower boundary accepted by this Allocator
    * \param maxSize The upper boundary accepted by this Allocator
    */
-  FreeListBase(size_t minSize, size_t maxSize) {
+  free_list_base(size_t minSize, size_t maxSize) {
     _lowerBound.value(minSize);
     _upperBound.value(maxSize);
   }
@@ -107,7 +107,7 @@ public:
    * Frees all resources. Beware of using allocated blocks given by
    * this allocator after calling this.
    */
-  ~FreeListBase() {
+  ~free_list_base() {
     void *curBlock = nullptr;
     while (_root.pop(curBlock)) {
       Block oldBlock(curBlock, _upperBound.value());
@@ -151,7 +151,7 @@ public:
               if (!_root.push(static_cast<char *>(batchAllocatedBlocks.ptr) +
                               i * blockSize)) {
                 BOOST_ASSERT(false);
-                ALB::Block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) +
+                alb::Block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) +
                               i * blockSize,
                           blockSize);
                 _allocator.deallocate(oldBlock);
@@ -185,7 +185,7 @@ public:
    * \return True, if the reallocation was successful.
    */
   bool reallocate(Block &b, size_t n) {
-    if (Helper::Reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
       return true;
     }
     return false;
@@ -219,41 +219,41 @@ public:
 
 /**
  * This class is a thread safe specialization of the FreeList. For details see
- * ALB::FreeListBase
+ * alb::freelistBase
  *
  * \ingroup group_allocator group_shared
  */
 template <class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024,
           size_t NumberOfBatchAllocations = 8>
-class SharedFreeList : public FreeListBase<true, Allocator, MinSize, MaxSize,
+class shared_freelist : public free_list_base<true, Allocator, MinSize, MaxSize,
                                            PoolSize, NumberOfBatchAllocations> {
 public:
-  SharedFreeList()
-    : FreeListBase<true, Allocator, MinSize, MaxSize,
+  shared_freelist()
+    : free_list_base<true, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>() {}
 
-  SharedFreeList(size_t minSize, size_t maxSize)
-    : FreeListBase<true, Allocator, MinSize, MaxSize,
+  shared_freelist(size_t minSize, size_t maxSize)
+    : free_list_base<true, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>(minSize, maxSize) {}
 };
 
 /**
 * This class is a single threaded specialization of the FreeList. For details
-* see ALB::FreeListBase
+* see alb::freelistBase
 *
 * \ingroup group_allocator
 */
 template <class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024,
           size_t NumberOfBatchAllocations = 8>
-class FreeList : public FreeListBase<false, Allocator, MinSize, MaxSize,
+class freelist : public free_list_base<false, Allocator, MinSize, MaxSize,
                                      PoolSize, NumberOfBatchAllocations> {
 public:
-  FreeList() 
-    : FreeListBase<false, Allocator, MinSize, MaxSize,
+  freelist() 
+    : free_list_base<false, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>() {}
 
-  FreeList(size_t minSize, size_t maxSize) 
-    : FreeListBase<false, Allocator, MinSize, MaxSize,
+  freelist(size_t minSize, size_t maxSize) 
+    : free_list_base<false, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>(minSize, maxSize) {}
 
 };

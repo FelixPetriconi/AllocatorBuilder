@@ -9,12 +9,12 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
 #include "ALBTestHelpersAlgorithm.h"
 #include <vector>
 
-namespace ALB {
-namespace TestHelpers {
+namespace alb {
+namespace test_helpers {
 
 const size_t ReferenceDataSize = 64;
 const std::vector<int> ReferenceData = 
@@ -27,7 +27,7 @@ const std::vector<int> ReferenceData =
 
 
 template <typename T>
-void fillBlockWithReferenceData(ALB::Block& b)
+void fillBlockWithReferenceData(alb::Block& b)
 {
   for (size_t i = 0; i < std::min(ReferenceData.size(), b.length / sizeof(T)); i++) {
     *(reinterpret_cast<T*>(b.ptr) + i) = ReferenceData[i];

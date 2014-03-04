@@ -25,14 +25,14 @@
 #pragma warning(disable : 4345)
 #endif
 
-namespace ALB {
-namespace AffixAllocatorHelper {
+namespace alb {
+namespace affix_allocator_helper {
 /**
- * This special kind of NoAffix is necessary to have the possibility to test the
- * AffixAllocator in a generic way. This must be used to disable a Prefix or
+ * This special kind of no_affix is necessary to have the possibility to test the
+ * affix_allocator in a generic way. This must be used to disable a Prefix or
  * Sufix.
  */
-struct NoAffix {
+struct no_affix {
   typedef int value_type;
   BOOST_STATIC_CONSTANT(int, pattern = 0);
 };
@@ -41,10 +41,10 @@ struct NoAffix {
 /**
  * This allocator enables the possibility to surround allocated memory blocks
  * with guards, ref-counter, mutex or etc.
- * It is used by the ALB::AllocatorWithStats
+ * It is used by the alb::allocator_with_stats
  * It automatically places an object of type Prefix before the returned memory
  * location and an object of type Sufix after it. In case that they are of type
- * AffixAllocatorHelper::Empty nothing is inserted.
+ * affix_allocatorHelper::Empty nothing is inserted.
  * Prefix and Sufix, if used, must be trivially copyable. (This cannot be
  * statically asserted, because this would block the possibility to use this
  * allocator as guard for memory under- or overflow.
@@ -58,8 +58,8 @@ struct NoAffix {
  * \ingroup group_allocators group_shared
  */
 template <class Allocator, typename Prefix,
-          typename Sufix = AffixAllocatorHelper::NoAffix>
-class AffixAllocator
+          typename Sufix = affix_allocator_helper::no_affix>
+class affix_allocator
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
     : public boost::noncopyable
 #endif
@@ -94,19 +94,19 @@ public:
   typedef Sufix sufix;
 
   BOOST_STATIC_CONSTANT(unsigned, prefix_size =
-      (std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value
+      (std::is_same<Prefix, affix_allocator_helper::no_affix>::value
           ? 0
           : sizeof(Prefix)));
 
   BOOST_STATIC_CONSTANT(unsigned, sufix_size =
-      (std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value ? 0
+      (std::is_same<Sufix, affix_allocator_helper::no_affix>::value ? 0
                                                                 : sizeof(Sufix)));
 
-  AffixAllocator() {}
+  affix_allocator() {}
 
-  AffixAllocator(AffixAllocator &&x) { *this = std::move(x); }
+  affix_allocator(affix_allocator &&x) { *this = std::move(x); }
 
-  AffixAllocator &operator=(AffixAllocator &&x) {
+  affix_allocator &operator=(affix_allocator &&x) {
     _allocator = std::move(x._allocator);
     return *this;
   }
@@ -200,7 +200,7 @@ public:
    * \return True if the operation was successful
    */
   bool reallocate(Block &b, size_t n) {
-    if (Helper::Reallocator<AffixAllocator>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<affix_allocator>::isHandledDefault(*this, b, n)) {
       return true;
     }
     auto innerBlock = toInnerBlock(b);
@@ -258,8 +258,8 @@ public:
 private:
 
 #ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  AffixAllocator(const AffixAllocator &) = delete;
-  AffixAllocator &operator=(const AffixAllocator &) = delete;
+  affix_allocator(const affix_allocator &) = delete;
+  affix_allocator &operator=(const affix_allocator &) = delete;
 #endif
 };
 
@@ -267,7 +267,7 @@ namespace traits {
 /**
  * This trait implements a generic way to access a possible Affix surrounded
  * by a ALB::Block. In general it returns a nullptr. Only if the passed
- * Allocator is an AffixAllocator it returns a real object
+ * Allocator is an affix_allocator it returns a real object
  * \ingroup group_traits
  */
 template <class Allocator, typename T> struct AffixExtractor {
@@ -276,12 +276,12 @@ template <class Allocator, typename T> struct AffixExtractor {
 };
 
 template <class A, typename Prefix, typename Sufix, typename T>
-struct AffixExtractor<AffixAllocator<A, Prefix, Sufix>, T> {
-  static Prefix *prefix(AffixAllocator<A, Prefix, Sufix> &allocator,
+struct AffixExtractor<affix_allocator<A, Prefix, Sufix>, T> {
+  static Prefix *prefix(affix_allocator<A, Prefix, Sufix> &allocator,
                         const Block &b) {
     return allocator.outerToPrefix(b);
   }
-  static Sufix *sufix(AffixAllocator<A, Prefix, Sufix> &allocator,
+  static Sufix *sufix(affix_allocator<A, Prefix, Sufix> &allocator,
                       const Block &b) {
     return allocator.outerToSufix(b);
   }

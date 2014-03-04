@@ -8,18 +8,18 @@
 //
 //////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
+#include <alb/mallocator.hpp>
 #include "ALBTestHelpers.h"
-#include "mallocator.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 
-using namespace ALB::TestHelpers;
+using namespace alb::test_helpers;
 
-class MallocatorTest : public AllocatorBaseTest<ALB::Mallocator> {
+class MallocatorTest : public AllocatorBaseTest<alb::mallocator> {
 protected:
   void TearDown() {
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
-  ALB::Block mem;
+  alb::Block mem;
 };
 
 TEST_F(MallocatorTest, ThatAllocatingZeroBytesResultsInAnEmptyBlock)

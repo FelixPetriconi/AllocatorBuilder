@@ -13,9 +13,9 @@
 #include <boost/assert.hpp>
 #include <boost/config/suffix.hpp>
 
-namespace ALB {
+namespace alb {
 /**
- * This class can be used as Prefix and/or Suffix with the AffixAllocator to
+ * This class can be used as Prefix and/or Suffix with the affix_allocator to
  * detect
  * buffer under-runs or overflows.
  * \tparam T must be an integral type. A guard with its size is used
@@ -23,7 +23,7 @@ namespace ALB {
  *
  * \ingroup group_helpers
  */
-template <typename T, size_t Pattern> class MemoryCorruptionDetector {
+template <typename T, size_t Pattern> class memory_corruption_detector {
   static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
                 "Memory check not for supported types");
 
@@ -33,12 +33,12 @@ public:
   typedef T value_type;
   BOOST_STATIC_CONSTANT(size_t, pattern = Pattern);
 
-  MemoryCorruptionDetector() : _pattern(Pattern) {}
+  memory_corruption_detector() : _pattern(Pattern) {}
 
-  ~MemoryCorruptionDetector() { BOOST_ASSERT(_pattern == Pattern); }
+  ~memory_corruption_detector() { BOOST_ASSERT(_pattern == Pattern); }
 };
 
 template <typename T, size_t Pattern>
-const size_t MemoryCorruptionDetector<T,Pattern>::pattern;
+const size_t memory_corruption_detector<T,Pattern>::pattern;
 
 }

@@ -10,11 +10,11 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
 
-namespace ALB
+namespace alb
 {
-namespace TestHelpers
+namespace test_helpers
 {
 
 template <class Allocator>
@@ -23,7 +23,7 @@ class AllocatorBaseTest : public ::testing::Test
 protected:
   typedef Allocator allocator;
 
-  void deallocateAndCheckBlockIsThenEmpty(ALB::Block& b) {
+  void deallocateAndCheckBlockIsThenEmpty(alb::Block& b) {
     sut.deallocate(b);
     EXPECT_FALSE(b);
     EXPECT_EQ(nullptr, b.ptr);

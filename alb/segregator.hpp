@@ -14,7 +14,7 @@
 #include <boost/config/suffix.hpp>
 #include <boost/type_traits/ice.hpp>
 
-namespace ALB {
+namespace alb {
 
 /**
  * This allocator separates the allocation requested depending on a threshold
@@ -26,7 +26,7 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <size_t Threshold, class SmallAllocator, class LargeAllocator>
-class Segregator : private SmallAllocator, private LargeAllocator {
+class segregator : private SmallAllocator, private LargeAllocator {
   static_assert(!traits::both_same_base<SmallAllocator, LargeAllocator>::value,
                 "Small- and Large-Allocator cannot be both of base!");
 
@@ -89,7 +89,7 @@ public:
                        "It is not wise to pass me a foreign allocated block!");
       return false;
     }
-    if (Helper::Reallocator<Segregator>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<segregator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
@@ -97,12 +97,12 @@ public:
       if (n < Threshold) {
         return SmallAllocator::reallocate(b, n);
       } else {
-        return Helper::reallocateWithCopy(
+        return helper::reallocateWithCopy(
             *this, static_cast<LargeAllocator &>(*this), b, n);
       }
     } else {
       if (n < Threshold) {
-        return Helper::reallocateWithCopy(
+        return helper::reallocateWithCopy(
             *this, static_cast<SmallAllocator &>(*this), b, n);
       } else {
         return SmallAllocator::reallocate(b, n);

@@ -8,14 +8,14 @@
 //
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
-
-#include "cascading_allocator.hpp"
-#include "shared_heap.hpp"
+#include <alb/cascading_allocator.hpp>
+#include <alb/shared_heap.hpp>
+#include <alb/mallocator.hpp>
+#include "ALBTestHelpersThread.h"
 #include "ALBTestHelpers.h"
-#include "mallocator.hpp"
+
 #include <thread>
 #include <future>
-#include "ALBTestHelpersThread.h"
 
 class TCascadingAllocatorsTest : public ::testing::Test
 {
@@ -23,7 +23,7 @@ class TCascadingAllocatorsTest : public ::testing::Test
 
 TEST_F(TCascadingAllocatorsTest, SingleAllocation)
 {
-  ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 64,8>> sut;
+  alb::shared_cascading_allocator<alb::shared_heap<alb::mallocator, 64,8>> sut;
 
   auto m1 = sut.allocate(64*8);
   auto m2 = sut.allocate(64*8);
@@ -34,27 +34,27 @@ TEST_F(TCascadingAllocatorsTest, SingleAllocation)
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceAllocationByOneRunningThread)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 512,64>> AllocatorUnderTest;
+  typedef alb::shared_cascading_allocator<alb::shared_heap<alb::mallocator, 512,64>> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
-  ALB::TestHelpers::TestWorker<AllocatorUnderTest> testWorker(sut, 129);
+  alb::test_helpers::TestWorker<AllocatorUnderTest> testWorker(sut, 129);
   testWorker.check();
 }
 
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceSingleAllocationWithinTwoRunningThreads)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 512,64>> AllocatorUnderTest;
+  typedef alb::shared_cascading_allocator<alb::shared_heap<alb::mallocator, 512,64>> AllocatorUnderTest;
   AllocatorUnderTest sut;
   const size_t NumberOfThreads = 4;
 
   typedef std::array<unsigned char, NumberOfThreads> TestParams;
   TestParams maxUsedBytes = {127, 129, 65, 130};
 
-  ALB::TestHelpers::TestWorkerCollector<
+  alb::test_helpers::TestWorkerCollector<
     AllocatorUnderTest, 
     NumberOfThreads, 
-    ALB::TestHelpers::TestWorker<AllocatorUnderTest>,
+    alb::test_helpers::TestWorker<AllocatorUnderTest>,
     TestParams> singleMemoryAccessTest(sut, maxUsedBytes);
 
   singleMemoryAccessTest.check();  
@@ -62,17 +62,17 @@ TEST_F(TCascadingAllocatorsTest,  BruteForceSingleAllocationWithinTwoRunningThre
 
 TEST_F(TCascadingAllocatorsTest,  BruteForceWithSeveralAllocatedBlocksWithinTwoRunningThreads)
 {
-  typedef ALB::SharedCascadingAllocators<ALB::SharedHeap<ALB::Mallocator, 512,64>> AllocatorUnderTest;
+  typedef alb::shared_cascading_allocator<alb::shared_heap<alb::mallocator, 512,64>> AllocatorUnderTest;
   AllocatorUnderTest sut;
   const size_t NumberOfThreads = 4;
 
   typedef std::array<unsigned char, NumberOfThreads> TestParams;
   TestParams maxUsedBytes = {127, 129, 65, 130};
 
-  ALB::TestHelpers::TestWorkerCollector<
+  alb::test_helpers::TestWorkerCollector<
     AllocatorUnderTest, 
     NumberOfThreads, 
-    ALB::TestHelpers::TestWorker<AllocatorUnderTest>,
+    alb::test_helpers::TestWorker<AllocatorUnderTest>,
     TestParams> multipleMemoryAccessTest(sut, maxUsedBytes);
 
   multipleMemoryAccessTest.check();

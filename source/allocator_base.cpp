@@ -12,7 +12,7 @@
 #include <cstring>
 #include <algorithm>
 
-void ALB::Helper::blockCopy(const ALB::Block& source, ALB::Block& destination)
+void alb::helper::blockCopy(const alb::Block& source, alb::Block& destination)
 {
   ::memcpy(destination.ptr, source.ptr, std::min(source.length, destination.length));
 }

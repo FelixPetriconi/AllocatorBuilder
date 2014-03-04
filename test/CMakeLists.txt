@@ -11,7 +11,7 @@ if(MSVC AND MSVC_VERSION EQUAL 1700)
 endif ()
 
 
-include_directories("${PROJECT_SOURCE_DIR}/../include")
+include_directories("${PROJECT_SOURCE_DIR}/../.")
 include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
 set(HEADERS

@@ -8,26 +8,25 @@
 //
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
-
-#include "ALBTestHelpers.h"
-#include "freelist.hpp"
-#include "mallocator.hpp"
-#include "stack_allocator.hpp"
+#include <alb/freelist.hpp>
+#include <alb/mallocator.hpp>
+#include <alb/stack_allocator.hpp>
 #include "ALBTestHelpersAllocatorBaseTest.h"
+#include "ALBTestHelpers.h"
 
 template <class T>
-class SharedListTest : public ALB::TestHelpers::AllocatorBaseTest<T>
+class SharedListTest : public alb::test_helpers::AllocatorBaseTest<T>
 {
 protected:
   void TearDown() {
     this->deallocateAndCheckBlockIsThenEmpty(this->mem);
   }
-  ALB::Block mem;
+  alb::Block mem;
 };
 
 typedef ::testing::Types<
-  ALB::SharedFreeList<ALB::Mallocator, 0, 16 >,
-  ALB::FreeList<ALB::Mallocator, 0, 16 >
+  alb::shared_freelist<alb::mallocator, 0, 16 >,
+  alb::freelist<alb::mallocator, 0, 16 >
 > TypesForFreeListTest;
 
 TYPED_TEST_CASE(SharedListTest, TypesForFreeListTest);
@@ -85,12 +84,12 @@ TYPED_TEST(SharedListTest, ThatReallocatingAFilledBlockToNonZeroIsRejected)
 
 TYPED_TEST(SharedListTest, ThatBlocksOutsideTheBoundsAreNotRecognizedAsOwned)
 {
-  EXPECT_FALSE(this->sut.owns(ALB::Block()));
-  EXPECT_FALSE(this->sut.owns(ALB::Block(nullptr, 64)));
+  EXPECT_FALSE(this->sut.owns(alb::Block()));
+  EXPECT_FALSE(this->sut.owns(alb::Block(nullptr, 64)));
 
-  ALB::SharedFreeList<ALB::Mallocator, 16, 32> sutNotStartingAtZero;
-  EXPECT_FALSE(sutNotStartingAtZero.owns(ALB::Block(nullptr, 15)));
-  EXPECT_FALSE(sutNotStartingAtZero.owns(ALB::Block(nullptr, 33)));
+  alb::shared_freelist<alb::mallocator, 16, 32> sutNotStartingAtZero;
+  EXPECT_FALSE(sutNotStartingAtZero.owns(alb::Block(nullptr, 15)));
+  EXPECT_FALSE(sutNotStartingAtZero.owns(alb::Block(nullptr, 33)));
 }
 
 TYPED_TEST(SharedListTest, ThatAProvidedBlockIsRecongizedAOwned)
@@ -109,8 +108,8 @@ protected:
 };
 
 typedef ::testing::Types<
-  ALB::SharedFreeList<ALB::Mallocator, ALB::DynasticDynamicSet, ALB::DynasticDynamicSet>,
-  ALB::FreeList<ALB::Mallocator, ALB::DynasticDynamicSet, ALB::DynasticDynamicSet>
+  alb::shared_freelist<alb::mallocator, alb::DynasticDynamicSet, alb::DynasticDynamicSet>,
+  alb::freelist<alb::mallocator, alb::DynasticDynamicSet, alb::DynasticDynamicSet>
 > TypesForFreeListWithParametrizedTest;
 
 TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTest);
@@ -132,8 +131,8 @@ TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRe
 
 TEST(FreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAllocatedBlocksAreInLine)
 {
-  ALB::SharedFreeList<ALB::StackAllocator<1024>, 0, 16,1024, 4> sut;
-  ALB::Block mem[8]; // 0 3 2 1  0 3 2 1 order of allocations
+  alb::shared_freelist<alb::stack_allocator<1024>, 0, 16,1024, 4> sut;
+  alb::Block mem[8]; // 0 3 2 1  0 3 2 1 order of allocations
   mem[0] = sut.allocate(16);
   for (size_t i = 3; i > 0; i--) {
     mem[i] = sut.allocate(16);

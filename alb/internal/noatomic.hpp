@@ -9,8 +9,8 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-namespace ALB {
-namespace Helper {
+namespace alb {
+namespace helper {
 
 /**
   * Template that mimics (partly) the std::atomic<T> interface, without

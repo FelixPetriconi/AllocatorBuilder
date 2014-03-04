@@ -21,7 +21,7 @@
 #endif
 
 
-namespace ALB {
+namespace alb {
 
 /**
  * This implements a cascade of allocators. If the first allocator cannot
@@ -33,7 +33,7 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <bool Shared, typename Allocator> 
-class CascadingAllocatorsBase
+class cascading_allocator_base
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
   : boost::noncopyable
 #endif
@@ -41,7 +41,7 @@ class CascadingAllocatorsBase
   struct Node;
 
   typedef typename traits::type_switch<std::atomic<Node*>, 
-                              Helper::NoAtomic<Node*>, 
+                              helper::NoAtomic<Node*>, 
                               Shared>::type NodePtr;
 
   struct Node {
@@ -146,8 +146,8 @@ class CascadingAllocatorsBase
   }
 
 #ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  CascadingAllocatorsBase(const CascadingAllocatorsBase&) = delete;
-  const CascadingAllocatorsBase& operator=(const CascadingAllocatorsBase&) = delete;
+  cascading_allocator_base(const cascading_allocator_base&) = delete;
+  const cascading_allocator_base& operator=(const cascading_allocator_base&) = delete;
 #endif
 
 public:
@@ -156,13 +156,13 @@ public:
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation);
 
-  CascadingAllocatorsBase() : _root(nullptr) {}
+  cascading_allocator_base() : _root(nullptr) {}
 
-  CascadingAllocatorsBase(CascadingAllocatorsBase&& x) {
+  cascading_allocator_base(cascading_allocator_base&& x) {
     *this = std::move(x);
   }
 
-  CascadingAllocatorsBase& operator=(CascadingAllocatorsBase&& x) {
+  cascading_allocator_base& operator=(cascading_allocator_base&& x) {
     if (this == &x) {
       return *this;
     }
@@ -175,7 +175,7 @@ public:
   /**
    * Frees all allocated memory!
    */
-  ~CascadingAllocatorsBase() {
+  ~cascading_allocator_base() {
     shrink();
   }
 
@@ -248,7 +248,7 @@ public:
    * \param True, if the operation was successful
    */
   bool reallocate(Block &b, size_t n) {
-    if (Helper::Reallocator<decltype(*this)>::isHandledDefault(
+    if (helper::Reallocator<decltype(*this)>::isHandledDefault(
             *this, b, n)) {
       return true;
     }
@@ -262,7 +262,7 @@ public:
       return true;
     }
 
-    return Helper::reallocateWithCopy(*this, *this, b, n);
+    return helper::reallocateWithCopy(*this, *this, b, n);
   }
 
   /**
@@ -313,9 +313,9 @@ public:
  * \group group_shared group_allocators
  */
 template <class Allocator>
-class SharedCascadingAllocators : public CascadingAllocatorsBase<true, Allocator> {
+class shared_cascading_allocator : public cascading_allocator_base<true, Allocator> {
 public:
-  SharedCascadingAllocators() {}
+  shared_cascading_allocator() {}
 };
 
 
@@ -327,9 +327,9 @@ public:
  * \group group_allocators
  */
 template <class Allocator>
-class CascadingAllocators : public CascadingAllocatorsBase<false, Allocator> {
+class cascading_allocator : public cascading_allocator_base<false, Allocator> {
 public:
-  CascadingAllocators() {}
+  cascading_allocator() {}
 };
 
 }

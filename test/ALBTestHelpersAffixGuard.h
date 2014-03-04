@@ -11,8 +11,8 @@
 
 #include <gtest/gtest.h>
 
-namespace ALB {
-namespace TestHelpers {
+namespace alb {
+namespace test_helpers {
 
 template <typename T, size_t Pattern>
 class AffixGuard {

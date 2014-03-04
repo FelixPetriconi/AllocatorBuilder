@@ -9,17 +9,17 @@
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
 
 TEST(roundToAlignmentTest, ThatForDifferentAlignmentsTheCorrectValuesAreCalculated)
 {
-  EXPECT_EQ(0, ALB::Helper::roundToAlignment(4, 0));
-  EXPECT_EQ(4, ALB::Helper::roundToAlignment(4, 1));
-  EXPECT_EQ(4, ALB::Helper::roundToAlignment(4, 4));
-  EXPECT_EQ(8, ALB::Helper::roundToAlignment(4, 5));
+  EXPECT_EQ(0, alb::helper::roundToAlignment(4, 0));
+  EXPECT_EQ(4, alb::helper::roundToAlignment(4, 1));
+  EXPECT_EQ(4, alb::helper::roundToAlignment(4, 4));
+  EXPECT_EQ(8, alb::helper::roundToAlignment(4, 5));
 
-  EXPECT_EQ(0, ALB::Helper::roundToAlignment(8, 0));
-  EXPECT_EQ(8, ALB::Helper::roundToAlignment(8, 1));
-  EXPECT_EQ(8, ALB::Helper::roundToAlignment(8, 8));
-  EXPECT_EQ(16, ALB::Helper::roundToAlignment(8, 9));
+  EXPECT_EQ(0, alb::helper::roundToAlignment(8, 0));
+  EXPECT_EQ(8, alb::helper::roundToAlignment(8, 1));
+  EXPECT_EQ(8, alb::helper::roundToAlignment(8, 8));
+  EXPECT_EQ(16, alb::helper::roundToAlignment(8, 9));
 }

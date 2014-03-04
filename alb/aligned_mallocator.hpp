@@ -12,7 +12,7 @@
 #include "allocator_base.hpp"
 #include <boost/config/suffix.hpp>
 
-namespace ALB {
+namespace alb {
 /**
  * This class implements a proxy to the system ::malloc() with the ALB interface. 
  * According the template * parameter DefaultAlignment the allocated values are 
@@ -24,7 +24,7 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <size_t DefaultAlignment = 16> 
-class AlignedMallocator {
+class aligned_mallocator {
   BOOST_STATIC_CONSTANT(unsigned, alignment = DefaultAlignment);
 
 #ifdef BOOST_MSVC
@@ -49,7 +49,7 @@ class AlignedMallocator {
         if (!newAlignedBlock) {
           return false;
         }
-        Helper::blockCopy(b, newAlignedBlock);
+        helper::blockCopy(b, newAlignedBlock);
       } else {
         b = reallocatedBlock;
       }
@@ -86,7 +86,7 @@ public:
    * \return True, if the operation was successful
    */
   bool reallocate(Block &b, size_t n) {
-    if (Helper::Reallocator<AlignedMallocator>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<aligned_mallocator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 

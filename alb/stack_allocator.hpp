@@ -18,7 +18,7 @@
 #include <boost/noncopyable.hpp>
 #endif
 
-namespace ALB {
+namespace alb {
 /**
  * Allocator that provides memory from the stack.
  * By design it is not thread safe!
@@ -30,7 +30,7 @@ namespace ALB {
  * \ingroup group_allocators
  */
 template <size_t MaxSize, size_t Alignment = 4> 
-class StackAllocator 
+class stack_allocator 
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
   : boost::noncopyable
 #endif
@@ -43,7 +43,7 @@ class StackAllocator
   }
 
 public:
-  typedef StackAllocator allocator;
+  typedef stack_allocator allocator;
 
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = true);
 
@@ -51,7 +51,7 @@ public:
 
   BOOST_STATIC_CONSTANT(size_t, alignment = Alignment);
 
-  StackAllocator() : _p(_data) {}
+  stack_allocator() : _p(_data) {}
 
   Block allocate(size_t n) {
     Block result;
@@ -60,7 +60,7 @@ public:
       return result;
     }
 
-    const auto alignedLength = Helper::roundToAlignment(Alignment, n);
+    const auto alignedLength = helper::roundToAlignment(Alignment, n);
     if (alignedLength + _p > _data + MaxSize) { // not enough memory left
       return result;
     }
@@ -105,7 +105,7 @@ public:
       return true;
     }
 
-    const auto alignedLength = Helper::roundToAlignment(Alignment, n);
+    const auto alignedLength = helper::roundToAlignment(Alignment, n);
 
     if (isLastUsedBlock(b)) {
       if (static_cast<char *>(b.ptr) + alignedLength <= _data + MaxSize) {
@@ -117,7 +117,7 @@ public:
       }
     } else {
       if (b.length > n) {
-        b.length = Helper::roundToAlignment(Alignment, n);
+        b.length = helper::roundToAlignment(Alignment, n);
         return true;
       }
     }
@@ -126,7 +126,7 @@ public:
     // we cannot deallocate the old block, because it is in between used ones,
     //  so we have to "leak" here.
     if (newBlock) {
-      Helper::blockCopy(b, newBlock);
+      helper::blockCopy(b, newBlock);
       b = newBlock;
       return true;
     }
@@ -151,7 +151,7 @@ public:
     if (!isLastUsedBlock(b)) {
       return false;
     }
-    auto alignedBytes = Helper::roundToAlignment(Alignment, delta);
+    auto alignedBytes = helper::roundToAlignment(Alignment, delta);
     if (_p + alignedBytes > _data + MaxSize) {
       return false;
     }
@@ -184,23 +184,23 @@ private:
 #endif
   
   // disable move ctor and move assignment operators
-  StackAllocator(StackAllocator &&) DELETED;
-  StackAllocator &operator=(StackAllocator &&) DELETED;
+  stack_allocator(stack_allocator &&) DELETED;
+  stack_allocator &operator=(stack_allocator &&) DELETED;
   // disable heap allocation
   void *operator new(size_t)  DELETED;
   void *operator new[](size_t)  DELETED;
   void operator delete(void *)  DELETED;
   void operator delete[](void *)  DELETED;
   // disable address taking
-  StackAllocator *operator&() DELETED;
+  stack_allocator *operator&() DELETED;
 
 #undef DELETED
 };
 
 template <size_t MaxSize, size_t Alignment> 
-const size_t StackAllocator<MaxSize, Alignment>::max_size;
+const size_t stack_allocator<MaxSize, Alignment>::max_size;
 template <size_t MaxSize, size_t Alignment> 
-const size_t StackAllocator<MaxSize, Alignment>::alignment;
+const size_t stack_allocator<MaxSize, Alignment>::alignment;
 
 }
 

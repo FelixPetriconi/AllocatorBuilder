@@ -9,11 +9,11 @@
 ///////////////////////////////////////////////////////////////////
 
 #include <gtest/gtest.h>
-#include "affix_allocator.hpp"
-#include "ALBTestHelpers.h"
-#include "stack_allocator.hpp"
-#include "memory_corruption_detector.hpp"
+#include <alb/affix_allocator.hpp>
+#include <alb/stack_allocator.hpp>
+#include <alb/memory_corruption_detector.hpp>
 #include "ALBTestHelpersAllocatorBaseTest.h"
+#include "ALBTestHelpers.h"
 
 namespace
 {
@@ -23,7 +23,7 @@ namespace
 }
 
 template <class T>
-class AffixAllocatorTest : public ALB::TestHelpers::AllocatorBaseTest<T> 
+class affix_allocatorTest : public alb::test_helpers::AllocatorBaseTest<T> 
 {
 protected:
   void TearDown() {
@@ -40,35 +40,35 @@ protected:
         << "Problem with type " << typeid(T).name();
     }
   }
-  ALB::Block mem;
+  alb::Block mem;
 };
 
 typedef ::testing::Types<
-  ALB::AffixAllocator<
-    ALB::StackAllocator<512,4>, 
-      ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>
+  alb::affix_allocator<
+    alb::stack_allocator<512,4>, 
+      alb::memory_corruption_detector<unsigned, PrefixMarker>
   >,
-  ALB::AffixAllocator<
-    ALB::StackAllocator<512,4>, 
-      ALB::AffixAllocatorHelper::NoAffix,
-      ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
+  alb::affix_allocator<
+    alb::stack_allocator<512,4>, 
+      alb::affix_allocator_helper::no_affix,
+      alb::memory_corruption_detector<unsigned, SufixMarker>
   >,
-  ALB::AffixAllocator<
-    ALB::StackAllocator<512, 4>, 
-      ALB::MemoryCorruptionDetector<unsigned, PrefixMarker>,
-      ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
+  alb::affix_allocator<
+    alb::stack_allocator<512, 4>, 
+      alb::memory_corruption_detector<unsigned, PrefixMarker>,
+      alb::memory_corruption_detector<unsigned, SufixMarker>
   >,
-  ALB::AffixAllocator<
-    ALB::StackAllocator<512, 4>, 
-      ALB::MemoryCorruptionDetector<uint64_t, LargePrefixMarker>,
-        ALB::MemoryCorruptionDetector<unsigned, SufixMarker>
+  alb::affix_allocator<
+    alb::stack_allocator<512, 4>, 
+      alb::memory_corruption_detector<uint64_t, LargePrefixMarker>,
+        alb::memory_corruption_detector<unsigned, SufixMarker>
   >
 > TypesToTest;
 
-TYPED_TEST_CASE(AffixAllocatorTest, TypesToTest);
+TYPED_TEST_CASE(affix_allocatorTest, TypesToTest);
 
 
-TYPED_TEST(AffixAllocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
+TYPED_TEST(affix_allocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
 {
   this->mem = this->sut.allocate(0);
 
@@ -76,7 +76,7 @@ TYPED_TEST(AffixAllocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
   EXPECT_EQ(nullptr, this->mem.ptr);
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatAFullAllocationReturnsAnEmptyBlockBecauseOfMissingSpaceForTheAffixes)
+TYPED_TEST(affix_allocatorTest, ThatAFullAllocationReturnsAnEmptyBlockBecauseOfMissingSpaceForTheAffixes)
 {
   this->mem = this->sut.allocate(512);
 
@@ -84,7 +84,7 @@ TYPED_TEST(AffixAllocatorTest, ThatAFullAllocationReturnsAnEmptyBlockBecauseOfMi
   EXPECT_EQ(nullptr, this->mem.ptr);
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
+TYPED_TEST(affix_allocatorTest, ThatASmallAllocationsReturnsTheRequestedSizeAndThatTheMarkerAreSetCorrectly)
 {
   this->mem = this->sut.allocate(8);
   
@@ -93,7 +93,7 @@ TYPED_TEST(AffixAllocatorTest, ThatASmallAllocationsReturnsTheRequestedSizeAndTh
   this->checkAffixContent();
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatASmallAllocatedBlockIncreasingReallocatedIntoANewMemAreaKeepsTheOldMarker)
+TYPED_TEST(affix_allocatorTest, ThatASmallAllocatedBlockIncreasingReallocatedIntoANewMemAreaKeepsTheOldMarker)
 {
   this->mem = this->sut.allocate(8);
   auto memInBetween = this->sut.allocate(4);
@@ -107,7 +107,7 @@ TYPED_TEST(AffixAllocatorTest, ThatASmallAllocatedBlockIncreasingReallocatedInto
 }
 
 
-TYPED_TEST(AffixAllocatorTest, ThatALargerAllocatedBlockDecreasingReallocatedKeepsThePositionAndTheOldMarker)
+TYPED_TEST(affix_allocatorTest, ThatALargerAllocatedBlockDecreasingReallocatedKeepsThePositionAndTheOldMarker)
 {
   this->mem = this->sut.allocate(16);
   auto memInBetween = this->sut.allocate(4);
@@ -122,19 +122,19 @@ TYPED_TEST(AffixAllocatorTest, ThatALargerAllocatedBlockDecreasingReallocatedKee
   this->deallocateAndCheckBlockIsThenEmpty(memInBetween);
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedByZeroBytesIsStillAnEmptyBlock)
+TYPED_TEST(affix_allocatorTest, ThatAnEmptyBlockedExpandedByZeroBytesIsStillAnEmptyBlock)
 {
   EXPECT_TRUE(this->sut.expand(this->mem, 0));
   EXPECT_EQ(0, this->mem.length);
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedByTheSizeOfTheAllocatorsCapacityIsStillAnEmptyBlockBecauseThereIsNoSpaceForTheAffix)
+TYPED_TEST(affix_allocatorTest, ThatAnEmptyBlockedExpandedByTheSizeOfTheAllocatorsCapacityIsStillAnEmptyBlockBecauseThereIsNoSpaceForTheAffix)
 {
   EXPECT_FALSE(this->sut.expand(this->mem, 512));
   EXPECT_EQ(0, this->mem.length);
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
+TYPED_TEST(affix_allocatorTest, ThatAnEmptyBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
 {
   size_t sizeThatFitsJustIntoTheAllocator = 512 - TypeParam::prefix_size - TypeParam::sufix_size;
   EXPECT_TRUE(this->sut.expand(this->mem, sizeThatFitsJustIntoTheAllocator));
@@ -142,7 +142,7 @@ TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedIntoTheLimitsOfTheAlloc
   this->checkAffixContent();
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatAnFilledBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
+TYPED_TEST(affix_allocatorTest, ThatAnFilledBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
 {
   auto firstSize = 8;
   this->mem = this->sut.allocate(firstSize);
@@ -153,14 +153,14 @@ TYPED_TEST(AffixAllocatorTest, ThatAnFilledBlockedExpandedIntoTheLimitsOfTheAllo
 }
 
 
-TYPED_TEST(AffixAllocatorTest, ThatAnEmptyBlockedExpandedBy8BytesHasNowThatSizeAndHasNowMarker)
+TYPED_TEST(affix_allocatorTest, ThatAnEmptyBlockedExpandedBy8BytesHasNowThatSizeAndHasNowMarker)
 {
   EXPECT_TRUE(this->sut.expand(this->mem, 8));
   EXPECT_EQ(8, this->mem.length);
   this->checkAffixContent();
 }
 
-TYPED_TEST(AffixAllocatorTest, ThatFilledBlockedExpandedBy16BytesHasNowThatSizeAndHasNowMarker)
+TYPED_TEST(affix_allocatorTest, ThatFilledBlockedExpandedBy16BytesHasNowThatSizeAndHasNowMarker)
 {
   this->mem = this->sut.allocate(8);
   EXPECT_TRUE(this->sut.expand(this->mem, 16));

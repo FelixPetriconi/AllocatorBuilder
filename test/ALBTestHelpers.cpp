@@ -7,10 +7,10 @@
 // Authors: http://petriconi.net, Felix Petriconi 
 //
 ///////////////////////////////////////////////////////////////////
-#include "ALBTestHelpers.h"
 #include <gtest/gtest.h>
+#include "ALBTestHelpers.h"
 
-void ALB::TestHelpers::EXPECT_MEM_EQ(void* a, void* b, size_t n)
+void alb::test_helpers::EXPECT_MEM_EQ(void* a, void* b, size_t n)
 {
   auto isDifferentAt = ::memcmp(a, b, n);
   if (isDifferentAt)
@@ -25,4 +25,4 @@ void ALB::TestHelpers::EXPECT_MEM_EQ(void* a, void* b, size_t n)
     << " but should be " << (int)*(static_cast<char*>(a) + isDifferentAt);
 }
 
-std::atomic<size_t> ALB::TestHelpers::TestMallocator::_allocatedMem;
+std::atomic<size_t> alb::test_helpers::TestMallocator::_allocatedMem;

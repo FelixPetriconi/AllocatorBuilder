@@ -9,18 +9,18 @@
 //////////////////////////////////////////////////////////////////
 
 #include <gtest/gtest.h>
-#include "ALBTestHelpers.h"
-#include "bucketizer.hpp"
-#include "freelist.hpp"
-#include "mallocator.hpp"
+#include <alb/bucketizer.hpp>
+#include <alb/freelist.hpp>
+#include <alb/mallocator.hpp>
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersData.h"
+#include "ALBTestHelpers.h"
 
-using namespace ALB::TestHelpers;
+using namespace alb::test_helpers;
 
-typedef ALB::Bucketizer<
-  ALB::SharedFreeList<
-    ALB::Mallocator, ALB::DynasticDynamicSet, ALB::DynasticDynamicSet>,
+typedef alb::bucketizer<
+  alb::shared_freelist<
+    alb::mallocator, alb::DynasticDynamicSet, alb::DynasticDynamicSet>,
     17, 64, 16> AllocatorUnderTest;
 
 class BucketizerTest : public AllocatorBaseTest<AllocatorUnderTest> {
@@ -55,7 +55,7 @@ TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlo
   EXPECT_FALSE(mem);
 
   // Just to satisfy the code coverage
-  ALB::Block dummy;
+  alb::Block dummy;
   sut.deallocate(dummy);
 }
 
@@ -80,7 +80,7 @@ TEST_F(BucketizerTest, ThatAllocatingAtTheUpperEdgeOfABucketResultsInABlockWithT
 TEST_F(BucketizerTest, ThatAReallocationWithInTheEdgesOfABucketItemTheLengthAndTheContentIsTheSame)
 {
   auto mem = sut.allocate(32);
-  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+  alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   auto originalPtr = mem.ptr;
   EXPECT_TRUE(sut.reallocate(mem, 20));
@@ -96,7 +96,7 @@ TEST_F(BucketizerTest, ThatAReallocationWithInTheEdgesOfABucketItemTheLengthAndT
 TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheContent)
 {
   auto mem = sut.allocate(32);
-  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+  alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   auto originalPtr = mem.ptr;
   EXPECT_TRUE(sut.reallocate(mem, 33));
@@ -111,14 +111,14 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTh
 
 TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockOutsideTheBoundsBytesReturnsFalse)
 {
-  ALB::Block emptyBlock;
+  alb::Block emptyBlock;
   EXPECT_FALSE(sut.reallocate(emptyBlock, 1));
   EXPECT_FALSE(sut.reallocate(emptyBlock, 65));
 }
 
 TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockWithinTheBoundsBytesReturnsAValidBlock)
 {
-  ALB::Block mem;
+  alb::Block mem;
   EXPECT_TRUE(sut.reallocate(mem, 32));
   EXPECT_EQ(32, mem.length);
   deallocateAndCheckBlockIsThenEmpty(mem);
@@ -135,7 +135,7 @@ TEST_F(BucketizerTest, ThatAReallocationOfAFilledBlockToZeroDeallocatesTheMemory
 TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheStrippedContent)
 {
   auto mem = sut.allocate(48);
-  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+  alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   auto originalPtr = mem.ptr;
   EXPECT_TRUE(sut.reallocate(mem, 20));
@@ -150,7 +150,7 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTh
 
 TEST_F(BucketizerTest, ThatReturnsFalseIfTheBlockIsOutOgBoundsOrInvalid)
 {
-  EXPECT_FALSE(sut.owns(ALB::Block()));
-  EXPECT_FALSE(sut.owns(ALB::Block(nullptr, 1)));
-  EXPECT_FALSE(sut.owns(ALB::Block(nullptr, 65)));
+  EXPECT_FALSE(sut.owns(alb::Block()));
+  EXPECT_FALSE(sut.owns(alb::Block(nullptr, 1)));
+  EXPECT_FALSE(sut.owns(alb::Block(nullptr, 65)));
 }

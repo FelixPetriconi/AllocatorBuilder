@@ -9,8 +9,8 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-namespace ALB {
-namespace TestHelpers {
+namespace alb {
+namespace test_helpers {
 
 /**
  * Simple class that oscillates from zero to maxValue with each increment

@@ -8,13 +8,13 @@
 //
 //////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
-#include "segregator.hpp"
-#include "ALBTestHelpers.h"
-#include "stack_allocator.hpp"
-#include "shared_heap.hpp"
-#include "mallocator.hpp"
+#include <alb/segregator.hpp>
+#include <alb/stack_allocator.hpp>
+#include <alb/shared_heap.hpp>
+#include <alb/mallocator.hpp>
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersData.h"
+#include "ALBTestHelpers.h"
 
 namespace
 {
@@ -22,9 +22,9 @@ namespace
 }
 
 class SegregatorTest : public 
-  ALB::TestHelpers::AllocatorBaseTest<
-    ALB::Segregator<ALB::StackAllocator<32>::max_size+1, ALB::StackAllocator<32>, 
-    ALB::SharedHeap<ALB::Mallocator, 512,4>>>
+  alb::test_helpers::AllocatorBaseTest<
+    alb::segregator<alb::stack_allocator<32>::max_size+1, alb::stack_allocator<32>, 
+    alb::shared_heap<alb::mallocator, 512,4>>>
 {
 protected:
   void SetUp() {
@@ -32,7 +32,7 @@ protected:
     StartSmallAllocatorPtr = mem.ptr;
     deallocateAndCheckBlockIsThenEmpty(mem);
 
-    mem = sut.allocate(ALB::StackAllocator<32>::max_size + 1);
+    mem = sut.allocate(alb::stack_allocator<32>::max_size + 1);
     StartLargeAllocatorPtr = mem.ptr;
     deallocateAndCheckBlockIsThenEmpty(mem);
 
@@ -45,7 +45,7 @@ protected:
 
   void* StartSmallAllocatorPtr;
   void* StartLargeAllocatorPtr;
-  ALB::Block mem;
+  alb::Block mem;
 };
 
 TEST_F(SegregatorTest, ThatAllocatingZeroBytesResultsInAnEmptyBlock)
@@ -66,9 +66,9 @@ TEST_F(SegregatorTest, ThatAllocating8BytesResultsInABlockOfThatSize)
 
 TEST_F(SegregatorTest, ThatAllocatingSmallAllocatorsSizeReturnsABlockOfThatSize)
 {
-  mem = sut.allocate(ALB::StackAllocator<32>::max_size);
+  mem = sut.allocate(alb::stack_allocator<32>::max_size);
 
-  EXPECT_EQ(ALB::StackAllocator<32>::max_size, mem.length);
+  EXPECT_EQ(alb::stack_allocator<32>::max_size, mem.length);
   EXPECT_NE(nullptr, mem.ptr);
 }
 
@@ -84,34 +84,34 @@ TEST_F(SegregatorTest, ThatAllocatingLargeAllocatorsSizeReturnsABlockOfThatSizeA
 TEST_F(SegregatorTest, ThatReallocatingASmallBlockWithInTheBoundsOfTheSmallAllocatorStaysThere)
 {
   mem = sut.allocate(8);
-  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+  alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
-  EXPECT_TRUE(sut.reallocate(mem, ALB::StackAllocator<32>::max_size));
-  ALB::TestHelpers::EXPECT_MEM_EQ(mem.ptr, (void*)ALB::TestHelpers::ReferenceData.data(), 8);
+  EXPECT_TRUE(sut.reallocate(mem, alb::stack_allocator<32>::max_size));
+  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void*)alb::test_helpers::ReferenceData.data(), 8);
 
-  EXPECT_EQ(ALB::StackAllocator<32>::max_size, mem.length);
+  EXPECT_EQ(alb::stack_allocator<32>::max_size, mem.length);
   EXPECT_EQ(StartSmallAllocatorPtr, mem.ptr);
 }
 
 TEST_F(SegregatorTest, ThatReallocatingASmallBlockOutOfTheBoundsOfTheSmallAllocatorItGoesToTheLargeAllocator)
 {
   mem = sut.allocate(8);
-  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+  alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
-  EXPECT_TRUE(sut.reallocate(mem, ALB::StackAllocator<32>::max_size+1));
-  ALB::TestHelpers::EXPECT_MEM_EQ(mem.ptr, (void*)ALB::TestHelpers::ReferenceData.data(), 8);
+  EXPECT_TRUE(sut.reallocate(mem, alb::stack_allocator<32>::max_size+1));
+  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void*)alb::test_helpers::ReferenceData.data(), 8);
 
-  EXPECT_LE(ALB::StackAllocator<32>::max_size, mem.length);
+  EXPECT_LE(alb::stack_allocator<32>::max_size, mem.length);
   EXPECT_EQ(StartLargeAllocatorPtr, mem.ptr);
 }
 
 TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeGoesToTheSmallAllocator) 
 {
   mem = sut.allocate(LargeBlockSize);
-  ALB::TestHelpers::fillBlockWithReferenceData<int>(mem);
+  alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 4));
-  ALB::TestHelpers::EXPECT_MEM_EQ(mem.ptr, (void*)ALB::TestHelpers::ReferenceData.data(), 4);
+  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void*)alb::test_helpers::ReferenceData.data(), 4);
 
   EXPECT_EQ(4, mem.length);
   EXPECT_EQ(StartSmallAllocatorPtr, mem.ptr);

@@ -13,7 +13,7 @@
 
 #include <boost/type_traits/ice.hpp>
 
-namespace ALB {
+namespace alb {
 /**
  * All allocation requests are passed to the Primary allocator. Only if this
  * cannot fulfill the request, it is passed to the Fallback allocator
@@ -23,9 +23,9 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <class Primary, class Fallback>
-class FallbackAllocator : public Primary, public Fallback {
-  typedef Primary primary_allocator;
-  typedef Fallback fallback_allocator;
+class fallback_allocator : public Primary, public Fallback {
+  typedef Primary primary;
+  typedef Fallback fallback;
 
   static_assert(
       !traits::both_same_base<Primary, Fallback>::value,
@@ -75,12 +75,12 @@ public:
    */
   bool reallocate(Block &b, size_t n) {
     if (Primary::owns(b)) {
-      if (Helper::Reallocator<Primary>::isHandledDefault(
+      if (helper::Reallocator<Primary>::isHandledDefault(
               static_cast<Primary &>(*this), b, n)) {
         return true;
       }
     } else {
-      if (Helper::Reallocator<Fallback>::isHandledDefault(
+      if (helper::Reallocator<Fallback>::isHandledDefault(
               static_cast<Fallback &>(*this), b, n)) {
         return true;
       }
@@ -90,7 +90,7 @@ public:
       if (Primary::reallocate(b, n)) {
         return true;
       }
-      return Helper::reallocateWithCopy(static_cast<Primary &>(*this),
+      return helper::reallocateWithCopy(static_cast<Primary &>(*this),
                                         static_cast<Fallback &>(*this), b, n);
     }
 

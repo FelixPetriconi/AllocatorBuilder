@@ -12,14 +12,14 @@
 #include "allocator_base.hpp"
 #include <boost/config/suffix.hpp>
 
-namespace ALB {
+namespace alb {
 
   /**
  * This class implements a facade against the system ::malloc()
  *
  * \ingroup group_allocators group_shared
  */
-class Mallocator {
+class mallocator {
 
 public:
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = false);
@@ -48,7 +48,7 @@ public:
    * \return True, if the operation was successful.
    */
   bool reallocate(Block &b, size_t n) {
-    if (Helper::Reallocator<Mallocator>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<mallocator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 

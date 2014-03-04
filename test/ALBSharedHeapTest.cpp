@@ -8,17 +8,16 @@
 //
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
-
-#include "shared_heap.hpp"
-#include "mallocator.hpp"
-#include "ALBTestHelpers.h"
-#include "affix_allocator.hpp"
+#include <alb/shared_heap.hpp>
+#include <alb/mallocator.hpp>
+#include <alb/affix_allocator.hpp>
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersUsedMemGenerator.h"
 #include "ALBTestHelpersThread.h"
 #include "ALBTestHelpersAffixGuard.h"
+#include "ALBTestHelpers.h"
 
-using namespace ALB::TestHelpers;
+using namespace alb::test_helpers;
 
 namespace
 {
@@ -30,7 +29,7 @@ namespace
 
 class SharedHeapWithSmallAllocationsTest : 
   public AllocatorBaseTest<
-    ALB::SharedHeap<ALB::Mallocator, NumberOfChunks, SmallChunkSize>>
+    alb::shared_heap<alb::mallocator, NumberOfChunks, SmallChunkSize>>
 {
 };
 
@@ -94,7 +93,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatAFreedBlockIsUsedForANewAllocatio
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateAllMemoryBlocksAndThatAllOfThemAreContiguous)
 {
-  ALB::Block blocks[NumberOfChunks];
+  alb::Block blocks[NumberOfChunks];
 
   for (auto& b : blocks) { 
     b = sut.allocate(8); 
@@ -132,7 +131,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfABiggerChun
 
 TEST_F(SharedHeapWithSmallAllocationsTest, ThatItsPossibleToAllocateHalfNumberOfChunksMemoryBlocksWithDoubleBlockSizeBytesAndThatAllOfThemAreContiguous)
 {
-  ALB::Block blocks[NumberOfChunks/2];
+  alb::Block blocks[NumberOfChunks/2];
 
   for (auto& b : blocks) { 
     b = sut.allocate(SmallChunkSize * 2); 
@@ -380,7 +379,7 @@ TEST_F(SharedHeapWithSmallAllocationsTest, ThatReallocateOfABlockBeyondTheSizeOf
 
 
 class SharedHeapWithLargeAllocationsTest : public 
-  AllocatorBaseTest<ALB::SharedHeap<ALB::Mallocator, 512, 8>>
+  AllocatorBaseTest<alb::shared_heap<alb::mallocator, 512, 8>>
 {
 };
 
@@ -429,7 +428,7 @@ TEST_F(SharedHeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksAfter
 
 TEST_F(SharedHeapWithLargeAllocationsTest, ThatWhenAllChunksAreUsedNoMemoryCanBeAllocatedAndThatDeallocateAllFreesMakesAllBlocksAgainAvailable)
 {
-  ALB::Block blocks[8];
+  alb::Block blocks[8];
   for (auto& b : blocks) { b = sut.allocate(64*8); }
 
   auto mem = sut.allocate(1);
@@ -485,7 +484,7 @@ class SharedHeapTreatetWithThreadsTest : public ::testing::Test
 
 TEST_F(SharedHeapTreatetWithThreadsTest,  BruteForceAllocationByOneRunningThread)
 {
-  typedef ALB::SharedHeap<ALB::Mallocator, 512, 8> AllocatorUnderTest;
+  typedef alb::shared_heap<alb::mallocator, 512, 8> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   TestWorker<AllocatorUnderTest> testWorker(sut, 128);
@@ -498,7 +497,7 @@ TEST_F(SharedHeapTreatetWithThreadsTest,  BruteForceAllocationByOneRunningThread
 
 TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWithSeveralThreadsRunningHoldingASingleAllocation)
 {
-  typedef ALB::SharedHeap<ALB::Mallocator, 512, 64> AllocatorUnderTest;
+  typedef alb::shared_heap<alb::mallocator, 512, 64> AllocatorUnderTest;
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, 2> TestParams;
@@ -526,8 +525,8 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceTestWith4ThreadsRunningHoldin
   typedef AffixGuard<unsigned, 0xbaadf00d> PrefixGuard;
   typedef AffixGuard<unsigned, 0xf000baaa> SufixGuard;
 
-  typedef ALB::AffixAllocator<
-    ALB::SharedHeap<ALB::Mallocator, NumberOfChunks, BlockSize>, PrefixGuard, SufixGuard> AllocatorUnderTest;
+  typedef alb::affix_allocator<
+    alb::shared_heap<alb::mallocator, NumberOfChunks, BlockSize>, PrefixGuard, SufixGuard> AllocatorUnderTest;
 
   AllocatorUnderTest sut;
 

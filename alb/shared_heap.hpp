@@ -10,7 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
-#include "ALBSharedHelpers.h"
+#include "internal/shared_helpers.hpp"
 
 #include <atomic>
 #include <algorithm>
@@ -34,7 +34,7 @@
 #define CAS_P(ATOMIC, EXPECT, VALUE)                                           \
   ATOMIC->compare_exchange_strong(EXPECT, VALUE)
 
-namespace ALB {
+namespace alb {
   namespace Helpers {
   template <bool Used>
   uint64_t setUsed(const uint64_t &currentRegister, const uint64_t &mask);
@@ -64,7 +64,7 @@ namespace ALB {
  * \ingroup group_allocators group_shared
  */
 template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
-class SharedHeap 
+class shared_heap 
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
   : boost::noncopyable
 #endif
@@ -72,9 +72,9 @@ class SharedHeap
   const uint64_t all_set;
   const uint64_t all_zero;
 
-  Helper::Dynastic<(NumberOfChunks == DynasticDynamicSet ? 0 : NumberOfChunks), 0>
+  helper::Dynastic<(NumberOfChunks == DynasticDynamicSet ? 0 : NumberOfChunks), 0>
     _numberOfChunks;
-  Helper::Dynastic<(ChunkSize == DynasticDynamicSet ? 0 : ChunkSize), 0> 
+  helper::Dynastic<(ChunkSize == DynasticDynamicSet ? 0 : ChunkSize), 0> 
     _chunkSize;
 
   Block _buffer;
@@ -94,8 +94,8 @@ class SharedHeap
   }
 
 #ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  SharedHeap(const SharedHeap&) = delete;
-  const SharedHeap& operator=(const SharedHeap&) = delete;
+  shared_heap(const shared_heap&) = delete;
+  const shared_heap& operator=(const shared_heap&) = delete;
 #endif
 
 public:
@@ -103,25 +103,25 @@ public:
 
   typedef Allocator allocator;
 
-  SharedHeap() 
+  shared_heap() 
     : all_set(static_cast<uint64_t>(-1))
     , all_zero(0) {
     init();
   }
 
-  SharedHeap(size_t numberOfChunks, size_t chunkSize)
+  shared_heap(size_t numberOfChunks, size_t chunkSize)
     : all_set(static_cast<uint64_t>(-1))
     , all_zero(0) {
-    _numberOfChunks.value(Helper::roundToAlignment(64, numberOfChunks));
-    _chunkSize.value(Helper::roundToAlignment(4, chunkSize));
+    _numberOfChunks.value(helper::roundToAlignment(64, numberOfChunks));
+    _chunkSize.value(helper::roundToAlignment(4, chunkSize));
     init();
   }
 
-  SharedHeap(SharedHeap&& x) {
+  shared_heap(shared_heap&& x) {
     *this = std::move(x);
   }
 
-  SharedHeap& operator=(SharedHeap&& x) {
+  shared_heap& operator=(shared_heap&& x) {
     if (this == &x) {
       return *this;
     }
@@ -145,7 +145,7 @@ public:
 
   size_t chunk_size() const { return _chunkSize.value(); }
 
-  ~SharedHeap() {
+  ~shared_heap() {
     boost::unique_lock<boost::shared_mutex> guard(_mutex);
     shrink();
   }
@@ -166,7 +166,7 @@ public:
     }
 
     size_t numberOfAlignedBytes =
-        Helper::roundToAlignment(_chunkSize.value(), n);
+        helper::roundToAlignment(_chunkSize.value(), n);
     size_t numberOfBlocks = numberOfAlignedBytes / _chunkSize.value();
     numberOfBlocks = std::max(static_cast<size_t>(1), numberOfBlocks);
 
@@ -204,7 +204,7 @@ public:
     // printf("Used Block %d in thread %d\n", blockIndex,
     // std::this_thread::get_id());
     if (context.subIndex + context.usedChunks <= 64) {
-      setWithinSingleRegister<SharedHelpers::SharedLock, true>(context);
+      setWithinSingleRegister<shared_helpers::SharedLock, true>(context);
     } else if ((context.usedChunks % 64) == 0) {
       deallocateForMultipleCompleteControlRegister(context);
     } else {
@@ -220,13 +220,13 @@ public:
   }
 
   bool reallocate(Block &b, size_t n) {
-    if (Helper::Reallocator<SharedHeap>::isHandledDefault(*this, b, n)) {
+    if (helper::Reallocator<shared_heap>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
     const int numberOfBlocks = static_cast<int>(b.length / _chunkSize.value());
     const int numberOfNewNeededBlocks = static_cast<int>(
-        Helper::roundToAlignment(_chunkSize.value(), n) / _chunkSize.value());
+        helper::roundToAlignment(_chunkSize.value(), n) / _chunkSize.value());
 
     if (numberOfBlocks == numberOfNewNeededBlocks) {
       return true;
@@ -234,7 +234,7 @@ public:
     if (b.length > n) {
       auto context = blockToContext(b);
       if (context.subIndex + context.usedChunks <= 64) {
-        setWithinSingleRegister<SharedHelpers::SharedLock, true>(BlockContext(
+        setWithinSingleRegister<shared_helpers::SharedLock, true>(BlockContext(
             context.registerIndex, context.subIndex + numberOfNewNeededBlocks,
             context.usedChunks - numberOfNewNeededBlocks));
       } else {
@@ -245,7 +245,7 @@ public:
       b.length = numberOfNewNeededBlocks * _chunkSize.value();
       return true;
     }
-    return Helper::reallocateWithCopy(*this, *this, b, n);
+    return helper::reallocateWithCopy(*this, *this, b, n);
   }
 
   bool expand(Block &b, size_t delta) {
@@ -255,7 +255,7 @@ public:
 
     const auto context = blockToContext(b);
     const int numberOfAdditionalNeededBlocks =
-        static_cast<int>(Helper::roundToAlignment(_chunkSize.value(), delta) /
+        static_cast<int>(helper::roundToAlignment(_chunkSize.value(), delta) /
                          _chunkSize.value());
 
     if (context.subIndex + context.usedChunks +
@@ -402,7 +402,7 @@ private:
       }
     } while (chunksToTest > 0);
 
-    setOverMultipleRegisters<SharedHelpers::NullLock, Used>(context);
+    setOverMultipleRegisters<shared_helpers::NullLock, Used>(context);
 
     return true;
   }
@@ -560,7 +560,7 @@ private:
       Block result(static_cast<char *>(_buffer.ptr) + ptrOffset,
                    numberOfBlocks * _chunkSize.value());
 
-      setOverMultipleRegisters<SharedHelpers::NullLock, false>(
+      setOverMultipleRegisters<shared_helpers::NullLock, false>(
           blockToContext(result));
       return result;
     }
@@ -579,7 +579,7 @@ private:
   }
 
   void deallocateWithControlRegisterOverlap(const BlockContext &context) {
-    setOverMultipleRegisters<SharedHelpers::SharedLock, true>(context);
+    setOverMultipleRegisters<shared_helpers::SharedLock, true>(context);
   }
 };
 }

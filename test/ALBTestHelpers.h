@@ -17,12 +17,12 @@
 #include <vector>
 #include <atomic>
 
-#include "allocator_base.hpp"
-#include "mallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/mallocator.hpp>
 
-namespace ALB
+namespace alb
 {
-  namespace TestHelpers
+  namespace test_helpers
   {
     /**
      * Checks that both memory blocks are equal until n bytes
@@ -30,7 +30,7 @@ namespace ALB
     void EXPECT_MEM_EQ(void* a, void* b, size_t n);
 
     class TestMallocator{
-      Mallocator _mallocator;
+      alb::mallocator _mallocator;
       static std::atomic<size_t> _allocatedMem;
 
     public:

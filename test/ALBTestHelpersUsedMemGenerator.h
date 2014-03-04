@@ -15,13 +15,13 @@
 #include <array>
 #include <stdlib.h>
 
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
 #include <vector>
-#include <mallocator.hpp>
+#include <alb/mallocator.hpp>
 #include <atomic>
 
-namespace ALB {
-namespace TestHelpers {
+namespace alb {
+namespace test_helpers {
 
 template <class Allocator, size_t BytesPerBitMarker>
 class UsedMem

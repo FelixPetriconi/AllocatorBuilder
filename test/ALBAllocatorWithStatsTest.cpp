@@ -9,18 +9,18 @@
 ///////////////////////////////////////////////////////////////////
 
 #include <gtest/gtest.h>
+#include <alb/allocator_with_stats.hpp>
+#include <alb/stack_allocator.hpp>
+#include <alb/fallback_allocator.hpp>
+#include <alb/mallocator.hpp>
 #include "ALBTestHelpers.h"
-#include "allocator_with_stats.hpp"
-#include "stack_allocator.hpp"
-#include "fallback_allocator.hpp"
-#include "mallocator.hpp"
 
 namespace 
 {
-  typedef ALB::AllocatorWithStats<
-    ALB::FallbackAllocator<
-    ALB::StackAllocator<128, 4>,
-    ALB::TestHelpers::TestMallocator
+  typedef alb::allocator_with_stats<
+    alb::fallback_allocator<
+    alb::stack_allocator<128, 4>,
+    alb::test_helpers::TestMallocator
     >
   > AllocatorWithStatsThatCanExpand;
 }
@@ -152,7 +152,7 @@ protected:
 
   void TearDown() {
     delete sut;
-    EXPECT_EQ(0, ALB::TestHelpers::TestMallocator::currentlyAllocatedBytes());
+    EXPECT_EQ(0, alb::test_helpers::TestMallocator::currentlyAllocatedBytes());
   }
 
   Allocator *sut;
@@ -494,7 +494,7 @@ TEST_F(AllocatorWithStatsTest, ThatSuccessfulExpandingIsStored)
 }
 
 class AllocatorWithStatsWithLimitedExpandingTest : 
-  public AllocatorWithStatsBaseTest<ALB::AllocatorWithStats<ALB::StackAllocator<64, 4>>>
+  public AllocatorWithStatsBaseTest<alb::allocator_with_stats<alb::stack_allocator<64, 4>>>
 {
 };
 

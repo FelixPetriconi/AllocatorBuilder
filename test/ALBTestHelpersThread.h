@@ -10,19 +10,19 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <memory.h>
 #include <future>
 #include <array>
-#include <stdlib.h>
+#include <vector>
+#include <cstdlib>
+#include <memory.h>
 
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
 #include "ALBTestHelpersAlgorithm.h"
 #include "ALBTestHelpersData.h"
 
-#include <vector>
 
-namespace ALB {
-namespace TestHelpers {
+namespace alb {
+namespace test_helpers {
 
 /**
  * Class to check that no memory overrun takes place with allocations, reallocations 
@@ -115,7 +115,7 @@ public:
   void check() {
     Oszillator bytesToWork(_maxUsedBytes);
     Oszillator memBlockIndex(7);
-    std::vector<ALB::Block> mems;
+    std::vector<alb::Block> mems;
 
     for (size_t i = 0; i < 8; i++) {
       auto mem = _allocator.allocate(bytesToWork++);

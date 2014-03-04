@@ -12,7 +12,7 @@
 #include <type_traits>
 #include <stddef.h>
 
-namespace ALB {
+namespace alb {
 struct Block;
 
 namespace traits {
@@ -114,7 +114,7 @@ template <typename T> struct enable_result_to<T, false> {
  * This traits returns true if both passed types have the same type, resp.
  * template base type
  *
- * e.g. both_same_base<StackAllocator<32>, StackAllocator<64>>::value == true
+ * e.g. both_same_base<stack_allocator<32>, stack_allocator<64>>::value == true
  *
  * It's usage is not absolute safe, because it would mean to unroll all possible
  * parameter combinations.

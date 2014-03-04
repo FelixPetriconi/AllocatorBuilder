@@ -1,6 +1,6 @@
 project(ALB)
 
-include_directories("${PROJECT_SOURCE_DIR}/../include")
+include_directories("${PROJECT_SOURCE_DIR}/../alb")
 
 if(WIN32)
   add_definitions(-D_WIN32_WINNT=0x0501)
@@ -11,22 +11,23 @@ set(SOURCE
 )
 
 set(HEADERS
-  ../include/affix_allocator.hpp
-  ../include/aligned_mallocator.hpp
-  ../include/allocator_base.hpp
-  ../include/allocator_with_stats.hpp
-  ../include/bucketizer.hpp
-  ../include/cascading_allocator.hpp
-  ../include/fallback_allocator.hpp
-  ../include/internal/stack.hpp
-  ../include/mallocator.hpp
-  ../include/memory_corruption_detector.hpp
-  ../include/internal/noatomic.hpp
-  ../include/segregator.hpp
-  ../include/freelist.hpp
-  ../include/shared_heap.hpp
-  ../include/stack_allocator.hpp
-  ../include/internal/traits.hpp
+  ../alb/affix_allocator.hpp
+  ../alb/aligned_mallocator.hpp
+  ../alb/allocator_base.hpp
+  ../alb/allocator_with_stats.hpp
+  ../alb/bucketizer.hpp
+  ../alb/cascading_allocator.hpp
+  ../alb/fallback_allocator.hpp
+  ../alb/mallocator.hpp
+  ../alb/memory_corruption_detector.hpp
+  ../alb/segregator.hpp
+  ../alb/freelist.hpp
+  ../alb/shared_heap.hpp
+  ../alb/stack_allocator.hpp
+  ../alb/internal/noatomic.hpp
+  ../alb/internal/shared_helpers.hpp
+  ../alb/internal/stack.hpp
+  ../alb/internal/traits.hpp
 )
 
 include_directories(${Boost_INCLUDE_DIRS})
