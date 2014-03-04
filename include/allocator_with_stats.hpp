@@ -13,8 +13,8 @@
 //////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ALBAllocatorBase.h"
-#include "ALBAffixAllocator.h"
+#include "allocator_base.hpp"
+#include "affix_allocator.hpp"
 #include <chrono>
 #include <boost/iterator/iterator_facade.hpp>
 

@@ -15,9 +15,9 @@
 #include <array>
 #include <stdlib.h>
 
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 #include <vector>
-#include <ALBMallocator.h>
+#include <mallocator.hpp>
 #include <atomic>
 
 namespace ALB {

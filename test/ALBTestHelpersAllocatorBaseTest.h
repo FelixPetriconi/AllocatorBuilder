@@ -10,7 +10,7 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 
 namespace ALB
 {

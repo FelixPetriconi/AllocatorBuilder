@@ -9,8 +9,8 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ALBAllocatorBase.h"
-#include "ALBHelperNoAtomic.h"
+#include "allocator_base.hpp"
+#include "internal/noatomic.hpp"
 
 #include <atomic>
 #include <boost/assert.hpp>

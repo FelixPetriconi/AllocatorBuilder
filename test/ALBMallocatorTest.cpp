@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 #include "ALBTestHelpers.h"
-#include "ALBMallocator.h"
+#include "mallocator.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 
 using namespace ALB::TestHelpers;

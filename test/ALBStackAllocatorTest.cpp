@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 
-#include "ALBStackAllocator.h"
+#include "stack_allocator.hpp"
 #include "ALBTestHelpers.h"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 

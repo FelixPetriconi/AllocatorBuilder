@@ -9,10 +9,10 @@
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 
-#include "ALBCascadingAllocators.h"
-#include "ALBSharedHeap.h"
+#include "cascading_allocator.hpp"
+#include "shared_heap.hpp"
 #include "ALBTestHelpers.h"
-#include "ALBMallocator.h"
+#include "mallocator.hpp"
 #include <thread>
 #include <future>
 #include "ALBTestHelpersThread.h"

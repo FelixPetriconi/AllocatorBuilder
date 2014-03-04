@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 
 #include <boost/type_traits/ice.hpp>
 

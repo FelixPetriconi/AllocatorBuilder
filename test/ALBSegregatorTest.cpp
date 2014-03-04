@@ -8,11 +8,11 @@
 //
 //////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
-#include "ALBSegregator.h"
+#include "segregator.hpp"
 #include "ALBTestHelpers.h"
-#include "ALBStackAllocator.h"
-#include "ALBSharedHeap.h"
-#include "ALBMallocator.h"
+#include "stack_allocator.hpp"
+#include "shared_heap.hpp"
+#include "mallocator.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersData.h"
 

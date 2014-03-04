@@ -10,9 +10,9 @@
 
 #include <gtest/gtest.h>
 #include "ALBTestHelpers.h"
-#include "ALBBucketizer.h"
-#include "ALBFreeList.h"
-#include "ALBMallocator.h"
+#include "bucketizer.hpp"
+#include "freelist.hpp"
+#include "mallocator.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersData.h"
 

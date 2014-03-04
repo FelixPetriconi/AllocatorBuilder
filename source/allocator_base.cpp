@@ -7,7 +7,7 @@
 // Authors: http://petriconi.net, Felix Petriconi 
 //
 ///////////////////////////////////////////////////////////////////
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 
 #include <cstring>
 #include <algorithm>

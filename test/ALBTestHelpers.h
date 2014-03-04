@@ -17,8 +17,8 @@
 #include <vector>
 #include <atomic>
 
-#include "ALBAllocatorBase.h"
-#include "ALBMallocator.h"
+#include "allocator_base.hpp"
+#include "mallocator.hpp"
 
 namespace ALB
 {

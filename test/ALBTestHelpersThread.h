@@ -15,7 +15,7 @@
 #include <array>
 #include <stdlib.h>
 
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 #include "ALBTestHelpersAlgorithm.h"
 #include "ALBTestHelpersData.h"
 

@@ -9,10 +9,10 @@
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 
-#include "ALBSharedHeap.h"
-#include "ALBMallocator.h"
+#include "shared_heap.hpp"
+#include "mallocator.hpp"
 #include "ALBTestHelpers.h"
-#include "ALBAffixAllocator.h"
+#include "affix_allocator.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 #include "ALBTestHelpersUsedMemGenerator.h"
 #include "ALBTestHelpersThread.h"

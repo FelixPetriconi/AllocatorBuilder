@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 
 TEST(roundToAlignmentTest, ThatForDifferentAlignmentsTheCorrectValuesAreCalculated)
 {

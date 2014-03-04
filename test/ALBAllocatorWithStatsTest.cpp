@@ -10,10 +10,10 @@
 
 #include <gtest/gtest.h>
 #include "ALBTestHelpers.h"
-#include "ALBAllocatorWithStats.h"
-#include "ALBStackAllocator.h"
-#include "ALBFallbackAllocator.h"
-#include "ALBMallocator.h"
+#include "allocator_with_stats.hpp"
+#include "stack_allocator.hpp"
+#include "fallback_allocator.hpp"
+#include "mallocator.hpp"
 
 namespace 
 {

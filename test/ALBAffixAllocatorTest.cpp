@@ -9,10 +9,10 @@
 ///////////////////////////////////////////////////////////////////
 
 #include <gtest/gtest.h>
-#include "ALBAffixAllocator.h"
+#include "affix_allocator.hpp"
 #include "ALBTestHelpers.h"
-#include "ALBStackAllocator.h"
-#include "ALBMemmoryCorruptionDetector.h"
+#include "stack_allocator.hpp"
+#include "memory_corruption_detector.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 
 namespace

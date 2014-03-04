@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 #include <memory>
 #include <boost/assert.hpp>
 #include <boost/optional.hpp>

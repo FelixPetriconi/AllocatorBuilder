@@ -10,9 +10,9 @@
 #include <gtest/gtest.h>
 
 #include "ALBTestHelpers.h"
-#include "ALBFreeList.h"
-#include "ALBMallocator.h"
-#include "ALBStackAllocator.h"
+#include "freelist.hpp"
+#include "mallocator.hpp"
+#include "stack_allocator.hpp"
 #include "ALBTestHelpersAllocatorBaseTest.h"
 
 template <class T>

@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ALBTraits.h"
+#include "internal/traits.hpp"
 
 #include <type_traits>
 #include <stddef.h>

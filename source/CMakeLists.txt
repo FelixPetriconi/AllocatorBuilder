@@ -7,26 +7,26 @@ if(WIN32)
 endif(WIN32)
 
 set(SOURCE
-  ALBAllocatorBase.cpp
+  allocator_base.cpp
 )
 
 set(HEADERS
-  ../include/ALBAffixAllocator.h
-  ../include/ALBAlignedMallocator.h
-  ../include/ALBAllocatorBase.h
-  ../include/ALBAllocatorWithStats.h
-  ../include/ALBBucketizer.h
-  ../include/ALBCascadingAllocators.h
-  ../include/ALBFallbackAllocator.h
-  ../include/ALBHelperStack.h
-  ../include/ALBMallocator.h
-  ../include/ALBMemmoryCorruptionDetector.h
-  ../include/ALBHelperNoAtomic.h
-  ../include/ALBSegregator.h
-  ../include/ALBFreeList.h
-  ../include/ALBSharedHeap.h
-  ../include/ALBStackAllocator.h
-  ../include/ALBTraits.h
+  ../include/affix_allocator.hpp
+  ../include/aligned_mallocator.hpp
+  ../include/allocator_base.hpp
+  ../include/allocator_with_stats.hpp
+  ../include/bucketizer.hpp
+  ../include/cascading_allocator.hpp
+  ../include/fallback_allocator.hpp
+  ../include/internal/stack.hpp
+  ../include/mallocator.hpp
+  ../include/memory_corruption_detector.hpp
+  ../include/internal/noatomic.hpp
+  ../include/segregator.hpp
+  ../include/freelist.hpp
+  ../include/shared_heap.hpp
+  ../include/stack_allocator.hpp
+  ../include/internal/traits.hpp
 )
 
 include_directories(${Boost_INCLUDE_DIRS})

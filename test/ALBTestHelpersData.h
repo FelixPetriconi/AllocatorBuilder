@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "ALBAllocatorBase.h"
+#include "allocator_base.hpp"
 #include "ALBTestHelpersAlgorithm.h"
 #include <vector>
 
