@@ -66,7 +66,7 @@ struct Block {
 /**
  * Bool operator to make the Allocator code better readable
  */
-#ifndef BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+#if _MSC_VER > 1700
   explicit
 #endif
   operator bool() const {

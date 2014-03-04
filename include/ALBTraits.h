@@ -10,6 +10,7 @@
 #pragma once
 
 #include <type_traits>
+#include <stddef.h>
 
 namespace ALB {
 struct Block;
