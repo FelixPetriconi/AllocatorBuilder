@@ -109,8 +109,8 @@ protected:
 };
 
 typedef ::testing::Types<
-  ALB::SharedFreeList<ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>,
-  ALB::FreeList<ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>
+  ALB::SharedFreeList<ALB::Mallocator, ALB::DynasticDynamicSet, ALB::DynasticDynamicSet>,
+  ALB::FreeList<ALB::Mallocator, ALB::DynasticDynamicSet, ALB::DynasticDynamicSet>
 > TypesForFreeListWithParametrizedTest;
 
 TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTest);

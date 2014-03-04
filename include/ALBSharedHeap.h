@@ -72,9 +72,9 @@ class SharedHeap
   const uint64_t all_set;
   const uint64_t all_zero;
 
-  Helper::Dynastic<(NumberOfChunks == DynamicSetSize ? 0 : NumberOfChunks), 0>
+  Helper::Dynastic<(NumberOfChunks == DynasticDynamicSet ? 0 : NumberOfChunks), 0>
     _numberOfChunks;
-  Helper::Dynastic<(ChunkSize == DynamicSetSize ? 0 : ChunkSize), 0> 
+  Helper::Dynastic<(ChunkSize == DynasticDynamicSet ? 0 : ChunkSize), 0> 
     _chunkSize;
 
   Block _buffer;

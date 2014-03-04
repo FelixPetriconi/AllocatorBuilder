@@ -80,7 +80,7 @@ struct Block {
  * Flag to be used inside the Dynastic struct to signal that the value
  * can be changed during runtime.
  */
-enum { DynamicSetSize = -2 };
+enum { DynasticUndefined = -1, DynasticDynamicSet = -2 };
 
 namespace Helper {
 
@@ -205,19 +205,20 @@ struct Reallocator<
  *
  * \ingroup group_helpers
  */
-template <int v, int DynamicEnableSwitch> struct Dynastic {
-  int value() const { return v; }
+template <size_t v, size_t DynamicEnableSwitch> 
+struct Dynastic {
+  size_t value() const { return v; }
 };
 
-template <int DynamicEnableSwitch>
+template <size_t DynamicEnableSwitch>
 struct Dynastic<DynamicEnableSwitch, DynamicEnableSwitch> {
 private:
-  int _v;
+  size_t _v;
 
 public:
-  Dynastic() : _v(-1) {}
-  int value() const { return _v; }
-  void value(int w) { _v = w; }
+  Dynastic() : _v(DynasticUndefined) {}
+  size_t value() const { return _v; }
+  void value(size_t w) { _v = w; }
 };
 } // namespace Helper
 }

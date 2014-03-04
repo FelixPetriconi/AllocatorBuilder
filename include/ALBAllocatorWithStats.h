@@ -102,8 +102,7 @@ enum StatsOptions : unsigned {
   * ALB::AllocatorWithStats::reallocate (when resulting in an expansion). This
   * number always grows and indicates allocation traffic. To compute bytes
   * currently allocated, subtract ALB::AllocatorWithStats::bytesDeallocated
-  * (below)
-  * from ALB::AllocatorWithStats::bytesAllocated.
+  * (below) from ALB::AllocatorWithStats::bytesAllocated.
   */
   BytesAllocated = 1u << 10,
   /**

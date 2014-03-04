@@ -13,16 +13,17 @@
 
 namespace ALB {
 /**
- * This class implements a facade to the system ::malloc(). According the
- * template
- * parameter DefaultAlignment the allocated values are aligned to the specific
- * boundary in bytes. Normally this should be a multiple of at least 4 bytes.
+ * This class implements a proxy to the system ::malloc() with the ALB interface. 
+ * According the template * parameter DefaultAlignment the allocated values are 
+ * aligned to the specificboundary in bytes. Normally this should be a multiple 
+ * of at least 4 bytes.
  * \tparam DefaultAlignment Specified the alignment in bytes of all allocation
  *         and reallocations.
  *
  * \ingroup group_allocators group_shared
  */
-template <size_t DefaultAlignment = 16> class AlignedMallocator {
+template <size_t DefaultAlignment = 16> 
+class AlignedMallocator {
   static const size_t alignment = DefaultAlignment;
 
 #ifdef _MSC_VER
@@ -69,7 +70,7 @@ public:
 #ifdef _MSC_VER
     return Block(_aligned_malloc(n, DefaultAlignment), n);
 #else
-    return Block(void * memalign(DefaultAlignment, n), n);
+    return Block((void*)memalign(DefaultAlignment, n), n);
 #endif
   }
 

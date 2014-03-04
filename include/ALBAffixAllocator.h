@@ -57,11 +57,11 @@ struct NoAffix {
  */
 template <class Allocator, typename Prefix,
           typename Sufix = AffixAllocatorHelper::NoAffix>
-class AffixAllocator 
+class AffixAllocator
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  : public boost::noncopyable
+    : public boost::noncopyable
 #endif
-{
+      {
   Allocator _allocator;
 
   Prefix *innerToPrefix(const Block &b) const {
@@ -82,6 +82,7 @@ class AffixAllocator
     return Block(static_cast<char *>(b.ptr) + prefix_size,
                  b.length - prefix_size - sufix_size);
   }
+
 public:
   static const bool supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation;
@@ -98,14 +99,12 @@ public:
   static const size_t sufix_size =
       std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value ? 0
                                                                 : sizeof(Sufix);
-  
+
   AffixAllocator() {}
 
-  AffixAllocator(AffixAllocator&& x) {
-    *this = std::move(x);
-  }
+  AffixAllocator(AffixAllocator &&x) { *this = std::move(x); }
 
-  AffixAllocator& operator=(AffixAllocator&& x) {
+  AffixAllocator &operator=(AffixAllocator &&x) {
     _allocator = std::move(x._allocator);
     return *this;
   }
@@ -257,11 +256,9 @@ public:
 private:
 
 #ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
-  AffixAllocator(const AffixAllocator&) = delete;
-  AffixAllocator& operator=(const AffixAllocator&) = delete;
+  AffixAllocator(const AffixAllocator &) = delete;
+  AffixAllocator &operator=(const AffixAllocator &) = delete;
 #endif
-
-
 };
 
 namespace Traits {

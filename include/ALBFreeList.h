@@ -24,7 +24,7 @@ namespace ALB {
  * the Allocator for deallocation.
  * NumberOfBatchAllocations specifies how blocks are allocated by the Allocator.
  * MinSize and MaxSize can be set at runtime by instantiating this with
- * ALB::DynamicSetSize.
+ * ALB::DynasticDynamicSet.
  * Except the moment of instantiation, this allocator is thread safe and all
  * operations are lock free.
  * \tparam Shared Set to true, for a multi threaded usage, otherwise to false
@@ -33,7 +33,7 @@ namespace ALB {
  *
  * \ingroup group_allocators group_shared
  */
-template <bool Shared, class Allocator, int MinSize, int MaxSize,
+template <bool Shared, class Allocator, size_t MinSize, size_t MaxSize,
           size_t PoolSize, size_t NumberOfBatchAllocations>
 class FreeListBase {
   typedef Allocator allocator;
@@ -46,10 +46,10 @@ class FreeListBase {
                              boost::lockfree::capacity<PoolSize> >,
       Helper::stack<void *, PoolSize>, Shared>::type _root;
 
-  Helper::Dynastic<(MinSize == DynamicSetSize ? DynamicSetSize : MinSize),
-                   DynamicSetSize> _lowerBound;
-  Helper::Dynastic<(MaxSize == DynamicSetSize ? DynamicSetSize : MaxSize),
-                   DynamicSetSize> _upperBound;
+  Helper::Dynastic<(MinSize == DynasticDynamicSet ? DynasticDynamicSet : MinSize),
+                   DynasticDynamicSet> _lowerBound;
+  Helper::Dynastic<(MaxSize == DynasticDynamicSet ? DynasticDynamicSet : MaxSize),
+                   DynasticDynamicSet> _upperBound;
 
 public:
   static const bool supports_truncated_deallocation =
@@ -60,12 +60,12 @@ public:
   /**
    * Constructs a FreeListBase with the specified bounding edges
    * This c'tor is just available if the template parameter MinSize
-   * and MaxSize are set to DynamicSetSize. (Otherwise the compiler
+   * and MaxSize are set to DynasticDynamicSet. (Otherwise the compiler
    * will tell ;-)
    * \param minSize The lower boundary accepted by this Allocator
    * \param maxSize The upper boundary accepted by this Allocator
    */
-  FreeListBase(int minSize, int maxSize) {
+  FreeListBase(size_t minSize, size_t maxSize) {
     _lowerBound.value(minSize);
     _upperBound.value(maxSize);
   }
@@ -73,16 +73,16 @@ public:
   /**
    * Set the min and max boundary of this allocator. This method is
    * just available if the template parameter MinSize and MaxSize
-   * are set to DynamicSetSize. (Otherwise the compiler will tell ;-)
+   * are set to DynasticDynamicSet. (Otherwise the compiler will tell ;-)
    * \param minSize The lower boundary accepted by this Allocator
    * \param maxSize The upper boundary accepted by this Allocator
    */
-  void setMinMax(int minSize, int maxSize) {
+  void setMinMax(size_t minSize, size_t maxSize) {
     BOOST_ASSERT_MSG(
-        _lowerBound.value() == -1,
+      _lowerBound.value() == DynasticUndefined,
         "Changing the lower bound during after initialization is not wise!");
     BOOST_ASSERT_MSG(
-        _upperBound.value() == -1,
+      _upperBound.value() == DynasticUndefined,
         "Changing the upper bound during after initialization is not wise!");
 
     _lowerBound.value(minSize);
@@ -219,7 +219,7 @@ public:
  *
  * \ingroup group_allocator group_shared
  */
-template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024,
+template <class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024,
           size_t NumberOfBatchAllocations = 8>
 class SharedFreeList : public FreeListBase<true, Allocator, MinSize, MaxSize,
                                            PoolSize, NumberOfBatchAllocations> {
@@ -239,7 +239,7 @@ public:
 *
 * \ingroup group_allocator
 */
-template <class Allocator, int MinSize, int MaxSize, size_t PoolSize = 1024,
+template <class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024,
           size_t NumberOfBatchAllocations = 8>
 class FreeList : public FreeListBase<false, Allocator, MinSize, MaxSize,
                                      PoolSize, NumberOfBatchAllocations> {

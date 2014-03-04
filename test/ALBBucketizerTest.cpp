@@ -20,7 +20,7 @@ using namespace ALB::TestHelpers;
 
 typedef ALB::Bucketizer<
   ALB::SharedFreeList<
-    ALB::Mallocator, ALB::DynamicSetSize, ALB::DynamicSetSize>,
+    ALB::Mallocator, ALB::DynasticDynamicSet, ALB::DynasticDynamicSet>,
     17, 64, 16> AllocatorUnderTest;
 
 class BucketizerTest : public AllocatorBaseTest<AllocatorUnderTest> {
