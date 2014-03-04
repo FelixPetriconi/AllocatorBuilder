@@ -340,7 +340,7 @@ public:
 
     if (result && has_per_allocation_state) {
       AllocationInfo *stat =
-          Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
+          traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
               _allocator, result);
 
       set(StatsOptions::CallerSize, stat->callerSize, n);
@@ -377,7 +377,7 @@ public:
 
     if (b && has_per_allocation_state) {
       auto stat =
-          Traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
+          traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
               _allocator, b);
       if (stat->previous) {
         stat->previous->next = stat->next;
@@ -404,7 +404,7 @@ public:
     auto originalBlock = b;
     bool wasRootBlock(false);
     if (b && has_per_allocation_state) {
-      wasRootBlock = _root == Traits::AffixExtractor<
+      wasRootBlock = _root == traits::AffixExtractor<
             decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
     }
     up(StatsOptions::NumReallocate, _numReallocate);
@@ -431,7 +431,7 @@ public:
           originalBlock.length);
 
       if (b && has_per_allocation_state) {
-        auto stat = Traits::AffixExtractor<
+        auto stat = traits::AffixExtractor<
             decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
         if (stat->next) {
           stat->next->previous = stat;
@@ -456,8 +456,8 @@ public:
    * is stored.
    * \param b The block its ownership shall be checked
    */
-  typename Traits::enable_result_to<bool,
-                                    Traits::has_owns<Allocator>::value>::type
+  typename traits::enable_result_to<bool,
+                                    traits::has_owns<Allocator>::value>::type
   owns(const Block &b) const {
     up(StatsOptions::NumOwns, _numOwns);
     return _allocator.owns(b);
@@ -472,8 +472,8 @@ public:
    * \param delta The amount of bytes that should be tried to expanded
    * \return True, if the operation was successful
    */
-  typename Traits::enable_result_to<bool,
-                                    Traits::has_expand<Allocator>::value>::type
+  typename traits::enable_result_to<bool,
+                                    traits::has_expand<Allocator>::value>::type
   expand(Block &b, size_t delta) {
     up(StatsOptions::NumExpand, _numExpand);
     auto oldLength = b.length;
@@ -484,7 +484,7 @@ public:
       add(StatsOptions::BytesAllocated, _bytesAllocated, b.length - oldLength);
       updateHighTide();
       // if (b && has_per_allocation_state) {
-      //   auto stat = Traits::AffixExtractor<
+      //   auto stat = traits::AffixExtractor<
       //       decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
       // }
     }
@@ -551,7 +551,7 @@ private:
    * Depending on setting that caller information shall be collected
    * an AffixAllocator or the specified Allocator directly is used.
    */
-  typename Traits::type_switch<AffixAllocator<Allocator, AllocationInfo>,
+  typename traits::type_switch<AffixAllocator<Allocator, AllocationInfo>,
                                Allocator,
                                HasPerAllocationState>::type _allocator;
 

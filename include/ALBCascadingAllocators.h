@@ -40,7 +40,7 @@ class CascadingAllocatorsBase
 {
   struct Node;
 
-  typedef typename Traits::type_switch<std::atomic<Node*>, 
+  typedef typename traits::type_switch<std::atomic<Node*>, 
                               Helper::NoAtomic<Node*>, 
                               Shared>::type NodePtr;
 
@@ -272,8 +272,8 @@ public:
    * \param delta The amount of bytes
    * \return True, if the operation was successful
    */
-  typename Traits::enable_result_to<bool,
-                                    Traits::has_expand<Allocator>::value>::type
+  typename traits::enable_result_to<bool,
+                                    traits::has_expand<Allocator>::value>::type
   expand(Block &b, size_t delta) {
     Node *p = findOwningNode(b);
     if (p == nullptr) {
@@ -297,8 +297,8 @@ public:
    * are allocating or deallocating leads to unpredictable behavior.
    * This is only available if the Allocator implements it as well.
    */
-  typename Traits::enable_result_to<bool,
-    Traits::has_deallocateAll<Allocator>::value>::type
+  typename traits::enable_result_to<bool,
+    traits::has_deallocateAll<Allocator>::value>::type
     deallocateAll() {
     shrink();
   }

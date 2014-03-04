@@ -186,8 +186,8 @@ public:
    * It returns true, if the given block is owned by this allocator.
    * \param b The Block that should be checked for ownership
    */
-  typename Traits::enable_result_to<bool,
-                                    Traits::has_owns<Allocator>::value>::type
+  typename traits::enable_result_to<bool,
+                                    traits::has_owns<Allocator>::value>::type
   owns(const Block &b) const {
     return b && _allocator.owns(toInnerBlock(b));
   }
@@ -230,8 +230,8 @@ public:
    * \param delta The number of bytes that the given block should be increased
    * \return True, if the operation was successful.
    */
-  typename Traits::enable_result_to<bool,
-                                    Traits::has_expand<Allocator>::value>::type
+  typename traits::enable_result_to<bool,
+                                    traits::has_expand<Allocator>::value>::type
   expand(Block &b, size_t delta) {
     if (delta == 0) {
       return true;
@@ -263,7 +263,7 @@ private:
 #endif
 };
 
-namespace Traits {
+namespace traits {
 /**
  * This trait implements a generic way to access a possible Affix surrounded
  * by a ALB::Block. In general it returns a nullptr. Only if the passed

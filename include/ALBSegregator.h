@@ -27,7 +27,7 @@ namespace ALB {
  */
 template <size_t Threshold, class SmallAllocator, class LargeAllocator>
 class Segregator : private SmallAllocator, private LargeAllocator {
-  static_assert(!Traits::both_same_base<SmallAllocator, LargeAllocator>::value,
+  static_assert(!traits::both_same_base<SmallAllocator, LargeAllocator>::value,
                 "Small- and Large-Allocator cannot be both of base!");
 
 public:
@@ -119,23 +119,23 @@ public:
    * \param delta The number of bytes to be expanded
    * \return True, if the operation was successful
    */
-  typename Traits::enable_result_to < bool,
-      Traits::has_expand<SmallAllocator>::value ||
-          Traits::has_expand<LargeAllocator>::value >
+  typename traits::enable_result_to < bool,
+      traits::has_expand<SmallAllocator>::value ||
+          traits::has_expand<LargeAllocator>::value >
               ::type expand(Block &b, size_t delta) {
     if (b.length < Threshold && b.length + delta >= Threshold) {
       return false;
     }
     if (b.length < Threshold) {
-      if (Traits::has_expand<SmallAllocator>::value) {
-        return Traits::Expander<SmallAllocator>::doIt(
+      if (traits::has_expand<SmallAllocator>::value) {
+        return traits::Expander<SmallAllocator>::doIt(
             static_cast<SmallAllocator &>(*this), b, delta);
       } else {
         return false;
       }
     }
-    if (Traits::has_expand<LargeAllocator>::value) {
-      return Traits::Expander<LargeAllocator>::doIt(
+    if (traits::has_expand<LargeAllocator>::value) {
+      return traits::Expander<LargeAllocator>::doIt(
           static_cast<LargeAllocator &>(*this), b, delta);
     } else {
       return false;
@@ -148,9 +148,9 @@ public:
    * \param b The block to checked
    * \return True if one of the allocator owns it.
    */
-  typename Traits::enable_result_to<
-      bool, Traits::has_owns<SmallAllocator>::value &&
-                Traits::has_owns<LargeAllocator>::value>::type
+  typename traits::enable_result_to<
+      bool, traits::has_owns<SmallAllocator>::value &&
+                traits::has_owns<LargeAllocator>::value>::type
   owns(const Block &b) const {
     if (b.length < Threshold) {
       return SmallAllocator::owns(b);
@@ -162,13 +162,13 @@ public:
    * Deallocates all memory.
    * This is available if one of the allocators implement it.
    */
-  typename Traits::enable_result_to < bool,
-      Traits::has_deallocateAll<SmallAllocator>::value ||
-          Traits::has_deallocateAll<LargeAllocator>::value >
+  typename traits::enable_result_to < bool,
+      traits::has_deallocateAll<SmallAllocator>::value ||
+          traits::has_deallocateAll<LargeAllocator>::value >
               ::type deallocateAll() {
-    Traits::AllDeallocator<SmallAllocator>::doIt(
+    traits::AllDeallocator<SmallAllocator>::doIt(
         static_cast<SmallAllocator &>(*this));
-    Traits::AllDeallocator<LargeAllocator>::doIt(
+    traits::AllDeallocator<LargeAllocator>::doIt(
         static_cast<LargeAllocator &>(*this));
   }
 };

@@ -40,7 +40,7 @@ template <bool Shared, class Allocator, size_t MinSize, size_t MaxSize,
 class FreeListBase {
   Allocator _allocator;
 
-  typename Traits::type_switch<
+  typename traits::type_switch<
       boost::lockfree::stack<void *, boost::lockfree::fixed_sized<true>,
                              boost::lockfree::capacity<PoolSize> >,
       Helper::stack<void *, PoolSize>, Shared>::type _root;

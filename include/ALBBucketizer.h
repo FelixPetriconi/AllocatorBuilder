@@ -143,11 +143,11 @@ public:
    * Deallocates all resources. Beware of possible dangling pointers!
    * This method is only available if Allocator::deallocateAll is available
    */
-  typename Traits::enable_result_to<
-      void, Traits::has_deallocateAll<Allocator>::value>::type
+  typename traits::enable_result_to<
+      void, traits::has_deallocateAll<Allocator>::value>::type
   deallocateAll() {
     for (auto &item : _buckets) {
-      Traits::AllDeallocator<allocator>::doIt(item);
+      traits::AllDeallocator<allocator>::doIt(item);
     }
   }
 

@@ -15,7 +15,7 @@
 namespace ALB {
 struct Block;
 
-namespace Traits {
+namespace traits {
 /**
  * Trait that checks if the given class implements bool expand(Block&, size_t)
  *
@@ -92,7 +92,7 @@ class Disabled {
  * This trait can be used in combination with has_expand<> to check if a certain
  * depended class implements
  * expand as well.
- * Example: typename Traits::enabled<Traits::has_expand<Allocator>::value>::type
+ * Example: typename traits::enabled<traits::has_expand<Allocator>::value>::type
  *          expand(Block& b, size_t delta) {}
  * The result type of the method expand is ugly long, but without static_if, 
  * it is not possible to hide a signature during compile time for a SFINAE 
@@ -199,7 +199,7 @@ struct AllDeallocator<
 };
 
 /**
- * Traits that defines "type" A or B depending on the passed bool
+ * traits that defines "type" A or B depending on the passed bool
  * \tparam A This type is defined if the bool is true
  * \tparam B This type is defined if the bool is false
  * \tparam bool Selects between the passed template parameter A or B

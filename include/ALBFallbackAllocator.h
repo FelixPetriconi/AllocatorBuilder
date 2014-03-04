@@ -28,7 +28,7 @@ class FallbackAllocator : public Primary, public Fallback {
   typedef Fallback fallback_allocator;
 
   static_assert(
-      !Traits::both_same_base<Primary, Fallback>::value,
+      !traits::both_same_base<Primary, Fallback>::value,
       "Primary- and Fallback-Allocator cannot be both of the same base!");
 
 public:
@@ -105,20 +105,20 @@ public:
    * \param delta The number of bytes that should be appended
    * \return True, if the operation could be performed successful.
    */
-  typename Traits::enable_result_to < bool,
-      Traits::has_expand<Primary>::value ||
-          Traits::has_expand<Fallback>::value >
+  typename traits::enable_result_to < bool,
+      traits::has_expand<Primary>::value ||
+          traits::has_expand<Fallback>::value >
               ::type expand(Block &b, size_t delta) {
     if (Primary::owns(b)) {
-      if (Traits::has_expand<Primary>::value) {
-        return Traits::Expander<Primary>::doIt(static_cast<Primary &>(*this), b,
+      if (traits::has_expand<Primary>::value) {
+        return traits::Expander<Primary>::doIt(static_cast<Primary &>(*this), b,
                                                delta);
       } else {
         return false;
       }
     }
-    if (Traits::has_expand<Fallback>::value) {
-      return Traits::Expander<Fallback>::doIt(static_cast<Fallback &>(*this), b,
+    if (traits::has_expand<Fallback>::value) {
+      return traits::Expander<Fallback>::doIt(static_cast<Fallback &>(*this), b,
                                               delta);
     }
     return false;
@@ -130,16 +130,16 @@ public:
    * \param b The block which ownership shall be checked.
    * \return True if the block comes from one of the allocators.
    */
-  typename Traits::enable_result_to<bool,
-                                    Traits::has_owns<Primary>::value &&
-                                        Traits::has_owns<Fallback>::value>::type
+  typename traits::enable_result_to<bool,
+                                    traits::has_owns<Primary>::value &&
+                                        traits::has_owns<Fallback>::value>::type
   owns(const Block &b) {
     return Primary::owns(b) || Fallback::owns(b);
   }
 
-  typename Traits::enable_result_to<
-      void, Traits::has_deallocateAll<Primary>::value &&
-                Traits::has_deallocateAll<Fallback>::value>::type
+  typename traits::enable_result_to<
+      void, traits::has_deallocateAll<Primary>::value &&
+                traits::has_deallocateAll<Fallback>::value>::type
   deallocateAll() {
     Primary::deallocateAll();
     Fallback::deallocateAll();

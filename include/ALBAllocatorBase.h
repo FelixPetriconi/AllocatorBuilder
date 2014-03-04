@@ -164,7 +164,7 @@ struct Reallocator;
  */
 template <class Allocator>
 struct Reallocator<Allocator, typename std::enable_if<
-                                  Traits::has_expand<Allocator>::value>::type> {
+                                  traits::has_expand<Allocator>::value>::type> {
   static bool isHandledDefault(Allocator &allocator, Block &b, size_t n) {
     if (b.length == n) {
       return true;
@@ -195,7 +195,7 @@ struct Reallocator<Allocator, typename std::enable_if<
 template <class Allocator>
 struct Reallocator<
     Allocator,
-    typename std::enable_if<!Traits::has_expand<Allocator>::value>::type> {
+    typename std::enable_if<!traits::has_expand<Allocator>::value>::type> {
 
   static bool isHandledDefault(Allocator &allocator, Block &b, size_t n) {
     if (b.length == n) {
