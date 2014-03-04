@@ -80,7 +80,7 @@ struct Block {
  * Flag to be used inside the Dynastic struct to signal that the value
  * can be changed during runtime.
  */
-enum { DynasticUndefined = -1, DynasticDynamicSet = -2 };
+enum { DynasticUndefined = (size_t)-1, DynasticDynamicSet = (size_t)-2 };
 
 namespace Helper {
 
