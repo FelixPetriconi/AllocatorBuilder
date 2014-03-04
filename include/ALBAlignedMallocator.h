@@ -10,12 +10,13 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/config/suffix.hpp>
 
 namespace ALB {
 /**
  * This class implements a proxy to the system ::malloc() with the ALB interface. 
  * According the template * parameter DefaultAlignment the allocated values are 
- * aligned to the specificboundary in bytes. Normally this should be a multiple 
+ * aligned to the specific boundary in bytes. Normally this should be a multiple 
  * of at least 4 bytes.
  * \tparam DefaultAlignment Specified the alignment in bytes of all allocation
  *         and reallocations.
@@ -24,9 +25,9 @@ namespace ALB {
  */
 template <size_t DefaultAlignment = 16> 
 class AlignedMallocator {
-  static const size_t alignment = DefaultAlignment;
+  BOOST_STATIC_CONSTANT(unsigned, alignment = DefaultAlignment);
 
-#ifdef _MSC_VER
+#ifdef BOOST_MSVC
   bool alignedReallocate(Block &b, size_t n) {
     Block reallocatedBlock(_aligned_realloc(b.ptr, n, DefaultAlignment), n);
 
@@ -60,14 +61,14 @@ class AlignedMallocator {
 #endif
 
 public:
-  static const bool supports_truncated_deallocation = false;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = false);
   /**
    * Allocates rounded up to the defined alignment the number of bytes.
    * If the system cannot allocate the specified amount of memory then
    * a null Block is returned.
    */
   Block allocate(size_t n) {
-#ifdef _MSC_VER
+#ifdef BOOST_MSVC
     return Block(_aligned_malloc(n, DefaultAlignment), n);
 #else
     return Block((void*)memalign(DefaultAlignment, n), n);
@@ -98,7 +99,7 @@ public:
    */
   void deallocate(Block &b) {
     if (b) {
-#ifdef _MSC_VER
+#ifdef BOOST_MSVC
       _aligned_free(b.ptr);
 #else
       ::free(b.ptr);

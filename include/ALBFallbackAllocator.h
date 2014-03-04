@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
+#include <boost/type_traits/ice.hpp>
 
 namespace ALB {
 /**
@@ -30,10 +31,9 @@ class FallbackAllocator : public Primary, public Fallback {
       "Primary- and Fallback-Allocator cannot be both of the same base!");
 
 public:
-  static const bool supports_truncated_deallocation =
-      Primary::supports_truncated_deallocation &&
-      Fallback::supports_truncated_deallocation;
-  ;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
+    (::boost::type_traits::ice_or<Primary::supports_truncated_deallocation, 
+      Fallback::supports_truncated_deallocation>::value));
   /**
    * Allocates the requested number of bytes.
    * \param n The number of bytes. Depending on the alignment of the allocator,

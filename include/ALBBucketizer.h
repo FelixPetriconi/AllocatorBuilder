@@ -11,7 +11,9 @@
 
 #include "ALBAllocatorBase.h"
 #include <boost/assert.hpp>
+#include <boost/config/suffix.hpp>
 #include <array>
+
 
 namespace ALB {
 /**
@@ -31,20 +33,27 @@ namespace ALB {
  *
  * \ingroup group_allocators group_shared
  */
-template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
+template <class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize>
 class Bucketizer {
 public:
-  static const bool supports_truncated_deallocation = false;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = false);
+
   static_assert(MinSize < MaxSize, "MinSize must be smaller than MaxSize");
   static_assert((MaxSize - MinSize + 1) % StepSize == 0,
                 "Incorrect ranges or step size!");
 
-  static const size_t number_of_buckets = (MaxSize - MinSize + 1) / StepSize;
-  Allocator _buckets[number_of_buckets];
-  static const size_t max_size = MaxSize;
-  static const size_t min_size = MinSize;
-  static const size_t step_size = StepSize;
+  BOOST_STATIC_CONSTANT(unsigned, 
+    number_of_buckets = ((MaxSize - MinSize + 1) / StepSize));
+
+  BOOST_STATIC_CONSTANT(unsigned, max_size = MaxSize);
+
+  BOOST_STATIC_CONSTANT(unsigned, min_size = MinSize);
+
+  BOOST_STATIC_CONSTANT(unsigned,  step_size = StepSize);
+
   typedef Allocator allocator;
+
+  Allocator _buckets[number_of_buckets];
 
   Bucketizer() {
     for (size_t i = 0; i < number_of_buckets; i++) {
@@ -150,7 +159,7 @@ private:
   }
 };
 
-template <class Allocator, size_t MinSize, size_t MaxSize, size_t StepSize>
-const size_t Bucketizer<Allocator, MinSize, MaxSize, StepSize>::number_of_buckets;
+template <class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize>
+const unsigned Bucketizer<Allocator, MinSize, MaxSize, StepSize>::number_of_buckets;
 
 }

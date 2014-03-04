@@ -214,5 +214,6 @@ template <class A, class B> struct type_switch<A, B, true> {
 template <class A, class B> struct type_switch<A, B, false> {
   typedef B type;
 };
+
 }
 }

@@ -29,4 +29,6 @@ set(HEADERS
   ../include/ALBTraits.h
 )
 
+include_directories(${Boost_INCLUDE_DIRS})
+
 add_library(ALB ${SOURCE} ${HEADERS})

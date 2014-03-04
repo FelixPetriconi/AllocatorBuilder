@@ -14,6 +14,8 @@
 #include <boost/assert.hpp>
 #include <boost/optional.hpp>
 #include <boost/config.hpp>
+#include <boost/config/suffix.hpp>
+
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
 #include <boost/noncopyable.hpp>
 #endif
@@ -31,8 +33,8 @@ namespace AffixAllocatorHelper {
  * Sufix.
  */
 struct NoAffix {
-  typedef size_t value_type;
-  static const size_t pattern = 0;
+  typedef int value_type;
+  BOOST_STATIC_CONSTANT(int, pattern = 0);
 };
 }
 
@@ -84,21 +86,21 @@ class AffixAllocator
   }
 
 public:
-  static const bool supports_truncated_deallocation =
-      Allocator::supports_truncated_deallocation;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
+      Allocator::supports_truncated_deallocation);
 
   typedef Allocator allocator;
   typedef Prefix prefix;
   typedef Sufix sufix;
 
-  static const size_t prefix_size =
-      std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value
+  BOOST_STATIC_CONSTANT(unsigned, prefix_size =
+      (std::is_same<Prefix, AffixAllocatorHelper::NoAffix>::value
           ? 0
-          : sizeof(Prefix);
+          : sizeof(Prefix)));
 
-  static const size_t sufix_size =
-      std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value ? 0
-                                                                : sizeof(Sufix);
+  BOOST_STATIC_CONSTANT(unsigned, sufix_size =
+      (std::is_same<Sufix, AffixAllocatorHelper::NoAffix>::value ? 0
+                                                                : sizeof(Sufix)));
 
   AffixAllocator() {}
 

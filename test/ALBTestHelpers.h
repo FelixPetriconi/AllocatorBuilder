@@ -10,15 +10,15 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <memory.h>
+#include <memory>
 #include <future>
 #include <array>
 #include <stdlib.h>
+#include <vector>
+#include <atomic>
 
 #include "ALBAllocatorBase.h"
-#include <vector>
-#include <ALBMallocator.h>
-#include <atomic>
+#include "ALBMallocator.h"
 
 namespace ALB
 {

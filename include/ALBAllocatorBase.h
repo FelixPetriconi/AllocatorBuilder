@@ -9,10 +9,11 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "ALBTraits.h"
+
 #include <type_traits>
 #include <stddef.h>
-#include "ALBTraits.h"
-#include <utility>
+#include <boost/config.hpp>
 
 namespace ALB {
 /**
@@ -35,7 +36,16 @@ struct Block {
     return *this;
   }
 
-#ifndef _MSC_VER
+#ifdef BOOST_NO_CXX11_DEFAULTED_FUNCTIONS
+  Block& operator=(const Block& x) {
+    ptr = x.ptr;
+    length = x.length;
+    return *this;
+  }
+  Block(const Block& x) 
+    : ptr(x.ptr), length(x.length)  {}
+
+#else
   Block& operator=(const Block&) = default;
   Block(const Block&) = default;
 #endif
@@ -56,7 +66,7 @@ struct Block {
 /**
  * Bool operator to make the Allocator code better readable
  */
-#if _MSC_VER > 1700
+#ifndef BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
   explicit
 #endif
   operator bool() const {
@@ -79,8 +89,12 @@ struct Block {
 /**
  * Flag to be used inside the Dynastic struct to signal that the value
  * can be changed during runtime.
+ * \ingroup group_helpers
  */
-enum { DynasticUndefined = (size_t)-1, DynasticDynamicSet = (size_t)-2 };
+enum DynasticOptions: size_t { 
+  DynasticUndefined = (size_t)-1, 
+  DynasticDynamicSet = (size_t)-2 
+};
 
 namespace Helper {
 
@@ -139,7 +153,8 @@ bool reallocateWithCopy(OldAllocator &oldAllocator, NewAllocator &newAllocator,
  *
  * \ingroup group_helpers
  */
-template <class Allocator, typename Enabled = void> struct Reallocator;
+template <class Allocator, typename Enabled = void> 
+struct Reallocator;
 
 /**
  * Specialization for Allocators that implements Allocator::expand()
@@ -181,6 +196,7 @@ template <class Allocator>
 struct Reallocator<
     Allocator,
     typename std::enable_if<!Traits::has_expand<Allocator>::value>::type> {
+
   static bool isHandledDefault(Allocator &allocator, Block &b, size_t n) {
     if (b.length == n) {
       return true;
@@ -220,5 +236,6 @@ public:
   size_t value() const { return _v; }
   void value(size_t w) { _v = w; }
 };
+
 } // namespace Helper
 }

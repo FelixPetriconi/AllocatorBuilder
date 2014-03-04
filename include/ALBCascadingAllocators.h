@@ -10,13 +10,16 @@
 #pragma once
 
 #include "ALBAllocatorBase.h"
-#include <ALBHelperNoAtomic.h>
+#include "ALBHelperNoAtomic.h"
+
+#include <atomic>
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
+
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
 #include <boost/noncopyable.hpp>
 #endif
-#include <atomic>
+
 
 
 
@@ -107,7 +110,7 @@ class CascadingAllocatorsBase
   }
 
   /**
-   * deletes the passed node and all decendents if available
+   * deletes the passed node and all decedents if available
    */
   void eraseNode(Node* n) {
     if (n == nullptr) {
@@ -151,8 +154,8 @@ class CascadingAllocatorsBase
 public:
   typedef Allocator allocator;
 
-  static const bool supports_truncated_deallocation =
-      Allocator::supports_truncated_deallocation;
+  BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
+      Allocator::supports_truncated_deallocation);
 
   CascadingAllocatorsBase() : _root(nullptr) {}
 
