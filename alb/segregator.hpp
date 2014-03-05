@@ -47,7 +47,7 @@ public:
    * \param n Number of requested bytes
    * \return Block with the memory information.
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     if (n < Threshold) {
       return SmallAllocator::allocate(n);
     }
@@ -58,7 +58,7 @@ public:
    * Frees the given block and resets it.
    * \param b The block to be freed.
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -83,13 +83,13 @@ public:
    * \return True, if the operation was successful
    * \ingroup group_allocators group_shared
    */
-  bool reallocate(Block &b, size_t n) {
+  bool reallocate(block &b, size_t n) {
     if (!owns(b)) {
       BOOST_ASSERT_MSG(false,
                        "It is not wise to pass me a foreign allocated block!");
       return false;
     }
-    if (helper::Reallocator<segregator>::isHandledDefault(*this, b, n)) {
+    if (internal::reallocator<segregator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
@@ -97,12 +97,12 @@ public:
       if (n < Threshold) {
         return SmallAllocator::reallocate(b, n);
       } else {
-        return helper::reallocateWithCopy(
+        return internal::reallocateWithCopy(
             *this, static_cast<LargeAllocator &>(*this), b, n);
       }
     } else {
       if (n < Threshold) {
-        return helper::reallocateWithCopy(
+        return internal::reallocateWithCopy(
             *this, static_cast<SmallAllocator &>(*this), b, n);
       } else {
         return SmallAllocator::reallocate(b, n);
@@ -122,7 +122,7 @@ public:
   typename traits::enable_result_to < bool,
       traits::has_expand<SmallAllocator>::value ||
           traits::has_expand<LargeAllocator>::value >
-              ::type expand(Block &b, size_t delta) {
+              ::type expand(block &b, size_t delta) {
     if (b.length < Threshold && b.length + delta >= Threshold) {
       return false;
     }
@@ -151,7 +151,7 @@ public:
   typename traits::enable_result_to<
       bool, traits::has_owns<SmallAllocator>::value &&
                 traits::has_owns<LargeAllocator>::value>::type
-  owns(const Block &b) const {
+  owns(const block &b) const {
     if (b.length < Threshold) {
       return SmallAllocator::owns(b);
     }

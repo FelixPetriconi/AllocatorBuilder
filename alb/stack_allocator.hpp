@@ -38,7 +38,7 @@ class stack_allocator
   char _data[MaxSize];
   char *_p;
 
-  bool isLastUsedBlock(const Block &block) const {
+  bool isLastUsedBlock(const block &block) const {
     return (static_cast<char *>(block.ptr) + block.length == _p);
   }
 
@@ -53,14 +53,14 @@ public:
 
   stack_allocator() : _p(_data) {}
 
-  Block allocate(size_t n) {
-    Block result;
+  block allocate(size_t n) {
+    block result;
 
     if (n == 0) {
       return result;
     }
 
-    const auto alignedLength = helper::roundToAlignment(Alignment, n);
+    const auto alignedLength = internal::roundToAlignment(Alignment, n);
     if (alignedLength + _p > _data + MaxSize) { // not enough memory left
       return result;
     }
@@ -72,7 +72,7 @@ public:
     return result;
   }
 
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -90,7 +90,7 @@ public:
     b.reset();
   }
 
-  bool reallocate(Block &b, size_t n) {
+  bool reallocate(block &b, size_t n) {
     if (b.length == n) {
       return true;
     }
@@ -105,7 +105,7 @@ public:
       return true;
     }
 
-    const auto alignedLength = helper::roundToAlignment(Alignment, n);
+    const auto alignedLength = internal::roundToAlignment(Alignment, n);
 
     if (isLastUsedBlock(b)) {
       if (static_cast<char *>(b.ptr) + alignedLength <= _data + MaxSize) {
@@ -117,7 +117,7 @@ public:
       }
     } else {
       if (b.length > n) {
-        b.length = helper::roundToAlignment(Alignment, n);
+        b.length = internal::roundToAlignment(Alignment, n);
         return true;
       }
     }
@@ -126,7 +126,7 @@ public:
     // we cannot deallocate the old block, because it is in between used ones,
     //  so we have to "leak" here.
     if (newBlock) {
-      helper::blockCopy(b, newBlock);
+      internal::blockCopy(b, newBlock);
       b = newBlock;
       return true;
     }
@@ -140,7 +140,7 @@ public:
    * \return true, if the operation was successful or false if not enough
    *         memory is left
    */
-  bool expand(Block &b, size_t delta) {
+  bool expand(block &b, size_t delta) {
     if (delta == 0) {
       return true;
     }
@@ -151,7 +151,7 @@ public:
     if (!isLastUsedBlock(b)) {
       return false;
     }
-    auto alignedBytes = helper::roundToAlignment(Alignment, delta);
+    auto alignedBytes = internal::roundToAlignment(Alignment, delta);
     if (_p + alignedBytes > _data + MaxSize) {
       return false;
     }
@@ -165,7 +165,7 @@ public:
    * allocator
    * \param b The block to be checked.
    */
-  bool owns(const Block &b) const {
+  bool owns(const block &b) const {
     return b && (b.ptr >= _data && b.ptr < _data + MaxSize);
   }
 

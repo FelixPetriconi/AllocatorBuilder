@@ -15,29 +15,29 @@ include_directories("${PROJECT_SOURCE_DIR}/../.")
 include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
 set(HEADERS
-  ALBTestHelpers.h
-  ALBTestHelpersAffixGuard.h
-  ALBTestHelpersAlgorithm.h
-  ALBTestHelpersAllocatorBaseTest.h
-  ALBTestHelpersData.h
-  ALBTestHelpersThread.h
-  ALBTestHelpersUsedMemGenerator.h  
+  TestHelpers/Base.h
+  TestHelpers/AffixGuard.h
+  TestHelpers/Algorithm.h
+  TestHelpers/AllocatorBaseTest.h
+  TestHelpers/Data.h
+  TestHelpers/Thread.h
+  TestHelpers/UsedMemGenerator.h  
 )
 
 set(SOURCE
-  ALBAffixAllocatorTest.cpp
-  ALBAllocatorBaseTest.cpp
-  ALBAllocatorWithStatsTest.cpp
-  ALBBucketizerTest.cpp
-  ALBCascadingAllocatorsTest.cpp
-  ALBFallbackAllocatorTest.cpp 
-  ALBMallocatorTest.cpp
-  ALBSegregatorTest.cpp    
-  ALBFreeListTest.cpp
-  ALBSharedHeapTest
-  ALBStackAllocatorTest.cpp
-  ALBTestHelpers.cpp
-  Main.cpp
+  AffixAllocatorTest.cpp
+  AllocatorBaseTest.cpp
+  AllocatorWithStatsTest.cpp
+  BucketizerTest.cpp
+  CascadingAllocatorsTest.cpp
+  FallbackAllocatorTest.cpp 
+  MallocatorTest.cpp
+  SegregatorTest.cpp    
+  FreeListTest.cpp
+  SharedHeapTest
+  StackAllocatorTest.cpp
+  main.cpp
+  TestHelpers/Base.cpp
 )
 
 add_executable(ALBUnitTest ${SOURCE} ${HEADERS})

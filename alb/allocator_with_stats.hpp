@@ -330,7 +330,7 @@ public:
    * \param line The callers line in source code (Only stored if CallerLine is
    * enabled)
    */
-  Block allocate(size_t n, const char *file = nullptr,
+  block allocate(size_t n, const char *file = nullptr,
                  const char *function = nullptr, int line = 0) {
     auto result = _allocator.allocate(n);
     up(StatsOptions::NumAllocate, _numAllocate);
@@ -371,7 +371,7 @@ public:
    * is stored.
    * \param b Block to be freed
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     up(StatsOptions::NumDeallocate, _numDeallocate);
     add(StatsOptions::BytesDeallocated, _bytesDeallocated, b.length);
 
@@ -400,7 +400,7 @@ public:
    * \param n The new size. If zero, then a deallocation takes place
    * \return True, if the operation was successful
    */
-  bool reallocate(Block &b, size_t n) {
+  bool reallocate(block &b, size_t n) {
     auto originalBlock = b;
     bool wasRootBlock(false);
     if (b && has_per_allocation_state) {
@@ -458,7 +458,7 @@ public:
    */
   typename traits::enable_result_to<bool,
                                     traits::has_owns<Allocator>::value>::type
-  owns(const Block &b) const {
+  owns(const block &b) const {
     up(StatsOptions::NumOwns, _numOwns);
     return _allocator.owns(b);
   }
@@ -474,7 +474,7 @@ public:
    */
   typename traits::enable_result_to<bool,
                                     traits::has_expand<Allocator>::value>::type
-  expand(Block &b, size_t delta) {
+  expand(block &b, size_t delta) {
     up(StatsOptions::NumExpand, _numExpand);
     auto oldLength = b.length;
     auto result = _allocator.expand(b, delta);

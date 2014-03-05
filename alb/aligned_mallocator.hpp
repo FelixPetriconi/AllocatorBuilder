@@ -28,8 +28,8 @@ class aligned_mallocator {
   BOOST_STATIC_CONSTANT(unsigned, alignment = DefaultAlignment);
 
 #ifdef BOOST_MSVC
-  bool alignedReallocate(Block &b, size_t n) {
-    Block reallocatedBlock(_aligned_realloc(b.ptr, n, DefaultAlignment), n);
+  bool alignedReallocate(block &b, size_t n) {
+    block reallocatedBlock(_aligned_realloc(b.ptr, n, DefaultAlignment), n);
 
     if (reallocatedBlock.ptr != nullptr) {
       b = reallocatedBlock;
@@ -41,15 +41,15 @@ class aligned_mallocator {
   // On posix there is no _aligned_realloc so we try a normal realloc
   // if the result is still aligned we are fine
   // otherwise we have to do it by hand
-  bool alignedReallocate(Block &b, size_t n) {
-    Block reallocatedBlock(::realloc(b.ptr, n));
+  bool alignedReallocate(block &b, size_t n) {
+    block reallocatedBlock(::realloc(b.ptr, n));
     if (reallocatedBlock.ptr != nullptr) {
       if (static_cast<size_t>(b.ptr) % DefaultAlignment != 0) {
         auto newAlignedBlock = allocate(n);
         if (!newAlignedBlock) {
           return false;
         }
-        helper::blockCopy(b, newAlignedBlock);
+        internal::blockCopy(b, newAlignedBlock);
       } else {
         b = reallocatedBlock;
       }
@@ -67,11 +67,11 @@ public:
    * If the system cannot allocate the specified amount of memory then
    * a null Block is returned.
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
 #ifdef BOOST_MSVC
-    return Block(_aligned_malloc(n, DefaultAlignment), n);
+    return block(_aligned_malloc(n, DefaultAlignment), n);
 #else
-    return Block((void*)memalign(DefaultAlignment, n), n);
+    return block((void*)memalign(DefaultAlignment, n), n);
 #endif
   }
 
@@ -85,8 +85,8 @@ public:
    * \param n The new size of the block
    * \return True, if the operation was successful
    */
-  bool reallocate(Block &b, size_t n) {
-    if (helper::Reallocator<aligned_mallocator>::isHandledDefault(*this, b, n)) {
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<aligned_mallocator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
@@ -97,7 +97,7 @@ public:
    * Frees the given block back to the system. The block gets nulled.
    * \param b The block, describing what memory shall be freed.
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (b) {
 #ifdef BOOST_MSVC
       _aligned_free(b.ptr);

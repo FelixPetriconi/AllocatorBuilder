@@ -10,17 +10,17 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/reallocator.hpp"
 #include <boost/config/suffix.hpp>
 
 namespace alb {
 
-  /**
+/**
  * This class implements a facade against the system ::malloc()
  *
  * \ingroup group_allocators group_shared
  */
 class mallocator {
-
 public:
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation = false);
   /**
@@ -30,15 +30,15 @@ public:
    * \param n The number of bytes.
    * \return Block with memory information
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     if (n == 0) {
-      return Block();
+      return block();
     }
     void *p = ::malloc(n);
     if (p != nullptr) {
-      return Block(p, n);
+      return block(p, n);
     }
-    return Block();
+    return block();
   }
 
   /**
@@ -47,12 +47,12 @@ public:
    * \param n The new size
    * \return True, if the operation was successful.
    */
-  bool reallocate(Block &b, size_t n) {
-    if (helper::Reallocator<mallocator>::isHandledDefault(*this, b, n)) {
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<mallocator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
-    Block reallocatedBlock(::realloc(b.ptr, n), n);
+    block reallocatedBlock(::realloc(b.ptr, n), n);
 
     if (reallocatedBlock.ptr != nullptr) {
       b = reallocatedBlock;
@@ -65,7 +65,7 @@ public:
    * Frees the given block and resets it.
    * \param b Block to be freed.
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (b) {
       ::free(b.ptr);
       b.reset();

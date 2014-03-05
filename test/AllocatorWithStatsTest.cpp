@@ -13,7 +13,7 @@
 #include <alb/stack_allocator.hpp>
 #include <alb/fallback_allocator.hpp>
 #include <alb/mallocator.hpp>
-#include "ALBTestHelpers.h"
+#include "TestHelpers/Base.h"
 
 namespace 
 {

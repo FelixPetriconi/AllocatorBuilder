@@ -40,11 +40,11 @@ public:
    * \param n The number of bytes. Depending on the alignment of the allocator,
    *          the block might contain a bigger size
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     if (n == 0) {
-      return Block();
+      return block();
     }
-    Block result(Primary::allocate(n));
+    block result(Primary::allocate(n));
     if (!result)
       result = Fallback::allocate(n);
 
@@ -55,7 +55,7 @@ public:
    * Frees the memory of the provided block and resets it.
    * \param b The block describing the memory to be freed.
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -73,14 +73,14 @@ public:
    * \param n The new size (Zero means deallocation.)
    * \return True if the operation was successful
    */
-  bool reallocate(Block &b, size_t n) {
+  bool reallocate(block &b, size_t n) {
     if (Primary::owns(b)) {
-      if (helper::Reallocator<Primary>::isHandledDefault(
+      if (internal::reallocator<Primary>::isHandledDefault(
               static_cast<Primary &>(*this), b, n)) {
         return true;
       }
     } else {
-      if (helper::Reallocator<Fallback>::isHandledDefault(
+      if (internal::reallocator<Fallback>::isHandledDefault(
               static_cast<Fallback &>(*this), b, n)) {
         return true;
       }
@@ -90,7 +90,7 @@ public:
       if (Primary::reallocate(b, n)) {
         return true;
       }
-      return helper::reallocateWithCopy(static_cast<Primary &>(*this),
+      return internal::reallocateWithCopy(static_cast<Primary &>(*this),
                                         static_cast<Fallback &>(*this), b, n);
     }
 
@@ -108,7 +108,7 @@ public:
   typename traits::enable_result_to < bool,
       traits::has_expand<Primary>::value ||
           traits::has_expand<Fallback>::value >
-              ::type expand(Block &b, size_t delta) {
+              ::type expand(block &b, size_t delta) {
     if (Primary::owns(b)) {
       if (traits::has_expand<Primary>::value) {
         return traits::Expander<Primary>::doIt(static_cast<Primary &>(*this), b,
@@ -133,7 +133,7 @@ public:
   typename traits::enable_result_to<bool,
                                     traits::has_owns<Primary>::value &&
                                         traits::has_owns<Fallback>::value>::type
-  owns(const Block &b) {
+  owns(const block &b) {
     return Primary::owns(b) || Fallback::owns(b);
   }
 

@@ -24,7 +24,9 @@ set(HEADERS
   ../alb/freelist.hpp
   ../alb/shared_heap.hpp
   ../alb/stack_allocator.hpp
+  ../alb/internal/dynastic.hpp
   ../alb/internal/noatomic.hpp
+  ../alb/internal/reallocator.hpp
   ../alb/internal/shared_helpers.hpp
   ../alb/internal/stack.hpp
   ../alb/internal/traits.hpp

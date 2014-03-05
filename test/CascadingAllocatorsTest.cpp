@@ -11,8 +11,8 @@
 #include <alb/cascading_allocator.hpp>
 #include <alb/shared_heap.hpp>
 #include <alb/mallocator.hpp>
-#include "ALBTestHelpersThread.h"
-#include "ALBTestHelpers.h"
+#include "TestHelpers/Thread.h"
+#include "TestHelpers/Base.h"
 
 #include <thread>
 #include <future>

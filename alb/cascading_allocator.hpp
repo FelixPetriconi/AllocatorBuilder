@@ -41,7 +41,7 @@ class cascading_allocator_base
   struct Node;
 
   typedef typename traits::type_switch<std::atomic<Node*>, 
-                              helper::NoAtomic<Node*>, 
+                              internal::NoAtomic<Node*>, 
                               Shared>::type NodePtr;
 
   struct Node {
@@ -69,8 +69,8 @@ class cascading_allocator_base
 
 
 
-  Block allocateNoGrow(size_t n) {
-    Block result;
+  block allocateNoGrow(size_t n) {
+    block result;
     Node *p = _root.load();
     while (p) {
       result = p->allocator.allocate(n);
@@ -125,7 +125,7 @@ class cascading_allocator_base
 
     // Move the allocator to the temporary node
     stackNode = std::move(*n);
-    Block allocatedBlock(n, stackNode.allocatedThisSize);
+    block allocatedBlock(n, stackNode.allocatedThisSize);
       
     stackNode.allocator.deallocate(allocatedBlock);
   }
@@ -134,7 +134,7 @@ class cascading_allocator_base
     eraseNode(_root.load());
   }
 
-  Node* findOwningNode(const Block& b) const {
+  Node* findOwningNode(const block& b) const {
     Node* p = _root.load();
     while (p) {
       if (p->allocator.owns(b)) {
@@ -183,8 +183,8 @@ public:
    * Sends the request to the first allocator, if it cannot fulfill the request
    * then the next Allocator is created and so on
    */
-  Block allocate(size_t n) {
-    Block result = allocateNoGrow(n);
+  block allocate(size_t n) {
+    block result = allocateNoGrow(n);
     if (result) {
       return result;
     }
@@ -222,7 +222,7 @@ public:
   /**
    * Frees the given block and resets it
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -247,8 +247,8 @@ public:
    * \param n The new size
    * \param True, if the operation was successful
    */
-  bool reallocate(Block &b, size_t n) {
-    if (helper::Reallocator<decltype(*this)>::isHandledDefault(
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<decltype(*this)>::isHandledDefault(
             *this, b, n)) {
       return true;
     }
@@ -262,7 +262,7 @@ public:
       return true;
     }
 
-    return helper::reallocateWithCopy(*this, *this, b, n);
+    return internal::reallocateWithCopy(*this, *this, b, n);
   }
 
   /**
@@ -274,7 +274,7 @@ public:
    */
   typename traits::enable_result_to<bool,
                                     traits::has_expand<Allocator>::value>::type
-  expand(Block &b, size_t delta) {
+  expand(block &b, size_t delta) {
     Node *p = findOwningNode(b);
     if (p == nullptr) {
       return false;
@@ -287,7 +287,7 @@ public:
    * \param b The block to check
    * \return True, if one of the allocator owns it.
    */
-  bool owns(const Block &b) const {
+  bool owns(const block &b) const {
     return findOwningNode(b) != nullptr;
   }
 

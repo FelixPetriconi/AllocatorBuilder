@@ -12,8 +12,8 @@
 #include <alb/affix_allocator.hpp>
 #include <alb/stack_allocator.hpp>
 #include <alb/memory_corruption_detector.hpp>
-#include "ALBTestHelpersAllocatorBaseTest.h"
-#include "ALBTestHelpers.h"
+#include "TestHelpers/AllocatorBaseTest.h"
+#include "TestHelpers/Base.h"
 
 namespace
 {
@@ -40,7 +40,7 @@ protected:
         << "Problem with type " << typeid(T).name();
     }
   }
-  alb::Block mem;
+  alb::block mem;
 };
 
 typedef ::testing::Types<

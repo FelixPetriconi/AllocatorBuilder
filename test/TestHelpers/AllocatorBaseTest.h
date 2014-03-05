@@ -23,7 +23,7 @@ class AllocatorBaseTest : public ::testing::Test
 protected:
   typedef Allocator allocator;
 
-  void deallocateAndCheckBlockIsThenEmpty(alb::Block& b) {
+  void deallocateAndCheckBlockIsThenEmpty(alb::block& b) {
     sut.deallocate(b);
     EXPECT_FALSE(b);
     EXPECT_EQ(nullptr, b.ptr);

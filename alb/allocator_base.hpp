@@ -20,16 +20,16 @@ namespace alb {
  * The value type to describe a memory block and it's length
  * \ingroup group_allocators
  */
-struct Block {
-  Block() : ptr(nullptr), length(0) {}
+struct block {
+  block() : ptr(nullptr), length(0) {}
 
-  Block(void *ptr, size_t length) : ptr(ptr), length(length) {}
+  block(void *ptr, size_t length) : ptr(ptr), length(length) {}
 
-  Block(Block&& x) {
+  block(block&& x) {
     *this = std::move(x);
   }
 
-  Block& operator=(Block&& x) {
+  block& operator=(block&& x) {
     ptr = x.ptr;
     length = x.length;
     x.reset();
@@ -37,23 +37,23 @@ struct Block {
   }
 
 #ifdef BOOST_NO_CXX11_DEFAULTED_FUNCTIONS
-  Block& operator=(const Block& x) {
+  block& operator=(const block& x) {
     ptr = x.ptr;
     length = x.length;
     return *this;
   }
-  Block(const Block& x) 
+  block(const block& x) 
     : ptr(x.ptr), length(x.length)  {}
 
 #else
-  Block& operator=(const Block&) = default;
-  Block(const Block&) = default;
+  block& operator=(const block&) = default;
+  block(const block&) = default;
 #endif
   /**
    * During destruction of any of this instance, the described memory
    * is not freed!
    */
-  ~Block() {}
+  ~block() {}
 
   /**
    * Clears the block
@@ -73,7 +73,7 @@ struct Block {
     return length != 0;
   }
 
-  bool operator==(const Block &rhs) const {
+  bool operator==(const block &rhs) const {
     return ptr == rhs.ptr && length == rhs.length;
   }
 
@@ -84,158 +84,25 @@ struct Block {
   size_t length;
 };
 
-
-
-/**
- * Flag to be used inside the Dynastic struct to signal that the value
- * can be changed during runtime.
- * \ingroup group_helpers
- */
-enum DynasticOptions: size_t { 
-  DynasticUndefined = (size_t)-1, 
-  DynasticDynamicSet = (size_t)-2 
-};
-
-namespace helper {
+namespace internal {
 
 /**
  * Copies std::min(source.length, destination.length) bytes from source to
  * destination
  *
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
-void blockCopy(const alb::Block &source, alb::Block &destination);
+void blockCopy(const alb::block &source, alb::block &destination);
 
 
 /**
  * Returns a upper rounded value of multiples of a
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
 inline size_t roundToAlignment(size_t basis, size_t n) {
   auto remainder = n % basis;
   return n + ((remainder == 0) ? 0 : (basis - remainder));
 }
-
-/**
- * Allocates a new block of n bytes with newAllocator, copies min(b.length, n)
- * bytes to it, deallocates the old block b, and returns the new block.
- * \tparam OldAllocator The allocator that allocated the passed block
- * \tparam NewAllocator The allocator that should be used for the new allocation
- * \param oldAllocator The instance of the allocator that allocated in the past
- *                     the block. The behavior is undefined if the block was
- *                     not allocated by it!
- * \param newAllocator The instance that should be used for the new allocation
- * \param b The block that should be reallocated by a move of its content
- * \param n The new size of the block
- * \return True, if the operation was successful
- *
- * \ingroup group_helpers
- */
-template <class OldAllocator, class NewAllocator>
-bool reallocateWithCopy(OldAllocator &oldAllocator, NewAllocator &newAllocator,
-                        Block &b, size_t n) {
-  auto newBlock = newAllocator.allocate(n);
-  if (!newBlock) {
-    return false;
-  }
-  blockCopy(b, newBlock);
-  oldAllocator.deallocate(b);
-  b = newBlock;
-  return true;
-}
-
-/**
- * The Reallocator handles standard use cases during the deallocation.
- * If available it uses ::expand() of the allocator.
- * (With C++11 this could be done with a partial specialized function,
- * but VS 2012 does not support this.)
- * \tparam Allocator The allocator that should be used during the reallocation
- *
- * \ingroup group_helpers
- */
-template <class Allocator, typename Enabled = void> 
-struct Reallocator;
-
-/**
- * Specialization for Allocators that implements Allocator::expand()
- * \tparam Allocator The allocator that should be used during the reallocation
- *
- * \ingroup group_helpers
- */
-template <class Allocator>
-struct Reallocator<Allocator, typename std::enable_if<
-                                  traits::has_expand<Allocator>::value>::type> {
-  static bool isHandledDefault(Allocator &allocator, Block &b, size_t n) {
-    if (b.length == n) {
-      return true;
-    }
-    if (n == 0) {
-      allocator.deallocate(b);
-      return true;
-    }
-    if (!b) {
-      b = allocator.allocate(n);
-      return true;
-    }
-    if (n > b.length) {
-      if (allocator.expand(b, n - b.length)) {
-        return true;
-      }
-    }
-    return false;
-  }
-};
-
-/**
- * Specialization for Allocators, that don't implement Allocator::expand()
- * \tparam Allocator The allocator that should be used during the reallocation
- *
- * \ingroup group_helpers
- */
-template <class Allocator>
-struct Reallocator<
-    Allocator,
-    typename std::enable_if<!traits::has_expand<Allocator>::value>::type> {
-
-  static bool isHandledDefault(Allocator &allocator, Block &b, size_t n) {
-    if (b.length == n) {
-      return true;
-    }
-    if (n == 0) {
-      allocator.deallocate(b);
-      return true;
-    }
-    if (!b) {
-      b = allocator.allocate(n);
-      return true;
-    }
-    return false;
-  }
-};
-
-/**
- * Simple generic value type that is either compile time constant or dynamically
- * set-able depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then
- * value can be changed during runtime.
- * @Author Andrei Alexandrescu
- *
- * \ingroup group_helpers
- */
-template <size_t v, size_t DynamicEnableSwitch> 
-struct Dynastic {
-  size_t value() const { return v; }
-};
-
-template <size_t DynamicEnableSwitch>
-struct Dynastic<DynamicEnableSwitch, DynamicEnableSwitch> {
-private:
-  size_t _v;
-
-public:
-  Dynastic() : _v(DynasticUndefined) {}
-  size_t value() const { return _v; }
-  void value(size_t w) { _v = w; }
-};
 
 } // namespace Helper
 }

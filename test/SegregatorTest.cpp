@@ -12,9 +12,9 @@
 #include <alb/stack_allocator.hpp>
 #include <alb/shared_heap.hpp>
 #include <alb/mallocator.hpp>
-#include "ALBTestHelpersAllocatorBaseTest.h"
-#include "ALBTestHelpersData.h"
-#include "ALBTestHelpers.h"
+#include "TestHelpers/AllocatorBaseTest.h"
+#include "TestHelpers/Data.h"
+#include "TestHelpers/Base.h"
 
 namespace
 {
@@ -45,7 +45,7 @@ protected:
 
   void* StartSmallAllocatorPtr;
   void* StartLargeAllocatorPtr;
-  alb::Block mem;
+  alb::block mem;
 };
 
 TEST_F(SegregatorTest, ThatAllocatingZeroBytesResultsInAnEmptyBlock)

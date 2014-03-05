@@ -10,6 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/dynastic.hpp"
 #include "internal/stack.hpp"
 #include <boost/lockfree/stack.hpp>
 #include <boost/config/suffix.hpp>
@@ -37,18 +38,18 @@ namespace alb {
  */
 template <bool Shared, class Allocator, size_t MinSize, size_t MaxSize,
           unsigned PoolSize, unsigned NumberOfBatchAllocations>
-class free_list_base {
+class freelist_base {
   Allocator _allocator;
 
   typename traits::type_switch<
       boost::lockfree::stack<void *, boost::lockfree::fixed_sized<true>,
                              boost::lockfree::capacity<PoolSize> >,
-      helper::stack<void *, PoolSize>, Shared>::type _root;
+      internal::stack<void *, PoolSize>, Shared>::type _root;
 
-  helper::Dynastic<(MinSize == DynasticDynamicSet ? DynasticDynamicSet : MinSize),
-                   DynasticDynamicSet> _lowerBound;
-  helper::Dynastic<(MaxSize == DynasticDynamicSet ? DynasticDynamicSet : MaxSize),
-                   DynasticDynamicSet> _upperBound;
+  internal::dynastic<(MinSize == internal::DynasticDynamicSet ? internal::DynasticDynamicSet : MinSize),
+                   internal::DynasticDynamicSet> _lowerBound;
+  internal::dynastic<(MaxSize == internal::DynasticDynamicSet ? internal::DynasticDynamicSet : MaxSize),
+                   internal::DynasticDynamicSet> _upperBound;
 
 public:
   typedef Allocator allocator;
@@ -59,7 +60,7 @@ public:
   BOOST_STATIC_CONSTANT(bool, supports_truncated_deallocation =
       Allocator::supports_truncated_deallocation);
 
-  free_list_base() {}
+  freelist_base() {}
 
   /**
    * Constructs a FreeListBase with the specified bounding edges
@@ -69,7 +70,7 @@ public:
    * \param minSize The lower boundary accepted by this Allocator
    * \param maxSize The upper boundary accepted by this Allocator
    */
-  free_list_base(size_t minSize, size_t maxSize) {
+  freelist_base(size_t minSize, size_t maxSize) {
     _lowerBound.value(minSize);
     _upperBound.value(maxSize);
   }
@@ -107,10 +108,10 @@ public:
    * Frees all resources. Beware of using allocated blocks given by
    * this allocator after calling this.
    */
-  ~free_list_base() {
+  ~freelist_base() {
     void *curBlock = nullptr;
     while (_root.pop(curBlock)) {
-      Block oldBlock(curBlock, _upperBound.value());
+      block oldBlock(curBlock, _upperBound.value());
       _allocator.deallocate(oldBlock);
     }
   }
@@ -126,7 +127,7 @@ public:
    *          upper boundary.
    * \return The allocated block
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     BOOST_ASSERT_MSG(_lowerBound.value() != -1,
                      "The lower bound was not initialized!");
     BOOST_ASSERT_MSG(_upperBound.value() != -1,
@@ -136,7 +137,7 @@ public:
       void *freeBlock = nullptr;
 
       if (_root.pop(freeBlock)) {
-        return Block(freeBlock, _upperBound.value());
+        return block(freeBlock, _upperBound.value());
       } else {
         size_t blockSize = _upperBound.value();
         if (supports_truncated_deallocation) {
@@ -151,14 +152,14 @@ public:
               if (!_root.push(static_cast<char *>(batchAllocatedBlocks.ptr) +
                               i * blockSize)) {
                 BOOST_ASSERT(false);
-                alb::Block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) +
+                alb::block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) +
                               i * blockSize,
                           blockSize);
                 _allocator.deallocate(oldBlock);
               }
             }
             // returning the first within block
-            return Block(batchAllocatedBlocks.ptr, blockSize);
+            return block(batchAllocatedBlocks.ptr, blockSize);
           }
           return _allocator.allocate(blockSize);
         } else {
@@ -173,7 +174,7 @@ public:
         }
       }
     }
-    return Block();
+    return block();
   }
 
   /**
@@ -184,8 +185,8 @@ public:
    * \param n The new size
    * \return True, if the reallocation was successful.
    */
-  bool reallocate(Block &b, size_t n) {
-    if (helper::Reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
       return true;
     }
     return false;
@@ -196,7 +197,7 @@ public:
    * \param b The block to check
    * \return True, it is owned by this allocator
    */
-  bool owns(const Block &b) const {
+  bool owns(const block &b) const {
     return b && _lowerBound.value() <= b.length &&
            b.length <= _upperBound.value();
   }
@@ -206,7 +207,7 @@ public:
    * is reset
    * \param b The block to free
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (b && owns(b)) {
       if (_root.push(b.ptr)) {
         b.reset();
@@ -219,21 +220,21 @@ public:
 
 /**
  * This class is a thread safe specialization of the FreeList. For details see
- * alb::freelistBase
+ * alb::freelist_base
  *
  * \ingroup group_allocator group_shared
  */
 template <class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024,
           size_t NumberOfBatchAllocations = 8>
-class shared_freelist : public free_list_base<true, Allocator, MinSize, MaxSize,
+class shared_freelist : public freelist_base<true, Allocator, MinSize, MaxSize,
                                            PoolSize, NumberOfBatchAllocations> {
 public:
   shared_freelist()
-    : free_list_base<true, Allocator, MinSize, MaxSize,
+    : freelist_base<true, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>() {}
 
   shared_freelist(size_t minSize, size_t maxSize)
-    : free_list_base<true, Allocator, MinSize, MaxSize,
+    : freelist_base<true, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>(minSize, maxSize) {}
 };
 
@@ -245,15 +246,15 @@ public:
 */
 template <class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024,
           size_t NumberOfBatchAllocations = 8>
-class freelist : public free_list_base<false, Allocator, MinSize, MaxSize,
+class freelist : public freelist_base<false, Allocator, MinSize, MaxSize,
                                      PoolSize, NumberOfBatchAllocations> {
 public:
   freelist() 
-    : free_list_base<false, Allocator, MinSize, MaxSize,
+    : freelist_base<false, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>() {}
 
   freelist(size_t minSize, size_t maxSize) 
-    : free_list_base<false, Allocator, MinSize, MaxSize,
+    : freelist_base<false, Allocator, MinSize, MaxSize,
                    PoolSize, NumberOfBatchAllocations>(minSize, maxSize) {}
 
 };

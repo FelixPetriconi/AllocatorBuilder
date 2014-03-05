@@ -11,6 +11,7 @@
 
 #include "allocator_base.hpp"
 #include "internal/shared_helpers.hpp"
+#include "internal/dynastic.hpp"
 
 #include <atomic>
 #include <algorithm>
@@ -72,13 +73,16 @@ class shared_heap
   const uint64_t all_set;
   const uint64_t all_zero;
 
-  helper::Dynastic<(NumberOfChunks == DynasticDynamicSet ? 0 : NumberOfChunks), 0>
+  internal::dynastic<
+    (NumberOfChunks == internal::DynasticDynamicSet ? 0 : NumberOfChunks), 0>
     _numberOfChunks;
-  helper::Dynastic<(ChunkSize == DynasticDynamicSet ? 0 : ChunkSize), 0> 
+
+  internal::dynastic<
+    (ChunkSize == internal::DynasticDynamicSet ? 0 : ChunkSize), 0>
     _chunkSize;
 
-  Block _buffer;
-  Block _controlBuffer;
+  block _buffer;
+  block _controlBuffer;
 
   // bit field where 0 means used and 1 means free block
   std::atomic<uint64_t> *_control;
@@ -112,8 +116,8 @@ public:
   shared_heap(size_t numberOfChunks, size_t chunkSize)
     : all_set(static_cast<uint64_t>(-1))
     , all_zero(0) {
-    _numberOfChunks.value(helper::roundToAlignment(64, numberOfChunks));
-    _chunkSize.value(helper::roundToAlignment(4, chunkSize));
+    _numberOfChunks.value(internal::roundToAlignment(64, numberOfChunks));
+    _chunkSize.value(internal::roundToAlignment(4, chunkSize));
     init();
   }
 
@@ -150,23 +154,23 @@ public:
     shrink();
   }
 
-  bool owns(const Block &b) const {
+  bool owns(const block &b) const {
     return b && _buffer.ptr <= b.ptr &&
            b.ptr < (static_cast<char *>(_buffer.ptr) + _buffer.length);
   }
 
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     if (n == 0) {
-      return Block();
+      return block();
     }
 
     // The heap cannot handle such a big request
     if (n > _chunkSize.value() * _numberOfChunks.value()) {
-      return Block();
+      return block();
     }
 
     size_t numberOfAlignedBytes =
-        helper::roundToAlignment(_chunkSize.value(), n);
+        internal::roundToAlignment(_chunkSize.value(), n);
     size_t numberOfBlocks = numberOfAlignedBytes / _chunkSize.value();
     numberOfBlocks = std::max(static_cast<size_t>(1), numberOfBlocks);
 
@@ -189,7 +193,7 @@ public:
     return allocateWithRegisterOverlap(numberOfBlocks);
   }
 
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -219,14 +223,14 @@ public:
     std::fill(_control, _control + _controlSize, static_cast<uint64_t>(-1));
   }
 
-  bool reallocate(Block &b, size_t n) {
-    if (helper::Reallocator<shared_heap>::isHandledDefault(*this, b, n)) {
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<shared_heap>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
     const int numberOfBlocks = static_cast<int>(b.length / _chunkSize.value());
     const int numberOfNewNeededBlocks = static_cast<int>(
-        helper::roundToAlignment(_chunkSize.value(), n) / _chunkSize.value());
+        internal::roundToAlignment(_chunkSize.value(), n) / _chunkSize.value());
 
     if (numberOfBlocks == numberOfNewNeededBlocks) {
       return true;
@@ -245,17 +249,17 @@ public:
       b.length = numberOfNewNeededBlocks * _chunkSize.value();
       return true;
     }
-    return helper::reallocateWithCopy(*this, *this, b, n);
+    return internal::reallocateWithCopy(*this, *this, b, n);
   }
 
-  bool expand(Block &b, size_t delta) {
+  bool expand(block &b, size_t delta) {
     if (delta == 0) {
       return true;
     }
 
     const auto context = blockToContext(b);
     const int numberOfAdditionalNeededBlocks =
-        static_cast<int>(helper::roundToAlignment(_chunkSize.value(), delta) /
+        static_cast<int>(internal::roundToAlignment(_chunkSize.value(), delta) /
                          _chunkSize.value());
 
     if (context.subIndex + context.usedChunks +
@@ -302,7 +306,7 @@ private:
     int registerIndex, subIndex, usedChunks;
   };
 
-  BlockContext blockToContext(const Block &b) {
+  BlockContext blockToContext(const block &b) {
     const int blockIndex = static_cast<int>(
         (static_cast<char *>(b.ptr) - static_cast<char *>(_buffer.ptr)) /
         _chunkSize.value());
@@ -425,7 +429,7 @@ private:
         !CAS(_control[context.registerIndex], currentRegister, newRegister));
   }
 
-  Block allocateWithinASingleControlRegister(size_t numberOfBlocks) {
+  block allocateWithinASingleControlRegister(size_t numberOfBlocks) {
     // we must assume that we may find a free location, but that it is later
     // already used during the set operation
     do {
@@ -452,7 +456,7 @@ private:
                       newControlRegister)) {
                 size_t ptrOffset = (controlIndex * 64 + i) * _chunkSize.value();
 
-                return Block(static_cast<char *>(_buffer.ptr) + ptrOffset,
+                return block(static_cast<char *>(_buffer.ptr) + ptrOffset,
                              numberOfBlocks * _chunkSize.value());
               }
             }
@@ -463,12 +467,12 @@ private:
         controlIndex++;
       }
       if (controlIndex == _controlSize) {
-        return Block();
+        return block();
       }
     } while (true);
   }
 
-  Block allocateWithinCompleteControlRegister(size_t numberOfBlocks) {
+  block allocateWithinCompleteControlRegister(size_t numberOfBlocks) {
     // we must assume that we may find a free location, but that it is later
     // already used during the CAS set operation
     do {
@@ -479,7 +483,7 @@ private:
       });
 
       if (freeChunk == _control + _controlSize) {
-        return Block();
+        return block();
       }
 
       boost::shared_lock<boost::shared_mutex> guard(_mutex);
@@ -487,13 +491,13 @@ private:
       if (CAS_P(freeChunk, const_cast<uint64_t &>(all_set), all_zero)) {
         size_t ptrOffset = ((freeChunk - _control) * 64) * _chunkSize.value();
 
-        return Block(static_cast<char *>(_buffer.ptr) + ptrOffset,
+        return block(static_cast<char *>(_buffer.ptr) + ptrOffset,
                      numberOfBlocks * _chunkSize.value());
       }
     } while (true);
   }
 
-  Block allocateMultipleCompleteControlRegisters(size_t numberOfBlocks) {
+  block allocateMultipleCompleteControlRegisters(size_t numberOfBlocks) {
     // This branch works on multiple chunks at the same time and so a real
     // lock is necessary.
     boost::unique_lock<boost::shared_mutex> guard(_mutex);
@@ -505,7 +509,7 @@ private:
                          const uint64_t &p) { return v.load() == p; });
 
     if (freeFirstChunk == _control + _controlSize) {
-      return Block();
+      return block();
     }
     auto p = freeFirstChunk;
     while (p < freeFirstChunk + neededChunks) {
@@ -514,11 +518,11 @@ private:
     }
 
     size_t ptrOffset = ((freeFirstChunk - _control) * 64) * _chunkSize.value();
-    return Block(static_cast<char *>(_buffer.ptr) + ptrOffset,
+    return block(static_cast<char *>(_buffer.ptr) + ptrOffset,
                  numberOfBlocks * _chunkSize.value());
   }
 
-  Block allocateWithRegisterOverlap(size_t numberOfBlocks) {
+  block allocateWithRegisterOverlap(size_t numberOfBlocks) {
     // search for free area
     static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t),
                   "Current assumption that std::atomic has no overhead on "
@@ -557,7 +561,7 @@ private:
           (chunkStart - reinterpret_cast<unsigned char *>(_control)) * 8 *
           _chunkSize.value();
 
-      Block result(static_cast<char *>(_buffer.ptr) + ptrOffset,
+      block result(static_cast<char *>(_buffer.ptr) + ptrOffset,
                    numberOfBlocks * _chunkSize.value());
 
       setOverMultipleRegisters<shared_helpers::NullLock, false>(
@@ -565,7 +569,7 @@ private:
       return result;
     }
 
-    return Block();
+    return block();
   }
 
   void

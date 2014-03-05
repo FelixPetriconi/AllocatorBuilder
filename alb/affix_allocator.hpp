@@ -66,22 +66,22 @@ class affix_allocator
       {
   Allocator _allocator;
 
-  Prefix *innerToPrefix(const Block &b) const {
+  Prefix *innerToPrefix(const block &b) const {
     return reinterpret_cast<Prefix *>(static_cast<Prefix *>(b.ptr));
   }
 
-  Sufix *innerToSufix(const Block &b) const {
+  Sufix *innerToSufix(const block &b) const {
     return reinterpret_cast<Sufix *>(static_cast<char *>(b.ptr) + b.length -
                                      sufix_size);
   }
 
-  Block toInnerBlock(const Block &b) const {
-    return Block(static_cast<char *>(b.ptr) - prefix_size,
+  block toInnerBlock(const block &b) const {
+    return block(static_cast<char *>(b.ptr) - prefix_size,
                  b.length + prefix_size + sufix_size);
   }
 
-  Block toOuterBlock(const Block &b) const {
-    return Block(static_cast<char *>(b.ptr) + prefix_size,
+  block toOuterBlock(const block &b) const {
+    return block(static_cast<char *>(b.ptr) + prefix_size,
                  b.length - prefix_size - sufix_size);
   }
 
@@ -117,7 +117,7 @@ public:
    *          if a block is passed, that is not owned by this allocator!
    * \return Pointer to the Prefix before the given block
    */
-  Prefix *outerToPrefix(const Block &b) const {
+  Prefix *outerToPrefix(const block &b) const {
     return b ? reinterpret_cast<Prefix *>(static_cast<Prefix *>(b.ptr) - 1)
              : nullptr;
   }
@@ -128,7 +128,7 @@ public:
   *          if a block is passed, that is not owned by this allocator!
   * \return Pointer to the sufix before the given block
   */
-  Sufix *outerToSufix(const Block &b) const {
+  Sufix *outerToSufix(const block &b) const {
     return b ? reinterpret_cast<Sufix *>(static_cast<char *>(b.ptr) + b.length)
              : nullptr;
   }
@@ -142,9 +142,9 @@ public:
    * \param n Specifies the number of requested bytes. n or more bytes are
    *          returned, depending on the alignment of the underlying Allocator.
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     if (n == 0) {
-      return Block();
+      return block();
     }
 
     auto innerMem = _allocator.allocate(prefix_size + n + sufix_size);
@@ -157,7 +157,7 @@ public:
       }
       return toOuterBlock(innerMem);
     }
-    return Block();
+    return block();
   }
 
   /**
@@ -166,7 +166,7 @@ public:
    * \param b The Block that should be freed. An assertion is raised, if the
    *          block is not owned by the underlying Allocator
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -188,7 +188,7 @@ public:
    */
   typename traits::enable_result_to<bool,
                                     traits::has_owns<Allocator>::value>::type
-  owns(const Block &b) const {
+  owns(const block &b) const {
     return b && _allocator.owns(toInnerBlock(b));
   }
 
@@ -199,8 +199,8 @@ public:
    * \param n The new size (n = zero means a deallocation)
    * \return True if the operation was successful
    */
-  bool reallocate(Block &b, size_t n) {
-    if (helper::Reallocator<affix_allocator>::isHandledDefault(*this, b, n)) {
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<affix_allocator>::isHandledDefault(*this, b, n)) {
       return true;
     }
     auto innerBlock = toInnerBlock(b);
@@ -232,7 +232,7 @@ public:
    */
   typename traits::enable_result_to<bool,
                                     traits::has_expand<Allocator>::value>::type
-  expand(Block &b, size_t delta) {
+  expand(block &b, size_t delta) {
     if (delta == 0) {
       return true;
     }
@@ -271,18 +271,18 @@ namespace traits {
  * \ingroup group_traits
  */
 template <class Allocator, typename T> struct AffixExtractor {
-  static T *prefix(Allocator &, const Block &) { return nullptr; }
-  static T *sufix(Allocator &, const Block &) { return nullptr; }
+  static T *prefix(Allocator &, const block &) { return nullptr; }
+  static T *sufix(Allocator &, const block &) { return nullptr; }
 };
 
 template <class A, typename Prefix, typename Sufix, typename T>
 struct AffixExtractor<affix_allocator<A, Prefix, Sufix>, T> {
   static Prefix *prefix(affix_allocator<A, Prefix, Sufix> &allocator,
-                        const Block &b) {
+                        const block &b) {
     return allocator.outerToPrefix(b);
   }
   static Sufix *sufix(affix_allocator<A, Prefix, Sufix> &allocator,
-                      const Block &b) {
+                      const block &b) {
     return allocator.outerToSufix(b);
   }
 };
