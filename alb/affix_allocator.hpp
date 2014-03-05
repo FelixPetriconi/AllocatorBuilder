@@ -10,6 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/reallocator.hpp"
 #include <memory>
 #include <boost/assert.hpp>
 #include <boost/optional.hpp>

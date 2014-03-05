@@ -9,7 +9,7 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "internal/traits.hpp"
+#include "traits.hpp"
 #include <type_traits>
 
 

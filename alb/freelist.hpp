@@ -12,6 +12,7 @@
 #include "allocator_base.hpp"
 #include "internal/dynastic.hpp"
 #include "internal/stack.hpp"
+#include "internal/reallocator.hpp"
 #include <boost/lockfree/stack.hpp>
 #include <boost/config/suffix.hpp>
 

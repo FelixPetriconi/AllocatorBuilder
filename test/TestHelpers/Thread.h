@@ -17,8 +17,9 @@
 #include <memory.h>
 
 #include <alb/allocator_base.hpp>
-#include "TestHelpers/Algorithm.h"
-#include "TestHelpers/Data.h"
+#include "Base.h"
+#include "Algorithm.h"
+#include "Data.h"
 
 
 namespace alb {

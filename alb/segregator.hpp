@@ -10,6 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/reallocator.hpp"
 #include <boost/assert.hpp>
 #include <boost/config/suffix.hpp>
 #include <boost/type_traits/ice.hpp>

@@ -10,7 +10,7 @@
 #pragma once
 
 #include <alb/allocator_base.hpp>
-#include "TestHelpers/Algorithm.h"
+#include "Algorithm.h"
 #include <vector>
 
 namespace alb {

@@ -11,7 +11,7 @@
 
 #include "allocator_base.hpp"
 #include "internal/noatomic.hpp"
-
+#include "internal/reallocator.hpp"
 #include <atomic>
 #include <boost/assert.hpp>
 #include <boost/config.hpp>

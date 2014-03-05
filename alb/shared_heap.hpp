@@ -12,6 +12,7 @@
 #include "allocator_base.hpp"
 #include "internal/shared_helpers.hpp"
 #include "internal/dynastic.hpp"
+#include "internal/reallocator.hpp"
 
 #include <atomic>
 #include <algorithm>
