@@ -340,7 +340,7 @@ public:
 
     if (result && has_per_allocation_state) {
       AllocationInfo *stat =
-          traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
+          traits::affix_extractor<decltype(_allocator), AllocationInfo>::prefix(
               _allocator, result);
 
       set(StatsOptions::CallerSize, stat->callerSize, n);
@@ -377,7 +377,7 @@ public:
 
     if (b && has_per_allocation_state) {
       auto stat =
-          traits::AffixExtractor<decltype(_allocator), AllocationInfo>::prefix(
+          traits::affix_extractor<decltype(_allocator), AllocationInfo>::prefix(
               _allocator, b);
       if (stat->previous) {
         stat->previous->next = stat->next;
@@ -404,7 +404,7 @@ public:
     auto originalBlock = b;
     bool wasRootBlock(false);
     if (b && has_per_allocation_state) {
-      wasRootBlock = _root == traits::AffixExtractor<
+      wasRootBlock = _root == traits::affix_extractor<
             decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
     }
     up(StatsOptions::NumReallocate, _numReallocate);
@@ -431,7 +431,7 @@ public:
           originalBlock.length);
 
       if (b && has_per_allocation_state) {
-        auto stat = traits::AffixExtractor<
+        auto stat = traits::affix_extractor<
             decltype(_allocator), AllocationInfo>::prefix(_allocator, b);
         if (stat->next) {
           stat->next->previous = stat;

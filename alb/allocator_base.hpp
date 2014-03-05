@@ -16,6 +16,8 @@
 #include <boost/config.hpp>
 
 namespace alb {
+
+
 /**
  * The value type to describe a memory block and it's length
  * \ingroup group_allocators
