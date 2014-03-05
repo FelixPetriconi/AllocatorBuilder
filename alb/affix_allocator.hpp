@@ -63,7 +63,7 @@ class affix_allocator
 #ifdef BOOST_NO_CXX11_DELETED_FUNCTIONS
     : public boost::noncopyable
 #endif
-      {
+{
   Allocator _allocator;
 
   Prefix *innerToPrefix(const block &b) const {
@@ -93,14 +93,18 @@ public:
   typedef Prefix prefix;
   typedef Sufix sufix;
 
-  BOOST_STATIC_CONSTANT(unsigned, prefix_size =
-      (std::is_same<Prefix, affix_allocator_helper::no_affix>::value
-          ? 0
-          : sizeof(Prefix)));
+  BOOST_STATIC_CONSTANT(
+      unsigned,
+      prefix_size =
+          (std::is_same<Prefix, affix_allocator_helper::no_affix>::value
+               ? 0
+               : sizeof(Prefix)));
 
-  BOOST_STATIC_CONSTANT(unsigned, sufix_size =
-      (std::is_same<Sufix, affix_allocator_helper::no_affix>::value ? 0
-                                                                : sizeof(Sufix)));
+  BOOST_STATIC_CONSTANT(
+      unsigned,
+      sufix_size = (std::is_same<Sufix, affix_allocator_helper::no_affix>::value
+                        ? 0
+                        : sizeof(Sufix)));
 
   affix_allocator() {}
 
@@ -270,13 +274,14 @@ namespace traits {
  * Allocator is an affix_allocator it returns a real object
  * \ingroup group_traits
  */
-template <class Allocator, typename T> struct AffixExtractor {
+template <class Allocator, typename T> 
+struct affix_extractor {
   static T *prefix(Allocator &, const block &) { return nullptr; }
   static T *sufix(Allocator &, const block &) { return nullptr; }
 };
 
 template <class A, typename Prefix, typename Sufix, typename T>
-struct AffixExtractor<affix_allocator<A, Prefix, Sufix>, T> {
+struct affix_extractor<affix_allocator<A, Prefix, Sufix>, T> {
   static Prefix *prefix(affix_allocator<A, Prefix, Sufix> &allocator,
                         const block &b) {
     return allocator.outerToPrefix(b);
@@ -286,6 +291,7 @@ struct AffixExtractor<affix_allocator<A, Prefix, Sufix>, T> {
     return allocator.outerToSufix(b);
   }
 };
+
 }
 }
 
