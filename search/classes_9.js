@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['noaffix',['NoAffix',['../struct_a_l_b_1_1_affix_allocator_helper_1_1_no_affix.html',1,'ALB::AffixAllocatorHelper']]],
-  ['noatomic',['NoAtomic',['../class_a_l_b_1_1_helper_1_1_no_atomic.html',1,'ALB::Helper']]],
-  ['nulllock',['NullLock',['../class_a_l_b_1_1_shared_helpers_1_1_null_lock.html',1,'ALB::SharedHelpers']]]
+  ['reallocator',['reallocator',['../structalb_1_1internal_1_1reallocator.html',1,'alb::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt; traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html',1,'alb::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt;!traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html',1,'alb::internal']]]
 ];

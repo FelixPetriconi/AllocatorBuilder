@@ -1,17 +1,17 @@
 var searchData=
 [
-  ['noaffix',['NoAffix',['../struct_a_l_b_1_1_affix_allocator_helper_1_1_no_affix.html',1,'ALB::AffixAllocatorHelper']]],
-  ['noatomic',['NoAtomic',['../class_a_l_b_1_1_helper_1_1_no_atomic.html',1,'ALB::Helper']]],
-  ['nulllock',['NullLock',['../class_a_l_b_1_1_shared_helpers_1_1_null_lock.html',1,'ALB::SharedHelpers']]],
-  ['numall',['NumAll',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a2e00df59e2d24acf1a74fa8540419d3b',1,'ALB']]],
-  ['numallocate',['NumAllocate',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a8f1af9db100dd3f44e5b5c099c939168',1,'ALB']]],
-  ['numallocateok',['NumAllocateOK',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a797be8934a625a37372fec409b2a5433',1,'ALB']]],
-  ['numdeallocate',['NumDeallocate',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31abf214511407fb19a5cc6f835b4d4c5b7',1,'ALB']]],
-  ['numdeallocateall',['NumDeallocateAll',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31abe56d6b6c1963d96e4068baa3a87e767',1,'ALB']]],
-  ['numexpand',['NumExpand',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a025d859db4a1ac5d7ceada6cb48d3b66',1,'ALB']]],
-  ['numexpandok',['NumExpandOK',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31ab06c5cdeec1a55fa0a9b40ab12a9a47b',1,'ALB']]],
-  ['numowns',['NumOwns',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a4f956c92c151f2fe823782dd8f0b435b',1,'ALB']]],
-  ['numreallocate',['NumReallocate',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a5adc0916c7123886adec0eb291b11384',1,'ALB']]],
-  ['numreallocateinplace',['NumReallocateInPlace',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a001736c85cb98e5a693062b0c259d687',1,'ALB']]],
-  ['numreallocateok',['NumReallocateOK',['../group__group__stats.html#gga747ad72b3677849a6ee1c7a67c7fbf31a47a2f930e9049714300fc70dc0ad1d35',1,'ALB']]]
+  ['no_5faffix',['no_affix',['../structalb_1_1affix__allocator__helper_1_1no__affix.html',1,'alb::affix_allocator_helper']]],
+  ['noatomic',['NoAtomic',['../classalb_1_1internal_1_1_no_atomic.html',1,'alb::internal']]],
+  ['nulllock',['NullLock',['../classalb_1_1shared__helpers_1_1_null_lock.html',1,'alb::shared_helpers']]],
+  ['numall',['NumAll',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067',1,'alb']]],
+  ['numallocate',['NumAllocate',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab80022e29d5bae62e68c9734fb548924',1,'alb']]],
+  ['numallocateok',['NumAllocateOK',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea40f60ee04d59c258ea6dd81fd9e16b8c',1,'alb']]],
+  ['numdeallocate',['NumDeallocate',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea4f6e0eccf232107e0ee9e2c55c9a161a',1,'alb']]],
+  ['numdeallocateall',['NumDeallocateAll',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea58c3399e283a2535a01e2c29e513f7f9',1,'alb']]],
+  ['numexpand',['NumExpand',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab58d6196e3e5e94e2702d29a3ee53484',1,'alb']]],
+  ['numexpandok',['NumExpandOK',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7f2615cbd55b85265b07ad5ad1cb07a',1,'alb']]],
+  ['numowns',['NumOwns',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea939b71f5ad8e813a0f4f8413cb61c89c',1,'alb']]],
+  ['numreallocate',['NumReallocate',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea3742d31c2be75c887e336d0222740e73',1,'alb']]],
+  ['numreallocateinplace',['NumReallocateInPlace',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaa59dc9a06c9cd0eb4b46ef6c763a8411',1,'alb']]],
+  ['numreallocateok',['NumReallocateOK',['../group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab804de5c6bba7bedfa30e47e323c1dc0',1,'alb']]]
 ];

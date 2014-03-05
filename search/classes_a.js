@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['reallocator',['Reallocator',['../struct_a_l_b_1_1_helper_1_1_reallocator.html',1,'ALB::Helper']]],
-  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Reallocator&lt; Allocator, typename std::enable_if&lt; Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01_trdf4cc6f2a3a2d1b5556cbd6766e31352.html',1,'ALB::Helper']]],
-  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Reallocator&lt; Allocator, typename std::enable_if&lt;!Traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../struct_a_l_b_1_1_helper_1_1_reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9_tra8767ba2cf45dc5b585ed168fc9b4e991.html',1,'ALB::Helper']]]
+  ['segregator',['segregator',['../classalb_1_1segregator.html',1,'alb']]],
+  ['shared_5fcascading_5fallocator',['shared_cascading_allocator',['../classalb_1_1shared__cascading__allocator.html',1,'alb']]],
+  ['shared_5ffreelist',['shared_freelist',['../classalb_1_1shared__freelist.html',1,'alb']]],
+  ['shared_5fheap',['shared_heap',['../classalb_1_1shared__heap.html',1,'alb']]],
+  ['sharedlock',['SharedLock',['../classalb_1_1shared__helpers_1_1_shared_lock.html',1,'alb::shared_helpers']]],
+  ['stack',['stack',['../classalb_1_1internal_1_1stack.html',1,'alb::internal']]],
+  ['stack_5fallocator',['stack_allocator',['../classalb_1_1stack__allocator.html',1,'alb']]]
 ];

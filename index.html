@@ -195,28 +195,32 @@ $(document).ready(function(){initNavTree('index.html','');});
 <h2>Documentation </h2>
 <p>Online Documentation is available on <a href="http://felixpetriconi.github.io/AllocatorBuilder/index.html">GitHub.io</a> as well.</p>
 <h2>Author </h2>
-<p>Felix Petriconi</p>
+<p>Felix Petriconi (felix at petriconi.net)</p>
 <h2>Contributions </h2>
-<p>Contributions are welcome! Please make a forke and request for integration.</p>
+<p>Comments, feedback or contributions are welcome!</p>
 <h2>License </h2>
 <p>Boost 1.0 License</p>
 <h2>Version </h2>
-<p>0.1.0</p>
+<p>0.9.0</p>
 <h2>Prerequisites </h2>
 <ul>
 <li>C++ 11 (partly, as far as Visual Studio 2012 supports it)</li>
-<li>boost 1.55.0 (lockfree, thread, assert, option)</li>
+<li>boost 1.54.0 (lockfree, thread, assert, option)</li>
 <li>CMake 2.8 or later</li>
 <li>GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)</li>
 </ul>
 <h2>Platform </h2>
-<p>No platform specific features used, but tested so far only with MS Visual Studio 2012 and 2013</p>
+<p>No platform specific features used.</p>
+<ul>
+<li>Visual Studio 2012/2013: All unit tests pass</li>
+<li>Clang 3.4: All unit tests pass</li>
+</ul>
 <h2>Installation Win </h2>
 <ul>
 <li>Have boost installed and the standard libs be build, install into D:</li>
-<li>Clone into eg D:</li>
+<li>Clone into e.g. D:</li>
 <li>Create a build folder, eg D:</li>
-<li>Open a command promt in that alb_build folder</li>
+<li>Open a command prompt in that alb_build folder</li>
 <li>Have CMake in the path</li>
 <li>Execute cmake -G "Visual Studio 11 Win64" ..</li>
 <li>Open created solution in ..sln</li>
@@ -229,7 +233,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Feb 28 2014 16:46:41 for Allocator Builder by
+    <li class="footer">Generated on Wed Mar 5 2014 11:59:25 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['statsoptions',['StatsOptions',['../group__group__stats.html#ga747ad72b3677849a6ee1c7a67c7fbf31',1,'ALB']]]
+  ['dynasticoptions',['DynasticOptions',['../group__group__internal.html#ga768bb592f5a2e40ba54c59aa2dbcba9f',1,'alb::internal']]]
 ];

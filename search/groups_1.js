@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['helpers',['Helpers',['../group__group__helpers.html',1,'']]]
+  ['internal',['Internal',['../group__group__internal.html',1,'']]]
 ];
