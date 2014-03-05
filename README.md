@@ -140,11 +140,11 @@ Prerequisites
 
 Platform
 --------
-  | Compiler | Status |
-  -----------|---------
-  | Visual Studio 2012 x64 | All tests pass |
-  | Visual Studio 2013 x64 | All tests pass |
-  | Debian x64, Clang 3.4  | All tests pass |
+| Compiler | Status |
+-----------|---------
+| Visual Studio 2012 x64 | All tests pass |
+| Visual Studio 2013 x64 | All tests pass |
+| Debian x64, Clang 3.4  | All tests pass |
 
 Installation Win
 ----------------
