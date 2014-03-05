@@ -84,10 +84,10 @@ public:
    */
   void setMinMax(size_t minSize, size_t maxSize) {
     BOOST_ASSERT_MSG(
-      _lowerBound.value() == DynasticUndefined,
+      _lowerBound.value() == internal::DynasticUndefined,
         "Changing the lower bound during after initialization is not wise!");
     BOOST_ASSERT_MSG(
-      _upperBound.value() == DynasticUndefined,
+      _upperBound.value() == internal::DynasticUndefined,
         "Changing the upper bound during after initialization is not wise!");
 
     _lowerBound.value(minSize);
