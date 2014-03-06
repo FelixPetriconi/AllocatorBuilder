@@ -23,7 +23,7 @@ namespace
 
 class SegregatorTest : public 
   alb::test_helpers::AllocatorBaseTest<
-    alb::segregator<alb::stack_allocator<32>::max_size+1, alb::stack_allocator<32>, 
+    alb::segregator<alb::stack_allocator<32>::max_size, alb::stack_allocator<32>, 
     alb::shared_heap<alb::mallocator, 512,4>>>
 {
 protected:

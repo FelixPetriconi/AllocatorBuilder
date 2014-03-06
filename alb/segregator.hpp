@@ -49,7 +49,7 @@ public:
    * \return Block with the memory information.
    */
   block allocate(size_t n) {
-    if (n < Threshold) {
+    if (n <= Threshold) {
       return SmallAllocator::allocate(n);
     }
     return LargeAllocator::allocate(n);
@@ -64,13 +64,7 @@ public:
       return;
     }
 
-    if (!owns(b)) {
-      BOOST_ASSERT_MSG(false,
-                       "It is not wise to pass me a foreign allocated block!");
-      return;
-    }
-
-    if (b.length < Threshold) {
+    if (b.length <= Threshold) {
       return SmallAllocator::deallocate(b);
     }
     return LargeAllocator::deallocate(b);
@@ -82,31 +76,27 @@ public:
    * \param b The block to be changed
    * \param n The new size
    * \return True, if the operation was successful
+   *
    * \ingroup group_allocators group_shared
    */
   bool reallocate(block &b, size_t n) {
-    if (!owns(b)) {
-      BOOST_ASSERT_MSG(false,
-                       "It is not wise to pass me a foreign allocated block!");
-      return false;
-    }
     if (internal::reallocator<segregator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
-    if (b.length < Threshold) {
-      if (n < Threshold) {
+    if (b.length <= Threshold) {
+      if (n <= Threshold) {
         return SmallAllocator::reallocate(b, n);
       } else {
         return internal::reallocateWithCopy(
             *this, static_cast<LargeAllocator &>(*this), b, n);
       }
     } else {
-      if (n < Threshold) {
+      if (n <= Threshold) {
         return internal::reallocateWithCopy(
             *this, static_cast<SmallAllocator &>(*this), b, n);
       } else {
-        return SmallAllocator::reallocate(b, n);
+        return LargeAllocator::reallocate(b, n);
       }
     }
 
@@ -124,10 +114,10 @@ public:
       traits::has_expand<SmallAllocator>::value ||
           traits::has_expand<LargeAllocator>::value >
               ::type expand(block &b, size_t delta) {
-    if (b.length < Threshold && b.length + delta >= Threshold) {
+    if (b.length <= Threshold && b.length + delta > Threshold) {
       return false;
     }
-    if (b.length < Threshold) {
+    if (b.length <= Threshold) {
       if (traits::has_expand<SmallAllocator>::value) {
         return traits::Expander<SmallAllocator>::doIt(
             static_cast<SmallAllocator &>(*this), b, delta);
@@ -153,7 +143,7 @@ public:
       bool, traits::has_owns<SmallAllocator>::value &&
                 traits::has_owns<LargeAllocator>::value>::type
   owns(const block &b) const {
-    if (b.length < Threshold) {
+    if (b.length <= Threshold) {
       return SmallAllocator::owns(b);
     }
     return LargeAllocator::owns(b);

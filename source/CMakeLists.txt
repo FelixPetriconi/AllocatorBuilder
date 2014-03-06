@@ -18,12 +18,14 @@ set(HEADERS
   ../alb/bucketizer.hpp
   ../alb/cascading_allocator.hpp
   ../alb/fallback_allocator.hpp
+  ../alb/global_allocator.hpp
   ../alb/mallocator.hpp
   ../alb/memory_corruption_detector.hpp
   ../alb/segregator.hpp
   ../alb/freelist.hpp
   ../alb/shared_heap.hpp
   ../alb/stack_allocator.hpp
+  ../alb/stl_allocator.hpp
   ../alb/internal/dynastic.hpp
   ../alb/internal/noatomic.hpp
   ../alb/internal/reallocator.hpp

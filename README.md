@@ -95,16 +95,16 @@ Allocator Overview
 
 |Allocator                 |Description                                                                 |
 ---------------------------|----------------------------------------------------------------------------
-| affix_allocator           | Allows to automatically pre- and sufix allocated regions. |
-| allocator_with_stats       | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
+| affix_allocator          | Allows to automatically pre- and sufix allocated regions. |
+| allocator_with_stats     | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
 | bucketizer               | Manages a bunch of Allocators with increasing bucket size |
-| fallback_allocator        | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
-| (aligned_)mallocator      | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
+| fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
+| (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
 | segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
-| (ahared_)freelist         | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
+| (ahared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
 | (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |
-| (shared_)heap             | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
-| stack_allocator           | Provides a memory access, taken from the stack |
+| (shared_)heap            | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
+| stack_allocator          | Provides a memory access, taken from the stack |
 
 Documentation
 -------------
@@ -128,7 +128,7 @@ License
 
 Version
 -------
-  0.9.5
+  0.9.6
 
 Prerequisites
 -------------

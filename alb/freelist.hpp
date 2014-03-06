@@ -13,9 +13,13 @@
 #include "internal/dynastic.hpp"
 #include "internal/stack.hpp"
 #include "internal/reallocator.hpp"
-#include <boost/lockfree/stack.hpp>
 #include <boost/config/suffix.hpp>
 
+#ifdef _MSC_VER
+#pragma  warning(push)
+#pragma warning(disable : 4189)
+#endif
+#include <boost/lockfree/stack.hpp>
 
 namespace alb {
 /**
@@ -260,3 +264,8 @@ public:
 
 };
 }
+
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
