@@ -25,6 +25,8 @@ template <typename T>
 class NoAtomic {
   T _value;
 public:
+  NoAtomic() {}
+
   NoAtomic(T v) : _value(std::move(v)) {}
 
   T load() { return _value; }

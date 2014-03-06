@@ -10,6 +10,7 @@
 #pragma once
 
 #include <boost/thread.hpp>
+#include <mutex>
 
 namespace alb {
 namespace shared_helpers {
@@ -49,5 +50,27 @@ public:
   UniqueLock(boost::shared_mutex& m) : _lock(m) {}
 };
 
-}
-}
+struct null_mutex {};
+
+struct null_lock {
+  null_lock(null_mutex&) {}
+};
+
+template <class M>
+struct lock_guard;
+
+template <>
+struct lock_guard<null_mutex> {
+  lock_guard(null_mutex&) {}
+};
+
+template <>
+struct lock_guard<std::mutex> {
+  std::unique_lock<std::mutex> _lock;
+private:
+  lock_guard(std::mutex& m) : _lock(m) {}
+};
+
+
+} // namespace helpers
+} // namespace alb
