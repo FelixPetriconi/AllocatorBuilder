@@ -73,8 +73,4 @@ private:
 
 
 } // namespace helpers
-<<<<<<< HEAD
 } // namespace alb
-=======
-} // namespace alb
->>>>>>> 0e79b8e38fd48c8f459a2b1ce440923c0ab0c157
