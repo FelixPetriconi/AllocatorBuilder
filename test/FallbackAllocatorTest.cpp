@@ -13,9 +13,9 @@
 #include <alb/stack_allocator.hpp>
 #include <alb/shared_heap.hpp>
 #include <alb/mallocator.hpp>
-#include "ALBTestHelpersAllocatorBaseTest.h"
-#include "ALBTestHelpersData.h"
-#include "ALBTestHelpers.h"
+#include "TestHelpers/AllocatorBaseTest.h"
+#include "TestHelpers/Data.h"
+#include "TestHelpers/Base.h"
 
 using namespace alb::test_helpers;
 
@@ -37,7 +37,7 @@ protected:
   }
 
   void* StartPtrPrimary;
-  alb::Block mem;
+  alb::block mem;
 };
 
 TEST_F(FallbackAllocatorTest, ThatAllocatingZeroBytesReturnsAnEmptyBlock)
@@ -159,7 +159,7 @@ TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsOwnsTest, ThatOwnsIsProcess
   EXPECT_TRUE(sut.owns(memFromPrimary));
   EXPECT_TRUE(sut.owns(memFromFallback));
 
-  EXPECT_FALSE(sut.owns(alb::Block()));
+  EXPECT_FALSE(sut.owns(alb::block()));
 }
 
 TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsExpandTest, ThatExpandIsProcessedCorrectly)

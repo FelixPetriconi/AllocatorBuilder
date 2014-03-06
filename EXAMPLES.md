@@ -80,4 +80,6 @@ segregator<512, bucketizer<FList, 17, 512, 16>, mallocator> myAllocator;
 ~~~
 Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap.
 
+= Replacement of global ::new() and ::delete
 
+= Creating a custom STL compatible allocator

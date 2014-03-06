@@ -27,7 +27,7 @@ template <class Allocator, size_t BytesPerBitMarker>
 class UsedMem
 {
   Allocator& _allocator;
-  std::vector<Block> _usedBlocks;    
+  std::vector<block> _usedBlocks;    
   template <class A, size_t B>
   friend class UsedMemGenerator;
 
@@ -36,13 +36,13 @@ public:
   : _allocator(allocator) {
   }
 
-  const std::vector<Block>& blocks() const { return _usedBlocks; }
+  const std::vector<block>& blocks() const { return _usedBlocks; }
 };
 
 template <class Allocator, size_t BytesPerBitMarker>
 class UsedMemGenerator {
   UsedMem<Allocator, BytesPerBitMarker> _usedMem;
-  std::vector<Block> _freedLater;
+  std::vector<block> _freedLater;
 public:
   UsedMemGenerator(Allocator& allocator)
     : _usedMem(allocator)

@@ -13,7 +13,7 @@
 #include <boost/type_traits.hpp>
 
 namespace alb {
-namespace helper {
+namespace internal {
 
 /**
  * Simple stack with the same interface as boost::lockfree::stack with a fixed
@@ -22,7 +22,7 @@ namespace helper {
  * \tparam T The element type to be put into the stack
  * \tparam MaxSize The maximum number of elements that can be put into the stack
  *
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
 template <typename T, unsigned MaxSize> 
 class stack {

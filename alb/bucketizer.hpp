@@ -10,6 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/reallocator.hpp"
 #include <boost/assert.hpp>
 #include <boost/config/suffix.hpp>
 #include <array>
@@ -68,7 +69,7 @@ public:
    * \param n The number of bytes to be allocated
    * \return The Block describing the allocated memory
    */
-  Block allocate(size_t n) {
+  block allocate(size_t n) {
     size_t i = 0;
     while (i < number_of_buckets) {
       if (_buckets[i].min_size() <= n && n <= _buckets[i].max_size()) {
@@ -76,7 +77,7 @@ public:
       }
       ++i;
     }
-    return Block();
+    return block();
   }
 
   /**
@@ -84,7 +85,7 @@ public:
    * \param b The block to be checked
    * \return Returns true, if the block is owned by one of the bucket items
    */
-  bool owns(const Block &b) {
+  bool owns(const block &b) {
     return b && (MinSize <= b.length && b.length <= MaxSize);
   }
 
@@ -98,18 +99,18 @@ public:
    * \param n The new size of the block.
    * \return True, if the reallocation was successful.
    */
-  bool reallocate(Block &b, size_t n) {
+  bool reallocate(block &b, size_t n) {
     if (n != 0 && (n < MinSize || n > MaxSize)) {
       return false;
     }
 
-    if (helper::Reallocator<bucketizer>::isHandledDefault(*this, b, n)) {
+    if (internal::reallocator<bucketizer>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
     BOOST_ASSERT(owns(b));
 
-    const auto alignedLength = helper::roundToAlignment(StepSize, n);
+    const auto alignedLength = internal::roundToAlignment(StepSize, n);
     auto currentAllocator = findMatchingAllocator(b.length);
     auto newAllocator = findMatchingAllocator(alignedLength);
 
@@ -117,7 +118,7 @@ public:
       return true;
     }
 
-    return helper::reallocateWithCopy(*currentAllocator, *newAllocator, b,
+    return internal::reallocateWithCopy(*currentAllocator, *newAllocator, b,
                                       alignedLength);
   }
 
@@ -125,7 +126,7 @@ public:
    * Frees the given block and resets it.
    * \param b The block, its memory should be freed
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
@@ -154,7 +155,7 @@ public:
 private:
   Allocator *findMatchingAllocator(size_t n) {
     BOOST_ASSERT(MinSize <= n && n <= MaxSize);
-    auto v = alb::helper::roundToAlignment(StepSize, n);
+    auto v = alb::internal::roundToAlignment(StepSize, n);
     return &_buckets[(v - MinSize) / StepSize];
   }
 };

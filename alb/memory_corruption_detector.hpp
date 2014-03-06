@@ -21,9 +21,10 @@ namespace alb {
  * \tparam T must be an integral type. A guard with its size is used
  * \tparam Pattern this pattern is put into the memory as guard e.g. 0xdeadbeef
  *
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
-template <typename T, size_t Pattern> class memory_corruption_detector {
+template <typename T, size_t Pattern> 
+class memory_corruption_detector {
   static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
                 "Memory check not for supported types");
 

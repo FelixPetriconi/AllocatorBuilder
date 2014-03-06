@@ -10,6 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/reallocator.hpp"
 #include <boost/assert.hpp>
 #include <boost/config/suffix.hpp>
 #include <boost/type_traits/ice.hpp>
@@ -47,8 +48,8 @@ public:
    * \param n Number of requested bytes
    * \return Block with the memory information.
    */
-  Block allocate(size_t n) {
-    if (n < Threshold) {
+  block allocate(size_t n) {
+    if (n <= Threshold) {
       return SmallAllocator::allocate(n);
     }
     return LargeAllocator::allocate(n);
@@ -58,18 +59,12 @@ public:
    * Frees the given block and resets it.
    * \param b The block to be freed.
    */
-  void deallocate(Block &b) {
+  void deallocate(block &b) {
     if (!b) {
       return;
     }
 
-    if (!owns(b)) {
-      BOOST_ASSERT_MSG(false,
-                       "It is not wise to pass me a foreign allocated block!");
-      return;
-    }
-
-    if (b.length < Threshold) {
+    if (b.length <= Threshold) {
       return SmallAllocator::deallocate(b);
     }
     return LargeAllocator::deallocate(b);
@@ -81,31 +76,27 @@ public:
    * \param b The block to be changed
    * \param n The new size
    * \return True, if the operation was successful
+   *
    * \ingroup group_allocators group_shared
    */
-  bool reallocate(Block &b, size_t n) {
-    if (!owns(b)) {
-      BOOST_ASSERT_MSG(false,
-                       "It is not wise to pass me a foreign allocated block!");
-      return false;
-    }
-    if (helper::Reallocator<segregator>::isHandledDefault(*this, b, n)) {
+  bool reallocate(block &b, size_t n) {
+    if (internal::reallocator<segregator>::isHandledDefault(*this, b, n)) {
       return true;
     }
 
-    if (b.length < Threshold) {
-      if (n < Threshold) {
+    if (b.length <= Threshold) {
+      if (n <= Threshold) {
         return SmallAllocator::reallocate(b, n);
       } else {
-        return helper::reallocateWithCopy(
+        return internal::reallocateWithCopy(
             *this, static_cast<LargeAllocator &>(*this), b, n);
       }
     } else {
-      if (n < Threshold) {
-        return helper::reallocateWithCopy(
+      if (n <= Threshold) {
+        return internal::reallocateWithCopy(
             *this, static_cast<SmallAllocator &>(*this), b, n);
       } else {
-        return SmallAllocator::reallocate(b, n);
+        return LargeAllocator::reallocate(b, n);
       }
     }
 
@@ -122,11 +113,11 @@ public:
   typename traits::enable_result_to < bool,
       traits::has_expand<SmallAllocator>::value ||
           traits::has_expand<LargeAllocator>::value >
-              ::type expand(Block &b, size_t delta) {
-    if (b.length < Threshold && b.length + delta >= Threshold) {
+              ::type expand(block &b, size_t delta) {
+    if (b.length <= Threshold && b.length + delta > Threshold) {
       return false;
     }
-    if (b.length < Threshold) {
+    if (b.length <= Threshold) {
       if (traits::has_expand<SmallAllocator>::value) {
         return traits::Expander<SmallAllocator>::doIt(
             static_cast<SmallAllocator &>(*this), b, delta);
@@ -151,8 +142,8 @@ public:
   typename traits::enable_result_to<
       bool, traits::has_owns<SmallAllocator>::value &&
                 traits::has_owns<LargeAllocator>::value>::type
-  owns(const Block &b) const {
-    if (b.length < Threshold) {
+  owns(const block &b) const {
+    if (b.length <= Threshold) {
       return SmallAllocator::owns(b);
     }
     return LargeAllocator::owns(b);

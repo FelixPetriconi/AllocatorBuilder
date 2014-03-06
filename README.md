@@ -14,7 +14,7 @@ Example use cases:
 
 So the approach is, every allocator returns such a Block
 ~~~
-struct Block {
+struct block {
   void* ptr;
   size_t length;
 };
@@ -50,7 +50,7 @@ Everybody would agree that this is not nice! So what if one could encapsulate th
 const int STACK_THRESHOLD = 1024;
 int neededBytes = 42
 
-typedef FallbackAllocator<StackAllocator<STACK_THRESHOLD>, Mallocator> LocalAllocator; 
+typedef fallback_allocator<stack_allocator<STACK_THRESHOLD>, mallocator> LocalAllocator; 
 LocalAllocator localAllocator;
 
 auto block = localAllocator.allocate(neededBytes);
@@ -65,21 +65,21 @@ So, isn't this much cleaner?
 
 A more advanced allocator as it is used in [jmalloc](http://www.canonware.com/jemalloc/) would look like:
 ~~~
-// This defines a FreeList that is later configured by the Bucketizer to its size
-typedef Freelist<Mallocator, DynamicSetSize, DynamicSetSize> FList;
+// This defines a FreeList that is later configured by the bucketizer to its size
+typedef freelist<mallocator, DynamicSetSize, DynamicSetSize> FList;
 
 // All allocation requests up to 3584 bytes are handled by the cascade of FLists.
 // Sizes from 3584 till 4MB are handled by the Heap and all beyond that are forwarded
 // directly to the normal OS
-typedef Segregator<
-  8, Freelist<Mallocator, 0, 8>, Segregator<
-    128, Bucketizer<FList, 1, 128, 16>, Segregator<
-      256, Bucketizer<FList, 129, 256, 32>, Segegator<
-        512, Bucketizer<FList, 257, 512, 64>, Segegator<
-          1024, Bucketizer<FList, 513, 1024, 128>, Segegator<
-            2048, Bucketizer<FList, 1025, 2048, 256>, Segegator<
-              3584, Bucketizer<FList, 2049, 3584, 512>, Segegator<
-                4072 * 1024, CascadingAllocator<Heap<Mallocator, 1018, 4096>>, Mallocator
+typedef segregator<
+  8, freelist<mallocator, 0, 8>, segregator<
+    128, bucketizer<FList, 1, 128, 16>, segregator<
+      256, bucketizer<FList, 129, 256, 32>, Segegator<
+        512, bucketizer<FList, 257, 512, 64>, Segegator<
+          1024, bucketizer<FList, 513, 1024, 128>, Segegator<
+            2048, bucketizer<FList, 1025, 2048, 256>, Segegator<
+              3584, bucketizer<FList, 2049, 3584, 512>, Segegator<
+                4072 * 1024, cascading_allocator<Heap<mallocator, 1018, 4096>>, mallocator
               >
             >
           >
@@ -95,16 +95,16 @@ Allocator Overview
 
 |Allocator                 |Description                                                                 |
 ---------------------------|----------------------------------------------------------------------------
-| AffixAllocator           | Allows to automatically pre- and sufix allocated regions. |
-| AllocatorWithStats       | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
-| Bucketizer               | Manages a bunch of Allocators with increasing bucket size |
-| FallbackAllocator        | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
-| (Aligned)Mallocator      | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
-| Segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
-| (Shared)FreeList         | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
-| (Shared)CascadingAllocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |
-| (Shared)Heap             | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
-| StackAllocator           | Provides a memory access, taken from the stack |
+| affix_allocator          | Allows to automatically pre- and sufix allocated regions. |
+| allocator_with_stats     | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
+| bucketizer               | Manages a bunch of Allocators with increasing bucket size |
+| fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
+| (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
+| segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
+| (ahared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
+| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |
+| (shared_)heap            | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
+| stack_allocator          | Provides a memory access, taken from the stack |
 
 Documentation
 -------------
@@ -128,7 +128,7 @@ License
 
 Version
 -------
-  0.9.0
+  0.9.6
 
 Prerequisites
 -------------
@@ -140,9 +140,11 @@ Prerequisites
 
 Platform
 --------
-  No platform specific features used.
-  * Visual Studio 2012/2013: All unit tests pass
-  * Clang 3.4: All unit tests pass
+| Compiler | Status |
+-----------|---------
+| Visual Studio 2012 x64 | All tests pass |
+| Visual Studio 2013 x64 | All tests pass |
+| Debian x64, Clang 3.4  | All tests pass |
 
 Installation Win
 ----------------

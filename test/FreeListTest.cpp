@@ -11,8 +11,8 @@
 #include <alb/freelist.hpp>
 #include <alb/mallocator.hpp>
 #include <alb/stack_allocator.hpp>
-#include "ALBTestHelpersAllocatorBaseTest.h"
-#include "ALBTestHelpers.h"
+#include "TestHelpers/AllocatorBaseTest.h"
+#include "TestHelpers/Base.h"
 
 template <class T>
 class SharedListTest : public alb::test_helpers::AllocatorBaseTest<T>
@@ -21,7 +21,7 @@ protected:
   void TearDown() {
     this->deallocateAndCheckBlockIsThenEmpty(this->mem);
   }
-  alb::Block mem;
+  alb::block mem;
 };
 
 typedef ::testing::Types<
@@ -84,12 +84,12 @@ TYPED_TEST(SharedListTest, ThatReallocatingAFilledBlockToNonZeroIsRejected)
 
 TYPED_TEST(SharedListTest, ThatBlocksOutsideTheBoundsAreNotRecognizedAsOwned)
 {
-  EXPECT_FALSE(this->sut.owns(alb::Block()));
-  EXPECT_FALSE(this->sut.owns(alb::Block(nullptr, 64)));
+  EXPECT_FALSE(this->sut.owns(alb::block()));
+  EXPECT_FALSE(this->sut.owns(alb::block(nullptr, 64)));
 
   alb::shared_freelist<alb::mallocator, 16, 32> sutNotStartingAtZero;
-  EXPECT_FALSE(sutNotStartingAtZero.owns(alb::Block(nullptr, 15)));
-  EXPECT_FALSE(sutNotStartingAtZero.owns(alb::Block(nullptr, 33)));
+  EXPECT_FALSE(sutNotStartingAtZero.owns(alb::block(nullptr, 15)));
+  EXPECT_FALSE(sutNotStartingAtZero.owns(alb::block(nullptr, 33)));
 }
 
 TYPED_TEST(SharedListTest, ThatAProvidedBlockIsRecongizedAOwned)
@@ -108,9 +108,11 @@ protected:
 };
 
 typedef ::testing::Types<
-  alb::shared_freelist<alb::mallocator, alb::DynasticDynamicSet, alb::DynasticDynamicSet>,
-  alb::freelist<alb::mallocator, alb::DynasticDynamicSet, alb::DynasticDynamicSet>
-> TypesForFreeListWithParametrizedTest;
+    alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+                         alb::internal::DynasticDynamicSet>,
+    alb::freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+                  alb::internal::DynasticDynamicSet> >
+TypesForFreeListWithParametrizedTest;
 
 TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTest);
 
@@ -132,7 +134,7 @@ TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRe
 TEST(FreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAllocatedBlocksAreInLine)
 {
   alb::shared_freelist<alb::stack_allocator<1024>, 0, 16,1024, 4> sut;
-  alb::Block mem[8]; // 0 3 2 1  0 3 2 1 order of allocations
+  alb::block mem[8]; // 0 3 2 1  0 3 2 1 order of allocations
   mem[0] = sut.allocate(16);
   for (size_t i = 3; i > 0; i--) {
     mem[i] = sut.allocate(16);

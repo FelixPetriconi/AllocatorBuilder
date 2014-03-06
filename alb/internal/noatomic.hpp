@@ -10,7 +10,7 @@
 #pragma once
 
 namespace alb {
-namespace helper {
+namespace internal {
 
 /**
   * Template that mimics (partly) the std::atomic<T> interface, without
@@ -19,7 +19,7 @@ namespace helper {
   * threaded or multi threaded is needed
   * \tparam T The value that the class encapsulate
   *
-  * \ingroup group_helpers
+  * \ingroup group_internal
   */
 template <typename T>
 class NoAtomic {

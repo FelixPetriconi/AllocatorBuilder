@@ -18,7 +18,7 @@ namespace shared_helpers {
 /**
  * Class that does not lock a given mutex
  *
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
 class NullLock
 {
@@ -29,7 +29,7 @@ public:
 /**
  * Class that locks with a shared lock then given mutex
  *
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
 class SharedLock
 {
@@ -41,7 +41,7 @@ public:
 /**
  * Class that locks with a unique lock a given mutex
  *
- * \ingroup group_helpers
+ * \ingroup group_internal
  */
 class UniqueLock
 {
@@ -73,4 +73,8 @@ private:
 
 
 } // namespace helpers
+<<<<<<< HEAD
 } // namespace alb
+=======
+} // namespace alb
+>>>>>>> 0e79b8e38fd48c8f459a2b1ce440923c0ab0c157

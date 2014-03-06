@@ -13,7 +13,7 @@
 #include <stddef.h>
 
 namespace alb {
-struct Block;
+struct block;
 
 namespace traits {
 /**
@@ -28,7 +28,7 @@ private:
     char dummy[2];
   };
 
-  template <typename U, bool (U::*)(Block &, size_t)> struct Check;
+  template <typename U, bool (U::*)(block &, size_t)> struct Check;
   template <typename U> static Yes func(Check<U, &U::expand> *);
   template <typename U> static No func(...);
 
@@ -68,7 +68,7 @@ private:
     char dummy[2];
   };
 
-  template <typename U, bool (U::*)(const Block &) const> struct Check;
+  template <typename U, bool (U::*)(const block &) const> struct Check;
   template <typename U> static Yes func(Check<U, &U::owns> *);
   template <typename U> static No func(...);
 
@@ -165,7 +165,7 @@ template <class Allocator, typename Enabled = void> struct Expander;
 template <class Allocator>
 struct Expander<Allocator,
                 typename std::enable_if<has_expand<Allocator>::value>::type> {
-  static bool doIt(Allocator &a, Block &b, size_t delta) {
+  static bool doIt(Allocator &a, block &b, size_t delta) {
     return a.expand(b, delta);
   }
 };
@@ -173,7 +173,7 @@ struct Expander<Allocator,
 template <class Allocator>
 struct Expander<Allocator,
                 typename std::enable_if<!has_expand<Allocator>::value>::type> {
-  static bool doIt(Allocator &, Block &, size_t) { return false; }
+  static bool doIt(Allocator &, block &, size_t) { return false; }
 };
 
 /**

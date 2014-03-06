@@ -17,8 +17,9 @@
 #include <memory.h>
 
 #include <alb/allocator_base.hpp>
-#include "ALBTestHelpersAlgorithm.h"
-#include "ALBTestHelpersData.h"
+#include "Base.h"
+#include "Algorithm.h"
+#include "Data.h"
 
 
 namespace alb {
@@ -115,7 +116,7 @@ public:
   void check() {
     Oszillator bytesToWork(_maxUsedBytes);
     Oszillator memBlockIndex(7);
-    std::vector<alb::Block> mems;
+    std::vector<alb::block> mems;
 
     for (size_t i = 0; i < 8; i++) {
       auto mem = _allocator.allocate(bytesToWork++);
