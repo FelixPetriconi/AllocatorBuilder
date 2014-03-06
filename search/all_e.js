@@ -1,14 +1,12 @@
 var searchData=
 [
-  ['shared_20allocators',['Shared Allocators',['../group__group__shared.html',1,'']]],
-  ['statistic',['Statistic',['../group__group__stats.html',1,'']]],
-  ['segregator',['segregator',['../classalb_1_1segregator.html',1,'alb']]],
-  ['setminmax',['setMinMax',['../classalb_1_1freelist__base.html#a393ef0ea0a4b4bc39a5f1ed95ad69061',1,'alb::freelist_base']]],
-  ['shared_5fcascading_5fallocator',['shared_cascading_allocator',['../classalb_1_1shared__cascading__allocator.html',1,'alb']]],
-  ['shared_5ffreelist',['shared_freelist',['../classalb_1_1shared__freelist.html',1,'alb']]],
-  ['shared_5fheap',['shared_heap',['../classalb_1_1shared__heap.html',1,'alb']]],
-  ['sharedlock',['SharedLock',['../classalb_1_1shared__helpers_1_1_shared_lock.html',1,'alb::shared_helpers']]],
-  ['stack',['stack',['../classalb_1_1internal_1_1stack.html',1,'alb::internal']]],
-  ['stack_5fallocator',['stack_allocator',['../classalb_1_1stack__allocator.html',1,'alb']]],
-  ['statsoptions',['StatsOptions',['../group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e',1,'alb']]]
+  ['reallocate',['reallocate',['../classalb_1_1affix__allocator.html#a6ace9d6b070e1e6ae0bef7ae061b6e01',1,'alb::affix_allocator::reallocate()'],['../classalb_1_1aligned__mallocator.html#a90463f45369429e23af7c144f708f974',1,'alb::aligned_mallocator::reallocate()'],['../classalb_1_1allocator__with__stats.html#a20679da0417e2a4f4311955c745c93ef',1,'alb::allocator_with_stats::reallocate()'],['../classalb_1_1bucketizer.html#a0259add5814d0fb5cda315882729c9e6',1,'alb::bucketizer::reallocate()'],['../classalb_1_1cascading__allocator__base.html#a7f956a181f5ac5044d19f9215e168449',1,'alb::cascading_allocator_base::reallocate()'],['../classalb_1_1fallback__allocator.html#a176fa1dbac7edfe5cd34d58b2be54a56',1,'alb::fallback_allocator::reallocate()'],['../classalb_1_1freelist__base.html#aab5ba7b080a87893935c5ac7b9dda79d',1,'alb::freelist_base::reallocate()'],['../classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7',1,'alb::mallocator::reallocate()'],['../group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474',1,'alb::segregator::reallocate()']]],
+  ['reallocatewithcopy',['reallocateWithCopy',['../group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf',1,'alb::internal']]],
+  ['reallocator',['reallocator',['../structalb_1_1internal_1_1reallocator.html',1,'alb::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt; traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html',1,'alb::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt;!traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html',1,'alb::internal']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_1_1rebind.html',1,'alb::stl_allocator']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html',1,'alb::stl_allocator&lt; void, Allocator &gt;']]],
+  ['reset',['reset',['../structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba',1,'alb::block']]],
+  ['roundtoalignment',['roundToAlignment',['../group__group__internal.html#gaf90cc079b977ea84f5b8009f9a33f467',1,'alb::internal']]]
 ];

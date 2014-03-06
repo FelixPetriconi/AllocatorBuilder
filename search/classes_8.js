@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['no_5faffix',['no_affix',['../structalb_1_1affix__allocator__helper_1_1no__affix.html',1,'alb::affix_allocator_helper']]],
-  ['noatomic',['NoAtomic',['../classalb_1_1internal_1_1_no_atomic.html',1,'alb::internal']]],
-  ['nulllock',['NullLock',['../classalb_1_1shared__helpers_1_1_null_lock.html',1,'alb::shared_helpers']]]
+  ['length_5fprefix',['length_prefix',['../structalb_1_1length__prefix.html',1,'alb']]],
+  ['lock_5fguard',['lock_guard',['../structalb_1_1shared__helpers_1_1lock__guard.html',1,'alb::shared_helpers']]],
+  ['lock_5fguard_3c_20null_5fmutex_20_3e',['lock_guard&lt; null_mutex &gt;',['../structalb_1_1shared__helpers_1_1lock__guard_3_01null__mutex_01_4.html',1,'alb::shared_helpers']]],
+  ['lock_5fguard_3c_20std_3a_3amutex_20_3e',['lock_guard&lt; std::mutex &gt;',['../structalb_1_1shared__helpers_1_1lock__guard_3_01std_1_1mutex_01_4.html',1,'alb::shared_helpers']]]
 ];

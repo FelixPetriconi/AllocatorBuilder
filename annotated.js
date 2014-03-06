@@ -16,7 +16,12 @@ var annotated =
       [ "shared_helpers", null, [
         [ "NullLock", "classalb_1_1shared__helpers_1_1_null_lock.html", "classalb_1_1shared__helpers_1_1_null_lock" ],
         [ "SharedLock", "classalb_1_1shared__helpers_1_1_shared_lock.html", "classalb_1_1shared__helpers_1_1_shared_lock" ],
-        [ "UniqueLock", "classalb_1_1shared__helpers_1_1_unique_lock.html", "classalb_1_1shared__helpers_1_1_unique_lock" ]
+        [ "UniqueLock", "classalb_1_1shared__helpers_1_1_unique_lock.html", "classalb_1_1shared__helpers_1_1_unique_lock" ],
+        [ "null_mutex", "structalb_1_1shared__helpers_1_1null__mutex.html", null ],
+        [ "null_lock", "structalb_1_1shared__helpers_1_1null__lock.html", "structalb_1_1shared__helpers_1_1null__lock" ],
+        [ "lock_guard", "structalb_1_1shared__helpers_1_1lock__guard.html", null ],
+        [ "lock_guard< null_mutex >", "structalb_1_1shared__helpers_1_1lock__guard_3_01null__mutex_01_4.html", "structalb_1_1shared__helpers_1_1lock__guard_3_01null__mutex_01_4" ],
+        [ "lock_guard< std::mutex >", "structalb_1_1shared__helpers_1_1lock__guard_3_01std_1_1mutex_01_4.html", "structalb_1_1shared__helpers_1_1lock__guard_3_01std_1_1mutex_01_4" ]
       ] ],
       [ "traits", null, [
         [ "affix_extractor", "structalb_1_1traits_1_1affix__extractor.html", null ],
@@ -61,10 +66,14 @@ var annotated =
       [ "freelist_base", "classalb_1_1freelist__base.html", "classalb_1_1freelist__base" ],
       [ "shared_freelist", "classalb_1_1shared__freelist.html", "classalb_1_1shared__freelist" ],
       [ "freelist", "classalb_1_1freelist.html", "classalb_1_1freelist" ],
+      [ "length_prefix", "structalb_1_1length__prefix.html", "structalb_1_1length__prefix" ],
+      [ "global_allocator", "classalb_1_1global__allocator.html", "classalb_1_1global__allocator" ],
       [ "mallocator", "classalb_1_1mallocator.html", "classalb_1_1mallocator" ],
       [ "memory_corruption_detector", "classalb_1_1memory__corruption__detector.html", "classalb_1_1memory__corruption__detector" ],
       [ "segregator", "classalb_1_1segregator.html", "classalb_1_1segregator" ],
       [ "shared_heap", "classalb_1_1shared__heap.html", "classalb_1_1shared__heap" ],
-      [ "stack_allocator", "classalb_1_1stack__allocator.html", "classalb_1_1stack__allocator" ]
+      [ "stack_allocator", "classalb_1_1stack__allocator.html", "classalb_1_1stack__allocator" ],
+      [ "stl_allocator", "classalb_1_1stl__allocator.html", "classalb_1_1stl__allocator" ],
+      [ "stl_allocator< void, Allocator >", "classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4.html", "classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4" ]
     ] ]
 ];

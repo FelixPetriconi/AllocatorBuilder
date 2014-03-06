@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "Allocator Builder", "index.html", [
+    [ "Examples", "md__e_x_a_m_p_l_e_s.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
@@ -21,7 +22,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classalb_1_1shared__heap.html#a501a7aa2de555baf7871ea8a4d49c030"
+"classalb_1_1shared__heap.html#a3e488546b7cae10c5c9df3d40c8165ec"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

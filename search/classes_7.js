@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['mallocator',['mallocator',['../classalb_1_1mallocator.html',1,'alb']]],
-  ['memory_5fcorruption_5fdetector',['memory_corruption_detector',['../classalb_1_1memory__corruption__detector.html',1,'alb']]]
+  ['has_5fdeallocateall',['has_deallocateAll',['../structalb_1_1traits_1_1has__deallocate_all.html',1,'alb::traits']]],
+  ['has_5fexpand',['has_expand',['../structalb_1_1traits_1_1has__expand.html',1,'alb::traits']]],
+  ['has_5fowns',['has_owns',['../structalb_1_1traits_1_1has__owns.html',1,'alb::traits']]]
 ];

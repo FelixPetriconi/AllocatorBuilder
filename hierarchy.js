@@ -45,16 +45,23 @@ var hierarchy =
     [ "alb::freelist_base< true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "classalb_1_1freelist__base.html", [
       [ "alb::shared_freelist< Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations >", "classalb_1_1shared__freelist.html", null ]
     ] ],
+    [ "alb::global_allocator< Allocator >", "classalb_1_1global__allocator.html", null ],
     [ "alb::traits::has_deallocateAll< T >", "structalb_1_1traits_1_1has__deallocate_all.html", null ],
     [ "alb::traits::has_expand< T >", "structalb_1_1traits_1_1has__expand.html", null ],
     [ "alb::traits::has_owns< T >", "structalb_1_1traits_1_1has__owns.html", null ],
     [ "LargeAllocator", null, [
       [ "alb::segregator< Threshold, SmallAllocator, LargeAllocator >", "classalb_1_1segregator.html", null ]
     ] ],
+    [ "alb::length_prefix", "structalb_1_1length__prefix.html", null ],
+    [ "alb::shared_helpers::lock_guard< M >", "structalb_1_1shared__helpers_1_1lock__guard.html", null ],
+    [ "alb::shared_helpers::lock_guard< null_mutex >", "structalb_1_1shared__helpers_1_1lock__guard_3_01null__mutex_01_4.html", null ],
+    [ "alb::shared_helpers::lock_guard< std::mutex >", "structalb_1_1shared__helpers_1_1lock__guard_3_01std_1_1mutex_01_4.html", null ],
     [ "alb::mallocator", "classalb_1_1mallocator.html", null ],
     [ "alb::memory_corruption_detector< T, Pattern >", "classalb_1_1memory__corruption__detector.html", null ],
     [ "alb::affix_allocator_helper::no_affix", "structalb_1_1affix__allocator__helper_1_1no__affix.html", null ],
     [ "alb::internal::NoAtomic< T >", "classalb_1_1internal_1_1_no_atomic.html", null ],
+    [ "alb::shared_helpers::null_lock", "structalb_1_1shared__helpers_1_1null__lock.html", null ],
+    [ "alb::shared_helpers::null_mutex", "structalb_1_1shared__helpers_1_1null__mutex.html", null ],
     [ "alb::shared_helpers::NullLock", "classalb_1_1shared__helpers_1_1_null_lock.html", null ],
     [ "Primary", null, [
       [ "alb::fallback_allocator< Primary, Fallback >", "classalb_1_1fallback__allocator.html", null ]
@@ -62,6 +69,8 @@ var hierarchy =
     [ "alb::internal::reallocator< Allocator, Enabled >", "structalb_1_1internal_1_1reallocator.html", null ],
     [ "alb::internal::reallocator< Allocator, typename std::enable_if< traits::has_expand< Allocator >::value >::type >", "structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html", null ],
     [ "alb::internal::reallocator< Allocator, typename std::enable_if<!traits::has_expand< Allocator >::value >::type >", "structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html", null ],
+    [ "alb::stl_allocator< void, Allocator >::rebind< U >", "structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
+    [ "alb::stl_allocator< T, Allocator >::rebind< U >", "structalb_1_1stl__allocator_1_1rebind.html", null ],
     [ "alb::shared_heap< Allocator, NumberOfChunks, ChunkSize >", "classalb_1_1shared__heap.html", null ],
     [ "alb::shared_helpers::SharedLock", "classalb_1_1shared__helpers_1_1_shared_lock.html", null ],
     [ "SmallAllocator", null, [
@@ -69,6 +78,8 @@ var hierarchy =
     ] ],
     [ "alb::internal::stack< T, MaxSize >", "classalb_1_1internal_1_1stack.html", null ],
     [ "alb::stack_allocator< MaxSize, Alignment >", "classalb_1_1stack__allocator.html", null ],
+    [ "alb::stl_allocator< T, Allocator >", "classalb_1_1stl__allocator.html", null ],
+    [ "alb::stl_allocator< void, Allocator >", "classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4.html", null ],
     [ "true_type", null, [
       [ "alb::traits::both_same_base< Allocator< A1 >, Allocator< A2 > >", "structalb_1_1traits_1_1both__same__base_3_01_allocator_3_01_a1_01_4_00_01_allocator_3_01_a2_01_4_01_4.html", null ],
       [ "alb::traits::both_same_base< Allocator< A1, P1 >, Allocator< A2, P2 > >", "structalb_1_1traits_1_1both__same__base_3_01_allocator_3_01_a1_00_01_p1_01_4_00_01_allocator_3_01_a2_00_01_p2_01_4_01_4.html", null ],

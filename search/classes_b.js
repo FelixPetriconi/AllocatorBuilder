@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['type_5fswitch',['type_switch',['../structalb_1_1traits_1_1type__switch.html',1,'alb::traits']]],
-  ['type_5fswitch_3c_20a_2c_20b_2c_20false_20_3e',['type_switch&lt; A, B, false &gt;',['../structalb_1_1traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4.html',1,'alb::traits']]],
-  ['type_5fswitch_3c_20a_2c_20b_2c_20true_20_3e',['type_switch&lt; A, B, true &gt;',['../structalb_1_1traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html',1,'alb::traits']]],
-  ['type_5fswitch_3c_20alb_3a_3aaffix_5fallocator_3c_20allocator_2c_20alb_3a_3aallocator_5fwith_5fstats_3a_3aallocationinfo_20_3e_2c_20allocator_2c_20hasperallocationstate_20_3e',['type_switch&lt; alb::affix_allocator&lt; Allocator, alb::allocator_with_stats::AllocationInfo &gt;, Allocator, HasPerAllocationState &gt;',['../structalb_1_1traits_1_1type__switch.html',1,'alb::traits']]],
-  ['type_5fswitch_3c_20boost_3a_3alockfree_3a_3astack_3c_20void_20_2a_2c_20boost_3a_3alockfree_3a_3afixed_5fsized_3c_20true_20_3e_2c_20boost_3a_3alockfree_3a_3acapacity_3c_20poolsize_20_3e_20_3e_2c_20internal_3a_3astack_3c_20void_20_2a_2c_20poolsize_20_3e_2c_20shared_20_3e',['type_switch&lt; boost::lockfree::stack&lt; void *, boost::lockfree::fixed_sized&lt; true &gt;, boost::lockfree::capacity&lt; PoolSize &gt; &gt;, internal::stack&lt; void *, PoolSize &gt;, Shared &gt;',['../structalb_1_1traits_1_1type__switch.html',1,'alb::traits']]],
-  ['type_5fswitch_3c_20std_3a_3aatomic_3c_20node_20_2a_20_3e_2c_20internal_3a_3anoatomic_3c_20node_20_2a_20_3e_2c_20shared_20_3e',['type_switch&lt; std::atomic&lt; Node * &gt;, internal::NoAtomic&lt; Node * &gt;, Shared &gt;',['../structalb_1_1traits_1_1type__switch.html',1,'alb::traits']]]
+  ['reallocator',['reallocator',['../structalb_1_1internal_1_1reallocator.html',1,'alb::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt; traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html',1,'alb::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt;!traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html',1,'alb::internal']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html',1,'alb::stl_allocator&lt; void, Allocator &gt;']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_1_1rebind.html',1,'alb::stl_allocator']]]
 ];

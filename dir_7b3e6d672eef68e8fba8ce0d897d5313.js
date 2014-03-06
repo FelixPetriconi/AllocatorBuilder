@@ -10,9 +10,11 @@ var dir_7b3e6d672eef68e8fba8ce0d897d5313 =
     [ "doxygroups.h", "doxygroups_8h_source.html", null ],
     [ "fallback_allocator.hpp", "fallback__allocator_8hpp_source.html", null ],
     [ "freelist.hpp", "freelist_8hpp_source.html", null ],
+    [ "global_allocator.hpp", "global__allocator_8hpp_source.html", null ],
     [ "mallocator.hpp", "mallocator_8hpp_source.html", null ],
     [ "memory_corruption_detector.hpp", "memory__corruption__detector_8hpp_source.html", null ],
     [ "segregator.hpp", "segregator_8hpp_source.html", null ],
     [ "shared_heap.hpp", "shared__heap_8hpp_source.html", null ],
-    [ "stack_allocator.hpp", "stack__allocator_8hpp_source.html", null ]
+    [ "stack_allocator.hpp", "stack__allocator_8hpp_source.html", null ],
+    [ "stl_allocator.hpp", "stl__allocator_8hpp_source.html", null ]
 ];
