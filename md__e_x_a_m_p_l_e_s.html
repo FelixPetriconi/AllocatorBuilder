@@ -147,7 +147,10 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 <div class="line">       strcpy(p_.get(), t, len);</div>
 <div class="line">       p_[len] = <span class="charliteral">&#39;\0&#39;</span>;</div>
 <div class="line">     }</div>
-<div class="line">   }  </div>
+<div class="line">   }</div>
+<div class="line"></div>
+<div class="line">   ~string() {</div>
+<div class="line">   }</div>
 <div class="line">};</div>
 </div><!-- fragment --><p> Let's further assume that SIMD CPU instructions are used in further methods to implement comparison, copy etc. These instructions work on modern CPUs (at least on x86) always on 16 bytes chunks. So we would allocate on the heap the memory in 16 bytes aligned chunks, e.g. 32, 48, 64 etc. So it would be good, if the allocator, that we want to use, automatically returns such aligned memory. But that is not all. Further we assume that our application does lot's of string operations. So there would be lot's of allocation and deallocation operations. We already discussed that these operations are quite expensive. So why not keep the not any more used memory blocks in a pool (or free-list) and reuse them soon. So we start with a freelist: </p>
 <div class="fragment"><div class="line">freelist&lt;mallocator, 0, 32, 1024&gt; myFreelist;</div>
@@ -157,15 +160,140 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 </div><!-- fragment --><p> So the typedef specifies a free-list that's min- and max size can be changed during runtime. (Normally this values are set during compile time). The bucketizer creates free-lists in increasing 16 bytes steps capacity, [17-32], [33-48], [49-64], ... Each free-list has a maximum capacity of 1024 elements. So now we can handle strings up to the length of 512 bytes. If this strings can get longer, we have to add a segregator: </p>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
 <div class="line">segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
-</div><!-- fragment --><p> Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap.</p>
-<p>= Replacement of global ::new() and ::delete</p>
-<p>= Creating a custom STL compatible allocator </p>
-</div></div><!-- contents -->
+</div><!-- fragment --><p> Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap. The code from the string class would be rewritten to this: </p>
+<div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line">  <span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
+<div class="line">  segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">class </span>string {</div>
+<div class="line">  <span class="keywordtype">char</span> local_[16];</div>
+<div class="line">  <a class="code" href="structalb_1_1block.html">alb::block</a> chunk_;</div>
+<div class="line">  <span class="keywordtype">char</span> *data_;</div>
+<div class="line"><span class="keyword">public</span>:</div>
+<div class="line">  string(<span class="keyword">const</span> <span class="keywordtype">char</span>* t) : data_(nullptr) {</div>
+<div class="line">    <span class="keywordtype">int</span> len = t? strlen(t) : 0;</div>
+<div class="line">    <span class="keywordflow">if</span> (len == 0) </div>
+<div class="line">      <span class="keywordflow">return</span>;</div>
+<div class="line"></div>
+<div class="line">    <span class="keywordflow">if</span> (len &lt; 16) {</div>
+<div class="line">      strcpy(local_, t, len);</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">else</span> {</div>
+<div class="line">    chunk_ = myAllocator.allocate(len + 1);</div>
+<div class="line">    <span class="keywordflow">if</span> (chunk_) {</div>
+<div class="line">      data_ = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(chunk_.ptr);</div>
+<div class="line">      strcpy(data_ , t, len);</div>
+<div class="line">      data_ [len] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line"></div>
+<div class="line">  ~string() {</div>
+<div class="line">    myAllocator.deallocate(chunk_);</div>
+<div class="line">  }</div>
+<div class="line">};</div>
+</div><!-- fragment --><h1>Custom STL compatible allocator</h1>
+<h2>Problem</h2>
+<p>to be done </p>
+<h2>Solution</h2>
+<p>to be done</p>
+<h1>Replacement of global ::new() and ::delete</h1>
+<h2>Problem</h2>
+<p>Let's assume that we see potential in replacing the standard heap with our own, custom optimized version. In general this is pretty easy. We only have to replace the global new(), new[]() and the corresponding delete operators. A regular implementation might look like: </p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
+<div class="line">  <span class="keyword">auto</span> result = ::malloc(sz);</div>
+<div class="line">  <span class="keywordflow">if</span> (result) </div>
+<div class="line">    <span class="keywordflow">return</span> result;</div>
+<div class="line"></div>
+<div class="line">  <span class="keywordflow">throw</span> std::bad_alloc();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](std::size_t sz) {</div>
+<div class="line">  <span class="keyword">auto</span> result = ::malloc(sz);</div>
+<div class="line">  <span class="keywordflow">if</span> (result) </div>
+<div class="line">    <span class="keywordflow">return</span> result;</div>
+<div class="line"></div>
+<div class="line">  <span class="keywordflow">throw</span> std::bad_alloc();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keywordtype">void</span>* ptr)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (ptr)</div>
+<div class="line">    ::free(ptr);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keywordtype">void</span>* ptr)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (ptr)</div>
+<div class="line">    ::free(ptr);</div>
+<div class="line">}</div>
+</div><!-- fragment --> <h2>Solution</h2>
+<p>Let's make the assumption that MyAllocator is a combined allocator from the Allocator-Builder (ALB) library that should serve as the basis of the memory allocation.</p>
+<p>We cannot use this MyAllocator directly, because the ALB relies on the fact that always an <a class="el" href="structalb_1_1block.html">alb::block</a> must be passed to deallocate(). </p>
+<div class="fragment"><div class="line"><span class="keyword">struct </span>block {</div>
+<div class="line">  <span class="keywordtype">void</span>* ptr;</div>
+<div class="line">  <span class="keywordtype">size_t</span> length;</div>
+<div class="line">};</div>
+</div><!-- fragment --><p> Beside the pointer to the memory it contains the length. The operator ::delete(void*) does not get the size of the block passed. So we have to keep track by ourselves. Probably the easiest way is to encapsulate our MyAllocator within an affix_allocator with a prefix that contains the length of the block. I choose the prefix uint32_t, because that can cover memory allocations up to 4GB which is fine for the moment. (When we come to the point, that it might happen, our application needs more than 4GB in a single chunk, then we can change the prefix to uint64_t). </p>
+<div class="fragment"><div class="line"><span class="keyword">typedef</span> affix_allocator&lt;MyAllocator,uint32_t&gt; MyAllocatorPrefixed;</div>
+</div><!-- fragment --><p> Let's make as a next step two conveniance function for allocation and releasing the memory: </p>
+<div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line">  MyAllocatorPrefixed myGlobalAllocator;</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>* operatorNewInternal(std::size_t n) {</div>
+<div class="line">  <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keyword">auto</span> result = myGlobalAllocator.allocate(sz);</div>
+<div class="line">  <span class="keywordflow">if</span> (result) </div>
+<div class="line">  {</div>
+<div class="line">    <span class="keyword">auto</span> p = myGlobalAllocator.outerToPrefix(result);</div>
+<div class="line">    *p = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(result.length);</div>
+<div class="line">    <span class="keywordflow">return</span> result.ptr;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">throw</span> std::bad_alloc();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> operatorDeleteInternal(<span class="keywordtype">void</span>* ptr) {</div>
+<div class="line">  <span class="keywordflow">if</span> (ptr) {</div>
+<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> pseudoBlock(ptr, 1);</div>
+<div class="line">    <span class="keyword">auto</span> p = myGlobalAllocator.outerToPrefix(pseudoBlock);</div>
+<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> realBlock(ptr, *p);</div>
+<div class="line">    myGlobalAllocator.deallocate(realBlock);</div>
+<div class="line">  }  </div>
+<div class="line">}</div>
+</div><!-- fragment --><p>The global operators would become: </p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
+<div class="line">  <span class="keywordflow">return</span> operatorNewInternal(sz);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](std::size_t sz) {</div>
+<div class="line">  <span class="keywordflow">return</span> operatorNewInternal(sz);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keywordtype">void</span>* ptr)</div>
+<div class="line">{</div>
+<div class="line">  operatorDeleteInternal(ptr);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keywordtype">void</span>* ptr)</div>
+<div class="line">{</div>
+<div class="line">  operatorDeleteInternal(ptr);</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>We are almost done. At the end we have to cope the problem of unknown initialization order before main() starts. So encapsulte the allocator into a singleton and then we are done. (Of course all calls to myGlobalAllocator in the code above must be changed to a function call. But that I leave to the imagination of the reader ;-) ) </p>
+<div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line">  MyAllocatorPrefixed&amp; myGlobalAllocator() {</div>
+<div class="line">    <span class="keyword">static</span> MyAllocatorPrefixed instance;</div>
+<div class="line">    <span class="keywordflow">return</span> instance;</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Mar 6 2014 22:47:08 for Allocator Builder by
+    <li class="footer">Generated on Fri Mar 7 2014 17:19:32 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
