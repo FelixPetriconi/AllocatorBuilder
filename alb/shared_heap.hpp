@@ -13,6 +13,7 @@
 #include "internal/shared_helpers.hpp"
 #include "internal/dynastic.hpp"
 #include "internal/reallocator.hpp"
+#include "internal/heap_helpers.hpp"
 
 #include <atomic>
 #include <algorithm>
@@ -37,24 +38,8 @@
   ATOMIC->compare_exchange_strong(EXPECT, VALUE)
 
 namespace alb {
-  namespace Helpers {
-  template <bool Used>
-  uint64_t setUsed(const uint64_t &currentRegister, const uint64_t &mask);
 
-  template <>
-  inline uint64_t setUsed<false>(const uint64_t &currentRegister,
-                          const uint64_t &mask) {
-    return currentRegister & (mask ^ uint64_t(-1));
-  }
-  template <>
-  inline uint64_t setUsed<true>(const uint64_t &currentRegister,
-                         const uint64_t &mask) {
-    return currentRegister | mask;
-  }
-
-
-  }
-/**
+  /**
  * The SharedHeap implements a classic heap with a pre-allocated size of
  * _numberOfChunks.value() * _chunkSize.value()
  * It has a overhead of one bit per block and linear complexity for allocation
