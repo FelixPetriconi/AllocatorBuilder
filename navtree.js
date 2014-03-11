@@ -22,7 +22,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classalb_1_1shared__heap.html#a3e488546b7cae10c5c9df3d40c8165ec"
+"classalb_1_1segregator.html#ac558a72bbdb5813580894c83a9455348"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

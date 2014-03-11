@@ -49,6 +49,7 @@ var hierarchy =
     [ "alb::traits::has_deallocateAll< T >", "structalb_1_1traits_1_1has__deallocate_all.html", null ],
     [ "alb::traits::has_expand< T >", "structalb_1_1traits_1_1has__expand.html", null ],
     [ "alb::traits::has_owns< T >", "structalb_1_1traits_1_1has__owns.html", null ],
+    [ "alb::heap< Allocator, NumberOfChunks, ChunkSize >", "classalb_1_1heap.html", null ],
     [ "LargeAllocator", null, [
       [ "alb::segregator< Threshold, SmallAllocator, LargeAllocator >", "classalb_1_1segregator.html", null ]
     ] ],
@@ -69,8 +70,8 @@ var hierarchy =
     [ "alb::internal::reallocator< Allocator, Enabled >", "structalb_1_1internal_1_1reallocator.html", null ],
     [ "alb::internal::reallocator< Allocator, typename std::enable_if< traits::has_expand< Allocator >::value >::type >", "structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html", null ],
     [ "alb::internal::reallocator< Allocator, typename std::enable_if<!traits::has_expand< Allocator >::value >::type >", "structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html", null ],
-    [ "alb::stl_allocator< void, Allocator >::rebind< U >", "structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
     [ "alb::stl_allocator< T, Allocator >::rebind< U >", "structalb_1_1stl__allocator_1_1rebind.html", null ],
+    [ "alb::stl_allocator< void, Allocator >::rebind< U >", "structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
     [ "alb::shared_heap< Allocator, NumberOfChunks, ChunkSize >", "classalb_1_1shared__heap.html", null ],
     [ "alb::shared_helpers::SharedLock", "classalb_1_1shared__helpers_1_1_shared_lock.html", null ],
     [ "SmallAllocator", null, [

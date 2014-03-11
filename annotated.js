@@ -68,6 +68,7 @@ var annotated =
       [ "freelist", "classalb_1_1freelist.html", "classalb_1_1freelist" ],
       [ "length_prefix", "structalb_1_1length__prefix.html", "structalb_1_1length__prefix" ],
       [ "global_allocator", "classalb_1_1global__allocator.html", "classalb_1_1global__allocator" ],
+      [ "heap", "classalb_1_1heap.html", "classalb_1_1heap" ],
       [ "mallocator", "classalb_1_1mallocator.html", "classalb_1_1mallocator" ],
       [ "memory_corruption_detector", "classalb_1_1memory__corruption__detector.html", "classalb_1_1memory__corruption__detector" ],
       [ "segregator", "classalb_1_1segregator.html", "classalb_1_1segregator" ],

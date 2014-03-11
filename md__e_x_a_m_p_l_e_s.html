@@ -162,8 +162,9 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 <div class="line">segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
 </div><!-- fragment --><p> Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap. The code from the string class would be rewritten to this: </p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
-<div class="line">  <span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
-<div class="line">  segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
+<div class="line">  <span class="keyword">using namespace </span>alb;</div>
+<div class="line">  <span class="keyword">typedef</span> <a class="code" href="classalb_1_1shared__freelist.html">shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt;</a> FList;</div>
+<div class="line">  <a class="code" href="classalb_1_1segregator.html">segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;</a>, <a class="code" href="classalb_1_1mallocator.html">mallocator</a>&gt; myAllocator;</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">class </span>string {</div>
@@ -192,12 +193,7 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 <div class="line">    myAllocator.deallocate(chunk_);</div>
 <div class="line">  }</div>
 <div class="line">};</div>
-</div><!-- fragment --><h1>Custom STL compatible allocator</h1>
-<h2>Problem</h2>
-<p>to be done </p>
-<h2>Solution</h2>
-<p>to be done</p>
-<h1>Replacement of global ::new() and ::delete</h1>
+</div><!-- fragment --><h1>Replacement of global ::new() and ::delete()</h1>
 <h2>Problem</h2>
 <p>Let's assume that we see potential in replacing the standard heap with our own, custom optimized version. In general this is pretty easy. We only have to replace the global new(), new[]() and the corresponding delete operators. A regular implementation might look like: </p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
@@ -234,9 +230,9 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 <div class="line">  <span class="keywordtype">void</span>* ptr;</div>
 <div class="line">  <span class="keywordtype">size_t</span> length;</div>
 <div class="line">};</div>
-</div><!-- fragment --><p> Beside the pointer to the memory it contains the length. The operator ::delete(void*) does not get the size of the block passed. So we have to keep track by ourselves. Probably the easiest way is to encapsulate our MyAllocator within an affix_allocator with a prefix that contains the length of the block. I choose the prefix uint32_t, because that can cover memory allocations up to 4GB which is fine for the moment. (When we come to the point, that it might happen, our application needs more than 4GB in a single chunk, then we can change the prefix to uint64_t). </p>
+</div><!-- fragment --><p> Beside the pointer to the memory it contains the length. The operator ::delete(void*) does not get passed the size of the block. So we have to keep track by ourselves. Probably the easiest way is to encapsulate our MyAllocator within an affix_allocator with a prefix that contains the length of the block. I choose for the moment the prefix of type uint32_t, because that can cover memory allocations up to 4GB which is fine for now. (When we come to the point, that it might happen, our application needs more than 4GB in a single chunk, then we can change the prefix to uint64_t). </p>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> affix_allocator&lt;MyAllocator,uint32_t&gt; MyAllocatorPrefixed;</div>
-</div><!-- fragment --><p> Let's make as a next step two conveniance function for allocation and releasing the memory: </p>
+</div><!-- fragment --><p> Let's make as a next step two convenience function for allocation and releasing the memory: </p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line">  MyAllocatorPrefixed myGlobalAllocator;</div>
 <div class="line">}</div>
@@ -263,7 +259,7 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 <div class="line">    myGlobalAllocator.deallocate(realBlock);</div>
 <div class="line">  }  </div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The global operators would become: </p>
+</div><!-- fragment --><p> The global operators would become: </p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
 <div class="line">  <span class="keywordflow">return</span> operatorNewInternal(sz);</div>
 <div class="line">}</div>
@@ -281,19 +277,42 @@ $(document).ready(function(){initNavTree('md__e_x_a_m_p_l_e_s.html','');});
 <div class="line">{</div>
 <div class="line">  operatorDeleteInternal(ptr);</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>We are almost done. At the end we have to cope the problem of unknown initialization order before main() starts. So encapsulte the allocator into a singleton and then we are done. (Of course all calls to myGlobalAllocator in the code above must be changed to a function call. But that I leave to the imagination of the reader ;-) ) </p>
+</div><!-- fragment --><p> We are almost done. Finally we have to cope the problem of unknown initialization order before main(). So we encapsulate the allocator into a singleton and then we are done. </p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line">  MyAllocatorPrefixed&amp; myGlobalAllocator() {</div>
 <div class="line">    <span class="keyword">static</span> MyAllocatorPrefixed instance;</div>
 <div class="line">    <span class="keywordflow">return</span> instance;</div>
 <div class="line">  }</div>
 <div class="line">}</div>
+</div><!-- fragment --><p> Or even better, we use a ready template from the ALB library and change the code of helper functions to: </p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span>* operatorNewInternal(std::size_t n) {</div>
+<div class="line">  <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keyword">auto</span> result = <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;::instance</a>().allocate(n);</div>
+<div class="line">  <span class="keywordflow">if</span> (result) </div>
+<div class="line">  {</div>
+<div class="line">    <span class="keyword">auto</span> p = <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;::instance</a>().outerToPrefix(result);</div>
+<div class="line">    *p = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(result.length);</div>
+<div class="line">    <span class="keywordflow">return</span> result.ptr;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">throw</span> std::bad_alloc();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> operatorDeleteInternal(<span class="keywordtype">void</span>* ptr) {</div>
+<div class="line">  <span class="keywordflow">if</span> (ptr) {</div>
+<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> pseudoBlock(ptr, 1);</div>
+<div class="line">    <span class="keyword">auto</span> p = <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;::instance</a>().outerToPrefix(pseudoBlock);</div>
+<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> realBlock(ptr, *p);</div>
+<div class="line">    <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;::instance</a>().deallocate(realBlock);</div>
+<div class="line">  }  </div>
+<div class="line">}</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 7 2014 17:19:32 for Allocator Builder by
+    <li class="footer">Generated on Tue Mar 11 2014 23:09:12 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
