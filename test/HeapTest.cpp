@@ -226,7 +226,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandByNBytesOfAFilledBlockReturns
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaThatFitsIntoTheGapIsSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*2>(this->sut).withAUsedPatternOf("1100'0110").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*4);
@@ -241,7 +241,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaT
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaThatDoesNotFitsIntoTheGapIsNotSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*2>(this->sut).withAUsedPatternOf("1100'0110").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*6);
@@ -256,7 +256,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockIsWithinAUsedAreaT
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfASingleControlRegsiterIsSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*4>(this->sut).withAUsedPatternOf("1000'0000'0000'0000").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*4);
@@ -271,7 +271,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfASi
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatExpandingOfABlockBeyondTheSizeOfATwoControlRegisterIsSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*4>(this->sut).withAUsedPatternOf("1111'1111'1111'1100").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*4);
@@ -323,7 +323,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocateByNBytesOfAFilledBlockRet
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocatrOfABlockIsWithinAUsedAreaThatFitsIntoTheGapIsSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*2>(this->sut).withAUsedPatternOf("1100'0110").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*4);
@@ -338,7 +338,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocatrOfABlockIsWithinAUsedArea
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocateOfABlockIsWithinAUsedAreaThatDoesNotFitsIntoTheGapIsSuccessfulWithANewLocations) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*2>(this->sut).withAUsedPatternOf("1100'0110").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*6);
@@ -353,7 +353,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocateOfABlockIsWithinAUsedArea
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocateOfABlockBeyondTheSizeOfASingleControlRegsiterIsSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*4>(this->sut).withAUsedPatternOf("1000'0000'0000'0000").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*4);
@@ -368,7 +368,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocateOfABlockBeyondTheSizeOfAS
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatReallocateOfABlockBeyondTheSizeOfATwoControlRegisterIsSuccessful) {
-  auto usedMem = UsedMemGenerator<AllocatorBaseTest::allocator, 
+  auto usedMem = UsedMemGenerator<TypeParam, 
     SmallChunkSize*4>(this->sut).withAUsedPatternOf("1111'1111'1111'1100").build();
 
   auto mem = this->sut.allocate(SmallChunkSize*4);
