@@ -1,10 +1,12 @@
 Allocator Builder {#mainpage}
 =================
 
-A highly composable, policy based C++ allocator based on ideas from [Andrei Alexandrescu](http://erdani.com/), presented at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.
+A highly composable, policy based C++ allocator.
 
-The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and deallocations. 
-All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
+The layout idea of the library is was presented by [Andrei Alexandrescu](http://erdani.com/) at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.
+
+The background behind the idea is to compensate the main problem of malloc and the other current standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and especially deallocations, because the memory manager must find the corresponding length of the pointer that shall be free.
+Additionally all users of manually raw allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
 
 A second idea behind this allocator library is, that one can compose for every use case a special designed one. 
 Example use cases:
@@ -12,7 +14,7 @@ Example use cases:
   * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.
   * Wait free allocations in a single threaded environment
 
-So the approach is, every allocator returns such a Block
+So the approach is, every allocator returns such a block:
 ~~~
 struct block {
   void* ptr;
@@ -20,14 +22,14 @@ struct block {
 };
 ~~~
 
-And request goes this way:
+And a request goes this way:
 ~~~
 auto myMemBlock = allocator.allocate(42);
 ~~~
 
 Motivation
 ----------
-Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)
+Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it is a wait-free operation and in many cases the allocated memory is much more cache friendly.)
 
 So the code could look like this
 ~~~ 
@@ -63,7 +65,7 @@ localAllocator.deallocate(block); // better to be deleted by a scope finalizer
 So, isn't this much cleaner? 
 
 
-A more advanced allocator as it is used in [jmalloc](http://www.canonware.com/jemalloc/) would look like:
+A more advanced allocator with different sized buckets as one are used in [jemalloc](http://www.canonware.com/jemalloc/) would look like:
 ~~~
 // This defines a FreeList that is later configured by the bucketizer to its size
 typedef freelist<mallocator, DynamicSetSize, DynamicSetSize> FList;

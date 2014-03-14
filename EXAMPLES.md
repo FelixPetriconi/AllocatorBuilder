@@ -223,7 +223,7 @@ namespace {
   }
 }
 ~~~
-Or even better, we use a ready template from the ALB library and change the code of helper functions to:
+Or even better, we use a ready template from the ALB library and change the code of the helper functions to:
 ~~~
 void* operatorNewInternal(std::size_t n) {
   if (n == 0) {
@@ -247,5 +247,31 @@ void operatorDeleteInternal(void* ptr) {
     alb::global_allocator<MyAllocator>::instance().deallocate(realBlock);
   }  
 }
-
 ~~~
+# Custom STL compatible allocator
+## Problem
+Let's assume for the moment that we have a STL container under heavy load and with lot's of size changes or lot's of re-balancing in case of a tree base one. (I know, that changing the design in a way, that regularly rebalancing of the tree is avoided totally is even better.) But stick to the idea for the moment.
+So we have to implement the complete interface as it is described e.g. in Nicolai Josuttis excellent book "The Standard Template Library". --> Refer to adendum pdf!
+##Solution
+Not very much must be done. Just take the generic alb::stl_allocator and we are done:
+~~~
+  alb::global_allocator<MyAllocator> globalInstance;
+  struct MyValues;
+  
+  typedef alb::stl_allocator<MyValues, alb::global_allocator<MyAllocator>>  MySTLAllocator;
+~~~
+Now we can use in in our code as:
+~~~
+  std::vector<MyValues, MySTLAllocator> myValueVector;
+~~~
+Or when we have to deal with a map:
+~~~
+  alb::global_allocator<MyAllocator> globalInstance;
+  struct MyValues;
+  typedef std::pair<const int, MyValue> MyMapPair;
+  typedef alb::stl_allocator<MyMapPair, alb::global_allocator<MyAllocator>>  MyMapAllocator;
+
+  std::map<int, MyValue, std::less<int>, MyMapAllocator> myValueMap;
+~~~
+  
+ 
