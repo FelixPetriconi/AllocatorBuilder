@@ -29,7 +29,7 @@ public:
 
   NoAtomic(T v) : _value(std::move(v)) {}
 
-  T load() { return _value; }
+  T load() const { return _value; }
 
   NoAtomic& operator=(T v) {
     _value = std::move(v);
@@ -39,6 +39,10 @@ public:
   bool compare_exchange_strong(T&, T v) {
     _value = std::move(v);
     return true;
+  }
+
+  operator T() const {
+    return _value;
   }
 };
 }  
