@@ -101,23 +101,24 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">Allocator Builder Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A highly composable, policy based C++ allocator based on ideas from <a href="http://erdani.com/">Andrei Alexandrescu</a>, presented at the <a href="http://cppandbeyond.com/">C++ and Beyond 2013</a> seminar.</p>
-<p>The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and deallocations. All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.</p>
+<div class="textblock"><p>A highly composable, policy based C++ allocator.</p>
+<p>The layout idea of the library is was presented by <a href="http://erdani.com/">Andrei Alexandrescu</a> at the <a href="http://cppandbeyond.com/">C++ and Beyond 2013</a> seminar.</p>
+<p>The background behind the idea is to compensate the main problem of malloc and the other current standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and especially deallocations, because the memory manager must find the corresponding length of the pointer that shall be free. Additionally all users of manually raw allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.</p>
 <p>A second idea behind this allocator library is, that one can compose for every use case a special designed one. Example use cases:</p>
 <ul>
 <li>Collect statistic information about the memory usage profile.</li>
 <li>Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.</li>
 <li>Wait free allocations in a single threaded environment</li>
 </ul>
-<p>So the approach is, every allocator returns such a Block </p>
+<p>So the approach is, every allocator returns such a block: </p>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>block {</div>
 <div class="line">  <span class="keywordtype">void</span>* ptr;</div>
 <div class="line">  <span class="keywordtype">size_t</span> length;</div>
 <div class="line">};</div>
-</div><!-- fragment --><p>And request goes this way: </p>
+</div><!-- fragment --><p>And a request goes this way: </p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> myMemBlock = allocator.allocate(42);</div>
 </div><!-- fragment --><h2>Motivation </h2>
-<p>Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)</p>
+<p>Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it is a wait-free operation and in many cases the allocated memory is much more cache friendly.)</p>
 <p>So the code could look like this </p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
 <div class="line"><span class="keywordtype">int</span> neededBytes = 42</div>
@@ -145,7 +146,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="line"></div>
 <div class="line">localAllocator.deallocate(block); <span class="comment">// better to be deleted by a scope finalizer</span></div>
 </div><!-- fragment --><p> So, isn't this much cleaner?</p>
-<p>A more advanced allocator as it is used in <a href="http://www.canonware.com/jemalloc/">jmalloc</a> would look like: </p>
+<p>A more advanced allocator with different sized buckets as one are used in <a href="http://www.canonware.com/jemalloc/">jemalloc</a> would look like: </p>
 <div class="fragment"><div class="line"><span class="comment">// This defines a FreeList that is later configured by the bucketizer to its size</span></div>
 <div class="line"><span class="keyword">typedef</span> freelist&lt;mallocator, DynamicSetSize, DynamicSetSize&gt; FList;</div>
 <div class="line"></div>
@@ -195,7 +196,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 </table>
 <h2>Documentation </h2>
 <p>Online Documentation is available on <a href="http://felixpetriconi.github.io/AllocatorBuilder/index.html">GitHub.io</a> as well.</p>
-<p>There is the begin of a tutorial in the <a href="http://felixpetriconi.github.io/AllocatorBuilder/md__e_x_a_m_p_l_e_s.html">examples section</a></p>
+<p>There is the begin of a tutorial in the <a href="http://felixpetriconi.github.io/AllocatorBuilder/md__t_u_t_o_r_i_a_l.html">tutorial5 section</a></p>
 <h2>Author </h2>
 <p>Felix Petriconi (felix at petriconi.net)</p>
 <h2>Contributions </h2>
@@ -240,7 +241,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Mar 11 2014 23:09:13 for Allocator Builder by
+    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

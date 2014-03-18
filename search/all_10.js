@@ -1,6 +1,7 @@
 var searchData=
 [
   ['traits',['Traits',['../group__group__traits.html',1,'']]],
+  ['tutorial',['Tutorial',['../md__t_u_t_o_r_i_a_l.html',1,'']]],
   ['type_5fswitch',['type_switch',['../structalb_1_1traits_1_1type__switch.html',1,'alb::traits']]],
   ['type_5fswitch_3c_20a_2c_20b_2c_20false_20_3e',['type_switch&lt; A, B, false &gt;',['../structalb_1_1traits_1_1type__switch_3_01_a_00_01_b_00_01false_01_4.html',1,'alb::traits']]],
   ['type_5fswitch_3c_20a_2c_20b_2c_20true_20_3e',['type_switch&lt; A, B, true &gt;',['../structalb_1_1traits_1_1type__switch_3_01_a_00_01_b_00_01true_01_4.html',1,'alb::traits']]],

@@ -294,7 +294,7 @@ $(document).ready(function(){initNavTree('cascading__allocator_8hpp_source.html'
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">// a new node must be appended</span></div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    Node *newNode = createNode();</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    Node *nullNode = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    Node *p;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    Node *p = _root;</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">do</span> {</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      p = _root;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      <span class="keywordflow">while</span> (p-&gt;next.load() != <span class="keyword">nullptr</span>) {</div>
@@ -401,7 +401,7 @@ $(document).ready(function(){initNavTree('cascading__allocator_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>cascading_allocator.hpp</b></li>
-    <li class="footer">Generated on Tue Mar 11 2014 23:09:12 for Allocator Builder by
+    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

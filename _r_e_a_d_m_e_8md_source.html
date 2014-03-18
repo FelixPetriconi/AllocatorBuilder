@@ -109,169 +109,171 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Allocator Builder {#mainpage}</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;=================</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;A highly composable, policy based C++ allocator based on ideas from [Andrei Alexandrescu](http:<span class="comment">//erdani.com/), presented at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;A highly composable, policy based C++ allocator.</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult <span class="keywordflow">for</span> all kind of memory management to handle in a fast way memory allocations and deallocations. </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;A second idea behind <span class="keyword">this</span> allocator library is, that one can compose <span class="keywordflow">for</span> every use <span class="keywordflow">case</span> a special designed one. </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;Example use cases:</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  * Collect statistic information about the memory usage profile.</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  * Wait free allocations in a single threaded environment</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;So the approach is, every allocator returns such a Block</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;~~~</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;struct block {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keywordtype">void</span>* ptr;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keywordtype">size_t</span> length;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;};</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;~~~</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;And request goes <span class="keyword">this</span> way:</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;~~~</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;auto myMemBlock = allocator.allocate(42);</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;The layout idea of the library is was presented by [Andrei Alexandrescu](http:<span class="comment">//erdani.com/) at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;The background behind the idea is to compensate the main problem of malloc and the other current standard allocators, separation of memory pointer and the allocated size. This makes it very difficult <span class="keywordflow">for</span> all kind of memory management to handle in a fast way memory allocations and especially deallocations, because the memory manager must find the corresponding length of the pointer that shall be free.</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;Additionally all users of manually raw allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;A second idea behind <span class="keyword">this</span> allocator library is, that one can compose <span class="keywordflow">for</span> every use <span class="keywordflow">case</span> a special designed one. </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;Example use cases:</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  * Collect statistic information about the memory usage profile.</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  * Wait free allocations in a single threaded environment</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;So the approach is, every allocator returns such a block:</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;~~~</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;struct block {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keywordtype">void</span>* ptr;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keywordtype">size_t</span> length;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;~~~</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;And a request goes <span class="keyword">this</span> way:</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;~~~</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;Motivation</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;----------</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;So the code could look like this</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;~~~ </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;const <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">int</span> neededBytes = 42</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">bool</span> wouldFitOnTheStack = neededBytes &lt; STACK_THRESHOLD;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">char</span>* p = wouldFitOnStack? : (<span class="keywordtype">char</span>*):alloca(neededBytes) : <span class="keywordtype">nullptr</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;std::unique_ptr&lt;<span class="keywordtype">char</span>[]&gt; heapAllocated(!wouldFitOnStack? new <span class="keywordtype">char</span>[neededBytes] : <span class="keywordtype">nullptr</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;auto myMemBlock = allocator.allocate(42);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;~~~</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;Motivation</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;----------</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it is a wait-free operation and in many cases the allocated memory is much more cache friendly.)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;So the code could look like this</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;~~~ </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;const <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">int</span> neededBytes = 42</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">bool</span> wouldFitOnTheStack = neededBytes &lt; STACK_THRESHOLD;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">char</span>* p = wouldFitOnStack? : (<span class="keywordtype">char</span>*):alloca(neededBytes) : <span class="keywordtype">nullptr</span>;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;if (!p) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  p = heapAllocated.get();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// ... work with p[0..neededBytes-1]</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;~~~</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;Everybody would agree that <span class="keyword">this</span> is not nice! So what <span class="keywordflow">if</span> one could encapsulate <span class="keyword">this</span> into something like:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;~~~</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;const <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">int</span> neededBytes = 42</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">typedef</span> fallback_allocator&lt;stack_allocator&lt;STACK_THRESHOLD&gt;, mallocator&gt; LocalAllocator; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;LocalAllocator localAllocator;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">auto</span> block = localAllocator.allocate(neededBytes);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">auto</span> p = <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(block.ptr);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// ... work with p[0..neededBytes-1]</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;std::unique_ptr&lt;<span class="keywordtype">char</span>[]&gt; heapAllocated(!wouldFitOnStack? new <span class="keywordtype">char</span>[neededBytes] : <span class="keywordtype">nullptr</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;if (!p) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  p = heapAllocated.get();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// ... work with p[0..neededBytes-1]</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;~~~</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;Everybody would agree that <span class="keyword">this</span> is not nice! So what <span class="keywordflow">if</span> one could encapsulate <span class="keyword">this</span> into something like:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;~~~</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;const <span class="keywordtype">int</span> STACK_THRESHOLD = 1024;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">int</span> neededBytes = 42</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">typedef</span> fallback_allocator&lt;stack_allocator&lt;STACK_THRESHOLD&gt;, mallocator&gt; LocalAllocator; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;LocalAllocator localAllocator;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">auto</span> block = localAllocator.allocate(neededBytes);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">auto</span> p = <span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(block.ptr);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;localAllocator.deallocate(block); <span class="comment">// better to be deleted by a scope finalizer</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;~~~  </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;So, isn<span class="stringliteral">&#39;t this much cleaner? </span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="stringliteral">A more advanced allocator as it is used in [jmalloc](http://www.canonware.com/jemalloc/) would look like:</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="stringliteral">~~~</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="stringliteral">// This defines a FreeList that is later configured by the bucketizer to its size</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="stringliteral">typedef freelist&lt;mallocator, DynamicSetSize, DynamicSetSize&gt; FList;</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="stringliteral">// All allocation requests up to 3584 bytes are handled by the cascade of FLists.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="stringliteral">// Sizes from 3584 till 4MB are handled by the Heap and all beyond that are forwarded</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="stringliteral">// directly to the normal OS</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="stringliteral">typedef segregator&lt;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="stringliteral">  8, freelist&lt;mallocator, 0, 8&gt;, segregator&lt;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="stringliteral">    128, bucketizer&lt;FList, 1, 128, 16&gt;, segregator&lt;</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="stringliteral">      256, bucketizer&lt;FList, 129, 256, 32&gt;, Segegator&lt;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="stringliteral">        512, bucketizer&lt;FList, 257, 512, 64&gt;, Segegator&lt;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="stringliteral">          1024, bucketizer&lt;FList, 513, 1024, 128&gt;, Segegator&lt;</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="stringliteral">            2048, bucketizer&lt;FList, 1025, 2048, 256&gt;, Segegator&lt;</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="stringliteral">              3584, bucketizer&lt;FList, 2049, 3584, 512&gt;, Segegator&lt;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="stringliteral">                4072 * 1024, cascading_allocator&lt;Heap&lt;mallocator, 1018, 4096&gt;&gt;, mallocator</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="stringliteral">              &gt;</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="stringliteral">            &gt;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="stringliteral">          &gt;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="stringliteral">        &gt;</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="stringliteral">      &gt;</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="stringliteral">    &gt;</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="stringliteral">  &gt;&gt;AdvancedAllocator;</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">~~~</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral"> </span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="stringliteral">  </span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="stringliteral">Allocator Overview</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">------------------</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="stringliteral">|Allocator                 |Description                                                                 |</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="stringliteral">---------------------------|----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="stringliteral">| affix_allocator          | Allows to automatically pre- and sufix allocated regions. |</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="stringliteral">| allocator_with_stats     | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="stringliteral">| bucketizer               | Manages a bunch of Allocators with increasing bucket size |</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="stringliteral">| fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="stringliteral">| (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="stringliteral">| segregator               | Separates allocation requests depending on a threshold to Allocator A or B |</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">| (ahared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="stringliteral">| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="stringliteral">| (shared_)heap            | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="stringliteral">| stack_allocator          | Provides a memory access, taken from the stack |</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="stringliteral">Documentation</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="stringliteral">-------------</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="stringliteral">  Online Documentation is available on [GitHub.io] (http://felixpetriconi.github.io/AllocatorBuilder/index.html) as well.</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="stringliteral">  </span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="stringliteral">  There is the begin of a tutorial in the [examples section](http://felixpetriconi.github.io/AllocatorBuilder/md__e_x_a_m_p_l_e_s.html)</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="stringliteral">Author </span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="stringliteral">------</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="stringliteral">  Felix Petriconi (felix at petriconi.net)</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="stringliteral">  </span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="stringliteral">Contributions</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="stringliteral">-------------</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="stringliteral">  Comments, feedback or contributions are welcome!</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// ... work with p[0..neededBytes-1]</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;localAllocator.deallocate(block); <span class="comment">// better to be deleted by a scope finalizer</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;~~~  </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;So, isn<span class="stringliteral">&#39;t this much cleaner? </span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="stringliteral">A more advanced allocator with different sized buckets as one are used in [jemalloc](http://www.canonware.com/jemalloc/) would look like:</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="stringliteral">~~~</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="stringliteral">// This defines a FreeList that is later configured by the bucketizer to its size</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="stringliteral">typedef freelist&lt;mallocator, DynamicSetSize, DynamicSetSize&gt; FList;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="stringliteral">// All allocation requests up to 3584 bytes are handled by the cascade of FLists.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="stringliteral">// Sizes from 3584 till 4MB are handled by the Heap and all beyond that are forwarded</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="stringliteral">// directly to the normal OS</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="stringliteral">typedef segregator&lt;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="stringliteral">  8, freelist&lt;mallocator, 0, 8&gt;, segregator&lt;</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="stringliteral">    128, bucketizer&lt;FList, 1, 128, 16&gt;, segregator&lt;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="stringliteral">      256, bucketizer&lt;FList, 129, 256, 32&gt;, Segegator&lt;</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="stringliteral">        512, bucketizer&lt;FList, 257, 512, 64&gt;, Segegator&lt;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="stringliteral">          1024, bucketizer&lt;FList, 513, 1024, 128&gt;, Segegator&lt;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="stringliteral">            2048, bucketizer&lt;FList, 1025, 2048, 256&gt;, Segegator&lt;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="stringliteral">              3584, bucketizer&lt;FList, 2049, 3584, 512&gt;, Segegator&lt;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="stringliteral">                4072 * 1024, cascading_allocator&lt;Heap&lt;mallocator, 1018, 4096&gt;&gt;, mallocator</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="stringliteral">              &gt;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="stringliteral">            &gt;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="stringliteral">          &gt;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="stringliteral">        &gt;</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="stringliteral">      &gt;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">    &gt;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral">  &gt;&gt;AdvancedAllocator;</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="stringliteral">~~~</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="stringliteral"> </span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">  </span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="stringliteral">Allocator Overview</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="stringliteral">------------------</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="stringliteral">|Allocator                 |Description                                                                 |</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="stringliteral">---------------------------|----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="stringliteral">| affix_allocator          | Allows to automatically pre- and sufix allocated regions. |</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="stringliteral">| allocator_with_stats     | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="stringliteral">| bucketizer               | Manages a bunch of Allocators with increasing bucket size |</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="stringliteral">| fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">| (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="stringliteral">| segregator               | Separates allocation requests depending on a threshold to Allocator A or B |</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="stringliteral">| (ahared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="stringliteral">| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="stringliteral">| (shared_)heap            | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="stringliteral">| stack_allocator          | Provides a memory access, taken from the stack |</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="stringliteral">Documentation</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="stringliteral">-------------</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="stringliteral">  Online Documentation is available on [GitHub.io] (http://felixpetriconi.github.io/AllocatorBuilder/index.html) as well.</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="stringliteral">  </span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="stringliteral">  There is the begin of a tutorial in the [tutorial5 section](http://felixpetriconi.github.io/AllocatorBuilder/md__t_u_t_o_r_i_a_l.html)</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="stringliteral">Author </span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="stringliteral">------</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="stringliteral">  Felix Petriconi (felix at petriconi.net)</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="stringliteral">  </span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="stringliteral">Contributions</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="stringliteral">-------------</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="stringliteral">  </span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="stringliteral">License</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="stringliteral">-------</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="stringliteral">  Boost 1.0 License</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="stringliteral">Version</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="stringliteral">-------</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="stringliteral">  0.9.6</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="stringliteral">Prerequisites</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="stringliteral">-------------</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="stringliteral">  * C++ 11 (partly, as far as Visual Studio 2012 supports it)</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="stringliteral">  * boost 1.54.0 (lockfree, thread, assert, option)</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="stringliteral">  * CMake 2.8 or later</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="stringliteral">  * GoogleTest 1.7 (Is part of the repository, because it&#39;</span>s CMakeFiles.txt needs some patches to compile with Visual Studio)</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;Platform</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;--------</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;| Compiler | Status |</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;-----------|---------</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;| Visual Studio 2012 x64 | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> tests pass |</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;| Visual Studio 2013 x64 | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> tests pass |</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;| Debian x64, Clang 3.4  | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> tests pass |</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;Installation Win</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;----------------</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  * Have boost installed and the standard libs be build, install into D:\boost_1_55_0</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  * Clone into e.g. D:\misc\AllocatorBuilder</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  * Create a build folder, eg D:\misc\alb_build</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  * Open a command prompt in that alb_build folder</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  * Have CMake in the path</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  * Execute cmake -G <span class="stringliteral">&quot;Visual Studio 11 Win64&quot;</span> ..\alb_build</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  * Open created solution in .\alb_build\AllocatorBuilder.sln</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  * Compile and run all test (<span class="keywordflow">if</span> necessary add D:\boost_1_55_0\stage\lib to search path)</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;ToDo</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;----</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  See issue list of [open enhancements] (https:<span class="comment">//github.com/FelixPetriconi/AllocatorBuilder/issues?labels=enhancement&amp;page=1&amp;state=open)</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="stringliteral">  Comments, feedback or contributions are welcome!</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="stringliteral">  </span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="stringliteral">License</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="stringliteral">-------</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="stringliteral">  Boost 1.0 License</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="stringliteral">Version</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="stringliteral">-------</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="stringliteral">  0.9.6</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="stringliteral">Prerequisites</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="stringliteral">-------------</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="stringliteral">  * C++ 11 (partly, as far as Visual Studio 2012 supports it)</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="stringliteral">  * boost 1.54.0 (lockfree, thread, assert, option)</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="stringliteral">  * CMake 2.8 or later</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="stringliteral">  * GoogleTest 1.7 (Is part of the repository, because it&#39;</span>s CMakeFiles.txt needs some patches to compile with Visual Studio)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;Platform</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;--------</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;| Compiler | Status |</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;-----------|---------</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;| Visual Studio 2012 x64 | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> tests pass |</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;| Visual Studio 2013 x64 | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> tests pass |</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;| Debian x64, Clang 3.4  | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> tests pass |</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;Installation Win</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;----------------</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  * Have boost installed and the standard libs be build, install into D:\boost_1_55_0</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  * Clone into e.g. D:\misc\AllocatorBuilder</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  * Create a build folder, eg D:\misc\alb_build</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  * Open a command prompt in that alb_build folder</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  * Have CMake in the path</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  * Execute cmake -G <span class="stringliteral">&quot;Visual Studio 11 Win64&quot;</span> ..\alb_build</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  * Open created solution in .\alb_build\AllocatorBuilder.sln</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  * Compile and run all test (<span class="keywordflow">if</span> necessary add D:\boost_1_55_0\stage\lib to search path)</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;ToDo</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;----</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  See issue list of [open enhancements] (https:<span class="comment">//github.com/FelixPetriconi/AllocatorBuilder/issues?labels=enhancement&amp;page=1&amp;state=open)</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
 <div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">alb::All</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00180">allocator_with_stats.hpp:180</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -279,7 +281,7 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>README.md</b></li>
-    <li class="footer">Generated on Tue Mar 11 2014 23:09:12 for Allocator Builder by
+    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
