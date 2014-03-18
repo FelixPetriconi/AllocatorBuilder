@@ -1,8 +1,7 @@
-Examples
-========
+# Tutorial
 
-# Temporary memory inside a function
-## Problem
+## Temporary memory inside a function
+### Problem
 Let's say that we need an unknown amount of memory inside a function. There are different ways to handle this:
 * Create a buffer on the stack that is large enough to handle all cases.
 ** If it is absolute sure that we never need more memory and that there is never the risk of a stack overflow then this is easiest solution and we should go for it.
@@ -22,7 +21,7 @@ Let's say that we need an unknown amount of memory inside a function. There are 
   unique_ptr<char[]> buffer(new char[1024]);
 ~~~
 
-## Solution
+### Solution
 The best would be, if we would have a solution that takes the memory if possible from the stack and if not it goes to the heap. One way would be to use a fallback_allocator in the following way:
 ~~~
   const int StackThreshold = 4096;
@@ -38,8 +37,8 @@ The best would be, if we would have a solution that takes the memory if possible
 ~~~
 Now we get the memory from the stack until 4096 bytes. Just beyond this, a call to ::malloc() would be done. From my point of view this is a cleaner solution. As well it offers the possibility, easily to expand or reallocate the returned block; by design it automatically covers moving data allocated on the stack to the heap, if not enough memory is left on the stack.
 
-# Memory pool for strings
-## Problem
+## Memory pool for strings
+### Problem
 Many string class designs use today for short strings a so called "small string optimization". That means that the characters of the string a stored in a const buffer member or the class if the string is shorter than 16 bytes e.g. Memory is allocated from the heap if the representing text is longer. Something similar like: (I do not claim that this is best possible implementation :-) )
 ~~~
 class string {
@@ -119,8 +118,8 @@ public:
 
 ~~~
 
-# Replacement of global ::new() and ::delete()
-## Problem
+## Replacement of global ::new() and ::delete()
+### Problem
 Let's assume that we see potential in replacing the standard heap with our own, custom optimized version. In general this is pretty easy. We only have to replace the global new(), new[]() and the corresponding delete operators. A regular implementation might look like:
 ~~~
 void* operator new(std::size_t sz) {
@@ -151,7 +150,7 @@ void operator delete[](void* ptr)
     ::free(ptr);
 }
 ~~~
-## Solution
+### Solution
 Let's make the assumption that MyAllocator is a combined allocator from the Allocator-Builder (ALB) library that should serve as the basis of the memory allocation.
 
 We cannot use this MyAllocator directly, because the ALB relies on the fact that always an alb::block must be passed to deallocate().
@@ -173,7 +172,7 @@ namespace {
 
 void* operatorNewInternal(std::size_t n) {
   if (n == 0) {
-    return nullptr;
+    n = 1;
   }
   auto result = myGlobalAllocator.allocate(sz);
   if (result) 
@@ -248,11 +247,11 @@ void operatorDeleteInternal(void* ptr) {
   }  
 }
 ~~~
-# Custom STL compatible allocator
-## Problem
+## Custom STL compatible allocator
+### Problem
 Let's assume for the moment that we have a STL container under heavy load and with lot's of size changes or lot's of re-balancing in case of a tree base one. (I know, that changing the design in a way, that regularly rebalancing of the tree is avoided totally is even better.) But stick to the idea for the moment.
 So we have to implement the complete interface as it is described e.g. in Nicolai Josuttis excellent book "The Standard Template Library". --> Refer to adendum pdf!
-##Solution
+###Solution
 Not very much must be done. Just take the generic alb::stl_allocator and we are done:
 ~~~
   alb::global_allocator<MyAllocator> globalInstance;
