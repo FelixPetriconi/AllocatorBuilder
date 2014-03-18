@@ -13,7 +13,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" AND MSVC_VERSION EQUAL 1700)
 endif ()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")  
-  set(CMAKE_CXX_FLAGS "-O3 -Wall -std=c++11")
+  set(CMAKE_CXX_FLAGS "-O1 -fsanitize=thread -g -Wall -std=c++11")
   set(CMAKE_LINK_FLAGS "-pthreads")
 endif()
 

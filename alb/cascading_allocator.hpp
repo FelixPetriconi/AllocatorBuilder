@@ -207,7 +207,7 @@ public:
     // a new node must be appended
     Node *newNode = createNode();
     Node *nullNode = nullptr;
-    auto p = _root;
+    Node *p = _root;
     do {
       p = _root;
       while (p->next.load() != nullptr) {
