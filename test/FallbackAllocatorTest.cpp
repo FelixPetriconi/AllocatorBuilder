@@ -4,7 +4,7 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
 
@@ -19,24 +19,22 @@
 
 using namespace alb::test_helpers;
 
-class FallbackAllocatorTest : public 
-  AllocatorBaseTest<
-    alb::fallback_allocator<
-      alb::stack_allocator<32>, 
-        alb::mallocator>>
-{
+class FallbackAllocatorTest
+    : public AllocatorBaseTest<alb::fallback_allocator<alb::stack_allocator<32>, alb::mallocator>> {
 protected:
-  void SetUp() {
+  void SetUp()
+  {
     mem = sut.allocate(1);
     StartPtrPrimary = mem.ptr;
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
 
-  void TearDown() {
+  void TearDown()
+  {
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
 
-  void* StartPtrPrimary;
+  void *StartPtrPrimary;
   alb::block mem;
 };
 
@@ -60,7 +58,8 @@ TEST_F(FallbackAllocatorTest, ThatAllocatingBeyondTheLimitsOfThePrimaryIsDoneByT
   EXPECT_NE(StartPtrPrimary, mem.ptr);
 }
 
-TEST_F(FallbackAllocatorTest, ThatIncreasingReallocatingWithinTheLimitsOfThePrimaryIsHandledByThePrimary)
+TEST_F(FallbackAllocatorTest,
+       ThatIncreasingReallocatingWithinTheLimitsOfThePrimaryIsHandledByThePrimary)
 {
   mem = sut.allocate(8);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -68,10 +67,11 @@ TEST_F(FallbackAllocatorTest, ThatIncreasingReallocatingWithinTheLimitsOfThePrim
   EXPECT_TRUE(sut.reallocate(mem, 16));
   EXPECT_EQ(16, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 8);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
 
-TEST_F(FallbackAllocatorTest, ThatIncreasingReallocatingOfABlockOwnedByTheFallbackStaysAtTheFallback)
+TEST_F(FallbackAllocatorTest,
+       ThatIncreasingReallocatingOfABlockOwnedByTheFallbackStaysAtTheFallback)
 {
   mem = sut.allocate(64);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -79,9 +79,8 @@ TEST_F(FallbackAllocatorTest, ThatIncreasingReallocatingOfABlockOwnedByTheFallba
   EXPECT_TRUE(sut.reallocate(mem, 128));
   EXPECT_EQ(128, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 64);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 64);
 }
-
 
 TEST_F(FallbackAllocatorTest, ThatDecreasingReallocatingOfAPrimaryOwnedBlockIsHandledByThePrimary)
 {
@@ -91,10 +90,11 @@ TEST_F(FallbackAllocatorTest, ThatDecreasingReallocatingOfAPrimaryOwnedBlockIsHa
   EXPECT_TRUE(sut.reallocate(mem, 8));
   EXPECT_EQ(8, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 8);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
 
-TEST_F(FallbackAllocatorTest, ThatIncreasingReallocatingBeyondTheLimitsOfThePrimaryIsHandledByTheFallback)
+TEST_F(FallbackAllocatorTest,
+       ThatIncreasingReallocatingBeyondTheLimitsOfThePrimaryIsHandledByTheFallback)
 {
   mem = sut.allocate(8);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -102,9 +102,8 @@ TEST_F(FallbackAllocatorTest, ThatIncreasingReallocatingBeyondTheLimitsOfThePrim
   EXPECT_TRUE(sut.reallocate(mem, 64));
   EXPECT_EQ(64, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 8);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
-
 
 TEST_F(FallbackAllocatorTest, ThatDecreasingReallocatingOfAFallbackOwnedBlockIsHandledByTheFallback)
 {
@@ -114,10 +113,11 @@ TEST_F(FallbackAllocatorTest, ThatDecreasingReallocatingOfAFallbackOwnedBlockIsH
   EXPECT_TRUE(sut.reallocate(mem, 16));
   EXPECT_EQ(16, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 16);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 16);
 }
 
-TEST_F(FallbackAllocatorTest, ThatExpandingOfABlockOwnedByThePrimaryWithinTheLimitsOfThePrimaryIsDone)
+TEST_F(FallbackAllocatorTest,
+       ThatExpandingOfABlockOwnedByThePrimaryWithinTheLimitsOfThePrimaryIsDone)
 {
   mem = sut.allocate(16);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -125,10 +125,11 @@ TEST_F(FallbackAllocatorTest, ThatExpandingOfABlockOwnedByThePrimaryWithinTheLim
   EXPECT_TRUE(sut.expand(mem, 8));
   EXPECT_EQ(24, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 8);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
 
-TEST_F(FallbackAllocatorTest, ThatExpandingOfABlockOwnedByThePrimaryBeyondTheLimitsOfThePrimaryIsRejected)
+TEST_F(FallbackAllocatorTest,
+       ThatExpandingOfABlockOwnedByThePrimaryBeyondTheLimitsOfThePrimaryIsRejected)
 {
   mem = sut.allocate(16);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -136,22 +137,24 @@ TEST_F(FallbackAllocatorTest, ThatExpandingOfABlockOwnedByThePrimaryBeyondTheLim
   EXPECT_FALSE(sut.expand(mem, 64));
   EXPECT_EQ(16, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 16);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 16);
 }
 
-TEST_F(FallbackAllocatorTest, ThatExpandingOfABlockOwnedByTheFallbackIsRejectedBecauseItDoesNotSupportExpand)
+TEST_F(FallbackAllocatorTest,
+       ThatExpandingOfABlockOwnedByTheFallbackIsRejectedBecauseItDoesNotSupportExpand)
 {
   mem = sut.allocate(64);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_FALSE(sut.expand(mem, 64));
   EXPECT_EQ(64, mem.length);
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 64);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 64);
 }
 
 TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsOwnsTest, ThatOwnsIsProcessedCorrectly)
 {
-  alb::fallback_allocator<alb::stack_allocator<32, 4>, alb::shared_heap<alb::mallocator, 64, 4>> sut;
+  alb::fallback_allocator<alb::stack_allocator<32, 4>, alb::shared_heap<alb::mallocator, 64, 4>>
+      sut;
 
   auto memFromPrimary = sut.allocate(32);
   auto memFromFallback = sut.allocate(64);
@@ -164,7 +167,8 @@ TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsOwnsTest, ThatOwnsIsProcess
 
 TEST(FallbackAllocatorWithPrimaryAndFallbackImplemntsExpandTest, ThatExpandIsProcessedCorrectly)
 {
-  alb::fallback_allocator<alb::stack_allocator<32, 4>, alb::shared_heap<alb::mallocator, 64, 4>> sut;
+  alb::fallback_allocator<alb::stack_allocator<32, 4>, alb::shared_heap<alb::mallocator, 64, 4>>
+      sut;
 
   auto memFromPrimary = sut.allocate(16);
   auto memFromFallback = sut.allocate(32);
@@ -192,5 +196,3 @@ TEST(FallbackAllocatorWithOnlyPrimaryImplementsExpandTest, ThatExpandFailsIfPrim
 
   EXPECT_FALSE(sut.expand(memFromPrimary, 16));
 }
-
-

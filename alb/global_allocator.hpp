@@ -10,19 +10,18 @@
 #pragma once
 
 namespace alb {
-  struct length_prefix
-  {
+  struct length_prefix {
     unsigned length;
   };
 
-template <class Allocator>
-class global_allocator {
-public:
-  typedef Allocator value_type;
+  template <class Allocator> class global_allocator {
+  public:
+    using value_type = Allocator;
 
-  static Allocator& instance() {
-  static Allocator in;
-  return in;
-  }
-};
+    static Allocator &instance()
+    {
+      static Allocator in;
+      return in;
+    }
+  };
 }

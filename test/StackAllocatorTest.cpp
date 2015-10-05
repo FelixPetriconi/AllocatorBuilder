@@ -4,7 +4,7 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
@@ -12,8 +12,8 @@
 #include "TestHelpers/Base.h"
 #include "TestHelpers/AllocatorBaseTest.h"
 
-class stack_allocatorTest: public alb::test_helpers::AllocatorBaseTest<alb::stack_allocator<64,4>>
-{
+class stack_allocatorTest
+    : public alb::test_helpers::AllocatorBaseTest<alb::stack_allocator<64, 4>> {
 };
 
 TEST_F(stack_allocatorTest, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
@@ -43,12 +43,11 @@ TEST_F(stack_allocatorTest, ThatAllocatingTheCompleteStackSizeIsPossible)
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-
 TEST_F(stack_allocatorTest, ThatAllocatingTwoMemoryBlocksUsesContiguousMemory)
 {
   auto mem1 = sut.allocate(8);
   auto mem2 = sut.allocate(8);
-  EXPECT_EQ(mem2.ptr, static_cast<char*>(mem1.ptr) + 8);
+  EXPECT_EQ(mem2.ptr, static_cast<char *>(mem1.ptr) + 8);
   EXPECT_EQ(8, mem1.length);
   EXPECT_EQ(8, mem2.length);
 
@@ -71,7 +70,8 @@ TEST_F(stack_allocatorTest, ThatAFreedBlockWhichWasTheLastAllocatedOnesGetsReuse
   deallocateAndCheckBlockIsThenEmpty(mem3);
 }
 
-TEST_F(stack_allocatorTest, ThatAFreedBlockWhichWasNotTheLastAllocatedOnesGetsNotReusedForANewAllocation)
+TEST_F(stack_allocatorTest,
+       ThatAFreedBlockWhichWasNotTheLastAllocatedOnesGetsNotReusedForANewAllocation)
 {
   auto mem1 = sut.allocate(8);
   auto mem2 = sut.allocate(8);
@@ -97,31 +97,32 @@ TEST_F(stack_allocatorTest, ThatANullBlockIsReturnedWhenTheAllocatorIsOutOfMemor
 TEST_F(stack_allocatorTest, ThatAnIncreasingReallocationWithNoBlockInbetweenReturnsTheSameBuffer)
 {
   auto mem = sut.allocate(4);
-  *reinterpret_cast<int*>(mem.ptr) = 42;
+  *reinterpret_cast<int *>(mem.ptr) = 42;
   sut.reallocate(mem, 8);
-  
+
   ASSERT_NE(nullptr, mem.ptr);
-  EXPECT_EQ(42, *reinterpret_cast<int*>(mem.ptr));
+  EXPECT_EQ(42, *reinterpret_cast<int *>(mem.ptr));
   EXPECT_EQ(8, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(stack_allocatorTest, ThatAnIncreasingReallocationWithABlockInbetweenReturnsADifferentBufferAndKeepsTheData)
+TEST_F(stack_allocatorTest,
+       ThatAnIncreasingReallocationWithABlockInbetweenReturnsADifferentBufferAndKeepsTheData)
 {
   auto mem = sut.allocate(4);
   auto memInbetween = sut.allocate(4);
 
   auto memOiginalPtr = mem.ptr;
-  *reinterpret_cast<int*>(mem.ptr) = 42;
-  *reinterpret_cast<int*>(memInbetween.ptr) = 4711;
+  *reinterpret_cast<int *>(mem.ptr) = 42;
+  *reinterpret_cast<int *>(memInbetween.ptr) = 4711;
   sut.reallocate(mem, 8);
 
   ASSERT_NE(nullptr, mem.ptr);
   ASSERT_NE(memOiginalPtr, mem.ptr);
-  EXPECT_EQ(42, *reinterpret_cast<int*>(mem.ptr));
+  EXPECT_EQ(42, *reinterpret_cast<int *>(mem.ptr));
   EXPECT_EQ(8, mem.length);
-  EXPECT_EQ(4711, *reinterpret_cast<int*>(memInbetween.ptr));
+  EXPECT_EQ(4711, *reinterpret_cast<int *>(memInbetween.ptr));
 
   deallocateAndCheckBlockIsThenEmpty(mem);
   deallocateAndCheckBlockIsThenEmpty(memInbetween);
@@ -132,7 +133,7 @@ TEST_F(stack_allocatorTest, ThatAReallocationFailsWhenOutOfMemory)
   auto mem = sut.allocate(64);
   auto originalMemPtr = mem.ptr;
   sut.reallocate(mem, 65);
-  
+
   EXPECT_EQ(64, mem.length);
   EXPECT_EQ(originalMemPtr, mem.ptr);
 
@@ -151,18 +152,19 @@ TEST_F(stack_allocatorTest, ThatADecreasingReallocationWithOfTheLastAllocatedBlo
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(stack_allocatorTest, ThatADecreasingReallocationOfNotTheLastAllocatedBlockKeepsTheMemPtrAndTheData)
+TEST_F(stack_allocatorTest,
+       ThatADecreasingReallocationOfNotTheLastAllocatedBlockKeepsTheMemPtrAndTheData)
 {
   auto mem = sut.allocate(16);
   auto memInBetween = sut.allocate(1);
 
   auto originalMemPtr = mem.ptr;
-  *static_cast<int*>(mem.ptr) = 42;
+  *static_cast<int *>(mem.ptr) = 42;
   EXPECT_TRUE(sut.reallocate(mem, 8));
 
   EXPECT_EQ(8, mem.length);
   EXPECT_EQ(originalMemPtr, mem.ptr);
-  EXPECT_EQ(42, *static_cast<int*>(mem.ptr));
+  EXPECT_EQ(42, *static_cast<int *>(mem.ptr));
 
   deallocateAndCheckBlockIsThenEmpty(mem);
   deallocateAndCheckBlockIsThenEmpty(memInBetween);
@@ -195,14 +197,16 @@ TEST_F(stack_allocatorTest, ThatExpandingBy16OfAnEmptyBlockResultsIntoANewBlock)
   auto mem = sut.allocate(0);
 
   EXPECT_TRUE(sut.expand(mem, 16));
-  
+
   EXPECT_NE(nullptr, mem.ptr);
   EXPECT_EQ(16, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(stack_allocatorTest, ThatExpandingByTheCapacityOfTheAllocatorOfAnEmptyBlockResultsIntoABlockWithAllocatorsCapacity)
+TEST_F(
+    stack_allocatorTest,
+    ThatExpandingByTheCapacityOfTheAllocatorOfAnEmptyBlockResultsIntoABlockWithAllocatorsCapacity)
 {
   auto mem = sut.allocate(0);
 
@@ -217,7 +221,6 @@ TEST_F(stack_allocatorTest, ThatExpandingByTheCapacityOfTheAllocatorOfAnEmptyBlo
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
-
 
 TEST_F(stack_allocatorTest, ThatExpandingBeyondTheAllocatorsCapacityOfAnEmptyBlockResultsInFalse)
 {
@@ -242,5 +245,3 @@ TEST_F(stack_allocatorTest, ThatExpandingBeyondTheAllocatorsCapacityAFilledBlock
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
-
-

@@ -4,7 +4,7 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: http://petriconi.net, Felix Petriconi
 //
 //////////////////////////////////////////////////////////////////
 
@@ -18,10 +18,9 @@
 
 using namespace alb::test_helpers;
 
-typedef alb::bucketizer<
-  alb::shared_freelist<
-    alb::mallocator, alb::internal::DynasticDynamicSet, alb::internal::DynasticDynamicSet>,
-    17, 64, 16> AllocatorUnderTest;
+typedef alb::bucketizer<alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+                                             alb::internal::DynasticDynamicSet>,
+                        17, 64, 16> AllocatorUnderTest;
 
 class BucketizerTest : public AllocatorBaseTest<AllocatorUnderTest> {
 };
@@ -59,20 +58,22 @@ TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlo
   sut.deallocate(dummy);
 }
 
-TEST_F(BucketizerTest, ThatAllocatingAtTheLowerEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
+TEST_F(BucketizerTest,
+       ThatAllocatingAtTheLowerEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
 {
   for (size_t i = 0; i < AllocatorUnderTest::number_of_buckets; i++) {
-    auto mem = sut.allocate(17 + i*16);
-    EXPECT_EQ(16 + (i+1)*16, mem.length);
+    auto mem = sut.allocate(17 + i * 16);
+    EXPECT_EQ(16 + (i + 1) * 16, mem.length);
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
 }
 
-TEST_F(BucketizerTest, ThatAllocatingAtTheUpperEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
+TEST_F(BucketizerTest,
+       ThatAllocatingAtTheUpperEdgeOfABucketResultsInABlockWithTheUpperEdgeOfThatAllocator)
 {
   for (size_t i = 0; i < AllocatorUnderTest::number_of_buckets; i++) {
-    auto mem = sut.allocate((i+2)*16);
-    EXPECT_EQ((i+2)*16, mem.length);
+    auto mem = sut.allocate((i + 2) * 16);
+    EXPECT_EQ((i + 2) * 16, mem.length);
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
 }
@@ -88,12 +89,13 @@ TEST_F(BucketizerTest, ThatAReallocationWithInTheEdgesOfABucketItemTheLengthAndT
   EXPECT_EQ(32, mem.length);
   EXPECT_EQ(originalPtr, mem.ptr);
 
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 32);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 32);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
-TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheContent)
+TEST_F(BucketizerTest,
+       ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheContent)
 {
   auto mem = sut.allocate(32);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -104,7 +106,7 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheUpperEdgeOfABucketItemCrossesTh
   EXPECT_EQ(48, mem.length);
   EXPECT_NE(originalPtr, mem.ptr);
 
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 32);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 32);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -131,8 +133,9 @@ TEST_F(BucketizerTest, ThatAReallocationOfAFilledBlockToZeroDeallocatesTheMemory
   EXPECT_FALSE(mem);
 }
 
-
-TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheStrippedContent)
+TEST_F(
+    BucketizerTest,
+    ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTheBucketItemAndPreservesTheStrippedContent)
 {
   auto mem = sut.allocate(48);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
@@ -143,7 +146,7 @@ TEST_F(BucketizerTest, ThatAReallocationBeyondTheLowerEdgeOfABucketItemCrossesTh
   EXPECT_EQ(32, mem.length);
   EXPECT_NE(originalPtr, mem.ptr);
 
-  EXPECT_MEM_EQ(mem.ptr, (void*)ReferenceData.data(), 32);
+  EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 32);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }

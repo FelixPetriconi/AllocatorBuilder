@@ -4,7 +4,7 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: http://petriconi.net, Felix Petriconi
 //
 //////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
@@ -16,18 +16,17 @@
 #include "TestHelpers/Data.h"
 #include "TestHelpers/Base.h"
 
-namespace
-{
+namespace {
   const size_t LargeBlockSize = 64;
 }
 
-class SegregatorTest : public 
-  alb::test_helpers::AllocatorBaseTest<
-    alb::segregator<alb::stack_allocator<32>::max_size, alb::stack_allocator<32>, 
-    alb::shared_heap<alb::mallocator, 512,4>>>
-{
+class SegregatorTest
+    : public alb::test_helpers::AllocatorBaseTest<
+          alb::segregator<alb::stack_allocator<32>::max_size, alb::stack_allocator<32>,
+                          alb::shared_heap<alb::mallocator, 512, 4>>> {
 protected:
-  void SetUp() {
+  void SetUp()
+  {
     mem = sut.allocate(4);
     StartSmallAllocatorPtr = mem.ptr;
     deallocateAndCheckBlockIsThenEmpty(mem);
@@ -39,12 +38,13 @@ protected:
     ASSERT_NE(StartSmallAllocatorPtr, StartLargeAllocatorPtr);
   }
 
-  void TearDown() {
+  void TearDown()
+  {
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
 
-  void* StartSmallAllocatorPtr;
-  void* StartLargeAllocatorPtr;
+  void *StartSmallAllocatorPtr;
+  void *StartLargeAllocatorPtr;
   alb::block mem;
 };
 
@@ -72,7 +72,9 @@ TEST_F(SegregatorTest, ThatAllocatingSmallAllocatorsSizeReturnsABlockOfThatSize)
   EXPECT_NE(nullptr, mem.ptr);
 }
 
-TEST_F(SegregatorTest, ThatAllocatingLargeAllocatorsSizeReturnsABlockOfThatSizeAndItsBufferDoesNotComeFromTheSmallAllocator)
+TEST_F(
+    SegregatorTest,
+    ThatAllocatingLargeAllocatorsSizeReturnsABlockOfThatSizeAndItsBufferDoesNotComeFromTheSmallAllocator)
 {
   mem = sut.allocate(LargeBlockSize);
 
@@ -80,38 +82,38 @@ TEST_F(SegregatorTest, ThatAllocatingLargeAllocatorsSizeReturnsABlockOfThatSizeA
   EXPECT_EQ(StartLargeAllocatorPtr, mem.ptr);
 }
 
-
 TEST_F(SegregatorTest, ThatReallocatingASmallBlockWithInTheBoundsOfTheSmallAllocatorStaysThere)
 {
   mem = sut.allocate(8);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, alb::stack_allocator<32>::max_size));
-  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void*)alb::test_helpers::ReferenceData.data(), 8);
+  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void *)alb::test_helpers::ReferenceData.data(), 8);
 
   EXPECT_EQ(alb::stack_allocator<32>::max_size, mem.length);
   EXPECT_EQ(StartSmallAllocatorPtr, mem.ptr);
 }
 
-TEST_F(SegregatorTest, ThatReallocatingASmallBlockOutOfTheBoundsOfTheSmallAllocatorItGoesToTheLargeAllocator)
+TEST_F(SegregatorTest,
+       ThatReallocatingASmallBlockOutOfTheBoundsOfTheSmallAllocatorItGoesToTheLargeAllocator)
 {
   mem = sut.allocate(8);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
-  EXPECT_TRUE(sut.reallocate(mem, alb::stack_allocator<32>::max_size+1));
-  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void*)alb::test_helpers::ReferenceData.data(), 8);
+  EXPECT_TRUE(sut.reallocate(mem, alb::stack_allocator<32>::max_size + 1));
+  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void *)alb::test_helpers::ReferenceData.data(), 8);
 
   EXPECT_LE(alb::stack_allocator<32>::max_size, mem.length);
   EXPECT_EQ(StartLargeAllocatorPtr, mem.ptr);
 }
 
-TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeGoesToTheSmallAllocator) 
+TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeGoesToTheSmallAllocator)
 {
   mem = sut.allocate(LargeBlockSize);
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 4));
-  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void*)alb::test_helpers::ReferenceData.data(), 4);
+  alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void *)alb::test_helpers::ReferenceData.data(), 4);
 
   EXPECT_EQ(4, mem.length);
   EXPECT_EQ(StartSmallAllocatorPtr, mem.ptr);

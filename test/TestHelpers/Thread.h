@@ -58,8 +58,10 @@ public:
   void check() {
     Oszillator bytesToWork(_maxUsedBytes);
 
-    for (auto i = 0; i < 100000; i++) {
+    for (auto i = 0; i < 1000000; i++) {
+      
       auto mem = _allocator.allocate(bytesToWork);
+
       if (mem) {
         ::memcpy(mem.ptr, _reference.get(), bytesToWork);
         EXPECT_MEM_EQ(mem.ptr, _reference.get(), bytesToWork);
@@ -77,8 +79,9 @@ public:
 
       _allocator.deallocate(mem);
 
-      bytesToWork++;
+      ++bytesToWork;
     }
+    // std::cout << "Thread finished " << std::this_thread::get_id() << std::endl;
   }
 };
 
@@ -119,26 +122,26 @@ public:
     std::vector<alb::block> mems;
 
     for (size_t i = 0; i < 8; i++) {
-      auto mem = _allocator.allocate(bytesToWork++);
-      ::memcpy(mem.ptr, _reference.get(), bytesToWork);
+      auto mem = _allocator.allocate(_maxUsedBytes);
+      ::memcpy(mem.ptr, _reference.get(), _maxUsedBytes);
       mems.push_back(mem);
     }
 
-    for (auto i = 0; i < 100000; i++) {
+    for (auto i = 0; i < 1000000; i++) {
       if (_allocator.reallocate(mems[memBlockIndex], bytesToWork)) {
         if (mems[memBlockIndex]) {
           ::memcpy(mems[memBlockIndex].ptr, _reference.get(), bytesToWork);
           EXPECT_MEM_EQ(mems[memBlockIndex].ptr, _reference.get(), bytesToWork);
         }
       }
-      bytesToWork++;
-      memBlockIndex++;
+      ++bytesToWork;
+      ++memBlockIndex;
       _allocator.deallocate(mems[memBlockIndex]);
 
       mems[memBlockIndex] = _allocator.allocate(bytesToWork);
       ::memcpy(mems[memBlockIndex].ptr, _reference.get(), bytesToWork);
 
-      memBlockIndex++;
+      ++memBlockIndex;
     }
     
     for (size_t i = 0; i < 8; i++) {

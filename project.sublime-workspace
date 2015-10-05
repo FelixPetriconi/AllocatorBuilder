@@ -1,0 +1,306 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"de",
+				"delta"
+			],
+			[
+				"MEM",
+				"MEMBER_ACCESSORS"
+			],
+			[
+				"size",
+				"size_t"
+			],
+			[
+				"to",
+				"toOuterBlock"
+			],
+			[
+				"outerTo",
+				"outerToPrefix"
+			],
+			[
+				"inner",
+				"innerToSufix"
+			],
+			[
+				"suf",
+				"sufix_size"
+			],
+			[
+				"new",
+				"newInnerBlock"
+			],
+			[
+				"in",
+				"innerMem"
+			],
+			[
+				"0x",
+				"0xbaadf00d"
+			],
+			[
+				"outer",
+				"outerToSufix"
+			],
+			[
+				"ou",
+				"outerToPrefix"
+			],
+			[
+				"static",
+				"static_cast"
+			],
+			[
+				"s",
+				"sufix_size"
+			],
+			[
+				"pr",
+				"prefix_size"
+			],
+			[
+				"si",
+				"prefix_size"
+			],
+			[
+				"file",
+				"file_content"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 288.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/misc/GitHub/AllocatorBuilder/test/ALBStackAllocatorTest.cpp",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBStackAllocator.h",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBSegregator.h",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBAffixAllocator.h",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBMemmoryCorruptionDetector.h",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBSharedHeap.h",
+		"/D/misc/GitHub/AllocatorBuilder/test/ALBAffixAllocatorTest.cpp",
+		"/D/misc/GitHub/AllocatorBuilder/source/CMakeLists.txt",
+		"/D/misc/GitHub/AllocatorBuilder/test/ALBAllocatorWithStatsTest.cpp",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBAllocatorWithStats.h",
+		"/D/misc/GitHub/AllocatorBuilder/test/CMakeLists.txt",
+		"/D/misc/GitHub/AllocatorBuilder/include/ALBFallbackAllocator.h",
+		"/C/Users/felixp/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/felixp/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/S/Hg/default/Sources/Lib/PGDB/PGDB_ResultProcessor.h",
+		"/S/Hg/default/Features/support/env.rb",
+		"/S/Hg/default/Features/lib/dicom_cache.rb",
+		"/S/Hg/default/Features/support/CucumberEnv.rb",
+		"/S/Hg/default/Features/lib/scr.rb",
+		"/S/Hg/default/Sources/indent.el",
+		"/S/Hg/default/Features/TomoScrolling/TomoScrollingSequential.feature",
+		"/S/Hg/default/Features/TomoScrolling/TomoScrollingLinked.feature",
+		"/S/Hg/default/Features/TomoScrolling/TomoScrollingDefaultUserPrefs.feature",
+		"/S/Hg/default/Features/TomoScrolling/MixedTomoTypesLinkedScrolling.feature",
+		"/S/Hg/default/Features/Printing/ScreenCapturePrint.feature",
+		"/S/Hg/default/Features/step_definitions/ReviewingWorkflow/OpenPatient.rb",
+		"/S/Hg/default/Features/step_definitions/MG_Tools/LinkedScrolling.rb",
+		"/S/Hg/default/Misc/RiskLabelChecker/risk_label_checker.rb",
+		"/S/Hg/default/clean_line_endings.rb",
+		"/S/Hg/default/rakefile",
+		"/C/Users/felixp/AppData/Roaming/Sublime Text 3/Packages/User/Plain text.sublime-settings",
+		"/S/Hg/default/Misc/HgHooks/message.py",
+		"/S/Hg/default/Features/MG-Tools/MagnifierVisibilityWhenToggling.feature",
+		"/S/Hg/default/Features/ImagePresentation/Sizing.feature",
+		"/S/Hg/default/Misc/RiskLabelChecker/risk_label_parser.rb"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"clear_all_test_obj"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "project.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"pgdb_resultpro",
+				"Sources\\Lib\\PGDB\\PGDB_ResultProcessor.h"
+			],
+			[
+				"cucumber",
+				"Features\\support\\CucumberEnv.rb"
+			],
+			[
+				"tomos",
+				"Features/TomoScrolling/TomoScrollingSequential.feature"
+			],
+			[
+				"tomosc",
+				"Features/TomoScrolling/TomoScrollingLinked.feature"
+			],
+			[
+				"mixed",
+				"Features/TomoScrolling/MixedTomoTypesLinkedScrolling.feature"
+			],
+			[
+				"screencap",
+				"Features/Printing/ScreenCapturePrint.feature"
+			],
+			[
+				"magni",
+				"Features/MG-Tools/MagnifierVisibilityWhenToggling.feature"
+			],
+			[
+				"sizin",
+				"Features/ImagePresentation/Sizing.feature"
+			],
+			[
+				"openp",
+				"Features/step_definitions/ReviewingWorkflow/OpenPatient.rb"
+			],
+			[
+				"linkens",
+				"Features/step_definitions/MG_Tools/LinkedScrolling.rb"
+			],
+			[
+				"rakefile",
+				"rakefile"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 276.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

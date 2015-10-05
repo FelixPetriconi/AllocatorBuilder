@@ -10,40 +10,51 @@
 #pragma once
 
 namespace alb {
-namespace internal {
+  namespace internal {
 
-/**
-  * Template that mimics (partly) the std::atomic<T> interface, without
-  * beeing an atomic.
-  * It is usefull, if during compilation time the selection between single
-  * threaded or multi threaded is needed
-  * \tparam T The value that the class encapsulate
-  *
-  * \ingroup group_internal
-  */
-template <typename T>
-class NoAtomic {
-  T _value;
-public:
-  NoAtomic() {}
+    /**
+      * Template that mimics (partly) the std::atomic<T> interface, without
+      * beeing an atomic.
+      * It is usefull, if during compilation time the selection between single
+      * threaded or multi threaded is needed
+      * \tparam T The value that the class encapsulate
+      *
+      * \ingroup group_internal
+      */
+    template <typename T> class NoAtomic {
+      T _value;
 
-  NoAtomic(T v) : _value(std::move(v)) {}
+    public:
+      NoAtomic()
+      {
+      }
 
-  T load() const { return _value; }
+      explicit NoAtomic(T v)
+        : _value(std::move(v))
+      {
+      }
 
-  NoAtomic& operator=(T v) {
-    _value = std::move(v);
-    return *this;
+      T load() const
+      {
+        return _value;
+      }
+
+      NoAtomic &operator=(T v)
+      {
+        _value = std::move(v);
+        return *this;
+      }
+
+      bool compare_exchange_strong(T &, T v)
+      {
+        _value = std::move(v);
+        return true;
+      }
+
+      operator T() const
+      {
+        return _value;
+      }
+    };
   }
-
-  bool compare_exchange_strong(T&, T v) {
-    _value = std::move(v);
-    return true;
-  }
-
-  operator T() const {
-    return _value;
-  }
-};
-}  
 }
