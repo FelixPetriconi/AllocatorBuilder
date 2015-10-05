@@ -103,8 +103,8 @@ Allocator Overview
 | fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
 | (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
 | segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
-| (ahared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
-| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner, but it needs further improvements) |
+| (shared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe) |
+| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe, but it needs further improvements, because it does not frees unused allocators) |
 | (shared_)heap            | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
 | stack_allocator          | Provides a memory access, taken from the stack |
 
