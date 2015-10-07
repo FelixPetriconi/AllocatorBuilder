@@ -77,12 +77,11 @@ namespace alb {
     };
 
     class Disabled {
-      operator bool() const;
-      Disabled();
-      Disabled(const Disabled &);
-      Disabled &operator=(const Disabled &);
-      Disabled(Disabled &&);
-      Disabled &operator=(Disabled &&);
+      Disabled() = delete;
+      Disabled(const Disabled &) = delete;
+      Disabled &operator=(const Disabled &) = delete;
+      Disabled(Disabled &&) = delete;
+      Disabled &operator=(Disabled &&) = delete;
     };
 
     /**
@@ -121,6 +120,7 @@ namespace alb {
      * But all currently available allocator should work.
      * \ingroup group_traits
      */
+
     template <class T1, class T2> struct both_same_base : std::false_type {
     };
 

@@ -200,7 +200,7 @@ namespace alb {
         auto firstNode = createNode();
         Node *nullNode = nullptr;
         // test if in the meantime someone else has created a node
-        if (!_root.compare_exchange_strong(nullNode, firstNode)) {
+        if (!_root.compare_exchange_weak(nullNode, firstNode)) {
           eraseNode(firstNode);
         }
 
@@ -219,7 +219,7 @@ namespace alb {
         while (p->next.load() != nullptr) {
           p = p->next;
         }
-      } while (!p->next.compare_exchange_strong(nullNode, newNode));
+      } while (!p->next.compare_exchange_weak(nullNode, newNode));
 
       result = allocateNoGrow(n);
       return result;

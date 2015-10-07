@@ -33,7 +33,6 @@ set(HEADERS
   ../alb/internal/reallocator.hpp
   ../alb/internal/shared_helpers.hpp
   ../alb/internal/stack.hpp
-  ../alb/internal/atomic_shared_ptr.hpp
   ../alb/internal/traits.hpp
 )
 
