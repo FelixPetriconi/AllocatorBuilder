@@ -136,7 +136,7 @@ Version
 
 Prerequisites
 -------------
-  * C++ 11 (partly, as far as Visual Studio 2015 supports it)
+  * C++ 14 (partly, as far as Visual Studio 2015 supports it)
   * boost 1.59.0 (lockfree, thread, assert, option)
   * CMake 2.8 or later
   * GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
@@ -146,7 +146,6 @@ Platform
 --------
 | Compiler | Status |
 -----------|---------
-| Visual Studio 2013 x64 | All tests pass |
 | Visual Studio 2015 x64 | All tests pass |
 | Debian x64, Clang 3.4  | All tests pass |
 | Intel XE Inspector x64 | No detections  |
