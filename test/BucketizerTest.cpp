@@ -18,9 +18,9 @@
 
 using namespace alb::test_helpers;
 
-typedef alb::bucketizer<alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+using AllocatorUnderTest = alb::bucketizer<alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
                                              alb::internal::DynasticDynamicSet>,
-                        17, 64, 16> AllocatorUnderTest;
+                        17, 64, 16> ;
 
 class BucketizerTest : public AllocatorBaseTest<AllocatorUnderTest> {
 };

@@ -23,8 +23,8 @@ protected:
   alb::block mem;
 };
 
-typedef ::testing::Types<alb::shared_freelist<alb::mallocator, 0, 16>,
-                         alb::freelist<alb::mallocator, 0, 16>> TypesForFreeListTest;
+using TypesForFreeListTest = ::testing::Types<alb::shared_freelist<alb::mallocator, 0, 16>,
+                         alb::freelist<alb::mallocator, 0, 16>>;
 
 TYPED_TEST_CASE(SharedListTest, TypesForFreeListTest);
 
@@ -105,11 +105,10 @@ protected:
   T sut;
 };
 
-typedef ::testing::Types<alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+using TypesForFreeListWithParametrizedTest = ::testing::Types<alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
                                               alb::internal::DynasticDynamicSet>,
                          alb::freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
-                                       alb::internal::DynasticDynamicSet>>
-    TypesForFreeListWithParametrizedTest;
+                                       alb::internal::DynasticDynamicSet>>;
 
 TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTest);
 

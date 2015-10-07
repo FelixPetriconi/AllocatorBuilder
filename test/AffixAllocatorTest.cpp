@@ -44,7 +44,7 @@ protected:
   alb::block mem;
 };
 
-typedef ::testing::Types<
+using TypesToTest = ::testing::Types<
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<unsigned, PrefixMarker>>,
     alb::affix_allocator<alb::stack_allocator<512, 4>, alb::affix_allocator_helper::no_affix,
@@ -54,7 +54,7 @@ typedef ::testing::Types<
                          alb::memory_corruption_detector<unsigned, SufixMarker>>,
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<uint64_t, LargePrefixMarker>,
-                         alb::memory_corruption_detector<unsigned, SufixMarker>>> TypesToTest;
+                         alb::memory_corruption_detector<unsigned, SufixMarker>>>;
 
 TYPED_TEST_CASE(affix_allocatorTest, TypesToTest);
 

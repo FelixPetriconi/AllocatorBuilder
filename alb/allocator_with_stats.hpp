@@ -16,7 +16,6 @@
 #include "allocator_base.hpp"
 #include "affix_allocator.hpp"
 #include <chrono>
-#include <boost/iterator/iterator_facade.hpp>
 
 namespace alb {
 
@@ -217,10 +216,15 @@ public:                                                                         
       const char *callerFunction;
       int callerLine;
 
-      bool operator==(const AllocationInfo &rhs) const
+      /* The comparison does not take the allocation time into account
+       * It is a template to be able to compare the AllocationInfo from different allocators
+       */
+      template <typename RHS> bool operator==(const RHS &rhs) const
       {
-        return ::strcmp(callerFile, rhs.callerFile) == 0 &&
-               ::strcmp(callerFunction, rhs.callerFunction) == 0 && callerSize == rhs.callerSize;
+        return callerSize == rhs.callerSize &&
+               (callerFile == rhs.callerFile || ::strcmp(callerFile, rhs.callerFile) == 0) &&
+               (callerFunction == rhs.callerFunction ||
+                ::strcmp(callerFunction, rhs.callerFunction) == 0);
       }
 
       std::chrono::time_point<std::chrono::system_clock> callerTime;
@@ -235,53 +239,87 @@ public:                                                                         
      * \ingroup group_stats
      */
     class Allocations {
+    public:
       /**
       * Iterator for Allocations elements
       */
-      class AllocationInfoIterator
-          : public boost::iterator_facade<AllocationInfoIterator, AllocationInfo,
-                                          boost::forward_traversal_tag> {
-
-        friend class boost::iterator_core_access;
-
-        void increment()
-        {
-          _node = _node->next;
-        }
-
-        bool equal(const AllocationInfoIterator &rhs) const
-        {
-          return this->_node == rhs._node;
-        }
-
-        AllocationInfo &dereference() const
-        {
-          return *_node;
-        }
-
-        AllocationInfo *_node;
+      class iterator {
+      public:
+        using iterator_category = std::bidirectional_iterator_tag;
+        using value_type = AllocationInfo *;
+        using difference_type = ptrdiff_t;
+        using pointer = value_type;
+        using const_pointer = const pointer;
+        using reference = value_type;
+        using const_reference = const reference;
 
       public:
-        AllocationInfoIterator()
-          : _node(nullptr)
+        iterator()
+          : _node{nullptr}
         {
         }
 
-        explicit AllocationInfoIterator(AllocationInfo *p)
-          : _node(p)
+        explicit iterator(AllocationInfo *data)
+          : _node{data}
         {
         }
+
+        reference operator*() const
+        {
+          return _node;
+        }
+
+        pointer operator->() const
+        {
+          return &(operator*());
+        }
+
+        iterator &operator++()
+        {
+          _node = _node->next;
+          return *this;
+        }
+
+        iterator operator++(int)
+        {
+          iterator tmp = *this;
+          ++*this;
+          return tmp;
+        }
+
+        iterator &operator--()
+        {
+          _node = _node->previous();
+          return *this;
+        }
+
+        iterator operator--(int)
+        {
+          iterator tmp = *this;
+          --*this;
+          return tmp;
+        }
+
+        friend bool operator==(const iterator &x, const iterator &y)
+        {
+          return x._node == y._node;
+        }
+
+        friend bool operator!=(const iterator &x, const iterator &y)
+        {
+          return !(x == y);
+        }
+
+      private:
+        AllocationInfo *_node;
       };
 
-      const AllocationInfoIterator _begin;
-      const AllocationInfoIterator _end;
-
     public:
-      using value_type = AllocationInfo;
-      using const_iterator = AllocationInfoIterator;
+      using const_iterator = const iterator;
 
       explicit Allocations(AllocationInfo *root)
         : _begin(root)
+        , _end(nullptr)
       {
       }
 
@@ -299,6 +337,10 @@ public:                                                                         
       {
         return _begin == _end;
       }
+
+    private:
+      const const_iterator _begin;
+      const const_iterator _end;
     };
 
     static const bool HasPerAllocationState =
@@ -306,7 +348,6 @@ public:                                                                         
          (StatsOptions::CallerTime | StatsOptions::CallerFile | StatsOptions::CallerLine)) != 0;
 
 // Simplification for defining all members and accessors.
-// There is potential to improve this with boost.preprocessor
 #define MEMBER_ACCESSORS                                                                           \
   MEMBER_ACCESSOR(numOwns)                                                                         \
   MEMBER_ACCESSOR(numAllocate)                                                                     \

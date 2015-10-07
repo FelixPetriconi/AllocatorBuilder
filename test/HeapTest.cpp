@@ -28,9 +28,8 @@ namespace {
 template <class T> class HeapWithSmallAllocationsTest : public AllocatorBaseTest<T> {
 };
 
-typedef ::testing::Types<alb::shared_heap<alb::mallocator, NumberOfChunks, SmallChunkSize>,
-                         alb::heap<alb::mallocator, NumberOfChunks, SmallChunkSize>>
-    TypesForHeapTest;
+using TypesForHeapTest = ::testing::Types<alb::shared_heap<alb::mallocator, NumberOfChunks, SmallChunkSize>,
+                         alb::heap<alb::mallocator, NumberOfChunks, SmallChunkSize>>;
 
 TYPED_TEST_CASE(HeapWithSmallAllocationsTest, TypesForHeapTest);
 
@@ -502,7 +501,7 @@ TYPED_TEST(HeapWithLargeAllocationsTest,
 
   EXPECT_EQ(mem2.ptr, static_cast<char *>(mem1.ptr) +
                           8 * 8); // These big blocks currently are aligned on 8-BlockBorder
-  EXPECT_EQ(mem3.ptr, static_cast<char *>(mem1.ptr) + 8); // This fits into the first gab
+  EXPECT_EQ(mem3.ptr, static_cast<char *>(mem1.ptr) + 8); // This fits into the first gap
   EXPECT_EQ(mem4.ptr,
             static_cast<char *>(mem2.ptr) +
                 65 * 8); // This comes after the big chunk, because there is no gap inbetween
@@ -513,12 +512,12 @@ TYPED_TEST(HeapWithLargeAllocationsTest,
   this->deallocateAndCheckBlockIsThenEmpty(mem4);
 }
 
-class SharedHeapTreatetWithThreadsTest : public ::testing::Test {
+class SharedHeapTreatedWithThreadsTest : public ::testing::Test {
 };
 
-TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceAllocationByOneRunningThread)
+TEST_F(SharedHeapTreatedWithThreadsTest, BruteForceAllocationByOneRunningThread)
 {
-  typedef alb::shared_heap<alb::mallocator, 512, 8> AllocatorUnderTest;
+  using AllocatorUnderTest = alb::shared_heap<alb::mallocator, 512, 8>;
   AllocatorUnderTest sut;
 
   TestWorker<AllocatorUnderTest> testWorker(sut, 128);
@@ -528,10 +527,10 @@ TEST_F(SharedHeapTreatetWithThreadsTest, BruteForceAllocationByOneRunningThread)
   EXPECT_TRUE((bool)allDeallocatedCheck);
 }
 
-TEST_F(SharedHeapTreatetWithThreadsTest,
+TEST_F(SharedHeapTreatedWithThreadsTest,
        BruteForceTestWithSeveralThreadsRunningHoldingASingleAllocation)
 {
-  typedef alb::shared_heap<alb::mallocator, 512, 64> AllocatorUnderTest;
+  using AllocatorUnderTest = alb::shared_heap<alb::mallocator, 512, 64>;
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, 2> TestParams;
@@ -546,22 +545,22 @@ TEST_F(SharedHeapTreatetWithThreadsTest,
   EXPECT_TRUE((bool)allDeallocatedCheck);
 }
 
-TEST_F(SharedHeapTreatetWithThreadsTest,
+TEST_F(SharedHeapTreatedWithThreadsTest,
        BruteForceTestWith4ThreadsRunningHoldingMultipleAllocations)
 {
   const size_t NumberOfChunks = 1024;
   const size_t BlockSize = 64;
   const size_t NumberOfThread = 4;
 
-  typedef AffixGuard<unsigned, 0xbaadf00d> PrefixGuard;
-  typedef AffixGuard<unsigned, 0xf000baaa> SufixGuard;
+  using PrefixGuard = AffixGuard<unsigned, 0xbaadf00d>;
+  using  SufixGuard = AffixGuard<unsigned, 0xf000baaa>;
 
-  typedef alb::affix_allocator<alb::shared_heap<alb::mallocator, NumberOfChunks, BlockSize>,
-                               PrefixGuard, SufixGuard> AllocatorUnderTest;
+  using AllocatorUnderTest = alb::affix_allocator<alb::shared_heap<alb::mallocator, NumberOfChunks, BlockSize>,
+                               PrefixGuard, SufixGuard>;
 
   AllocatorUnderTest sut;
 
-  typedef std::array<unsigned char, NumberOfThread> TestParams;
+  using TestParams = std::array<unsigned char, NumberOfThread>;
   TestParams maxAllocatedBytes = {127, 131, 165, 129};
 
   TestWorkerCollector<AllocatorUnderTest, NumberOfThread,

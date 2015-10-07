@@ -195,46 +195,53 @@ public:
 
 template <class Allocator> class AllocatorWithStatsBaseTest : public ::testing::Test {
 protected:
-  typedef Allocator AllocatorUnderTest;
+  using AllocatorUnderTest = Allocator;
+  using CurrentAllocationInfo = typename Allocator::AllocationInfo;
 
-  typename Allocator::AllocationInfo createCallerExpectation(const char *file, const char *function,
-                                                             size_t size)
+  void deleteAllExpectations(std::vector<CurrentAllocationInfo *> &expectation)
   {
-    typename Allocator::AllocationInfo expectedCallerInfo;
-    expectedCallerInfo.callerFile = file;
-    expectedCallerInfo.callerFunction = function;
-    expectedCallerInfo.callerSize = size;
+    for (auto &p : expectation) {
+      delete p;
+    }
+  }
+
+  auto createCallerExpectation(const char *file, const char *function, size_t size)
+  {
+    auto expectedCallerInfo = new CurrentAllocationInfo;
+    expectedCallerInfo->callerFile = file;
+    expectedCallerInfo->callerFunction = function;
+    expectedCallerInfo->callerSize = size;
     return expectedCallerInfo;
   }
 
-  std::vector<typename Allocator::AllocationInfo>
-  extractRealAllocations(const typename Allocator::Allocations &a)
+  auto extractRealAllocations(const typename AllocatorUnderTest::Allocations &a)
   {
-    std::vector<typename Allocator::AllocationInfo> result;
+    std::vector<CurrentAllocationInfo *> result;
     std::copy(a.cbegin(), a.cend(), std::back_inserter(result));
     std::reverse(result.begin(), result.end());
     return result;
   }
 
-  void checkTheAllocationCallerExpectations(
-      const std::vector<typename Allocator::AllocationInfo> &expectations,
-      const std::vector<typename Allocator::AllocationInfo> &realAllocations)
+  void
+  checkTheAllocationCallerExpectations(const std::vector<CurrentAllocationInfo *> &expectations,
+                                       const std::vector<CurrentAllocationInfo *> &realAllocations)
   {
-    EXPECT_EQ(expectations, realAllocations);
+    EXPECT_TRUE(std::equal(expectations.cbegin(), expectations.cend(), realAllocations.cbegin(),
+                           realAllocations.cend(),
+                           [](const auto &l, const auto &r) { return *l == *r; }));
   }
 
   void SetUp()
   {
-    sut = new Allocator;
+    sut = std::make_unique<Allocator>();
   }
 
   void TearDown()
   {
-    delete sut;
     EXPECT_EQ(0, alb::test_helpers::TestMallocator::currentlyAllocatedBytes());
   }
 
-  Allocator *sut;
+  std::unique_ptr<Allocator> sut;
 };
 
 class AllocatorWithStatsTest : public AllocatorWithStatsBaseTest<AllocatorWithStatsThatCanExpand> {
@@ -265,9 +272,10 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingZeroBytesIsStored)
 
 TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
 {
-  auto expectedCallerInfo = createCallerExpectation(__FILE__, __FUNCTION__, 4);
+  std::unique_ptr<CurrentAllocationInfo> expectedCallerInfo(
+      createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem = ALLOCATE((*sut), 4);
-  expectedCallerInfo.callerLine = __LINE__;
+  expectedCallerInfo->callerLine = __LINE__;
 
   auto afterAllocationOf4Bytes = AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
                                      .withNumAllocate(1)
@@ -281,7 +289,7 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   {
     const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
-    EXPECT_TRUE(expectedCallerInfo == *(allocations.cbegin()));
+    EXPECT_TRUE(*expectedCallerInfo == **(allocations.cbegin()));
   }
 
   sut->deallocate(mem);
@@ -302,14 +310,14 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
 
 TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsAreCorrect)
 {
-  std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
+  std::vector<CurrentAllocationInfo *> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem1st = ALLOCATE((*sut), 4);
-  expectedCallerInfo[0].callerLine = __LINE__;
+  expectedCallerInfo[0]->callerLine = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
   auto mem2nd = ALLOCATE((*sut), 8);
-  expectedCallerInfo[1].callerLine = __LINE__;
+  expectedCallerInfo[1]->callerLine = __LINE__;
 
   auto afterAllocationOf4And8Bytes = AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
                                          .withNumAllocate(2)
@@ -346,7 +354,7 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
     const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
     auto realAllocations = extractRealAllocations(allocations);
-    EXPECT_TRUE(expectedCallerInfo[1] == realAllocations[0]);
+    EXPECT_TRUE(*expectedCallerInfo[1] == *realAllocations[0]);
   }
 
   sut->deallocate(mem2nd);
@@ -363,13 +371,16 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
   afterDeallocationEverything.checkThatExpectationsAreFulfilled();
 
   EXPECT_TRUE(sut->allocations().empty());
+
+  deleteAllExpectations(expectedCallerInfo);
 }
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
 {
-  auto expectedCallerInfo = createCallerExpectation(__FILE__, __FUNCTION__, 4);
+  std::unique_ptr<CurrentAllocationInfo> expectedCallerInfo(
+      createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem = ALLOCATE((*sut), 4);
-  expectedCallerInfo.callerLine = __LINE__;
+  expectedCallerInfo->callerLine = __LINE__;
 
   EXPECT_TRUE(sut->reallocate(mem, 16));
 
@@ -389,7 +400,7 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
   {
     const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
-    EXPECT_TRUE(expectedCallerInfo == *(allocations.cbegin()));
+    EXPECT_TRUE(*expectedCallerInfo == **(allocations.cbegin()));
   }
 
   sut->deallocate(mem);
@@ -414,18 +425,18 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
 TEST_F(AllocatorWithStatsTest,
        ThatTheDeallocationOfThe2ndAllocationOfThreeLeavesThe1stAnd3rdAllocationsInPlace)
 {
-  std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
+  std::vector<CurrentAllocationInfo *> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem1st = ALLOCATE((*sut), 4);
-  expectedCallerInfo[0].callerLine = __LINE__;
+  expectedCallerInfo[0]->callerLine = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
   auto mem2nd = ALLOCATE((*sut), 8);
-  expectedCallerInfo[1].callerLine = __LINE__;
+  expectedCallerInfo[1]->callerLine = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 12));
   auto mem3rd = ALLOCATE((*sut), 12);
-  expectedCallerInfo[2].callerLine = __LINE__;
+  expectedCallerInfo[2]->callerLine = __LINE__;
 
   {
     const auto allocations = sut->allocations();
@@ -450,18 +461,20 @@ TEST_F(AllocatorWithStatsTest,
   sut->deallocate(mem1st);
   sut->deallocate(mem3rd);
   EXPECT_TRUE(sut->allocations().empty());
+
+  deleteAllExpectations(expectedCallerInfo);
 }
 
 TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
 {
-  std::vector<AllocatorUnderTest::AllocationInfo> expectedCallerInfo;
+  std::vector<CurrentAllocationInfo *> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem1st = ALLOCATE((*sut), 4);
-  expectedCallerInfo[0].callerLine = __LINE__;
+  expectedCallerInfo[0]->callerLine = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
   auto mem2nd = ALLOCATE((*sut), 8);
-  expectedCallerInfo[1].callerLine = __LINE__;
+  expectedCallerInfo[1]->callerLine = __LINE__;
 
   EXPECT_TRUE(sut->reallocate(mem2nd, 128));
 
@@ -505,11 +518,13 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
   {
     const auto allocations = sut->allocations();
     EXPECT_FALSE(allocations.empty());
-    EXPECT_TRUE(expectedCallerInfo[1] == *(allocations.cbegin()));
+    EXPECT_TRUE(*expectedCallerInfo[1] == **(allocations.cbegin()));
   }
 
   sut->deallocate(mem2nd);
   EXPECT_TRUE(sut->allocations().empty());
+
+  deleteAllExpectations(expectedCallerInfo);
 }
 
 TEST_F(AllocatorWithStatsTest, ThatDecreasingReallocatingInPlaceIsStored)
