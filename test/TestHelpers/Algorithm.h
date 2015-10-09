@@ -21,7 +21,7 @@ class Oszillator
   bool _up;
   int _maxValue;
 public:
-  Oszillator(int maxValue)
+  explicit Oszillator(int maxValue)
     : _value(0)
     , _up(true)
     , _maxValue(maxValue)
@@ -31,7 +31,7 @@ public:
     return _value;
   }
 
-  Oszillator operator++(int)
+  Oszillator& operator++()
   {
     if (_up) {
       ++_value;

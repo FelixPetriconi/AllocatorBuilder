@@ -4,7 +4,7 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
@@ -14,20 +14,17 @@
 #include "TestHelpers/AllocatorBaseTest.h"
 #include "TestHelpers/Base.h"
 
-template <class T>
-class SharedListTest : public alb::test_helpers::AllocatorBaseTest<T>
-{
+template <class T> class SharedListTest : public alb::test_helpers::AllocatorBaseTest<T> {
 protected:
-  void TearDown() {
+  void TearDown()
+  {
     this->deallocateAndCheckBlockIsThenEmpty(this->mem);
   }
   alb::block mem;
 };
 
-typedef ::testing::Types<
-  alb::shared_freelist<alb::mallocator, 0, 16 >,
-  alb::freelist<alb::mallocator, 0, 16 >
-> TypesForFreeListTest;
+using TypesForFreeListTest = ::testing::Types<alb::shared_freelist<alb::mallocator, 0, 16>,
+                         alb::freelist<alb::mallocator, 0, 16>>;
 
 TYPED_TEST_CASE(SharedListTest, TypesForFreeListTest);
 
@@ -38,7 +35,8 @@ TYPED_TEST(SharedListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
   EXPECT_EQ(16, this->mem.length);
 }
 
-TYPED_TEST(SharedListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
+TYPED_TEST(SharedListTest,
+           ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
 {
   this->mem = this->sut.allocate(8);
   auto oldPtr = this->mem.ptr;
@@ -48,7 +46,8 @@ TYPED_TEST(SharedListTest, ThatADeallocatedMemBlockGetsReusedWhenNewAllocatedWit
   EXPECT_EQ(oldPtr, this->mem.ptr);
 }
 
-TYPED_TEST(SharedListTest, ThatSeveralDeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
+TYPED_TEST(SharedListTest,
+           ThatSeveralDeallocatedMemBlockGetsReusedWhenNewAllocatedWithTheSameAndDifferentSize)
 {
   auto mem1 = this->sut.allocate(8);
   auto mem2 = this->sut.allocate(8);
@@ -74,7 +73,6 @@ TYPED_TEST(SharedListTest, ThatReallocatingAnEmptyBlockResultsToBlockOfBoundsSiz
   EXPECT_EQ(16, this->mem.length);
 }
 
-
 TYPED_TEST(SharedListTest, ThatReallocatingAFilledBlockToNonZeroIsRejected)
 {
   this->mem = this->sut.allocate(8);
@@ -98,21 +96,19 @@ TYPED_TEST(SharedListTest, ThatAProvidedBlockIsRecongizedAOwned)
   EXPECT_TRUE(this->sut.owns(this->mem));
 }
 
-
-
-template <class T>
-class FreeListWithParametrizedTest : public ::testing::Test {
+template <class T> class FreeListWithParametrizedTest : public ::testing::Test {
 protected:
-  FreeListWithParametrizedTest() : sut(16, 42) {}
+  FreeListWithParametrizedTest()
+    : sut(16, 42)
+  {
+  }
   T sut;
 };
 
-typedef ::testing::Types<
-    alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
-                         alb::internal::DynasticDynamicSet>,
-    alb::freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
-                  alb::internal::DynasticDynamicSet> >
-TypesForFreeListWithParametrizedTest;
+using TypesForFreeListWithParametrizedTest = ::testing::Types<alb::shared_freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+                                              alb::internal::DynasticDynamicSet>,
+                         alb::freelist<alb::mallocator, alb::internal::DynasticDynamicSet,
+                                       alb::internal::DynasticDynamicSet>>;
 
 TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTest);
 
@@ -124,7 +120,7 @@ TYPED_TEST(FreeListWithParametrizedTest, ThatUpperAndLowerBoundIsSet)
 
 TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRejected)
 {
-  size_t rejectedValues[] = { 0, 4, 15, 43, 64 };
+  size_t rejectedValues[] = {0, 4, 15, 43, 64};
   for (auto i : rejectedValues) {
     auto mem = this->sut.allocate(i);
     EXPECT_FALSE(mem);
@@ -133,7 +129,7 @@ TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRe
 
 TEST(FreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAllocatedBlocksAreInLine)
 {
-  alb::shared_freelist<alb::stack_allocator<1024>, 0, 16,1024, 4> sut;
+  alb::shared_freelist<alb::stack_allocator<1024>, 0, 16, 1024, 4> sut;
   alb::block mem[8]; // 0 3 2 1  0 3 2 1 order of allocations
   mem[0] = sut.allocate(16);
   for (size_t i = 3; i > 0; i--) {
@@ -144,7 +140,6 @@ TEST(FreeListWithTruncatedDeallocationParentAllocatorTest, ThatThePreAllocatedBl
     mem[i] = sut.allocate(16);
   } // 0 1 2 3 0 1 2 3
   for (size_t i = 0; i < 7; i++) {
-    EXPECT_EQ(static_cast<char*>(mem[i].ptr) + 16, mem[i + 1].ptr) 
-      << "Failure at " << i;
+    EXPECT_EQ(static_cast<char *>(mem[i].ptr) + 16, mem[i + 1].ptr) << "Failure at " << i;
   }
 }

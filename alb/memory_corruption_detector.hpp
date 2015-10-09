@@ -12,34 +12,39 @@
 
 #include <boost/assert.hpp>
 #include <boost/config/suffix.hpp>
+#include <cstdint>
 
 namespace alb {
-/**
- * This class can be used as Prefix and/or Suffix with the affix_allocator to
- * detect
- * buffer under-runs or overflows.
- * \tparam T must be an integral type. A guard with its size is used
- * \tparam Pattern this pattern is put into the memory as guard e.g. 0xdeadbeef
- *
- * \ingroup group_internal
- */
-template <typename T, size_t Pattern> 
-class memory_corruption_detector {
-  static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
-                "Memory check not for supported types");
+  /**
+   * This class can be used as Prefix and/or Suffix with the affix_allocator to
+   * detect
+   * buffer under-runs or overflows.
+   * \tparam T must be an integral type. A guard with its size is used
+   * \tparam Pattern this pattern is put into the memory as guard e.g. 0xdeadbeef
+   *
+   * \ingroup group_internal
+   */
+  template <typename T, size_t Pattern> class memory_corruption_detector {
+    static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
+                  "Memory check not for supported types");
 
-  T _pattern;
+    T _pattern;
 
-public:
-  typedef T value_type;
-  BOOST_STATIC_CONSTANT(size_t, pattern = Pattern);
+  public:
+    using value_type = T;
+    static const size_t pattern = Pattern;
 
-  memory_corruption_detector() : _pattern(Pattern) {}
+    memory_corruption_detector()
+      : _pattern(Pattern)
+    {
+    }
 
-  ~memory_corruption_detector() { BOOST_ASSERT(_pattern == Pattern); }
-};
+    ~memory_corruption_detector()
+    {
+      BOOST_ASSERT(_pattern == Pattern);
+    }
+  };
 
-template <typename T, size_t Pattern>
-const size_t memory_corruption_detector<T,Pattern>::pattern;
-
+  template <typename T, size_t Pattern>
+  const size_t memory_corruption_detector<T, Pattern>::pattern;
 }

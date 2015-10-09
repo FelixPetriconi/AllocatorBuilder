@@ -19,6 +19,7 @@ set(HEADERS
   ../alb/cascading_allocator.hpp
   ../alb/fallback_allocator.hpp
   ../alb/global_allocator.hpp
+  ../alb/heap.hpp
   ../alb/mallocator.hpp
   ../alb/memory_corruption_detector.hpp
   ../alb/segregator.hpp
@@ -27,6 +28,7 @@ set(HEADERS
   ../alb/stack_allocator.hpp
   ../alb/stl_allocator.hpp
   ../alb/internal/dynastic.hpp
+  ../alb/internal/heap_helpers.hpp
   ../alb/internal/noatomic.hpp
   ../alb/internal/reallocator.hpp
   ../alb/internal/shared_helpers.hpp

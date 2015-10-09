@@ -1,10 +1,12 @@
 Allocator Builder {#mainpage}
 =================
 
-A highly composable, policy based C++ allocator based on ideas from [Andrei Alexandrescu](http://erdani.com/), presented at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar.
+A highly composable, policy based C++ allocator.
 
-The background behind the idea is to compensate the main problem of malloc and the other standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and deallocations. 
-All users of manually allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
+The layout idea of the library is was presented by [Andrei Alexandrescu](http://erdani.com/) at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar and at the [CppCon 2015](http://cppcon2015.sched.org/event/95b6c3282248b7e2595c5c3182d7652b).
+
+The background behind the idea is to compensate the main problem of malloc and the other current standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and especially deallocations, because the memory manager must find the corresponding length of the pointer that shall be free.
+Additionally all users of manually raw allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
 
 A second idea behind this allocator library is, that one can compose for every use case a special designed one. 
 Example use cases:
@@ -12,22 +14,22 @@ Example use cases:
   * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.
   * Wait free allocations in a single threaded environment
 
-So the approach is, every allocator returns such a Block
+So the approach is, every allocator returns such a block:
 ~~~
 struct block {
-  void* ptr;
+  void  *ptr;
   size_t length;
 };
 ~~~
 
-And request goes this way:
+And a request goes this way:
 ~~~
 auto myMemBlock = allocator.allocate(42);
 ~~~
 
 Motivation
 ----------
-Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it a wait-free operation and in many cases the allocated memory is much more cache friendly.)
+Raw memory is temporary needed inside a method. Most of the time the amount memory would fit on the stack and so :alloca() is ones friend. But in seldom cases more is needed and so :malloc() must be used. (Allocation on the stack is much faster because it is a wait-free operation and in many cases the allocated memory is much more cache friendly.)
 
 So the code could look like this
 ~~~ 
@@ -63,7 +65,7 @@ localAllocator.deallocate(block); // better to be deleted by a scope finalizer
 So, isn't this much cleaner? 
 
 
-A more advanced allocator as it is used in [jmalloc](http://www.canonware.com/jemalloc/) would look like:
+A more advanced allocator with different sized buckets as one are used in [jemalloc](http://www.canonware.com/jemalloc/) would look like:
 ~~~
 // This defines a FreeList that is later configured by the bucketizer to its size
 typedef freelist<mallocator, DynamicSetSize, DynamicSetSize> FList;
@@ -101,14 +103,16 @@ Allocator Overview
 | fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
 | (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
 | segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
-| (ahared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) |
-| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) |
+| (shared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe) |
+| (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe, but it needs further improvements, because it does not frees unused allocators) |
 | (shared_)heap            | A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) |
 | stack_allocator          | Provides a memory access, taken from the stack |
 
 Documentation
 -------------
   Online Documentation is available on [GitHub.io] (http://felixpetriconi.github.io/AllocatorBuilder/index.html) as well.
+  
+  There is the begin of a tutorial in the [tutorial section](http://felixpetriconi.github.io/AllocatorBuilder/md__t_u_t_o_r_i_a_l.html)
 
 Author 
 ------
@@ -132,8 +136,8 @@ Version
 
 Prerequisites
 -------------
-  * C++ 11 (partly, as far as Visual Studio 2012 supports it)
-  * boost 1.54.0 (lockfree, thread, assert, option)
+  * C++ 14 (partly, as far as Visual Studio 2015 supports it)
+  * boost 1.59.0 (lockfree, thread, assert, option)
   * CMake 2.8 or later
   * GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
 
@@ -142,20 +146,21 @@ Platform
 --------
 | Compiler | Status |
 -----------|---------
-| Visual Studio 2012 x64 | All tests pass |
-| Visual Studio 2013 x64 | All tests pass |
+| Visual Studio 2015 x64 | All tests pass |
 | Debian x64, Clang 3.4  | All tests pass |
+| Intel XE Inspector x64 | No detections  |
+| Clang thread sanitizer | No detections  |
 
 Installation Win
 ----------------
-  * Have boost installed and the standard libs be build, install into D:\boost_1_55_0
+  * Have boost installed and the standard libs be build, install into D:\boost_1_59_0
   * Clone into e.g. D:\misc\AllocatorBuilder
   * Create a build folder, eg D:\misc\alb_build
   * Open a command prompt in that alb_build folder
   * Have CMake in the path
-  * Execute cmake -G "Visual Studio 11 Win64" ..\alb_build
+  * Execute cmake -G "Visual Studio 14 2015 Win64" ..\alb_build
   * Open created solution in .\alb_build\AllocatorBuilder.sln
-  * Compile and run all test (if necessary add D:\boost_1_55_0\stage\lib to search path)
+  * Compile and run all test (if necessary add D:\boost_1_59_0\stage\lib to search path)
   
 ToDo
 ----

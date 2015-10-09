@@ -13,98 +13,98 @@
 
 #include <type_traits>
 #include <stddef.h>
-#include <boost/config.hpp>
 
 namespace alb {
 
-
-/**
- * The value type to describe a memory block and it's length
- * \ingroup group_allocators
- */
-struct block {
-  block() : ptr(nullptr), length(0) {}
-
-  block(void *ptr, size_t length) : ptr(ptr), length(length) {}
-
-  block(block&& x) {
-    *this = std::move(x);
-  }
-
-  block& operator=(block&& x) {
-    ptr = x.ptr;
-    length = x.length;
-    x.reset();
-    return *this;
-  }
-
-#ifdef BOOST_NO_CXX11_DEFAULTED_FUNCTIONS
-  block& operator=(const block& x) {
-    ptr = x.ptr;
-    length = x.length;
-    return *this;
-  }
-  block(const block& x) 
-    : ptr(x.ptr), length(x.length)  {}
-
-#else
-  block& operator=(const block&) = default;
-  block(const block&) = default;
-#endif
   /**
-   * During destruction of any of this instance, the described memory
-   * is not freed!
+   * The value type to describe a memory block and it's length
+   * \ingroup group_allocators
    */
-  ~block() {}
+  struct block {
+    block()
+      : ptr(nullptr)
+      , length(0)
+    {
+    }
 
-  /**
-   * Clears the block
-   */
-  void reset() {
-    ptr = nullptr;
-    length = 0;
-  }
+    block(void *ptr, size_t length)
+      : ptr(ptr)
+      , length(length)
+    {
+    }
 
-/**
- * Bool operator to make the Allocator code better readable
- */
-#if _MSC_VER > 1700
-  explicit
-#endif
-  operator bool() const {
-    return length != 0;
-  }
+    block(block &&x)
+    {
+      *this = std::move(x);
+    }
 
-  bool operator==(const block &rhs) const {
-    return ptr == rhs.ptr && length == rhs.length;
-  }
+    block &operator=(block &&x)
+    {
+      ptr = x.ptr;
+      length = x.length;
+      x.reset();
+      return *this;
+    }
 
-  /// This points to the start address of the described memory block
-  void *ptr;
+    block &operator=(const block &x) = default;
+    block(const block &x) = default;
 
-  /// This describes the length of the reserved bytes.
-  size_t length;
-};
+    /**
+     * During destruction of any of this instance, the described memory
+     * is not freed!
+     */
+    ~block()
+    {
+    }
 
-namespace internal {
+    /**
+     * Clears the block
+     */
+    void reset()
+    {
+      ptr = nullptr;
+      length = 0;
+    }
 
-/**
- * Copies std::min(source.length, destination.length) bytes from source to
- * destination
- *
- * \ingroup group_internal
- */
-void blockCopy(const alb::block &source, alb::block &destination);
+    /**
+     * Bool operator to make the Allocator code better readable
+     */
+    explicit operator bool() const
+    {
+      return length != 0;
+    }
 
+    bool operator==(const block &rhs) const
+    {
+      return ptr == rhs.ptr && length == rhs.length;
+    }
 
-/**
- * Returns a upper rounded value of multiples of a
- * \ingroup group_internal
- */
-inline size_t roundToAlignment(size_t basis, size_t n) {
-  auto remainder = n % basis;
-  return n + ((remainder == 0) ? 0 : (basis - remainder));
-}
+    /// This points to the start address of the described memory block
+    void *ptr;
 
-} // namespace Helper
+    /// This describes the length of the reserved bytes.
+    size_t length;
+  };
+
+  namespace internal {
+
+    /**
+     * Copies std::min(source.length, destination.length) bytes from source to
+     * destination
+     *
+     * \ingroup group_internal
+     */
+    void blockCopy(const block &source, block &destination);
+
+    /**
+     * Returns a upper rounded value of multiples of a
+     * \ingroup group_internal
+     */
+    inline size_t roundToAlignment(size_t basis, size_t n)
+    {
+      auto remainder = n % basis;
+      return n + ((remainder == 0) ? 0 : (basis - remainder));
+    }
+
+  } // namespace Helper
 }

@@ -31,10 +31,10 @@ set(SOURCE
   BucketizerTest.cpp
   CascadingAllocatorsTest.cpp
   FallbackAllocatorTest.cpp 
+  HeapTest
   MallocatorTest.cpp
   SegregatorTest.cpp    
   FreeListTest.cpp
-  SharedHeapTest
   StackAllocatorTest.cpp
   main.cpp
   TestHelpers/Base.cpp
