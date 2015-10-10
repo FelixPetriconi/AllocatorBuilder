@@ -10,6 +10,7 @@ var hierarchy =
     [ "alb::allocator_with_stats< Allocator, Flags >::AllocationInfo", "structalb_1_1allocator__with__stats_1_1_allocation_info.html", null ],
     [ "alb::allocator_with_stats< Allocator, Flags >::Allocations", "classalb_1_1allocator__with__stats_1_1_allocations.html", null ],
     [ "alb::allocator_with_stats< Allocator, Flags >", "classalb_1_1allocator__with__stats.html", null ],
+    [ "alb::internal::atomic_shared_ptr< T >", "classalb_1_1internal_1_1atomic__shared__ptr.html", null ],
     [ "alb::block", "structalb_1_1block.html", null ],
     [ "alb::bucketizer< Allocator, MinSize, MaxSize, StepSize >", "classalb_1_1bucketizer.html", null ],
     [ "alb::cascading_allocator_base< Shared, Allocator >", "classalb_1_1cascading__allocator__base.html", null ],
@@ -19,16 +20,12 @@ var hierarchy =
     [ "alb::cascading_allocator_base< true, Allocator >", "classalb_1_1cascading__allocator__base.html", [
       [ "alb::shared_cascading_allocator< Allocator >", "classalb_1_1shared__cascading__allocator.html", null ]
     ] ],
-    [ "alb::traits::Disabled", "classalb_1_1traits_1_1_disabled.html", null ],
     [ "alb::internal::dynastic< v, DynamicEnableSwitch >", "structalb_1_1internal_1_1dynastic.html", null ],
-    [ "alb::internal::dynastic< (ChunkSize==internal::DynasticDynamicSet?0:ChunkSize), 0 >", "structalb_1_1internal_1_1dynastic.html", null ],
-    [ "alb::internal::dynastic< (NumberOfChunks==internal::DynasticDynamicSet?0:NumberOfChunks), 0 >", "structalb_1_1internal_1_1dynastic.html", null ],
     [ "alb::internal::dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "structalb_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", null ],
+    [ "alb::internal::dynastic<(ChunkSize==internal::DynasticDynamicSet?0:ChunkSize), 0 >", "structalb_1_1internal_1_1dynastic.html", null ],
     [ "alb::internal::dynastic<(MaxSize==internal::DynasticDynamicSet?internal::DynasticDynamicSet:MaxSize), internal::DynasticDynamicSet >", "structalb_1_1internal_1_1dynastic.html", null ],
     [ "alb::internal::dynastic<(MinSize==internal::DynasticDynamicSet?internal::DynasticDynamicSet:MinSize), internal::DynasticDynamicSet >", "structalb_1_1internal_1_1dynastic.html", null ],
-    [ "alb::traits::enable_result_to< T, bool >", "structalb_1_1traits_1_1enable__result__to.html", null ],
-    [ "alb::traits::enable_result_to< T, false >", "structalb_1_1traits_1_1enable__result__to_3_01_t_00_01false_01_4.html", null ],
-    [ "alb::traits::enable_result_to< T, true >", "structalb_1_1traits_1_1enable__result__to_3_01_t_00_01true_01_4.html", null ],
+    [ "alb::internal::dynastic<(NumberOfChunks==internal::DynasticDynamicSet?0:NumberOfChunks), 0 >", "structalb_1_1internal_1_1dynastic.html", null ],
     [ "alb::traits::Expander< Allocator, Enabled >", "structalb_1_1traits_1_1_expander.html", null ],
     [ "alb::traits::Expander< Allocator, typename std::enable_if< has_expand< Allocator >::value >::type >", "structalb_1_1traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_01has__expanb4add2f3423d52cb17fe8bcaa9b3457c.html", null ],
     [ "alb::traits::Expander< Allocator, typename std::enable_if<!has_expand< Allocator >::value >::type >", "structalb_1_1traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_9has__expand5bcf6079e60769d3171b503be7ebce74.html", null ],
@@ -50,6 +47,7 @@ var hierarchy =
     [ "alb::traits::has_expand< T >", "structalb_1_1traits_1_1has__expand.html", null ],
     [ "alb::traits::has_owns< T >", "structalb_1_1traits_1_1has__owns.html", null ],
     [ "alb::heap< Allocator, NumberOfChunks, ChunkSize >", "classalb_1_1heap.html", null ],
+    [ "alb::allocator_with_stats< Allocator, Flags >::Allocations::iterator", "classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html", null ],
     [ "LargeAllocator", null, [
       [ "alb::segregator< Threshold, SmallAllocator, LargeAllocator >", "classalb_1_1segregator.html", null ]
     ] ],
@@ -70,8 +68,8 @@ var hierarchy =
     [ "alb::internal::reallocator< Allocator, Enabled >", "structalb_1_1internal_1_1reallocator.html", null ],
     [ "alb::internal::reallocator< Allocator, typename std::enable_if< traits::has_expand< Allocator >::value >::type >", "structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html", null ],
     [ "alb::internal::reallocator< Allocator, typename std::enable_if<!traits::has_expand< Allocator >::value >::type >", "structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html", null ],
-    [ "alb::stl_allocator< T, Allocator >::rebind< U >", "structalb_1_1stl__allocator_1_1rebind.html", null ],
     [ "alb::stl_allocator< void, Allocator >::rebind< U >", "structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
+    [ "alb::stl_allocator< T, Allocator >::rebind< U >", "structalb_1_1stl__allocator_1_1rebind.html", null ],
     [ "alb::shared_heap< Allocator, NumberOfChunks, ChunkSize >", "classalb_1_1shared__heap.html", null ],
     [ "alb::shared_helpers::SharedLock", "classalb_1_1shared__helpers_1_1_shared_lock.html", null ],
     [ "SmallAllocator", null, [

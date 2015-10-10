@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('classalb_1_1bucketizer.html','');});
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classalb_1_1bucketizer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alb::bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -119,45 +120,49 @@ $(document).ready(function(){initNavTree('classalb_1_1bucketizer.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a44b61564a684aa9ec3fd02df8718015c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44b61564a684aa9ec3fd02df8718015c"></a>
-typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b></td></tr>
-<tr class="separator:a44b61564a684aa9ec3fd02df8718015c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb593a47cb59a55f490d8d157d8c1e67"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb593a47cb59a55f490d8d157d8c1e67"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b> = Allocator</td></tr>
+<tr class="separator:acb593a47cb59a55f490d8d157d8c1e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9702f8f1d7caa04eed2ee4ab2a7961ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9702f8f1d7caa04eed2ee4ab2a7961ee"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=false)</td></tr>
-<tr class="separator:a9702f8f1d7caa04eed2ee4ab2a7961ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d209ae725c74a68e0e04625f84ddc24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d209ae725c74a68e0e04625f84ddc24"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (unsigned, number_of_buckets=((MaxSize-MinSize+1)/StepSize))</td></tr>
-<tr class="separator:a3d209ae725c74a68e0e04625f84ddc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa81a1540de997a12cf657fa04d9d3985"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa81a1540de997a12cf657fa04d9d3985"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (unsigned, max_size=MaxSize)</td></tr>
-<tr class="separator:aa81a1540de997a12cf657fa04d9d3985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a5621230568e859255a7fd5139dc65a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a5621230568e859255a7fd5139dc65a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (unsigned, min_size=MinSize)</td></tr>
-<tr class="separator:a6a5621230568e859255a7fd5139dc65a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c4cbdaa1996538f2e5f0fb1596d272a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c4cbdaa1996538f2e5f0fb1596d272a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (unsigned, step_size=StepSize)</td></tr>
-<tr class="separator:a1c4cbdaa1996538f2e5f0fb1596d272a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a724e2e7a40daf3249c52cddd52c20479"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1block.html">block</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#a724e2e7a40daf3249c52cddd52c20479">allocate</a> (size_t n)</td></tr>
 <tr class="separator:a724e2e7a40daf3249c52cddd52c20479"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21788fc8fe39a0141d4860aa680293c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#a21788fc8fe39a0141d4860aa680293c1">owns</a> (const <a class="el" href="structalb_1_1block.html">block</a> &amp;b)</td></tr>
-<tr class="separator:a21788fc8fe39a0141d4860aa680293c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4a05ce5c8faf874866efff0964d8a5e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#af4a05ce5c8faf874866efff0964d8a5e">owns</a> (const <a class="el" href="structalb_1_1block.html">block</a> &amp;b) const </td></tr>
+<tr class="separator:af4a05ce5c8faf874866efff0964d8a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0259add5814d0fb5cda315882729c9e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#a0259add5814d0fb5cda315882729c9e6">reallocate</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t n)</td></tr>
 <tr class="separator:a0259add5814d0fb5cda315882729c9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d960f496ae97466580b6d45bf977450"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#a1d960f496ae97466580b6d45bf977450">deallocate</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b)</td></tr>
 <tr class="separator:a1d960f496ae97466580b6d45bf977450"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7ddb8b5b3b817a981b7002eef48d0c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; void, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; Allocator &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#ac7ddb8b5b3b817a981b7002eef48d0c1">deallocateAll</a> ()</td></tr>
-<tr class="separator:ac7ddb8b5b3b817a981b7002eef48d0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a511f90d7362c07dbe115252719d63f72"><td class="memTemplParams" colspan="2">template&lt;typename U  = Allocator&gt; </td></tr>
+<tr class="memitem:a511f90d7362c07dbe115252719d63f72"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt; U &gt;<br class="typebreak"/>
+::value, void &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1bucketizer.html#a511f90d7362c07dbe115252719d63f72">deallocateAll</a> ()</td></tr>
+<tr class="separator:a511f90d7362c07dbe115252719d63f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:adec23d7f88cfac77c095f62abd3f016e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adec23d7f88cfac77c095f62abd3f016e"></a>
 Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>_buckets</b> [number_of_buckets]</td></tr>
 <tr class="separator:adec23d7f88cfac77c095f62abd3f016e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:aa1cea6be4216a0677a8a5593ecd3ac42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1cea6be4216a0677a8a5593ecd3ac42"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = false</td></tr>
+<tr class="separator:aa1cea6be4216a0677a8a5593ecd3ac42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3927105bb7e355a90226c168b5a8cdf3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3927105bb7e355a90226c168b5a8cdf3"></a>
+static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_buckets</b> = ((MaxSize - MinSize + 1) / StepSize)</td></tr>
+<tr class="separator:a3927105bb7e355a90226c168b5a8cdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8499717444fdcb0af12c0082fb13e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf8499717444fdcb0af12c0082fb13e8"></a>
+static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>max_size</b> = MaxSize</td></tr>
+<tr class="separator:abf8499717444fdcb0af12c0082fb13e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5110547452a8b213250dc7878a85627"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5110547452a8b213250dc7878a85627"></a>
+static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>min_size</b> = MinSize</td></tr>
+<tr class="separator:ac5110547452a8b213250dc7878a85627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab5e1e2547ac02843463c78404af72d0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab5e1e2547ac02843463c78404af72d0"></a>
+static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>step_size</b> = StepSize</td></tr>
+<tr class="separator:aab5e1e2547ac02843463c78404af72d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize&gt;<br/>
@@ -174,7 +179,7 @@ class alb::bucketizer&lt; Allocator, MinSize, MaxSize, StepSize &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00038">38</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00035">35</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a724e2e7a40daf3249c52cddd52c20479"></a>
 <div class="memitem">
@@ -208,7 +213,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The Block describing the allocated memory </dd></dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00072">72</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00064">64</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -243,21 +248,23 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00129">129</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00123">123</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac7ddb8b5b3b817a981b7002eef48d0c1"></a>
+<a class="anchor" id="a511f90d7362c07dbe115252719d63f72"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepSize&gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = Allocator&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; void, <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt;Allocator&gt;::value&gt;::type <a class="el" href="classalb_1_1bucketizer.html">alb::bucketizer</a>&lt; Allocator, MinSize, MaxSize, StepSize &gt;::deallocateAll </td>
+          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt;U&gt;::value, void&gt;::type <a class="el" href="classalb_1_1bucketizer.html">alb::bucketizer</a>&lt; Allocator, MinSize, MaxSize, StepSize &gt;::deallocateAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -271,11 +278,11 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </div><div class="memdoc">
 <p>Deallocates all resources. Beware of possible dangling pointers! This method is only available if Allocator::deallocateAll is available </p>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00149">149</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00143">143</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a21788fc8fe39a0141d4860aa680293c1"></a>
+<a class="anchor" id="af4a05ce5c8faf874866efff0964d8a5e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -289,7 +296,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structalb_1_1block.html">block</a> &amp;&#160;</td>
           <td class="paramname"><em>b</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -307,7 +314,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true, if the block is owned by one of the bucket items </dd></dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00088">88</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00081">81</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -354,7 +361,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the reallocation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00102">102</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00096">96</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -367,7 +374,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1bucketizer.html">bucketizer</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

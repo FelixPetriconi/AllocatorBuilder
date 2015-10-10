@@ -116,23 +116,22 @@ $(document).ready(function(){initNavTree('global__allocator_8hpp_source.html',''
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"></span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>alb {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structalb_1_1length__prefix.html">   13</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structalb_1_1length__prefix.html">length_prefix</a></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">unsigned</span> length;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  };</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classalb_1_1global__allocator.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classalb_1_1global__allocator.html">global_allocator</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">typedef</span> Allocator value_type;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keyword">static</span> Allocator&amp; instance() {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">static</span> Allocator in;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keywordflow">return</span> in;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
-<div class="ttc" id="classalb_1_1global__allocator_html"><div class="ttname"><a href="classalb_1_1global__allocator.html">alb::global_allocator</a></div><div class="ttdef"><b>Definition:</b> <a href="global__allocator_8hpp_source.html#l00019">global_allocator.hpp:19</a></div></div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structalb_1_1length__prefix.html">   13</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structalb_1_1length__prefix.html">length_prefix</a> {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">unsigned</span> length;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  };</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classalb_1_1global__allocator.html">   17</a></span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1global__allocator.html">global_allocator</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">using</span> value_type = Allocator;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">static</span> Allocator &amp;instance()</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      <span class="keyword">static</span> Allocator in;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keywordflow">return</span> in;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  };</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+<div class="ttc" id="classalb_1_1global__allocator_html"><div class="ttname"><a href="classalb_1_1global__allocator.html">alb::global_allocator</a></div><div class="ttdef"><b>Definition:</b> <a href="global__allocator_8hpp_source.html#l00017">global_allocator.hpp:17</a></div></div>
 <div class="ttc" id="structalb_1_1length__prefix_html"><div class="ttname"><a href="structalb_1_1length__prefix.html">alb::length_prefix</a></div><div class="ttdef"><b>Definition:</b> <a href="global__allocator_8hpp_source.html#l00013">global_allocator.hpp:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -140,7 +139,7 @@ $(document).ready(function(){initNavTree('global__allocator_8hpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>global_allocator.hpp</b></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

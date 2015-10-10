@@ -1,12 +1,11 @@
 var classalb_1_1shared__heap =
 [
-    [ "allocator", "classalb_1_1shared__heap.html#a9e871a481d1b398da6fb7ce7c6d55a06", null ],
+    [ "allocator", "classalb_1_1shared__heap.html#abc841cff39544dd5e40824425d7ef612", null ],
     [ "shared_heap", "classalb_1_1shared__heap.html#a527a31b877c28e56ec7fd25f02b653c7", null ],
     [ "shared_heap", "classalb_1_1shared__heap.html#a582d6949c5b2518859b5bee3759cea02", null ],
     [ "shared_heap", "classalb_1_1shared__heap.html#a8bbec0754b28e7a1c7affa1bcbba25aa", null ],
     [ "~shared_heap", "classalb_1_1shared__heap.html#a3e488546b7cae10c5c9df3d40c8165ec", null ],
     [ "allocate", "classalb_1_1shared__heap.html#af7ee618f8ae7bf4f8ed5fc0e9f10daa9", null ],
-    [ "BOOST_STATIC_CONSTANT", "classalb_1_1shared__heap.html#a5140ff2123e0bbff5a6b46d2205f9489", null ],
     [ "chunk_size", "classalb_1_1shared__heap.html#a099647a59d901341cf3cf7952b8cab49", null ],
     [ "deallocate", "classalb_1_1shared__heap.html#a8b9fd4e0a43d10d1e8eaee1b7fd79f7a", null ],
     [ "deallocateAll", "classalb_1_1shared__heap.html#a2bd327118b7aebb3f59826fbabd6a42f", null ],

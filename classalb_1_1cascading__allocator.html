@@ -119,9 +119,9 @@ $(document).ready(function(){initNavTree('classalb_1_1cascading__allocator.html'
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classalb_1_1cascading__allocator__base"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalb_1_1cascading__allocator__base')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base&lt; false, Allocator &gt;</a></td></tr>
-<tr class="memitem:ac0d5a19e2cfeddbb9c3c36c94f3ef46d inherit pub_types_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0d5a19e2cfeddbb9c3c36c94f3ef46d"></a>
-typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b></td></tr>
-<tr class="separator:ac0d5a19e2cfeddbb9c3c36c94f3ef46d inherit pub_types_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5e291eec1ab864460c18827584db65 inherit pub_types_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e5e291eec1ab864460c18827584db65"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b> = Allocator</td></tr>
+<tr class="separator:a1e5e291eec1ab864460c18827584db65 inherit pub_types_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classalb_1_1cascading__allocator__base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classalb_1_1cascading__allocator__base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base&lt; false, Allocator &gt;</a></td></tr>
 <tr class="memitem:a7d44dc9eb0f4f783152a1e34f5663a56 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d44dc9eb0f4f783152a1e34f5663a56"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>cascading_allocator_base</b> (<a class="el" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x)</td></tr>
@@ -129,9 +129,6 @@ typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocato
 <tr class="memitem:a40250d3830da11eda7cb923436e166ee inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40250d3830da11eda7cb923436e166ee"></a>
 <a class="el" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x)</td></tr>
 <tr class="separator:a40250d3830da11eda7cb923436e166ee inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d717e48328dc31189cf17c2eaf0f596 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d717e48328dc31189cf17c2eaf0f596"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=Allocator::supports_truncated_deallocation)</td></tr>
-<tr class="separator:a7d717e48328dc31189cf17c2eaf0f596 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb45deda96b500dc00367e483dee3cb7 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#aeb45deda96b500dc00367e483dee3cb7">~cascading_allocator_base</a> ()</td></tr>
 <tr class="separator:aeb45deda96b500dc00367e483dee3cb7 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a4916b7453ecfd2f25fb49015846cf8 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1block.html">block</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a4a4916b7453ecfd2f25fb49015846cf8">allocate</a> (size_t n)</td></tr>
@@ -140,16 +137,20 @@ typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocato
 <tr class="separator:ad17a213edc72265208ecaf453dbaad88 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f956a181f5ac5044d19f9215e168449 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a7f956a181f5ac5044d19f9215e168449">reallocate</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t n)</td></tr>
 <tr class="separator:a7f956a181f5ac5044d19f9215e168449 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20a8d3fefd02fce9571a2435eb7c4c0e inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt; Allocator &gt;<br class="typebreak"/>
-::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a20a8d3fefd02fce9571a2435eb7c4c0e">expand</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
-<tr class="separator:a20a8d3fefd02fce9571a2435eb7c4c0e inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49a1d775a793486bdef842860752825f inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt; U &gt;<br class="typebreak"/>
+::value, bool &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a49a1d775a793486bdef842860752825f">expand</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
+<tr class="separator:a49a1d775a793486bdef842860752825f inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaedbe51bceb0167577976cf7bbe301d inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#aeaedbe51bceb0167577976cf7bbe301d">owns</a> (const <a class="el" href="structalb_1_1block.html">block</a> &amp;b) const</td></tr>
 <tr class="separator:aeaedbe51bceb0167577976cf7bbe301d inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e71a14ae52d6711505270743bb1590 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; Allocator &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#ae2e71a14ae52d6711505270743bb1590">deallocateAll</a> ()</td></tr>
-<tr class="separator:ae2e71a14ae52d6711505270743bb1590 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b33bdaeb2e089915d82e003a46c148 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt; U &gt;<br class="typebreak"/>
+::value, void &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#ae3b33bdaeb2e089915d82e003a46c148">deallocateAll</a> ()</td></tr>
+<tr class="separator:ae3b33bdaeb2e089915d82e003a46c148 inherit pub_methods_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classalb_1_1cascading__allocator__base"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classalb_1_1cascading__allocator__base')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base&lt; false, Allocator &gt;</a></td></tr>
+<tr class="memitem:a0b16c64f14d74cb1d2dbb6ee51e814a7 inherit pub_static_attribs_classalb_1_1cascading__allocator__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b16c64f14d74cb1d2dbb6ee51e814a7"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
+<tr class="separator:a0b16c64f14d74cb1d2dbb6ee51e814a7 inherit pub_static_attribs_classalb_1_1cascading__allocator__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator&gt;<br/>
@@ -164,7 +165,7 @@ class alb::cascading_allocator&lt; Allocator &gt;</h3>
 </dl>
 <p>group_allocators </p>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00330">330</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00339">339</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>alb/<a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a></li>
 </ul>
@@ -174,7 +175,7 @@ class alb::cascading_allocator&lt; Allocator &gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1cascading__allocator.html">cascading_allocator</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

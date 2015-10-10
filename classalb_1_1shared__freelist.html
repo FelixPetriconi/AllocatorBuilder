@@ -123,15 +123,6 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>shared_freelist</b> (size_t minSize, size_t maxSize)</td></tr>
 <tr class="separator:a38976b5458945b4e2605cfd37b8ed10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classalb_1_1freelist__base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classalb_1_1freelist__base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classalb_1_1freelist__base.html">alb::freelist_base&lt; true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;</a></td></tr>
-<tr class="memitem:aae7f63e50db481fb27600bfee545aad7 inherit pub_methods_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae7f63e50db481fb27600bfee545aad7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (unsigned, pool_size=PoolSize)</td></tr>
-<tr class="separator:aae7f63e50db481fb27600bfee545aad7 inherit pub_methods_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25635f9bd6fe90e67cff81c6b6a4fca7 inherit pub_methods_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25635f9bd6fe90e67cff81c6b6a4fca7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (unsigned, number_of_batch_allocations=NumberOfBatchAllocations)</td></tr>
-<tr class="separator:a25635f9bd6fe90e67cff81c6b6a4fca7 inherit pub_methods_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a487edc59fa130cc82d7357889cfa2caa inherit pub_methods_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a487edc59fa130cc82d7357889cfa2caa"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=Allocator::supports_truncated_deallocation)</td></tr>
-<tr class="separator:a487edc59fa130cc82d7357889cfa2caa inherit pub_methods_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df1fecf94b07a099c12819f1c75eb70 inherit pub_methods_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1freelist__base.html#a3df1fecf94b07a099c12819f1c75eb70">freelist_base</a> (size_t minSize, size_t maxSize)</td></tr>
 <tr class="separator:a3df1fecf94b07a099c12819f1c75eb70 inherit pub_methods_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a393ef0ea0a4b4bc39a5f1ed95ad69061 inherit pub_methods_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1freelist__base.html#a393ef0ea0a4b4bc39a5f1ed95ad69061">setMinMax</a> (size_t minSize, size_t maxSize)</td></tr>
@@ -154,9 +145,19 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classalb_1_1freelist__base"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalb_1_1freelist__base')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalb_1_1freelist__base.html">alb::freelist_base&lt; true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;</a></td></tr>
-<tr class="memitem:a15eb093b542eb2d327c7a60ab78c209a inherit pub_types_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15eb093b542eb2d327c7a60ab78c209a"></a>
-typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b></td></tr>
-<tr class="separator:a15eb093b542eb2d327c7a60ab78c209a inherit pub_types_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac106503188d1220dd117aa33b0b606f0 inherit pub_types_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac106503188d1220dd117aa33b0b606f0"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b> = Allocator</td></tr>
+<tr class="separator:ac106503188d1220dd117aa33b0b606f0 inherit pub_types_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classalb_1_1freelist__base"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classalb_1_1freelist__base')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classalb_1_1freelist__base.html">alb::freelist_base&lt; true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations &gt;</a></td></tr>
+<tr class="memitem:aaec5631a6ced8c9ff9b792121fc6d3d2 inherit pub_static_attribs_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaec5631a6ced8c9ff9b792121fc6d3d2"></a>
+static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>pool_size</b></td></tr>
+<tr class="separator:aaec5631a6ced8c9ff9b792121fc6d3d2 inherit pub_static_attribs_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab14707f38cf641f36f5acd17a064331f inherit pub_static_attribs_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab14707f38cf641f36f5acd17a064331f"></a>
+static const unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_batch_allocations</b></td></tr>
+<tr class="separator:ab14707f38cf641f36f5acd17a064331f inherit pub_static_attribs_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad45bc310db3a2384f625b04bf1f4c4e2 inherit pub_static_attribs_classalb_1_1freelist__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad45bc310db3a2384f625b04bf1f4c4e2"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
+<tr class="separator:ad45bc310db3a2384f625b04bf1f4c4e2 inherit pub_static_attribs_classalb_1_1freelist__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator, size_t MinSize, size_t MaxSize, size_t PoolSize = 1024, size_t NumberOfBatchAllocations = 8&gt;<br/>
@@ -164,7 +165,7 @@ class alb::shared_freelist&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBa
 
 <p>This class is a thread safe specialization of the FreeList. For details see <a class="el" href="classalb_1_1freelist__base.html">alb::freelist_base</a> </p>
 
-<p>Definition at line <a class="el" href="freelist_8hpp_source.html#l00234">234</a> of file <a class="el" href="freelist_8hpp_source.html">freelist.hpp</a>.</p>
+<p>Definition at line <a class="el" href="freelist_8hpp_source.html#l00241">241</a> of file <a class="el" href="freelist_8hpp_source.html">freelist.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>alb/<a class="el" href="freelist_8hpp_source.html">freelist.hpp</a></li>
 </ul>
@@ -174,7 +175,7 @@ class alb::shared_freelist&lt; Allocator, MinSize, MaxSize, PoolSize, NumberOfBa
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1shared__freelist.html">shared_freelist</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

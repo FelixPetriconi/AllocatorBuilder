@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('classalb_1_1shared__heap.html','');});
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classalb_1_1shared__heap-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alb::shared_heap&lt; Allocator, NumberOfChunks, ChunkSize &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -119,15 +120,12 @@ $(document).ready(function(){initNavTree('classalb_1_1shared__heap.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a9e871a481d1b398da6fb7ce7c6d55a06"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e871a481d1b398da6fb7ce7c6d55a06"></a>
-typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b></td></tr>
-<tr class="separator:a9e871a481d1b398da6fb7ce7c6d55a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc841cff39544dd5e40824425d7ef612"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc841cff39544dd5e40824425d7ef612"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b> = Allocator</td></tr>
+<tr class="separator:abc841cff39544dd5e40824425d7ef612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5140ff2123e0bbff5a6b46d2205f9489"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5140ff2123e0bbff5a6b46d2205f9489"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=true)</td></tr>
-<tr class="separator:a5140ff2123e0bbff5a6b46d2205f9489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a582d6949c5b2518859b5bee3759cea02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a582d6949c5b2518859b5bee3759cea02"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>shared_heap</b> (size_t numberOfChunks, size_t chunkSize)</td></tr>
 <tr class="separator:a582d6949c5b2518859b5bee3759cea02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +159,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</b> (<a cl
 <tr class="memitem:abb89c34aadf8a84fe08a2ee3f2d1cd87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb89c34aadf8a84fe08a2ee3f2d1cd87"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>expand</b> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
 <tr class="separator:abb89c34aadf8a84fe08a2ee3f2d1cd87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ae2dfa48191dd00abe7f482a0efef7291"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2dfa48191dd00abe7f482a0efef7291"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = true</td></tr>
+<tr class="separator:ae2dfa48191dd00abe7f482a0efef7291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator, size_t NumberOfChunks, size_t ChunkSize&gt;<br/>
@@ -168,7 +172,7 @@ class alb::shared_heap&lt; Allocator, NumberOfChunks, ChunkSize &gt;</h3>
 
 <p>The SharedHeap implements a classic heap with a pre-allocated size of _numberOfChunks.value() * _chunkSize.value() It has a overhead of one bit per block and linear complexity for allocation and deallocation operations. It is thread safe, except the moment of instantiation. As far as possible only a shared lock + an atomic operation is used during the memory operations </p>
 
-<p>Definition at line <a class="el" href="shared__heap_8hpp_source.html#l00054">54</a> of file <a class="el" href="shared__heap_8hpp_source.html">shared_heap.hpp</a>.</p>
+<p>Definition at line <a class="el" href="shared__heap_8hpp_source.html#l00048">48</a> of file <a class="el" href="shared__heap_8hpp_source.html">shared_heap.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>alb/<a class="el" href="shared__heap_8hpp_source.html">shared_heap.hpp</a></li>
 </ul>
@@ -178,7 +182,7 @@ class alb::shared_heap&lt; Allocator, NumberOfChunks, ChunkSize &gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1shared__heap.html">shared_heap</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

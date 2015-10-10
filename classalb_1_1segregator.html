@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('classalb_1_1segregator.html','');});
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classalb_1_1segregator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alb::segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -120,46 +121,50 @@ $(document).ready(function(){initNavTree('classalb_1_1segregator.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a4c295f1ffcc953d9cc59032ff16f53fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c295f1ffcc953d9cc59032ff16f53fe"></a>
-typedef SmallAllocator&#160;</td><td class="memItemRight" valign="bottom"><b>small_allocator</b></td></tr>
-<tr class="separator:a4c295f1ffcc953d9cc59032ff16f53fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0e7728467f6e87914100814d2e88c4d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0e7728467f6e87914100814d2e88c4d"></a>
-typedef LargeAllocator&#160;</td><td class="memItemRight" valign="bottom"><b>large_allocator</b></td></tr>
-<tr class="separator:ac0e7728467f6e87914100814d2e88c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf4f1e55e6369229647799bc716e765b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf4f1e55e6369229647799bc716e765b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>small_allocator</b> = SmallAllocator</td></tr>
+<tr class="separator:adf4f1e55e6369229647799bc716e765b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf791992016d7728765a69a3968847b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf791992016d7728765a69a3968847b8"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>large_allocator</b> = LargeAllocator</td></tr>
+<tr class="separator:abf791992016d7728765a69a3968847b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1a66f7fa6d24bb0333667149735f4f77"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a66f7fa6d24bb0333667149735f4f77"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (size_t, threshold=Threshold)</td></tr>
-<tr class="separator:a1a66f7fa6d24bb0333667149735f4f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64d98ecda913489ea13fd12f7f06145e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64d98ecda913489ea13fd12f7f06145e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=(::boost::type_traits::ice_and&lt; SmallAllocator::supports_truncated_deallocation, LargeAllocator::supports_truncated_deallocation &gt;::value))</td></tr>
-<tr class="separator:a64d98ecda913489ea13fd12f7f06145e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a238131bbed5c198e6daaf82931a2ebd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1block.html">block</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">allocate</a> (size_t n)</td></tr>
 <tr class="separator:a238131bbed5c198e6daaf82931a2ebd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5b9663188b7e262067f25fe3c3c16d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">deallocate</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b)</td></tr>
 <tr class="separator:af5b9663188b7e262067f25fe3c3c16d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d139c43ccf75c0ed1d6e4f28bb67474"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474">reallocate</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t n)</td></tr>
 <tr class="separator:ga4d139c43ccf75c0ed1d6e4f28bb67474"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83c5dbc03da9e34af2a071e242715ecf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
+<tr class="memitem:ad9c0b21e4a33816c964e7d7b0d3485f9"><td class="memTemplParams" colspan="2">template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </td></tr>
+<tr class="memitem:ad9c0b21e4a33816c964e7d7b0d3485f9"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
 &lt; SmallAllocator &gt;::value||<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
-&lt; LargeAllocator &gt;::value &gt;<br class="typebreak"/>
-::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#a83c5dbc03da9e34af2a071e242715ecf">expand</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
-<tr class="separator:a83c5dbc03da9e34af2a071e242715ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3989235c21be308948d619bb63f72579"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__owns.html">traits::has_owns</a><br class="typebreak"/>
-&lt; SmallAllocator &gt;::value <br class="typebreak"/>
-&amp;&amp;<a class="el" href="structalb_1_1traits_1_1has__owns.html">traits::has_owns</a><br class="typebreak"/>
-&lt; LargeAllocator &gt;::value &gt;<br class="typebreak"/>
-::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#a3989235c21be308948d619bb63f72579">owns</a> (const <a class="el" href="structalb_1_1block.html">block</a> &amp;b) const </td></tr>
-<tr class="separator:a3989235c21be308948d619bb63f72579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac558a72bbdb5813580894c83a9455348"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; SmallAllocator &gt;::value||<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; LargeAllocator &gt;::value &gt;<br class="typebreak"/>
-::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#ac558a72bbdb5813580894c83a9455348">deallocateAll</a> ()</td></tr>
-<tr class="separator:ac558a72bbdb5813580894c83a9455348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+&lt; LargeAllocator &gt;::value, <br class="typebreak"/>
+bool &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#ad9c0b21e4a33816c964e7d7b0d3485f9">expand</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
+<tr class="separator:ad9c0b21e4a33816c964e7d7b0d3485f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2995d2622815a34390b58c34530698ac"><td class="memTemplParams" colspan="2">template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </td></tr>
+<tr class="memitem:a2995d2622815a34390b58c34530698ac"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
+&lt; SmallAllocator &gt;::value||<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
+&lt; LargeAllocator &gt;::value, <br class="typebreak"/>
+bool &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#a2995d2622815a34390b58c34530698ac">owns</a> (const <a class="el" href="structalb_1_1block.html">block</a> &amp;b) const </td></tr>
+<tr class="separator:a2995d2622815a34390b58c34530698ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc7e51a1f2798a9e424cee8beca10104"><td class="memTemplParams" colspan="2">template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </td></tr>
+<tr class="memitem:adc7e51a1f2798a9e424cee8beca10104"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
+&lt; SmallAllocator &gt;::value||<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a><br class="typebreak"/>
+&lt; LargeAllocator &gt;::value, <br class="typebreak"/>
+void &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1segregator.html#adc7e51a1f2798a9e424cee8beca10104">deallocateAll</a> ()</td></tr>
+<tr class="separator:adc7e51a1f2798a9e424cee8beca10104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:aafe2d458a57f98e7276639bc23a9b7a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aafe2d458a57f98e7276639bc23a9b7a0"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>threshold</b> = Threshold</td></tr>
+<tr class="separator:aafe2d458a57f98e7276639bc23a9b7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc88df35407288456e259136fb16add0"><td class="memItemLeft" align="right" valign="top">static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
+<tr class="separator:adc88df35407288456e259136fb16add0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;size_t Threshold, class SmallAllocator, class LargeAllocator&gt;<br/>
@@ -175,7 +180,7 @@ class alb::segregator&lt; Threshold, SmallAllocator, LargeAllocator &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00030">30</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00028">28</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a238131bbed5c198e6daaf82931a2ebd6"></a>
 <div class="memitem">
@@ -209,7 +214,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Block with the memory information. </dd></dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00051">51</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00049">49</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -244,21 +249,23 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00062">62</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00061">61</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac558a72bbdb5813580894c83a9455348"></a>
+<a class="anchor" id="adc7e51a1f2798a9e424cee8beca10104"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt;SmallAllocator&gt;::value || <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt;LargeAllocator&gt;::value &gt;::type <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::deallocateAll </td>
+          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;SmallAllocator&gt;::value || <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;LargeAllocator&gt;::value, void&gt;::type <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::deallocateAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -272,21 +279,23 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </div><div class="memdoc">
 <p>Deallocates all memory. This is available if one of the allocators implement it. </p>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00159">159</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00154">154</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a83c5dbc03da9e34af2a071e242715ecf"></a>
+<a class="anchor" id="ad9c0b21e4a33816c964e7d7b0d3485f9"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;SmallAllocator&gt;::value || <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;LargeAllocator&gt;::value &gt;::type <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::expand </td>
+          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;SmallAllocator&gt;::value || <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;LargeAllocator&gt;::value, bool&gt;::type <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::expand </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structalb_1_1block.html">block</a> &amp;&#160;</td>
           <td class="paramname"><em>b</em>, </td>
@@ -319,21 +328,23 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00116">116</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00111">111</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3989235c21be308948d619bb63f72579"></a>
+<a class="anchor" id="a2995d2622815a34390b58c34530698ac"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <a class="el" href="structalb_1_1traits_1_1has__owns.html">traits::has_owns</a>&lt;SmallAllocator&gt;::value &amp;&amp; <a class="el" href="structalb_1_1traits_1_1has__owns.html">traits::has_owns</a>&lt;LargeAllocator&gt;::value&gt;::type <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::owns </td>
+          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;SmallAllocator&gt;::value || <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;LargeAllocator&gt;::value, bool&gt;::type <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::owns </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structalb_1_1block.html">block</a> &amp;&#160;</td>
           <td class="paramname"><em>b</em></td><td>)</td>
@@ -355,7 +366,35 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if one of the allocator owns it. </dd></dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00145">145</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00139">139</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="adc88df35407288456e259136fb16add0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool <a class="el" href="classalb_1_1segregator.html">alb::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::supports_truncated_deallocation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">        (::boost::type_traits::ice_and&lt;SmallAllocator::supports_truncated_deallocation,</div>
+<div class="line">                                       LargeAllocator::supports_truncated_deallocation&gt;::value)</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00038">38</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -368,7 +407,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1segregator.html">segregator</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

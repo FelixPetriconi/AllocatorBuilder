@@ -117,138 +117,129 @@ $(document).ready(function(){initNavTree('segregator_8hpp_source.html','');});
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;allocator_base.hpp&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;internal/reallocator.hpp&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;boost/assert.hpp&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;boost/config/suffix.hpp&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;boost/type_traits/ice.hpp&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;boost/type_traits/ice.hpp&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>alb {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span>alb {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> Threshold, <span class="keyword">class</span> SmallAllocator, <span class="keyword">class</span> LargeAllocator&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="classalb_1_1segregator.html">segregator</a> : <span class="keyword">private</span> SmallAllocator, <span class="keyword">private</span> LargeAllocator {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  static_assert(!<a class="code" href="structalb_1_1traits_1_1both__same__base.html">traits::both_same_base&lt;SmallAllocator, LargeAllocator&gt;::value</a>,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="stringliteral">&quot;Small- and Large-Allocator cannot be both of base!&quot;</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">typedef</span> SmallAllocator small_allocator;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">typedef</span> LargeAllocator large_allocator;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> Threshold, <span class="keyword">class</span> SmallAllocator, <span class="keyword">class</span> LargeAllocator&gt;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html">   28</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classalb_1_1segregator.html">segregator</a> : <span class="keyword">private</span> SmallAllocator, <span class="keyword">private</span> LargeAllocator {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    static_assert(!<a class="code" href="structalb_1_1traits_1_1both__same__base.html">traits::both_same_base&lt;SmallAllocator, LargeAllocator&gt;::value</a>,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                  <span class="stringliteral">&quot;Small- and Large-Allocator cannot be both of base!&quot;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">using</span> small_allocator = SmallAllocator;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">using</span> large_allocator = LargeAllocator;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> threshold = Threshold;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  BOOST_STATIC_CONSTANT(<span class="keywordtype">size_t</span>, threshold = Threshold);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  BOOST_STATIC_CONSTANT(<span class="keywordtype">bool</span>, supports_truncated_deallocation =</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      (::boost::type_traits::ice_and&lt;SmallAllocator::supports_truncated_deallocation, </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      LargeAllocator::supports_truncated_deallocation&gt;::value));</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">   51</a></span>&#160;  <a class="code" href="structalb_1_1block.html">block</a> <a class="code" href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">if</span> (n &lt;= Threshold) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">return</span> SmallAllocator::allocate(n);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> LargeAllocator::allocate(n);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">   62</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">deallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation =</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        (::boost::type_traits::ice_and&lt;SmallAllocator::supports_truncated_deallocation,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                                       LargeAllocator::supports_truncated_deallocation&gt;::value);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">   49</a></span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> <a class="code" href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">allocate</a>(<span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keywordflow">if</span> (n &lt;= Threshold) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">return</span> SmallAllocator::allocate(n);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">return</span> LargeAllocator::allocate(n);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">   61</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">deallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keywordflow">return</span> SmallAllocator::deallocate(b);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> LargeAllocator::deallocate(b);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">return</span> SmallAllocator::deallocate(b);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">return</span> LargeAllocator::deallocate(b);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474">   82</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474">reallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1internal_1_1reallocator.html">internal::reallocator&lt;segregator&gt;::isHandledDefault</a>(*<span class="keyword">this</span>, b, n)) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keywordflow">if</span> (n &lt;= Threshold) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> SmallAllocator::reallocate(b, n);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">internal::reallocateWithCopy</a>(</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            *<span class="keyword">this</span>, static_cast&lt;LargeAllocator &amp;&gt;(*<span class="keyword">this</span>), b, n);</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474">   82</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474">reallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1internal_1_1reallocator.html">internal::reallocator&lt;segregator&gt;::isHandledDefault</a>(*<span class="keyword">this</span>, b, n)) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span> (n &lt;= Threshold) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          <span class="keywordflow">return</span> SmallAllocator::reallocate(b, n);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">internal::reallocateWithCopy</a>(*<span class="keyword">this</span>, static_cast&lt;LargeAllocator &amp;&gt;(*<span class="keyword">this</span>), b, n);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      <span class="keywordflow">if</span> (n &lt;= Threshold) {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">internal::reallocateWithCopy</a>(</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            *<span class="keyword">this</span>, static_cast&lt;SmallAllocator &amp;&gt;(*<span class="keyword">this</span>), b, n);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">return</span> LargeAllocator::reallocate(b, n);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">typename</span> <a class="code" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a> &lt; bool,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;SmallAllocator&gt;::value</a> ||</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;          <a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;LargeAllocator&gt;::value</a> &gt;</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#a83c5dbc03da9e34af2a071e242715ecf">  116</a></span>&#160;              ::type <a class="code" href="classalb_1_1segregator.html#a83c5dbc03da9e34af2a071e242715ecf">expand</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> delta) {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold &amp;&amp; b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> + delta &gt; Threshold) {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;SmallAllocator&gt;::value</a>) {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structalb_1_1traits_1_1_expander.html">traits::Expander&lt;SmallAllocator&gt;::doIt</a>(</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            static_cast&lt;SmallAllocator &amp;&gt;(*<span class="keyword">this</span>), b, delta);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">internal::reallocateWithCopy</a>(*<span class="keyword">this</span>, static_cast&lt;SmallAllocator &amp;&gt;(*<span class="keyword">this</span>), b, n);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">return</span> LargeAllocator::reallocate(b, n);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = SmallAllocator, <span class="keyword">typename</span> V = LargeAllocator&gt;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;SmallAllocator&gt;::value ||</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                            <a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;LargeAllocator&gt;::value</a>, <span class="keywordtype">bool</span>&gt;::type</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#ad9c0b21e4a33816c964e7d7b0d3485f9">  111</a></span>&#160;    <a class="code" href="classalb_1_1segregator.html#ad9c0b21e4a33816c964e7d7b0d3485f9">expand</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> delta)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold &amp;&amp; b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> + delta &gt; Threshold) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;U&gt;::value</a>) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="structalb_1_1traits_1_1_expander.html">traits::Expander&lt;U&gt;::doIt</a>(static_cast&lt;U&amp;&gt;(*<span class="keyword">this</span>), b,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                                                        delta);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;V&gt;::value</a>) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structalb_1_1traits_1_1_expander.html">traits::Expander&lt;V&gt;::doIt</a>(static_cast&lt;V&amp;&gt;(*<span class="keyword">this</span>), b,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                                                      delta);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;LargeAllocator&gt;::value</a>) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structalb_1_1traits_1_1_expander.html">traits::Expander&lt;LargeAllocator&gt;::doIt</a>(</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;          static_cast&lt;LargeAllocator &amp;&gt;(*<span class="keyword">this</span>), b, delta);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keyword">typename</span> <a class="code" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      bool, <a class="code" href="structalb_1_1traits_1_1has__owns.html">traits::has_owns&lt;SmallAllocator&gt;::value</a> &amp;&amp;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                <a class="code" href="structalb_1_1traits_1_1has__owns.html">traits::has_owns&lt;LargeAllocator&gt;::value</a>&gt;::type</div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#a3989235c21be308948d619bb63f72579">  145</a></span>&#160;  <a class="code" href="classalb_1_1segregator.html#a3989235c21be308948d619bb63f72579">owns</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;b)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keywordflow">return</span> SmallAllocator::owns(b);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> LargeAllocator::owns(b);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keyword">typename</span> <a class="code" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a> &lt; bool,</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      <a class="code" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll&lt;SmallAllocator&gt;::value</a> ||</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;          <a class="code" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll&lt;LargeAllocator&gt;::value</a> &gt;</div>
-<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#ac558a72bbdb5813580894c83a9455348">  159</a></span>&#160;              ::type <a class="code" href="classalb_1_1segregator.html#ac558a72bbdb5813580894c83a9455348">deallocateAll</a>() {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <a class="code" href="structalb_1_1traits_1_1_all_deallocator.html">traits::AllDeallocator&lt;SmallAllocator&gt;::doIt</a>(</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        static_cast&lt;SmallAllocator &amp;&gt;(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <a class="code" href="structalb_1_1traits_1_1_all_deallocator.html">traits::AllDeallocator&lt;LargeAllocator&gt;::doIt</a>(</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        static_cast&lt;LargeAllocator &amp;&gt;(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;};</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
-<div class="ttc" id="group__group__internal_html_gaedffaf55cd427fcfe22ab28685925bbf"><div class="ttname"><a href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">alb::internal::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00035">reallocator.hpp:35</a></div></div>
-<div class="ttc" id="classalb_1_1segregator_html_a83c5dbc03da9e34af2a071e242715ecf"><div class="ttname"><a href="classalb_1_1segregator.html#a83c5dbc03da9e34af2a071e242715ecf">alb::segregator::expand</a></div><div class="ttdeci">traits::enable_result_to&lt; bool, traits::has_expand&lt; SmallAllocator &gt;::value||traits::has_expand&lt; LargeAllocator &gt;::value &gt;::type expand(block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00116">segregator.hpp:116</a></div></div>
-<div class="ttc" id="classalb_1_1segregator_html_ac558a72bbdb5813580894c83a9455348"><div class="ttname"><a href="classalb_1_1segregator.html#ac558a72bbdb5813580894c83a9455348">alb::segregator::deallocateAll</a></div><div class="ttdeci">traits::enable_result_to&lt; bool, traits::has_deallocateAll&lt; SmallAllocator &gt;::value||traits::has_deallocateAll&lt; LargeAllocator &gt;::value &gt;::type deallocateAll()</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00159">segregator.hpp:159</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1both__same__base_html"><div class="ttname"><a href="structalb_1_1traits_1_1both__same__base.html">alb::traits::both_same_base</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00125">traits.hpp:125</a></div></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = SmallAllocator, <span class="keyword">typename</span> V = LargeAllocator&gt;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;SmallAllocator&gt;::value ||</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      <a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;LargeAllocator&gt;::value</a>, <span class="keywordtype">bool</span>&gt;::type</div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#a2995d2622815a34390b58c34530698ac">  139</a></span>&#160;      <a class="code" href="classalb_1_1segregator.html#a2995d2622815a34390b58c34530698ac">owns</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;b)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> &lt;= Threshold) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">return</span> U::owns(b);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      <span class="keywordflow">return</span> V::owns(b);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = SmallAllocator, <span class="keyword">typename</span> V = LargeAllocator&gt;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;SmallAllocator&gt;::value ||</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;      <a class="code" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand&lt;LargeAllocator&gt;::value</a>, <span class="keywordtype">void</span>&gt;::type</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="classalb_1_1segregator.html#adc7e51a1f2798a9e424cee8beca10104">  154</a></span>&#160;    <a class="code" href="classalb_1_1segregator.html#adc7e51a1f2798a9e424cee8beca10104">deallocateAll</a>()</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <a class="code" href="structalb_1_1traits_1_1_all_deallocator.html">traits::AllDeallocator&lt;U&gt;::doIt</a>(static_cast&lt;U&amp;&gt;(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      <a class="code" href="structalb_1_1traits_1_1_all_deallocator.html">traits::AllDeallocator&lt;V&gt;::doIt</a>(static_cast&lt;V&amp;&gt;(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    }</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  };</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;}</div>
+<div class="ttc" id="group__group__internal_html_gaedffaf55cd427fcfe22ab28685925bbf"><div class="ttname"><a href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">alb::internal::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00034">reallocator.hpp:34</a></div></div>
+<div class="ttc" id="classalb_1_1segregator_html_ad9c0b21e4a33816c964e7d7b0d3485f9"><div class="ttname"><a href="classalb_1_1segregator.html#ad9c0b21e4a33816c964e7d7b0d3485f9">alb::segregator::expand</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; SmallAllocator &gt;::value||traits::has_expand&lt; LargeAllocator &gt;::value, bool &gt;::type expand(block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00111">segregator.hpp:111</a></div></div>
+<div class="ttc" id="structalb_1_1traits_1_1both__same__base_html"><div class="ttname"><a href="structalb_1_1traits_1_1both__same__base.html">alb::traits::both_same_base</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00091">traits.hpp:91</a></div></div>
 <div class="ttc" id="structalb_1_1traits_1_1has__expand_html"><div class="ttname"><a href="structalb_1_1traits_1_1has__expand.html">alb::traits::has_expand</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00024">traits.hpp:24</a></div></div>
-<div class="ttc" id="classalb_1_1segregator_html_a3989235c21be308948d619bb63f72579"><div class="ttname"><a href="classalb_1_1segregator.html#a3989235c21be308948d619bb63f72579">alb::segregator::owns</a></div><div class="ttdeci">traits::enable_result_to&lt; bool, traits::has_owns&lt; SmallAllocator &gt;::value &amp;&amp;traits::has_owns&lt; LargeAllocator &gt;::value &gt;::type owns(const block &amp;b) const </div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00145">segregator.hpp:145</a></div></div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00025">allocator_base.hpp:25</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1has__owns_html"><div class="ttname"><a href="structalb_1_1traits_1_1has__owns.html">alb::traits::has_owns</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00064">traits.hpp:64</a></div></div>
-<div class="ttc" id="classalb_1_1segregator_html_af5b9663188b7e262067f25fe3c3c16d4"><div class="ttname"><a href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">alb::segregator::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00062">segregator.hpp:62</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1_expander_html"><div class="ttname"><a href="structalb_1_1traits_1_1_expander.html">alb::traits::Expander</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00163">traits.hpp:163</a></div></div>
-<div class="ttc" id="classalb_1_1segregator_html"><div class="ttname"><a href="classalb_1_1segregator.html">alb::segregator</a></div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00030">segregator.hpp:30</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1_all_deallocator_html"><div class="ttname"><a href="structalb_1_1traits_1_1_all_deallocator.html">alb::traits::AllDeallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00185">traits.hpp:185</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1enable__result__to_html"><div class="ttname"><a href="structalb_1_1traits_1_1enable__result__to.html">alb::traits::enable_result_to</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00103">traits.hpp:103</a></div></div>
-<div class="ttc" id="classalb_1_1segregator_html_a238131bbed5c198e6daaf82931a2ebd6"><div class="ttname"><a href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">alb::segregator::allocate</a></div><div class="ttdeci">block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00051">segregator.hpp:51</a></div></div>
+<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
+<div class="ttc" id="classalb_1_1segregator_html_af5b9663188b7e262067f25fe3c3c16d4"><div class="ttname"><a href="classalb_1_1segregator.html#af5b9663188b7e262067f25fe3c3c16d4">alb::segregator::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00061">segregator.hpp:61</a></div></div>
+<div class="ttc" id="structalb_1_1traits_1_1_expander_html"><div class="ttname"><a href="structalb_1_1traits_1_1_expander.html">alb::traits::Expander</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00145">traits.hpp:145</a></div></div>
+<div class="ttc" id="classalb_1_1segregator_html"><div class="ttname"><a href="classalb_1_1segregator.html">alb::segregator</a></div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00028">segregator.hpp:28</a></div></div>
+<div class="ttc" id="structalb_1_1traits_1_1_all_deallocator_html"><div class="ttname"><a href="structalb_1_1traits_1_1_all_deallocator.html">alb::traits::AllDeallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00169">traits.hpp:169</a></div></div>
+<div class="ttc" id="classalb_1_1segregator_html_a238131bbed5c198e6daaf82931a2ebd6"><div class="ttname"><a href="classalb_1_1segregator.html#a238131bbed5c198e6daaf82931a2ebd6">alb::segregator::allocate</a></div><div class="ttdeci">block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00049">segregator.hpp:49</a></div></div>
 <div class="ttc" id="group__group__shared_html_ga4d139c43ccf75c0ed1d6e4f28bb67474"><div class="ttname"><a href="group__group__shared.html#ga4d139c43ccf75c0ed1d6e4f28bb67474">alb::segregator::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00082">segregator.hpp:82</a></div></div>
+<div class="ttc" id="classalb_1_1segregator_html_adc7e51a1f2798a9e424cee8beca10104"><div class="ttname"><a href="classalb_1_1segregator.html#adc7e51a1f2798a9e424cee8beca10104">alb::segregator::deallocateAll</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; SmallAllocator &gt;::value||traits::has_expand&lt; LargeAllocator &gt;::value, void &gt;::type deallocateAll()</div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00154">segregator.hpp:154</a></div></div>
 <div class="ttc" id="structalb_1_1block_html_a2b1bb23abc665def50a3bcfa460027d8"><div class="ttname"><a href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">alb::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1has__deallocate_all_html"><div class="ttname"><a href="structalb_1_1traits_1_1has__deallocate_all.html">alb::traits::has_deallocateAll</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00044">traits.hpp:44</a></div></div>
-<div class="ttc" id="structalb_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1internal_1_1reallocator.html">alb::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00057">reallocator.hpp:57</a></div></div>
+<div class="ttc" id="classalb_1_1segregator_html_a2995d2622815a34390b58c34530698ac"><div class="ttname"><a href="classalb_1_1segregator.html#a2995d2622815a34390b58c34530698ac">alb::segregator::owns</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; SmallAllocator &gt;::value||traits::has_expand&lt; LargeAllocator &gt;::value, bool &gt;::type owns(const block &amp;b) const </div><div class="ttdef"><b>Definition:</b> <a href="segregator_8hpp_source.html#l00139">segregator.hpp:139</a></div></div>
+<div class="ttc" id="structalb_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1internal_1_1reallocator.html">alb::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00056">reallocator.hpp:56</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>segregator.hpp</b></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

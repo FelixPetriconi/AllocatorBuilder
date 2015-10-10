@@ -5,6 +5,7 @@ var annotated =
         [ "no_affix", "structalb_1_1affix__allocator__helper_1_1no__affix.html", "structalb_1_1affix__allocator__helper_1_1no__affix" ]
       ] ],
       [ "internal", null, [
+        [ "atomic_shared_ptr", "classalb_1_1internal_1_1atomic__shared__ptr.html", "classalb_1_1internal_1_1atomic__shared__ptr" ],
         [ "dynastic", "structalb_1_1internal_1_1dynastic.html", "structalb_1_1internal_1_1dynastic" ],
         [ "dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "structalb_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", "structalb_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4" ],
         [ "NoAtomic", "classalb_1_1internal_1_1_no_atomic.html", "classalb_1_1internal_1_1_no_atomic" ],
@@ -29,10 +30,6 @@ var annotated =
         [ "has_expand", "structalb_1_1traits_1_1has__expand.html", null ],
         [ "has_deallocateAll", "structalb_1_1traits_1_1has__deallocate_all.html", null ],
         [ "has_owns", "structalb_1_1traits_1_1has__owns.html", null ],
-        [ "Disabled", "classalb_1_1traits_1_1_disabled.html", null ],
-        [ "enable_result_to", "structalb_1_1traits_1_1enable__result__to.html", null ],
-        [ "enable_result_to< T, true >", "structalb_1_1traits_1_1enable__result__to_3_01_t_00_01true_01_4.html", "structalb_1_1traits_1_1enable__result__to_3_01_t_00_01true_01_4" ],
-        [ "enable_result_to< T, false >", "structalb_1_1traits_1_1enable__result__to_3_01_t_00_01false_01_4.html", "structalb_1_1traits_1_1enable__result__to_3_01_t_00_01false_01_4" ],
         [ "both_same_base", "structalb_1_1traits_1_1both__same__base.html", null ],
         [ "both_same_base< T1, T1 >", "structalb_1_1traits_1_1both__same__base_3_01_t1_00_01_t1_01_4.html", null ],
         [ "both_same_base< Allocator< P1 >, Allocator< P2 > >", "structalb_1_1traits_1_1both__same__base_3_01_allocator_3_01_p1_01_4_00_01_allocator_3_01_p2_01_4_01_4.html", null ],

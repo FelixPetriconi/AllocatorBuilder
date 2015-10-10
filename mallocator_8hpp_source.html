@@ -121,58 +121,60 @@ $(document).ready(function(){initNavTree('mallocator_8hpp_source.html','');});
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>alb {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="classalb_1_1mallocator.html">mallocator</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  BOOST_STATIC_CONSTANT(<span class="keywordtype">bool</span>, supports_truncated_deallocation = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html#ab4493addf17dec004d32d809f2ec43a2">   33</a></span>&#160;  <a class="code" href="structalb_1_1block.html">block</a> <a class="code" href="classalb_1_1mallocator.html#ab4493addf17dec004d32d809f2ec43a2">allocate</a>(<span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structalb_1_1block.html">block</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> *p = ::malloc(n);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> (p != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structalb_1_1block.html">block</a>(p, n);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structalb_1_1block.html">block</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7">   50</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7">reallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1internal_1_1reallocator.html">internal::reallocator&lt;mallocator&gt;::isHandledDefault</a>(*<span class="keyword">this</span>, b, n)) {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> reallocatedBlock(::realloc(b.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>, n), n);</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html">   23</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classalb_1_1mallocator.html">mallocator</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html#ab4493addf17dec004d32d809f2ec43a2">   33</a></span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> <a class="code" href="classalb_1_1mallocator.html#ab4493addf17dec004d32d809f2ec43a2">allocate</a>(<span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keywordtype">void</span> *p = ::malloc(n);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keywordflow">if</span> (p != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">return</span> {p, n};</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7">   51</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7">reallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1internal_1_1reallocator.html">internal::reallocator&lt;mallocator&gt;::isHandledDefault</a>(*<span class="keyword">this</span>, b, n)) {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (reallocatedBlock.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      b = reallocatedBlock;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html#a7c949db49b528c262383b0c0aa4d7b32">   68</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classalb_1_1mallocator.html#a7c949db49b528c262383b0c0aa4d7b32">deallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (b) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      ::free(b.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      b.<a class="code" href="structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba">reset</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="ttc" id="classalb_1_1mallocator_html_ad9303fbb92298119856ee1915b0492a7"><div class="ttname"><a href="classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7">alb::mallocator::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="mallocator_8hpp_source.html#l00050">mallocator.hpp:50</a></div></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <a class="code" href="structalb_1_1block.html">block</a> reallocatedBlock(::realloc(b.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>, n), n);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">if</span> (reallocatedBlock.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a> != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        b = reallocatedBlock;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classalb_1_1mallocator.html#a7c949db49b528c262383b0c0aa4d7b32">   70</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classalb_1_1mallocator.html#a7c949db49b528c262383b0c0aa4d7b32">deallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">if</span> (b) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        ::free(b.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        b.<a class="code" href="structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba">reset</a>();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  };</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="ttc" id="classalb_1_1mallocator_html_ad9303fbb92298119856ee1915b0492a7"><div class="ttname"><a href="classalb_1_1mallocator.html#ad9303fbb92298119856ee1915b0492a7">alb::mallocator::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="mallocator_8hpp_source.html#l00051">mallocator.hpp:51</a></div></div>
 <div class="ttc" id="classalb_1_1mallocator_html"><div class="ttname"><a href="classalb_1_1mallocator.html">alb::mallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="mallocator_8hpp_source.html#l00023">mallocator.hpp:23</a></div></div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00025">allocator_base.hpp:25</a></div></div>
-<div class="ttc" id="classalb_1_1mallocator_html_a7c949db49b528c262383b0c0aa4d7b32"><div class="ttname"><a href="classalb_1_1mallocator.html#a7c949db49b528c262383b0c0aa4d7b32">alb::mallocator::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="mallocator_8hpp_source.html#l00068">mallocator.hpp:68</a></div></div>
+<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
+<div class="ttc" id="classalb_1_1mallocator_html_a7c949db49b528c262383b0c0aa4d7b32"><div class="ttname"><a href="classalb_1_1mallocator.html#a7c949db49b528c262383b0c0aa4d7b32">alb::mallocator::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="mallocator_8hpp_source.html#l00070">mallocator.hpp:70</a></div></div>
 <div class="ttc" id="structalb_1_1block_html_a9ecbc0c6dc703ab50e8e83ff8bf626ba"><div class="ttname"><a href="structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba">alb::block::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00063">allocator_base.hpp:63</a></div></div>
 <div class="ttc" id="structalb_1_1block_html_aba144d1fa4c47c4cf5987205a6e430f0"><div class="ttname"><a href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">alb::block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00083">allocator_base.hpp:83</a></div></div>
 <div class="ttc" id="classalb_1_1mallocator_html_ab4493addf17dec004d32d809f2ec43a2"><div class="ttname"><a href="classalb_1_1mallocator.html#ab4493addf17dec004d32d809f2ec43a2">alb::mallocator::allocate</a></div><div class="ttdeci">block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="mallocator_8hpp_source.html#l00033">mallocator.hpp:33</a></div></div>
-<div class="ttc" id="structalb_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1internal_1_1reallocator.html">alb::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00057">reallocator.hpp:57</a></div></div>
+<div class="ttc" id="structalb_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1internal_1_1reallocator.html">alb::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00056">reallocator.hpp:56</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>mallocator.hpp</b></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

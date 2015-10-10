@@ -13,5 +13,6 @@ var searchData=
   ['allocations',['Allocations',['../classalb_1_1allocator__with__stats_1_1_allocations.html',1,'alb::allocator_with_stats']]],
   ['allocations',['allocations',['../classalb_1_1allocator__with__stats.html#ad1aedb64b1d7c8c19bd89a7f4aa0e117',1,'alb::allocator_with_stats']]],
   ['allocator_5fwith_5fstats',['allocator_with_stats',['../classalb_1_1allocator__with__stats.html',1,'alb']]],
+  ['atomic_5fshared_5fptr',['atomic_shared_ptr',['../classalb_1_1internal_1_1atomic__shared__ptr.html',1,'alb::internal']]],
   ['allocators',['Allocators',['../group__group__allocators.html',1,'']]]
 ];

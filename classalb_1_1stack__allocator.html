@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('classalb_1_1stack__allocator.html','')
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classalb_1_1stack__allocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alb::stack_allocator&lt; MaxSize, Alignment &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a></div></div>  </div>
@@ -118,21 +119,12 @@ $(document).ready(function(){initNavTree('classalb_1_1stack__allocator.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ab354b2d99cddc5eaa9411a3588ce38b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab354b2d99cddc5eaa9411a3588ce38b9"></a>
-typedef <a class="el" href="classalb_1_1stack__allocator.html">stack_allocator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b></td></tr>
-<tr class="separator:ab354b2d99cddc5eaa9411a3588ce38b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a114036d0b448d85db2581459eba24583"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a114036d0b448d85db2581459eba24583"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b> = <a class="el" href="classalb_1_1stack__allocator.html">stack_allocator</a></td></tr>
+<tr class="separator:a114036d0b448d85db2581459eba24583"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5d730efd5b2001aee0b7c45d5fa4d51e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d730efd5b2001aee0b7c45d5fa4d51e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=true)</td></tr>
-<tr class="separator:a5d730efd5b2001aee0b7c45d5fa4d51e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd5f14f3481d4779ac3a208e1d8d71ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd5f14f3481d4779ac3a208e1d8d71ed"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (size_t, max_size=MaxSize)</td></tr>
-<tr class="separator:abd5f14f3481d4779ac3a208e1d8d71ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dcb32d0a3e5641c3acfb06682f263f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dcb32d0a3e5641c3acfb06682f263f9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (size_t, alignment=Alignment)</td></tr>
-<tr class="separator:a1dcb32d0a3e5641c3acfb06682f263f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04689a0359b3898fa4ba54d52c1c0e36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04689a0359b3898fa4ba54d52c1c0e36"></a>
 <a class="el" href="structalb_1_1block.html">block</a>&#160;</td><td class="memItemRight" valign="bottom"><b>allocate</b> (size_t n)</td></tr>
 <tr class="separator:a04689a0359b3898fa4ba54d52c1c0e36"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,6 +140,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</b> (<a cl
 <tr class="separator:acd79a483d1216dd4748dcdc14a17ac6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3f8fb306e947c6ac7d5fd59535027d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1stack__allocator.html#ac3f8fb306e947c6ac7d5fd59535027d8">deallocateAll</a> ()</td></tr>
 <tr class="separator:ac3f8fb306e947c6ac7d5fd59535027d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a1a7e71100001dd2618a82e47e88ef2ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a7e71100001dd2618a82e47e88ef2ce"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = true</td></tr>
+<tr class="separator:a1a7e71100001dd2618a82e47e88ef2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb0f1e6497b041909abb169b2c0400d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb0f1e6497b041909abb169b2c0400d2"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>max_size</b> = MaxSize</td></tr>
+<tr class="separator:aeb0f1e6497b041909abb169b2c0400d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fbea304262a5d498d9393f621ee26fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fbea304262a5d498d9393f621ee26fc"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>alignment</b> = Alignment</td></tr>
+<tr class="separator:a6fbea304262a5d498d9393f621ee26fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;size_t MaxSize, size_t Alignment = 4&gt;<br/>
@@ -162,7 +166,7 @@ class alb::stack_allocator&lt; MaxSize, Alignment &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00033">33</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00029">29</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ac3f8fb306e947c6ac7d5fd59535027d8"></a>
 <div class="memitem">
@@ -188,7 +192,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 </div><div class="memdoc">
 <p>Sets all possibly provided memory to free. Be warned that all usage of previously allocated blocks results in unpredictable results! </p>
 
-<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00177">177</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00175">175</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -235,7 +239,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true, if the operation was successful or false if not enough memory is left </dd></dl>
 
-<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00143">143</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00139">139</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -270,7 +274,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00168">168</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="stack__allocator_8hpp_source.html#l00165">165</a> of file <a class="el" href="stack__allocator_8hpp_source.html">stack_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -283,7 +287,7 @@ template&lt;size_t MaxSize, size_t Alignment = 4&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1stack__allocator.html">stack_allocator</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

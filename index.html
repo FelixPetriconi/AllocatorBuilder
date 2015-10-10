@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>A highly composable, policy based C++ allocator.</p>
-<p>The layout idea of the library is was presented by <a href="http://erdani.com/">Andrei Alexandrescu</a> at the <a href="http://cppandbeyond.com/">C++ and Beyond 2013</a> seminar.</p>
+<p>The layout idea of the library is was presented by <a href="http://erdani.com/">Andrei Alexandrescu</a> at the <a href="http://cppandbeyond.com/">C++ and Beyond 2013</a> seminar and at the <a href="http://cppcon2015.sched.org/event/95b6c3282248b7e2595c5c3182d7652b">CppCon 2015</a>.</p>
 <p>The background behind the idea is to compensate the main problem of malloc and the other current standard allocators, separation of memory pointer and the allocated size. This makes it very difficult for all kind of memory management to handle in a fast way memory allocations and especially deallocations, because the memory manager must find the corresponding length of the pointer that shall be free. Additionally all users of manually raw allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.</p>
 <p>A second idea behind this allocator library is, that one can compose for every use case a special designed one. Example use cases:</p>
 <ul>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 </ul>
 <p>So the approach is, every allocator returns such a block: </p>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>block {</div>
-<div class="line">  <span class="keywordtype">void</span>* ptr;</div>
+<div class="line">  <span class="keywordtype">void</span>  *ptr;</div>
 <div class="line">  <span class="keywordtype">size_t</span> length;</div>
 <div class="line">};</div>
 </div><!-- fragment --><p>And a request goes this way: </p>
@@ -186,9 +186,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <td>segregator </td><td>Separates allocation requests depending on a threshold to Allocator A or B </td></tr>
 <tr>
-<td>(ahared_)freelist </td><td>Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe manner) </td></tr>
+<td>(shared_)freelist </td><td>Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe) </td></tr>
 <tr>
-<td>(shared_)cascading_allocator </td><td>Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe manner) </td></tr>
+<td>(shared_)cascading_allocator </td><td>Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe, but it needs further improvements, because it does not frees unused allocators) </td></tr>
 <tr>
 <td>(shared_)heap </td><td>A heap block based heap. (The Shared variant is thread safe manner with minimal overhead and as far as possible in a lock-free way.) </td></tr>
 <tr>
@@ -196,7 +196,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 </table>
 <h2>Documentation </h2>
 <p>Online Documentation is available on <a href="http://felixpetriconi.github.io/AllocatorBuilder/index.html">GitHub.io</a> as well.</p>
-<p>There is the begin of a tutorial in the <a href="http://felixpetriconi.github.io/AllocatorBuilder/md__t_u_t_o_r_i_a_l.html">tutorial5 section</a></p>
+<p>There is the begin of a tutorial in the <a href="http://felixpetriconi.github.io/AllocatorBuilder/md__t_u_t_o_r_i_a_l.html">tutorial section</a></p>
 <h2>Author </h2>
 <p>Felix Petriconi (felix at petriconi.net)</p>
 <h2>Contributions </h2>
@@ -207,8 +207,8 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>0.9.6</p>
 <h2>Prerequisites </h2>
 <ul>
-<li>C++ 11 (partly, as far as Visual Studio 2012 supports it)</li>
-<li>boost 1.54.0 (lockfree, thread, assert, option)</li>
+<li>C++ 14 (partly, as far as Visual Studio 2015 supports it)</li>
+<li>boost 1.59.0 (lockfree, thread, assert, option)</li>
 <li>CMake 2.8 or later</li>
 <li>GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)</li>
 </ul>
@@ -217,11 +217,13 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <th>Compiler </th><th>Status  </th></tr>
 <tr>
-<td>Visual Studio 2012 x64 </td><td>All tests pass </td></tr>
-<tr>
-<td>Visual Studio 2013 x64 </td><td>All tests pass </td></tr>
+<td>Visual Studio 2015 x64 </td><td>All tests pass </td></tr>
 <tr>
 <td>Debian x64, Clang 3.4 </td><td>All tests pass </td></tr>
+<tr>
+<td>Intel XE Inspector x64 </td><td>No detections </td></tr>
+<tr>
+<td>Clang thread sanitizer </td><td>No detections </td></tr>
 </table>
 <h2>Installation Win </h2>
 <ul>
@@ -230,7 +232,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li>Create a build folder, eg D:</li>
 <li>Open a command prompt in that alb_build folder</li>
 <li>Have CMake in the path</li>
-<li>Execute cmake -G "Visual Studio 11 Win64" ..</li>
+<li>Execute cmake -G "Visual Studio 14 2015 Win64" ..</li>
 <li>Open created solution in ..sln</li>
 <li>Compile and run all test (if necessary add D: to search path)</li>
 </ul>
@@ -241,7 +243,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

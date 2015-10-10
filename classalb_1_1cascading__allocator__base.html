@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('classalb_1_1cascading__allocator__base
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classalb_1_1cascading__allocator__base-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">alb::cascading_allocator_base&lt; Shared, Allocator &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__shared.html">Shared Allocators</a></div></div>  </div>
@@ -119,15 +120,12 @@ $(document).ready(function(){initNavTree('classalb_1_1cascading__allocator__base
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac0d5a19e2cfeddbb9c3c36c94f3ef46d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0d5a19e2cfeddbb9c3c36c94f3ef46d"></a>
-typedef Allocator&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b></td></tr>
-<tr class="separator:ac0d5a19e2cfeddbb9c3c36c94f3ef46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5e291eec1ab864460c18827584db65"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e5e291eec1ab864460c18827584db65"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator</b> = Allocator</td></tr>
+<tr class="separator:a1e5e291eec1ab864460c18827584db65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7d717e48328dc31189cf17c2eaf0f596"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d717e48328dc31189cf17c2eaf0f596"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_STATIC_CONSTANT</b> (bool, supports_truncated_deallocation=Allocator::supports_truncated_deallocation)</td></tr>
-<tr class="separator:a7d717e48328dc31189cf17c2eaf0f596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d44dc9eb0f4f783152a1e34f5663a56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d44dc9eb0f4f783152a1e34f5663a56"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>cascading_allocator_base</b> (<a class="el" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x)</td></tr>
 <tr class="separator:a7d44dc9eb0f4f783152a1e34f5663a56"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,16 +140,24 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad17a213edc72265208ecaf453dbaad88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f956a181f5ac5044d19f9215e168449"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a7f956a181f5ac5044d19f9215e168449">reallocate</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t n)</td></tr>
 <tr class="separator:a7f956a181f5ac5044d19f9215e168449"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20a8d3fefd02fce9571a2435eb7c4c0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt; Allocator &gt;<br class="typebreak"/>
-::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a20a8d3fefd02fce9571a2435eb7c4c0e">expand</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
-<tr class="separator:a20a8d3fefd02fce9571a2435eb7c4c0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49a1d775a793486bdef842860752825f"><td class="memTemplParams" colspan="2">template&lt;typename U  = Allocator&gt; </td></tr>
+<tr class="memitem:a49a1d775a793486bdef842860752825f"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt; U &gt;<br class="typebreak"/>
+::value, bool &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#a49a1d775a793486bdef842860752825f">expand</a> (<a class="el" href="structalb_1_1block.html">block</a> &amp;b, size_t delta)</td></tr>
+<tr class="separator:a49a1d775a793486bdef842860752825f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaedbe51bceb0167577976cf7bbe301d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#aeaedbe51bceb0167577976cf7bbe301d">owns</a> (const <a class="el" href="structalb_1_1block.html">block</a> &amp;b) const </td></tr>
 <tr class="separator:aeaedbe51bceb0167577976cf7bbe301d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e71a14ae52d6711505270743bb1590"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt; bool, <br class="typebreak"/>
-<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a><br class="typebreak"/>
-&lt; Allocator &gt;::value &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#ae2e71a14ae52d6711505270743bb1590">deallocateAll</a> ()</td></tr>
-<tr class="separator:ae2e71a14ae52d6711505270743bb1590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b33bdaeb2e089915d82e003a46c148"><td class="memTemplParams" colspan="2">template&lt;typename U  = Allocator&gt; </td></tr>
+<tr class="memitem:ae3b33bdaeb2e089915d82e003a46c148"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt; U &gt;<br class="typebreak"/>
+::value, void &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1cascading__allocator__base.html#ae3b33bdaeb2e089915d82e003a46c148">deallocateAll</a> ()</td></tr>
+<tr class="separator:ae3b33bdaeb2e089915d82e003a46c148"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a0b16c64f14d74cb1d2dbb6ee51e814a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b16c64f14d74cb1d2dbb6ee51e814a7"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = Allocator::supports_truncated_deallocation</td></tr>
+<tr class="separator:a0b16c64f14d74cb1d2dbb6ee51e814a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;bool Shared, typename Allocator&gt;<br/>
@@ -165,7 +171,7 @@ class alb::cascading_allocator_base&lt; Shared, Allocator &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00036">36</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00029">29</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aeb45deda96b500dc00367e483dee3cb7"></a>
 <div class="memitem">
@@ -221,7 +227,7 @@ template&lt;bool Shared, typename Allocator&gt; </div>
 </div><div class="memdoc">
 <p>Sends the request to the first allocator, if it cannot fulfill the request then the next Allocator is created and so on </p>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00186">186</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00187">187</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -250,21 +256,23 @@ template&lt;bool Shared, typename Allocator&gt; </div>
 </div><div class="memdoc">
 <p>Frees the given block and resets it </p>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00225">225</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00231">231</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae2e71a14ae52d6711505270743bb1590"></a>
+<a class="anchor" id="ae3b33bdaeb2e089915d82e003a46c148"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;bool Shared, typename Allocator&gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = Allocator&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt;bool, <a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt;Allocator&gt;::value&gt;::type <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base</a>&lt; Shared, Allocator &gt;::deallocateAll </td>
+          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1traits_1_1has__deallocate_all.html">traits::has_deallocateAll</a>&lt;U&gt;::value, void&gt;::type <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base</a>&lt; Shared, Allocator &gt;::deallocateAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -278,21 +286,23 @@ template&lt;bool Shared, typename Allocator&gt; </div>
 </div><div class="memdoc">
 <p>Deletes all allocated resources. All Blocks created by this instance must not be used any more. Calling this method while other threads are allocating or deallocating leads to unpredictable behavior. This is only available if the Allocator implements it as well. </p>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00302">302</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00310">310</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a20a8d3fefd02fce9571a2435eb7c4c0e"></a>
+<a class="anchor" id="a49a1d775a793486bdef842860752825f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;bool Shared, typename Allocator&gt; </div>
+<div class="memtemplate">
+template&lt;typename U  = Allocator&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalb_1_1traits_1_1enable__result__to.html">traits::enable_result_to</a>&lt;bool, <a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;Allocator&gt;::value&gt;::type <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base</a>&lt; Shared, Allocator &gt;::expand </td>
+          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;U&gt;::value, bool&gt;::type <a class="el" href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base</a>&lt; Shared, Allocator &gt;::expand </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structalb_1_1block.html">block</a> &amp;&#160;</td>
           <td class="paramname"><em>b</em>, </td>
@@ -325,7 +335,7 @@ template&lt;bool Shared, typename Allocator&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00277">277</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00283">283</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -361,7 +371,7 @@ template&lt;bool Shared, typename Allocator&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if one of the allocator owns it. </dd></dl>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00290">290</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00297">297</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -408,7 +418,7 @@ template&lt;bool Shared, typename Allocator&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00250">250</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="cascading__allocator_8hpp_source.html#l00256">256</a> of file <a class="el" href="cascading__allocator_8hpp_source.html">cascading_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -421,7 +431,7 @@ template&lt;bool Shared, typename Allocator&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><a class="el" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

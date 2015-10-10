@@ -118,13 +118,13 @@ $(document).ready(function(){initNavTree('allocator__base_8cpp_source.html','');
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="group__group__internal.html#ga14c0656dbaeaa7ab70e11cccdae64d85">   15</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__group__internal.html#ga14c0656dbaeaa7ab70e11cccdae64d85">alb::internal::blockCopy</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">alb::block</a>&amp; source, <a class="code" href="structalb_1_1block.html">alb::block</a>&amp; destination)</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">   15</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">alb::internal::blockCopy</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">alb::block</a>&amp; source, <a class="code" href="structalb_1_1block.html">alb::block</a>&amp; destination)</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  ::memcpy(destination.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>, source.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>, std::min(source.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>, destination.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>));</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00025">allocator_base.hpp:25</a></div></div>
+<div class="ttc" id="group__group__internal_html_ga0c9ba541089bd5bf613476c5999ea079"><div class="ttname"><a href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">alb::internal::blockCopy</a></div><div class="ttdeci">void blockCopy(const block &amp;source, block &amp;destination)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8cpp_source.html#l00015">allocator_base.cpp:15</a></div></div>
+<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
 <div class="ttc" id="structalb_1_1block_html_aba144d1fa4c47c4cf5987205a6e430f0"><div class="ttname"><a href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">alb::block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00083">allocator_base.hpp:83</a></div></div>
-<div class="ttc" id="group__group__internal_html_ga14c0656dbaeaa7ab70e11cccdae64d85"><div class="ttname"><a href="group__group__internal.html#ga14c0656dbaeaa7ab70e11cccdae64d85">alb::internal::blockCopy</a></div><div class="ttdeci">void blockCopy(const alb::block &amp;source, alb::block &amp;destination)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8cpp_source.html#l00015">allocator_base.cpp:15</a></div></div>
 <div class="ttc" id="structalb_1_1block_html_a2b1bb23abc665def50a3bcfa460027d8"><div class="ttname"><a href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">alb::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('allocator__base_8cpp_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><b>allocator_base.cpp</b></li>
-    <li class="footer">Generated on Tue Mar 18 2014 17:07:51 for Allocator Builder by
+    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
