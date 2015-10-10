@@ -48,4 +48,9 @@ add_definitions(-DBOOST_ALL_NO_LIB)
 
 add_dependencies(ALBUnitTest gtest)
 add_dependencies(ALBUnitTest ALB)
+
+set_property(TARGET ALBUnitTest PROPERTY CXX_STANDARD 14)
+set_property(TARGET ALBUnitTest PROPERTY CXX_STANDARD_REQUIRED ON)
 target_link_libraries(ALBUnitTest ${Boost_LIBRARIES} gtest ALB)
+
+

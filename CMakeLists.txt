@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(AllocatorBuilder)
 
@@ -12,12 +12,13 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" AND MSVC_VERSION EQUAL 1700)
   add_definitions(-D_VARIADIC_MAX=10)
 endif ()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")  
-  set(CMAKE_CXX_FLAGS "-O1 -fsanitize=thread -g -Wall -std=c++11")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GCC")  
+  #set(CMAKE_CXX_FLAGS "-O3 -fsanitize=thread -g -Wall -std=c++11")
+  set(CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++11")
   set(CMAKE_LINK_FLAGS "-pthreads")
 endif()
 
-set(BOOST_ROOT D:/boost_1_59_0)
+#set(BOOST_ROOT D:/boost_1_59_0)
 set(Boost_USE_STATIC_LIBS        OFF)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     OFF)

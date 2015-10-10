@@ -39,3 +39,6 @@ set(HEADERS
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(ALB ${SOURCE} ${HEADERS})
+set_property(TARGET ALB PROPERTY CXX_STANDARD 14)
+set_property(TARGET ALB PROPERTY CXX_STANDARD_REQUIRED ON)
+
