@@ -540,7 +540,8 @@ public:                                                                         
      * is stored.
      * \param b The block its ownership shall be checked
      */
-    typename traits::enable_result_to<bool, traits::has_owns<Allocator>::value>::type
+    template <typename U = Allocator>
+    typename std::enable_if<traits::has_owns<U>::value, bool>::type
     owns(const block &b) const
     {
       up(StatsOptions::NumOwns, _numOwns);
@@ -556,7 +557,8 @@ public:                                                                         
      * \param delta The amount of bytes that should be tried to expanded
      * \return True, if the operation was successful
      */
-    typename traits::enable_result_to<bool, traits::has_expand<Allocator>::value>::type
+    template <typename U = Allocator>
+    typename std::enable_if<traits::has_expand<U>::value, bool>::type
     expand(block &b, size_t delta)
     {
       up(StatsOptions::NumExpand, _numExpand);

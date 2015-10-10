@@ -183,7 +183,8 @@ namespace alb {
      * It returns true, if the given block is owned by this allocator.
      * \param b The Block that should be checked for ownership
      */
-    typename traits::enable_result_to<bool, traits::has_owns<Allocator>::value>::type
+    template <typename U = Allocator>
+    typename std::enable_if<traits::has_owns<U>::value, bool>::type
     owns(const block &b) const
     {
       return b && _allocator.owns(toInnerBlock(b));
@@ -228,7 +229,8 @@ namespace alb {
      * \param delta The number of bytes that the given block should be increased
      * \return True, if the operation was successful.
      */
-    typename traits::enable_result_to<bool, traits::has_expand<Allocator>::value>::type
+    template <typename U = Allocator>
+    typename std::enable_if<traits::has_expand<U>::value, bool>::type
     expand(block &b, size_t delta)
     {
       if (delta == 0) {

@@ -76,39 +76,6 @@ namespace alb {
       static const bool value = (sizeof(func<T>(nullptr)) == sizeof(Yes));
     };
 
-    class Disabled {
-      Disabled() = delete;
-      Disabled(const Disabled &) = delete;
-      Disabled &operator=(const Disabled &) = delete;
-      Disabled(Disabled &&) = delete;
-      Disabled &operator=(Disabled &&) = delete;
-    };
-
-    /**
-     * If the passed template type is true, then it defines bool as return type,
-     * otherwise only type Disabled
-     * which has only one purpose, to not be useful ;-)
-     * This trait can be used in combination with has_expand<> to check if a certain
-     * depended class implements
-     * expand as well.
-     * Example: typename traits::enabled<traits::has_expand<Allocator>::value>::type
-     *          expand(Block& b, size_t delta) {}
-     * The result type of the method expand is ugly long, but without static_if,
-     * it is not possible to hide a signature during compile time for a SFINAE
-     * construct.
-     *
-     * \ingroup group_traits
-     */
-    template <typename T, bool> struct enable_result_to;
-
-    template <typename T> struct enable_result_to<T, true> {
-      typedef T type;
-    };
-
-    template <typename T> struct enable_result_to<T, false> {
-      typedef Disabled type;
-    };
-
     /**
      * This traits returns true if both passed types have the same type, resp.
      * template base type

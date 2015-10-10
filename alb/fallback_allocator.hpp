@@ -31,9 +31,8 @@ namespace alb {
                   "Primary- and Fallback-Allocator cannot be both of the same base!");
 
   public:
-    static const bool supports_truncated_deallocation =
-        ::boost::type_traits::ice_or<Primary::supports_truncated_deallocation,
-                                     Fallback::supports_truncated_deallocation>::value;
+    static const bool supports_truncated_deallocation = Primary::supports_truncated_deallocation ||
+      Fallback::supports_truncated_deallocation;
 
     /**
      * Allocates the requested number of bytes.
@@ -108,18 +107,18 @@ namespace alb {
      * \param delta The number of bytes that should be appended
      * \return True, if the operation could be performed successful.
      */
-    typename traits::enable_result_to<bool, traits::has_expand<Primary>::value ||
-                                                traits::has_expand<Fallback>::value>::type
+    template <typename U = Primary, typename V = Fallback>
+    typename std::enable_if<traits::has_expand<U>::value || traits::has_expand<V>::value, bool>::type
     expand(block &b, size_t delta)
     {
       if (Primary::owns(b)) {
-        if (traits::has_expand<Primary>::value) {
-          return traits::Expander<Primary>::doIt(static_cast<Primary &>(*this), b, delta);
+        if (traits::has_expand<U>::value) {
+          return traits::Expander<U>::doIt(static_cast<U&>(*this), b, delta);
         }
         return false;
       }
-      if (traits::has_expand<Fallback>::value) {
-        return traits::Expander<Fallback>::doIt(static_cast<Fallback &>(*this), b, delta);
+      if (traits::has_expand<V>::value) {
+        return traits::Expander<V>::doIt(static_cast<V&>(*this), b, delta);
       }
       return false;
     }
@@ -130,15 +129,16 @@ namespace alb {
      * \param b The block which ownership shall be checked.
      * \return True if the block comes from one of the allocators.
      */
-    typename traits::enable_result_to<bool, traits::has_owns<Primary>::value &&
-                                                traits::has_owns<Fallback>::value>::type
+    template <typename U = Primary, typename V = Fallback>
+    typename std::enable_if<traits::has_owns<U>::value && traits::has_owns<V>::value, bool>::type
     owns(const block &b) const
     {
       return Primary::owns(b) || Fallback::owns(b);
     }
 
-    typename traits::enable_result_to<void, traits::has_deallocateAll<Primary>::value &&
-                                                traits::has_deallocateAll<Fallback>::value>::type
+    template <typename U = Primary, typename V = Fallback>
+    typename std::enable_if<traits::has_deallocateAll<U>::value &&
+                                                traits::has_deallocateAll<V>::value, void>::type
     deallocateAll()
     {
       Primary::deallocateAll();

@@ -105,22 +105,23 @@ namespace alb {
      * \param delta The number of bytes to be expanded
      * \return True, if the operation was successful
      */
-    typename traits::enable_result_to<bool, traits::has_expand<SmallAllocator>::value ||
-                                                traits::has_expand<LargeAllocator>::value>::type
+    template <typename U = SmallAllocator, typename V = LargeAllocator>
+    typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
+                            traits::has_expand<LargeAllocator>::value, bool>::type
     expand(block &b, size_t delta)
     {
       if (b.length <= Threshold && b.length + delta > Threshold) {
         return false;
       }
       if (b.length <= Threshold) {
-        if (traits::has_expand<SmallAllocator>::value) {
-          return traits::Expander<SmallAllocator>::doIt(static_cast<SmallAllocator &>(*this), b,
+        if (traits::has_expand<U>::value) {
+          return traits::Expander<U>::doIt(static_cast<U&>(*this), b,
                                                         delta);
         }
         return false;
       }
-      if (traits::has_expand<LargeAllocator>::value) {
-        return traits::Expander<LargeAllocator>::doIt(static_cast<LargeAllocator &>(*this), b,
+      if (traits::has_expand<V>::value) {
+        return traits::Expander<V>::doIt(static_cast<V&>(*this), b,
                                                       delta);
       }
       return false;
@@ -132,27 +133,28 @@ namespace alb {
      * \param b The block to checked
      * \return True if one of the allocator owns it.
      */
-    typename traits::enable_result_to<bool, traits::has_owns<SmallAllocator>::value &&
-                                                traits::has_owns<LargeAllocator>::value>::type
-    owns(const block &b) const
+    template <typename U = SmallAllocator, typename V = LargeAllocator>
+    typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
+      traits::has_expand<LargeAllocator>::value, bool>::type
+      owns(const block &b) const
     {
       if (b.length <= Threshold) {
-        return SmallAllocator::owns(b);
+        return U::owns(b);
       }
-      return LargeAllocator::owns(b);
+      return V::owns(b);
     }
 
     /**
      * Deallocates all memory.
      * This is available if one of the allocators implement it.
      */
-    typename traits::enable_result_to<bool,
-                                      traits::has_deallocateAll<SmallAllocator>::value ||
-                                          traits::has_deallocateAll<LargeAllocator>::value>::type
+    template <typename U = SmallAllocator, typename V = LargeAllocator>
+    typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
+      traits::has_expand<LargeAllocator>::value, void>::type
     deallocateAll()
     {
-      traits::AllDeallocator<SmallAllocator>::doIt(static_cast<SmallAllocator &>(*this));
-      traits::AllDeallocator<LargeAllocator>::doIt(static_cast<LargeAllocator &>(*this));
+      traits::AllDeallocator<U>::doIt(static_cast<U&>(*this));
+      traits::AllDeallocator<V>::doIt(static_cast<V&>(*this));
     }
   };
 }

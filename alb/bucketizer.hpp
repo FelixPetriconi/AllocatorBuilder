@@ -138,11 +138,12 @@ namespace alb {
      * Deallocates all resources. Beware of possible dangling pointers!
      * This method is only available if Allocator::deallocateAll is available
      */
-    typename traits::enable_result_to<void, traits::has_deallocateAll<Allocator>::value>::type
+    template <typename U = Allocator>
+    typename std::enable_if<traits::has_deallocateAll<U>::value, void>::type
     deallocateAll()
     {
       for (auto &item : _buckets) {
-        traits::AllDeallocator<allocator>::doIt(item);
+        traits::AllDeallocator<U>::doIt(item);
       }
     }
 

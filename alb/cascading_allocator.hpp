@@ -278,7 +278,8 @@ namespace alb {
      * \param delta The amount of bytes
      * \return True, if the operation was successful
      */
-    typename traits::enable_result_to<bool, traits::has_expand<Allocator>::value>::type
+    template<typename U = Allocator>
+    typename std::enable_if<traits::has_expand<U>::value, bool>::type
     expand(block &b, size_t delta)
     {
       auto p = findOwningNode(b);
@@ -304,7 +305,8 @@ namespace alb {
      * are allocating or deallocating leads to unpredictable behavior.
      * This is only available if the Allocator implements it as well.
      */
-    typename traits::enable_result_to<bool, traits::has_deallocateAll<Allocator>::value>::type
+    template <typename U = Allocator>
+    typename std::enable_if<traits::has_deallocateAll<U>::value, void>::type
     deallocateAll()
     {
       shrink();
