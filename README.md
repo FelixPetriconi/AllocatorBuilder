@@ -117,11 +117,11 @@ Documentation
 Author 
 ------
   Felix Petriconi (felix at petriconi.net)
-  
 
 Contributions
 -------------
-
+  Gary Furnish
+  
   Comments, feedback or contributions are welcome!
 
   
@@ -137,9 +137,9 @@ Version
 Prerequisites
 -------------
   * C++ 14 (partly, as far as Visual Studio 2015 supports it)
-  * boost 1.59.0 (lockfree, thread, assert, option)
-  * CMake 2.8 or later
+  * boost 1.55.0 (lockfree, thread, assert)
   * GoogleTest 1.7 (Is part of the repository, because it's CMakeFiles.txt needs some patches to compile with Visual Studio)
+  * CMake 3.0 or later
 
 
 Platform
@@ -153,14 +153,14 @@ Platform
 
 Installation Win
 ----------------
-  * Have boost installed and the standard libs be build, install into D:\boost_1_59_0
+  * Have boost installed and the standard libs be build, install into D:\boost_1_55_0 and set in the CMakeLists.txt the correct path
   * Clone into e.g. D:\misc\AllocatorBuilder
   * Create a build folder, eg D:\misc\alb_build
   * Open a command prompt in that alb_build folder
   * Have CMake in the path
   * Execute cmake -G "Visual Studio 14 2015 Win64" ..\alb_build
   * Open created solution in .\alb_build\AllocatorBuilder.sln
-  * Compile and run all test (if necessary add D:\boost_1_59_0\stage\lib to search path)
+  * Compile and run all test (if necessary add D:\boost_1_55_0\stage\lib to search path)
   
 ToDo
 ----
