@@ -204,14 +204,14 @@ namespace alb {
       if (b.length > n) {
         auto context = blockToContext(b);
         if (context.subIndex + context.usedChunks <= 64) {
-          setWithinSingleRegister<true>(BlockContext(context.registerIndex,
+          setWithinSingleRegister<true>(BlockContext{context.registerIndex,
                                                      context.subIndex + numberOfNewNeededBlocks,
-                                                     context.usedChunks - numberOfNewNeededBlocks));
+                                                     context.usedChunks - numberOfNewNeededBlocks});
         }
         else {
           deallocateWithControlRegisterOverlap(
-              BlockContext(context.registerIndex, context.subIndex + numberOfNewNeededBlocks,
-                           context.usedChunks - numberOfNewNeededBlocks));
+              BlockContext{context.registerIndex, context.subIndex + numberOfNewNeededBlocks,
+                           context.usedChunks - numberOfNewNeededBlocks});
         }
         b.length = numberOfNewNeededBlocks * _chunkSize.value();
         return true;
@@ -231,8 +231,8 @@ namespace alb {
 
       if (context.subIndex + context.usedChunks + numberOfAdditionalNeededBlocks <= 64) {
         if (testAndSetWithinSingleRegister<false>(
-                BlockContext(context.registerIndex, context.subIndex + context.usedChunks,
-                             numberOfAdditionalNeededBlocks))) {
+                BlockContext{context.registerIndex, context.subIndex + context.usedChunks,
+                             numberOfAdditionalNeededBlocks})) {
           b.length += numberOfAdditionalNeededBlocks * _chunkSize.value();
           return true;
         }
@@ -240,8 +240,8 @@ namespace alb {
       }
       else {
         if (testAndSetOverMultipleRegisters<false>(
-                BlockContext(context.registerIndex, context.subIndex + context.usedChunks,
-                             numberOfAdditionalNeededBlocks))) {
+                BlockContext{context.registerIndex, context.subIndex + context.usedChunks,
+                             numberOfAdditionalNeededBlocks})) {
           b.length += numberOfAdditionalNeededBlocks * _chunkSize.value();
           return true;
         }
@@ -264,14 +264,9 @@ namespace alb {
     }
 
     struct BlockContext {
-      BlockContext(int ri, int si, int uc)
-        : registerIndex(ri)
-        , subIndex(si)
-        , usedChunks(uc)
-      {
-      }
-
-      int registerIndex, subIndex, usedChunks;
+      int registerIndex;
+      int subIndex;
+      int usedChunks;
     };
 
     BlockContext blockToContext(const block &b)
@@ -387,7 +382,7 @@ namespace alb {
     block allocateWithinASingleControlRegister(size_t numberOfBlocks)
     {
       // first we have to look for at least one free block
-      int controlIndex = 0;
+      size_t controlIndex = 0;
       while (controlIndex < _controlSize) {
         auto currentControlRegister = _control[controlIndex];
 
@@ -461,7 +456,7 @@ namespace alb {
       const auto lastp =
           reinterpret_cast<unsigned char *>(_control) + _controlSize * sizeof(uint64_t);
 
-      int freeBlocksCount(0);
+      size_t freeBlocksCount(0);
       unsigned char *chunkStart = nullptr;
 
       while (p < lastp) {
