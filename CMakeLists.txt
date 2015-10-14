@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.0)
 
 project(AllocatorBuilder)
 
@@ -12,9 +12,9 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" AND MSVC_VERSION EQUAL 1700)
   add_definitions(-D_VARIADIC_MAX=10)
 endif ()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GCC")  
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")  
   #set(CMAKE_CXX_FLAGS "-O3 -fsanitize=thread -g -Wall -std=c++11")
-  set(CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++11")
+  set(CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++14")
   set(CMAKE_LINK_FLAGS "-pthreads")
 endif()
 
@@ -23,7 +23,7 @@ set(Boost_USE_STATIC_LIBS        OFF)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     OFF)
 #set(BOOST_ALL_DYN_LINK           ON) 
-find_package( Boost 1.59.0 REQUIRED COMPONENTS system thread chrono date_time)
+find_package( Boost 1.55.0 REQUIRED COMPONENTS system thread chrono date_time)
 
 
 add_subdirectory(util/gtest-1.7.0)

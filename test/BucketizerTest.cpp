@@ -27,16 +27,16 @@ class BucketizerTest : public AllocatorBaseTest<AllocatorUnderTest> {
 
 TEST_F(BucketizerTest, ThatMinAndMaxSizeOfTheBucketItemsAreSetSpecifiedByTheParameter)
 {
-  ASSERT_EQ(3, AllocatorUnderTest::number_of_buckets);
+  ASSERT_EQ(3u, AllocatorUnderTest::number_of_buckets);
 
-  EXPECT_EQ(17, sut._buckets[0].min_size());
-  EXPECT_EQ(32, sut._buckets[0].max_size());
+  EXPECT_EQ(17u, sut._buckets[0].min_size());
+  EXPECT_EQ(32u, sut._buckets[0].max_size());
 
-  EXPECT_EQ(33, sut._buckets[1].min_size());
-  EXPECT_EQ(48, sut._buckets[1].max_size());
+  EXPECT_EQ(33u, sut._buckets[1].min_size());
+  EXPECT_EQ(48u, sut._buckets[1].max_size());
 
-  EXPECT_EQ(49, sut._buckets[2].min_size());
-  EXPECT_EQ(64, sut._buckets[2].max_size());
+  EXPECT_EQ(49u, sut._buckets[2].min_size());
+  EXPECT_EQ(64u, sut._buckets[2].max_size());
 }
 
 TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlock)
@@ -86,7 +86,7 @@ TEST_F(BucketizerTest, ThatAReallocationWithInTheEdgesOfABucketItemTheLengthAndT
   auto originalPtr = mem.ptr;
   EXPECT_TRUE(sut.reallocate(mem, 20));
 
-  EXPECT_EQ(32, mem.length);
+  EXPECT_EQ(32u, mem.length);
   EXPECT_EQ(originalPtr, mem.ptr);
 
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 32);
@@ -103,7 +103,7 @@ TEST_F(BucketizerTest,
   auto originalPtr = mem.ptr;
   EXPECT_TRUE(sut.reallocate(mem, 33));
 
-  EXPECT_EQ(48, mem.length);
+  EXPECT_EQ(48u, mem.length);
   EXPECT_NE(originalPtr, mem.ptr);
 
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 32);
@@ -122,7 +122,7 @@ TEST_F(BucketizerTest, ThatAReallocationOfAnEmptyBlockWithinTheBoundsBytesReturn
 {
   alb::block mem;
   EXPECT_TRUE(sut.reallocate(mem, 32));
-  EXPECT_EQ(32, mem.length);
+  EXPECT_EQ(32u, mem.length);
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
 
@@ -143,7 +143,7 @@ TEST_F(
   auto originalPtr = mem.ptr;
   EXPECT_TRUE(sut.reallocate(mem, 20));
 
-  EXPECT_EQ(32, mem.length);
+  EXPECT_EQ(32u, mem.length);
   EXPECT_NE(originalPtr, mem.ptr);
 
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 32);

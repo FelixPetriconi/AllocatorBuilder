@@ -141,8 +141,8 @@ namespace alb {
      */
     block allocate(size_t n)
     {
-      BOOST_ASSERT_MSG(_lowerBound.value() != -1, "The lower bound was not initialized!");
-      BOOST_ASSERT_MSG(_upperBound.value() != -1, "The upper bound was not initialized!");
+      BOOST_ASSERT_MSG(_lowerBound.value() != ::std::numeric_limits<size_t>::max(), "The lower bound was not initialized!");
+      BOOST_ASSERT_MSG(_upperBound.value() != ::std::numeric_limits<size_t>::max(), "The upper bound was not initialized!");
 
       if (_lowerBound.value() <= n && n <= _upperBound.value()) {
         void *freeBlock = nullptr;
