@@ -390,7 +390,7 @@ namespace alb {
         if (currentControlRegister != 0) {
           uint64_t mask = (numberOfBlocks == 64) ? (uint64_t)-1 : ((1uLL << numberOfBlocks) - 1);
 
-          int i = 0;
+          size_t i = 0;
           // Search for numberOfBlock bits that are set to one
           while (i <= 64 - numberOfBlocks) {
             if ((currentControlRegister & mask) == mask) {
