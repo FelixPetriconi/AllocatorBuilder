@@ -62,7 +62,7 @@ TYPED_TEST(affix_allocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
 {
   this->mem = this->sut.allocate(0);
 
-  EXPECT_EQ(0, this->mem.length);
+  EXPECT_EQ(0u, this->mem.length);
   EXPECT_EQ(nullptr, this->mem.ptr);
 }
 
@@ -71,7 +71,7 @@ TYPED_TEST(affix_allocatorTest,
 {
   this->mem = this->sut.allocate(512);
 
-  EXPECT_EQ(0, this->mem.length);
+  EXPECT_EQ(0u, this->mem.length);
   EXPECT_EQ(nullptr, this->mem.ptr);
 }
 
@@ -118,7 +118,7 @@ TYPED_TEST(affix_allocatorTest,
 TYPED_TEST(affix_allocatorTest, ThatAnEmptyBlockedExpandedByZeroBytesIsStillAnEmptyBlock)
 {
   EXPECT_TRUE(this->sut.expand(this->mem, 0));
-  EXPECT_EQ(0, this->mem.length);
+  EXPECT_EQ(0u, this->mem.length);
 }
 
 TYPED_TEST(
@@ -126,7 +126,7 @@ TYPED_TEST(
     ThatAnEmptyBlockedExpandedByTheSizeOfTheAllocatorsCapacityIsStillAnEmptyBlockBecauseThereIsNoSpaceForTheAffix)
 {
   EXPECT_FALSE(this->sut.expand(this->mem, 512));
-  EXPECT_EQ(0, this->mem.length);
+  EXPECT_EQ(0u, this->mem.length);
 }
 
 TYPED_TEST(affix_allocatorTest,

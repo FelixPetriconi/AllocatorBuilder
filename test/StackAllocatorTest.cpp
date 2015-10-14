@@ -20,7 +20,7 @@ TEST_F(stack_allocatorTest, ThatAllocatingZeroBytesReturnsAnEmptyMemoryBlock)
 {
   auto mem = sut.allocate(0);
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -91,7 +91,7 @@ TEST_F(stack_allocatorTest, ThatANullBlockIsReturnedWhenTheAllocatorIsOutOfMemor
   auto allMem = sut.allocate(64);
   auto noFreeMem = sut.allocate(1);
   EXPECT_EQ(nullptr, noFreeMem.ptr);
-  EXPECT_EQ(0, noFreeMem.length);
+  EXPECT_EQ(0u, noFreeMem.length);
 }
 
 TEST_F(stack_allocatorTest, ThatAnIncreasingReallocationWithNoBlockInbetweenReturnsTheSameBuffer)
@@ -175,7 +175,7 @@ TEST_F(stack_allocatorTest, ThatExpandingByZeroAnEmptyBlockResultsIntoAnEmptyBlo
   auto mem = sut.allocate(0);
   EXPECT_TRUE(sut.expand(mem, 0));
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -229,7 +229,7 @@ TEST_F(stack_allocatorTest, ThatExpandingBeyondTheAllocatorsCapacityOfAnEmptyBlo
   EXPECT_FALSE(sut.expand(mem, 65));
 
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -241,7 +241,7 @@ TEST_F(stack_allocatorTest, ThatExpandingBeyondTheAllocatorsCapacityAFilledBlock
   EXPECT_FALSE(sut.expand(mem, 65));
 
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 
   deallocateAndCheckBlockIsThenEmpty(mem);
 }

@@ -117,7 +117,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOutO
   auto outOfMem = this->sut.allocate(1);
 
   EXPECT_EQ(nullptr, outOfMem.ptr);
-  EXPECT_EQ(0, outOfMem.length);
+  EXPECT_EQ(0u, outOfMem.length);
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest,
@@ -126,7 +126,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest,
   auto outOfMem = this->sut.allocate(NumberOfChunks * SmallChunkSize + 1);
 
   EXPECT_EQ(nullptr, outOfMem.ptr);
-  EXPECT_EQ(0, outOfMem.length);
+  EXPECT_EQ(0u, outOfMem.length);
 }
 
 TYPED_TEST(
@@ -191,7 +191,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest,
   EXPECT_TRUE(this->sut.expand(mem, 0));
 
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest,
@@ -301,7 +301,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest,
   EXPECT_TRUE(this->sut.reallocate(mem, 0));
 
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 }
 
 TYPED_TEST(HeapWithSmallAllocationsTest,
@@ -467,7 +467,7 @@ TYPED_TEST(
 
   auto mem = this->sut.allocate(1);
   EXPECT_EQ(nullptr, mem.ptr);
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
 
   this->sut.deallocateAll();
   for (auto &b : blocks) {

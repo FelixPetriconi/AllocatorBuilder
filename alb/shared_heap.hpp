@@ -432,7 +432,7 @@ namespace alb {
           if (currentControlRegister != 0) {
             uint64_t mask = (numberOfBlocks == 64) ? all_set : ((1uLL << numberOfBlocks) - 1);
 
-            int i = 0;
+            auto i = size_t(0);
             // Search for numberOfBlock bits that are set to one
             while (i <= 64 - numberOfBlocks) {
               if ((currentControlRegister & mask) == mask) {
@@ -520,7 +520,7 @@ namespace alb {
       const auto lastp =
           reinterpret_cast<unsigned char *>(_control) + _controlSize * sizeof(uint64_t);
 
-      int freeBlocksCount(0);
+      auto freeBlocksCount = size_t(0);
       unsigned char *chunkStart = nullptr;
 
       // This branch works on multiple chunks at the same time and so a real

@@ -52,7 +52,7 @@ TEST_F(SegregatorTest, ThatAllocatingZeroBytesResultsInAnEmptyBlock)
 {
   mem = sut.allocate(0);
 
-  EXPECT_EQ(0, mem.length);
+  EXPECT_EQ(0u, mem.length);
   EXPECT_EQ(nullptr, mem.ptr);
 }
 
