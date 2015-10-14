@@ -60,7 +60,7 @@ TEST_F(SegregatorTest, ThatAllocating8BytesResultsInABlockOfThatSize)
 {
   mem = sut.allocate(8);
 
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(8u, mem.length);
   EXPECT_NE(nullptr, mem.ptr);
 }
 
@@ -115,6 +115,6 @@ TEST_F(SegregatorTest, ThatReallocatingALargeBlockToASmallerSizeGoesToTheSmallAl
   EXPECT_TRUE(sut.reallocate(mem, 4));
   alb::test_helpers::EXPECT_MEM_EQ(mem.ptr, (void *)alb::test_helpers::ReferenceData.data(), 4);
 
-  EXPECT_EQ(4, mem.length);
+  EXPECT_EQ(4u, mem.length);
   EXPECT_EQ(StartSmallAllocatorPtr, mem.ptr);
 }

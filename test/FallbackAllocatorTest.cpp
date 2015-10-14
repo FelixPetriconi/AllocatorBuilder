@@ -47,14 +47,14 @@ TEST_F(FallbackAllocatorTest, ThatAllocatingZeroBytesReturnsAnEmptyBlock)
 TEST_F(FallbackAllocatorTest, ThatAllocatingUpToTheLimitsOfThePrimaryIsDoneByThePrimary)
 {
   mem = sut.allocate(32);
-  EXPECT_EQ(32, mem.length);
+  EXPECT_EQ(32u, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
 }
 
 TEST_F(FallbackAllocatorTest, ThatAllocatingBeyondTheLimitsOfThePrimaryIsDoneByTheFallback)
 {
   mem = sut.allocate(33);
-  EXPECT_GE(33, mem.length);
+  EXPECT_GE(33u, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
 }
 
@@ -65,7 +65,7 @@ TEST_F(FallbackAllocatorTest,
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 16));
-  EXPECT_EQ(16, mem.length);
+  EXPECT_EQ(16u, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
@@ -77,7 +77,7 @@ TEST_F(FallbackAllocatorTest,
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 128));
-  EXPECT_EQ(128, mem.length);
+  EXPECT_EQ(128u, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 64);
 }
@@ -88,7 +88,7 @@ TEST_F(FallbackAllocatorTest, ThatDecreasingReallocatingOfAPrimaryOwnedBlockIsHa
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 8));
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(8u, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
@@ -100,7 +100,7 @@ TEST_F(FallbackAllocatorTest,
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 64));
-  EXPECT_EQ(64, mem.length);
+  EXPECT_EQ(64u, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
@@ -111,7 +111,7 @@ TEST_F(FallbackAllocatorTest, ThatDecreasingReallocatingOfAFallbackOwnedBlockIsH
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.reallocate(mem, 16));
-  EXPECT_EQ(16, mem.length);
+  EXPECT_EQ(16u, mem.length);
   EXPECT_NE(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 16);
 }
@@ -123,7 +123,7 @@ TEST_F(FallbackAllocatorTest,
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_TRUE(sut.expand(mem, 8));
-  EXPECT_EQ(24, mem.length);
+  EXPECT_EQ(24u, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 8);
 }
@@ -135,7 +135,7 @@ TEST_F(FallbackAllocatorTest,
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_FALSE(sut.expand(mem, 64));
-  EXPECT_EQ(16, mem.length);
+  EXPECT_EQ(16u, mem.length);
   EXPECT_EQ(StartPtrPrimary, mem.ptr);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 16);
 }
@@ -147,7 +147,7 @@ TEST_F(FallbackAllocatorTest,
   alb::test_helpers::fillBlockWithReferenceData<int>(mem);
 
   EXPECT_FALSE(sut.expand(mem, 64));
-  EXPECT_EQ(64, mem.length);
+  EXPECT_EQ(64u, mem.length);
   EXPECT_MEM_EQ(mem.ptr, (void *)ReferenceData.data(), 64);
 }
 

@@ -63,7 +63,7 @@ TEST_F(BucketizerTest,
 {
   for (size_t i = 0; i < AllocatorUnderTest::number_of_buckets; i++) {
     auto mem = sut.allocate(17 + i * 16);
-    EXPECT_EQ(16 + (i + 1) * 16, mem.length);
+    EXPECT_EQ(16u + (i + 1) * 16, mem.length);
     deallocateAndCheckBlockIsThenEmpty(mem);
   }
 }

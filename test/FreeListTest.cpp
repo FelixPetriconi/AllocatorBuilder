@@ -32,7 +32,7 @@ TYPED_TEST(SharedListTest, ThatASimpleAllocationReturnsAtLeastTheRequiredSize)
 {
   this->mem = this->sut.allocate(16);
   EXPECT_NE(nullptr, this->mem.ptr);
-  EXPECT_EQ(16, this->mem.length);
+  EXPECT_EQ(16u, this->mem.length);
 }
 
 TYPED_TEST(SharedListTest,
@@ -70,14 +70,14 @@ TYPED_TEST(SharedListTest,
 TYPED_TEST(SharedListTest, ThatReallocatingAnEmptyBlockResultsToBlockOfBoundsSize)
 {
   EXPECT_TRUE(this->sut.reallocate(this->mem, 8));
-  EXPECT_EQ(16, this->mem.length);
+  EXPECT_EQ(16u, this->mem.length);
 }
 
 TYPED_TEST(SharedListTest, ThatReallocatingAFilledBlockToNonZeroIsRejected)
 {
   this->mem = this->sut.allocate(8);
   EXPECT_FALSE(this->sut.reallocate(this->mem, 2));
-  EXPECT_EQ(16, this->mem.length);
+  EXPECT_EQ(16u, this->mem.length);
 }
 
 TYPED_TEST(SharedListTest, ThatBlocksOutsideTheBoundsAreNotRecognizedAsOwned)

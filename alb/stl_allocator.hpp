@@ -96,17 +96,17 @@ namespace alb {
 
     void construct(pointer ptr)
     {
-      ::new (reinterpret_cast<void *>(ptr)) T;
+      ::new (static_cast<void *>(ptr)) T;
     };
 
     template <class U> void construct(pointer ptr, const U &val)
     {
-      ::new (reinterpret_cast<void *>(ptr)) T(val);
+      ::new (static_cast<void *>(ptr)) T(val);
     };
 
     void construct(pointer ptr, const T &val)
     {
-      ::new (reinterpret_cast<void *>(ptr)) T(val);
+      ::new (static_cast<void *>(ptr)) T(val);
     };
 
     void destroy(pointer p)

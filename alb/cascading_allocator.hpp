@@ -88,7 +88,7 @@ namespace alb {
       auto nodeBlock = nodeOnStack.allocator.allocate(sizeof(Node));
 
       nodeOnStack.allocatedThisSize = nodeBlock.length;
-      auto result = reinterpret_cast<Node *>(nodeBlock.ptr);
+      auto result = static_cast<Node *>(nodeBlock.ptr);
 
       if (!result) {
         return nullptr;

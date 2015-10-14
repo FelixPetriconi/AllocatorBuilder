@@ -430,7 +430,7 @@ TYPED_TEST(HeapWithLargeAllocationsTest, ThatAllocatingSeveralWholeChunksIsSuppo
 {
   auto mem = this->sut.allocate(8 * 128);
   EXPECT_NE(nullptr, mem.ptr);
-  EXPECT_EQ(8 * 128, mem.length);
+  EXPECT_EQ(8u * 128, mem.length);
 
   this->deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -439,7 +439,7 @@ TYPED_TEST(HeapWithLargeAllocationsTest, ThatAllocatingAllWithOneAllocationIsSup
 {
   auto mem = this->sut.allocate(8 * 512);
   EXPECT_NE(nullptr, mem.ptr);
-  EXPECT_EQ(8 * 512, mem.length);
+  EXPECT_EQ(8u * 512, mem.length);
 
   this->deallocateAndCheckBlockIsThenEmpty(mem);
 }
@@ -450,7 +450,7 @@ TYPED_TEST(HeapWithLargeAllocationsTest,
   auto mem1 = this->sut.allocate(1);
   auto mem2 = this->sut.allocate(8 * 128);
   EXPECT_EQ(mem2.ptr, static_cast<char *>(mem1.ptr) + 8 * 64);
-  EXPECT_EQ(8 * 128, mem2.length);
+  EXPECT_EQ(8u * 128, mem2.length);
 
   this->deallocateAndCheckBlockIsThenEmpty(mem1);
   this->deallocateAndCheckBlockIsThenEmpty(mem2);
@@ -473,7 +473,7 @@ TYPED_TEST(
   for (auto &b : blocks) {
     b = this->sut.allocate(64 * 8);
     EXPECT_NE(nullptr, b.ptr);
-    EXPECT_EQ(64 * 8, b.length);
+    EXPECT_EQ(64u * 8, b.length);
   }
 
   for (auto &b : blocks) {
@@ -486,7 +486,7 @@ TYPED_TEST(HeapWithLargeAllocationsTest, ThatAllocatingMemoryBiggerThanAChunkSiz
   auto mem = this->sut.allocate(65 * 8);
 
   EXPECT_NE(nullptr, mem.ptr);
-  EXPECT_EQ(65 * 8, mem.length);
+  EXPECT_EQ(65u * 8, mem.length);
 
   this->deallocateAndCheckBlockIsThenEmpty(mem);
 }

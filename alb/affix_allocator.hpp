@@ -57,7 +57,7 @@ namespace alb {
 
     Prefix *innerToPrefix(const block &b) const
     {
-      return reinterpret_cast<Prefix *>(static_cast<Prefix *>(b.ptr));
+      return static_cast<Prefix *>(b.ptr);
     }
 
     Sufix *innerToSufix(const block &b) const
@@ -114,7 +114,7 @@ namespace alb {
      */
     Prefix *outerToPrefix(const block &b) const
     {
-      return b ? reinterpret_cast<Prefix *>(static_cast<Prefix *>(b.ptr) - 1) : nullptr;
+      return b ? (static_cast<Prefix *>(b.ptr) - 1) : nullptr;
     }
 
     /**
@@ -125,7 +125,7 @@ namespace alb {
     */
     Sufix *outerToSufix(const block &b) const
     {
-      return b ? reinterpret_cast<Sufix *>(static_cast<char *>(b.ptr) + b.length) : nullptr;
+      return b ? (reinterpret_cast<Sufix*>(static_cast<char *>(b.ptr) + b.length)) : nullptr;
     }
 
     /**

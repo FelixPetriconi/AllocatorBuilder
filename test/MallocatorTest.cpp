@@ -32,7 +32,7 @@ TEST_F(MallocatorTest, ThatAllocatingZeroBytesResultsInAnEmptyBlock)
 TEST_F(MallocatorTest, ThatAllocatingResultsInAnCorrectBock)
 {
   mem = sut.allocate(8);
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(8u, mem.length);
 }
 
 #ifdef NDEBUG // cannot be tested in debug mode
@@ -47,7 +47,7 @@ TEST_F(MallocatorTest, ThatReallocatingResultsInAnNewSizedBlock)
 {
   mem = sut.allocate(8);
   EXPECT_TRUE(sut.reallocate(mem, 16));
-  EXPECT_EQ(16, mem.length);
+  EXPECT_EQ(16u, mem.length);
 }
 
 TEST_F(MallocatorTest, ThatReallocatingABlockToZeroResultsInAnEmptyBlock)
@@ -62,6 +62,6 @@ TEST_F(MallocatorTest, ThatReallocatingABlockToATooHugeFails)
 {
   mem = sut.allocate(8);
   EXPECT_FALSE(sut.reallocate(mem, -1));
-  EXPECT_EQ(8, mem.length);
+  EXPECT_EQ(8u, mem.length);
 }
 #endif

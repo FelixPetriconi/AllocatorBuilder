@@ -80,7 +80,7 @@ TYPED_TEST(affix_allocatorTest,
 {
   this->mem = this->sut.allocate(8);
 
-  EXPECT_EQ(8, this->mem.length);
+  EXPECT_EQ(8u, this->mem.length);
 
   this->checkAffixContent();
 }
@@ -93,7 +93,7 @@ TYPED_TEST(affix_allocatorTest,
 
   EXPECT_TRUE(this->sut.reallocate(this->mem, 16));
 
-  EXPECT_EQ(16, this->mem.length);
+  EXPECT_EQ(16u, this->mem.length);
   this->checkAffixContent();
 
   this->deallocateAndCheckBlockIsThenEmpty(memInBetween);
@@ -108,7 +108,7 @@ TYPED_TEST(affix_allocatorTest,
 
   EXPECT_TRUE(this->sut.reallocate(this->mem, 8));
 
-  EXPECT_EQ(8, this->mem.length);
+  EXPECT_EQ(8u, this->mem.length);
   EXPECT_EQ(mem1stPointer, this->mem.ptr);
   this->checkAffixContent();
 
@@ -153,7 +153,7 @@ TYPED_TEST(affix_allocatorTest,
 TYPED_TEST(affix_allocatorTest, ThatAnEmptyBlockedExpandedBy8BytesHasNowThatSizeAndHasNowMarker)
 {
   EXPECT_TRUE(this->sut.expand(this->mem, 8));
-  EXPECT_EQ(8, this->mem.length);
+  EXPECT_EQ(8u, this->mem.length);
   this->checkAffixContent();
 }
 
@@ -161,6 +161,6 @@ TYPED_TEST(affix_allocatorTest, ThatFilledBlockedExpandedBy16BytesHasNowThatSize
 {
   this->mem = this->sut.allocate(8);
   EXPECT_TRUE(this->sut.expand(this->mem, 16));
-  EXPECT_EQ(24, this->mem.length);
+  EXPECT_EQ(24u, this->mem.length);
   this->checkAffixContent();
 }

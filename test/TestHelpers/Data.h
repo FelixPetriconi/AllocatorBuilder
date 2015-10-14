@@ -30,7 +30,7 @@ template <typename T>
 void fillBlockWithReferenceData(alb::block& b)
 {
   for (size_t i = 0; i < std::min(ReferenceData.size(), b.length / sizeof(T)); i++) {
-    *(reinterpret_cast<T*>(b.ptr) + i) = ReferenceData[i];
+    *(static_cast<T*>(b.ptr) + i) = ReferenceData[i];
   }
 }
 
