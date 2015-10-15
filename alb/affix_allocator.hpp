@@ -82,8 +82,8 @@ namespace alb {
       void store(Sufix* o) noexcept {
         o_ = *o;
       }
-      void unload(Sufix* s) noexcept {
-        new (s) Sufix(o_);
+      void unload(Sufix* o) noexcept {
+        new (o) Sufix(o_);
       }
     };
 
