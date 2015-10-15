@@ -11,10 +11,6 @@
 
 #include "allocator_base.hpp"
 
-#include <boost/assert.hpp>
-#include <boost/config.hpp>
-#include <boost/config/suffix.hpp>
-
 namespace alb {
   /**
    * Allocator that provides memory from the stack.
@@ -30,7 +26,7 @@ namespace alb {
     char _data[MaxSize];
     char *_p;
 
-    bool isLastUsedBlock(const block &b) const
+    bool isLastUsedBlock(const block &b) const noexcept
     {
       return (static_cast<char *>(b.ptr) + b.length == _p);
     }
@@ -42,12 +38,12 @@ namespace alb {
     static const size_t max_size = MaxSize;
     static const size_t alignment = Alignment;
 
-    stack_allocator()
+    stack_allocator() noexcept
       : _p(_data)
     {
     }
 
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       block result;
 
@@ -67,13 +63,13 @@ namespace alb {
       return result;
     }
 
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
       }
       if (!owns(b)) {
-        BOOST_ASSERT(false);
+        assert(false);
         return;
       }
 
@@ -86,7 +82,7 @@ namespace alb {
       b.reset();
     }
 
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (b.length == n) {
         return true;
@@ -136,7 +132,7 @@ namespace alb {
      * \return true, if the operation was successful or false if not enough
      *         memory is left
      */
-    bool expand(block &b, size_t delta)
+    bool expand(block &b, size_t delta) noexcept
     {
       if (delta == 0) {
         return true;
@@ -162,7 +158,7 @@ namespace alb {
      * allocator
      * \param b The block to be checked.
      */
-    bool owns(const block &b) const
+    bool owns(const block &b) const noexcept
     {
       return b && (b.ptr >= _data && b.ptr < _data + MaxSize);
     }
@@ -172,7 +168,7 @@ namespace alb {
      * Be warned that all usage of previously allocated blocks results in
      * unpredictable results!
      */
-    void deallocateAll()
+    void deallocateAll() noexcept
     {
       _p = _data;
     }

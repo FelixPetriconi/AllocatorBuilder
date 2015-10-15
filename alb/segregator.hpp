@@ -11,7 +11,6 @@
 
 #include "allocator_base.hpp"
 #include "internal/reallocator.hpp"
-#include <boost/type_traits/ice.hpp>
 
 namespace alb {
 
@@ -35,9 +34,9 @@ namespace alb {
 
     static const size_t threshold = Threshold;
 
-    static const bool supports_truncated_deallocation =
-        (::boost::type_traits::ice_and<SmallAllocator::supports_truncated_deallocation,
-                                       LargeAllocator::supports_truncated_deallocation>::value);
+    static const bool supports_truncated_deallocation = 
+      SmallAllocator::supports_truncated_deallocation && 
+      LargeAllocator::supports_truncated_deallocation;
 
     /**
      * Allocates the specified number of bytes. If the operation was not
@@ -46,7 +45,7 @@ namespace alb {
      * \param n Number of requested bytes
      * \return Block with the memory information.
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       if (n <= Threshold) {
         return SmallAllocator::allocate(n);
@@ -58,7 +57,7 @@ namespace alb {
      * Frees the given block and resets it.
      * \param b The block to be freed.
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
@@ -79,7 +78,7 @@ namespace alb {
      *
      * \ingroup group_allocators group_shared
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<segregator>::isHandledDefault(*this, b, n)) {
         return true;
@@ -108,7 +107,7 @@ namespace alb {
     template <typename U = SmallAllocator, typename V = LargeAllocator>
     typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
                             traits::has_expand<LargeAllocator>::value, bool>::type
-    expand(block &b, size_t delta)
+    expand(block &b, size_t delta) noexcept
     {
       if (b.length <= Threshold && b.length + delta > Threshold) {
         return false;
@@ -136,7 +135,7 @@ namespace alb {
     template <typename U = SmallAllocator, typename V = LargeAllocator>
     typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
       traits::has_expand<LargeAllocator>::value, bool>::type
-      owns(const block &b) const
+      owns(const block &b) const noexcept
     {
       if (b.length <= Threshold) {
         return U::owns(b);
@@ -151,7 +150,7 @@ namespace alb {
     template <typename U = SmallAllocator, typename V = LargeAllocator>
     typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
       traits::has_expand<LargeAllocator>::value, void>::type
-    deallocateAll()
+    deallocateAll() noexcept
     {
       traits::AllDeallocator<U>::doIt(static_cast<U&>(*this));
       traits::AllDeallocator<V>::doIt(static_cast<V&>(*this));

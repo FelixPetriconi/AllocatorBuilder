@@ -22,7 +22,7 @@ namespace alb {
      */
     class NullLock {
     public:
-      explicit NullLock(boost::shared_mutex &)
+      explicit NullLock(boost::shared_mutex &) noexcept
       {
       }
     };
@@ -36,7 +36,7 @@ namespace alb {
       boost::shared_lock<boost::shared_mutex> _lock;
 
     public:
-      explicit SharedLock(boost::shared_mutex &m)
+      explicit SharedLock(boost::shared_mutex &m) noexcept
         : _lock(m)
       {
       }
@@ -51,7 +51,7 @@ namespace alb {
       boost::unique_lock<boost::shared_mutex> _lock;
 
     public:
-      explicit UniqueLock(boost::shared_mutex &m)
+      explicit UniqueLock(boost::shared_mutex &m) noexcept
         : _lock(m)
       {
       }
@@ -61,7 +61,7 @@ namespace alb {
     };
 
     struct null_lock {
-      explicit null_lock(null_mutex &)
+      explicit null_lock(null_mutex &) noexcept
       {
       }
     };
@@ -69,7 +69,7 @@ namespace alb {
     template <class M> struct lock_guard;
 
     template <> struct lock_guard<null_mutex> {
-      lock_guard(null_mutex &)
+      lock_guard(null_mutex &) noexcept
       {
       }
     };
@@ -78,7 +78,7 @@ namespace alb {
       std::unique_lock<std::mutex> _lock;
 
     private:
-      explicit lock_guard(std::mutex &m)
+      explicit lock_guard(std::mutex &m) noexcept
         : _lock(m)
       {
       }

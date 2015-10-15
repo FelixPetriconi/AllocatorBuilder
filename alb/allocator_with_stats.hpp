@@ -256,57 +256,47 @@ public:                                                                         
       public:
         iterator()
           : _node{nullptr}
-        {
-        }
+        {}
 
         explicit iterator(AllocationInfo *data)
           : _node{data}
-        {
-        }
+        {}
 
-        reference operator*() const
-        {
+        reference operator*() const {
           return _node;
         }
 
-        pointer operator->() const
-        {
+        pointer operator->() const {
           return &(operator*());
         }
 
-        iterator &operator++()
-        {
+        iterator &operator++() {
           _node = _node->next;
           return *this;
         }
 
-        iterator operator++(int)
-        {
+        iterator operator++(int) {
           iterator tmp = *this;
           ++*this;
           return tmp;
         }
 
-        iterator &operator--()
-        {
+        iterator &operator--() {
           _node = _node->previous();
           return *this;
         }
 
-        iterator operator--(int)
-        {
+        iterator operator--(int) {
           iterator tmp = *this;
           --*this;
           return tmp;
         }
 
-        friend bool operator==(const iterator &x, const iterator &y)
-        {
+        friend bool operator==(const iterator &x, const iterator &y) {
           return x._node == y._node;
         }
 
-        friend bool operator!=(const iterator &x, const iterator &y)
-        {
+        friend bool operator!=(const iterator &x, const iterator &y) {
           return !(x == y);
         }
 
@@ -320,21 +310,17 @@ public:                                                                         
       explicit Allocations(AllocationInfo *root)
         : _begin(root)
         , _end(nullptr)
-      {
-      }
+      {}
 
-      const_iterator cbegin() const
-      {
+      const_iterator cbegin() const {
         return _begin;
       }
 
-      const_iterator cend() const
-      {
+      const_iterator cend() const {
         return _end;
       }
 
-      bool empty() const
-      {
+      bool empty() const {
         return _begin == _end;
       }
 
@@ -376,7 +362,7 @@ public:                                                                         
 
     static const bool has_per_allocation_state = HasPerAllocationState;
 
-    allocator_with_stats()
+    allocator_with_stats() noexcept
       : _numOwns(0)
       , _numAllocate(0)
       , _numAllocateOK(0)
@@ -411,7 +397,7 @@ public:                                                                         
      * enabled)
      */
     block allocate(size_t n, const char *file = nullptr, const char *function = nullptr,
-                   int line = 0)
+                   int line = 0) noexcept
     {
 
       auto result = _allocator.allocate(n);
@@ -453,7 +439,7 @@ public:                                                                         
      * is stored.
      * \param b Block to be freed
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       up(StatsOptions::NumDeallocate, _numDeallocate);
       add(StatsOptions::BytesDeallocated, _bytesDeallocated, b.length);
@@ -482,7 +468,7 @@ public:                                                                         
      * \param n The new size. If zero, then a deallocation takes place
      * \return True, if the operation was successful
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       auto originalBlock = b;
       auto wasRootBlock(false);
@@ -542,7 +528,7 @@ public:                                                                         
      */
     template <typename U = Allocator>
     typename std::enable_if<traits::has_owns<U>::value, bool>::type
-    owns(const block &b) const
+    owns(const block &b) const noexcept
     {
       up(StatsOptions::NumOwns, _numOwns);
       return _allocator.owns(b);
@@ -559,7 +545,7 @@ public:                                                                         
      */
     template <typename U = Allocator>
     typename std::enable_if<traits::has_expand<U>::value, bool>::type
-    expand(block &b, size_t delta)
+    expand(block &b, size_t delta) noexcept
     {
       up(StatsOptions::NumExpand, _numExpand);
       auto oldLength = b.length;
@@ -582,7 +568,7 @@ public:                                                                         
      * of all elements belong to this class.
      * \return A container with all AllocationInfos
      */
-    Allocations allocations() const
+    Allocations allocations() const noexcept
     {
       return Allocations(_root);
     }
@@ -591,7 +577,7 @@ public:                                                                         
     /**
      * Increases the given value by one if the passed option is set
      */
-    template <typename T> void up(StatsOptions option, T &value)
+    template <typename T> void up(StatsOptions option, T &value) noexcept
     {
       if (Flags & option)
         ++value;
@@ -601,7 +587,7 @@ public:                                                                         
      * Increases the given value by one if the passed option is set and the bool
      * is set to true
      */
-    template <typename T> void upOK(StatsOptions option, T &value, bool ok)
+    template <typename T> void upOK(StatsOptions option, T &value, bool ok) noexcept
     {
       if (Flags & option && ok)
         ++value;
@@ -612,7 +598,7 @@ public:                                                                         
      * set. Delta can be negative
      */
     template <typename T>
-    void add(StatsOptions option, T &value, typename std::make_signed<T>::type delta)
+    void add(StatsOptions option, T &value, typename std::make_signed<T>::type delta) noexcept
     {
       if (Flags & option)
         value += delta;
@@ -621,7 +607,7 @@ public:                                                                         
     /**
      * Sets the given value to the passed reference, if the passed option is set
      */
-    template <typename T> void set(StatsOptions option, T &value, T t)
+    template <typename T> void set(StatsOptions option, T &value, T t) noexcept
     {
       if (Flags & option)
         value = std::move(t);
@@ -630,7 +616,7 @@ public:                                                                         
     /**
      * If the high tide information shall be collected, it is recalculated
      */
-    void updateHighTide()
+    void updateHighTide() noexcept
     {
       if (Flags & StatsOptions::BytesHighTide) {
         const size_t currentlyAllocated = _bytesAllocated - _bytesDeallocated;

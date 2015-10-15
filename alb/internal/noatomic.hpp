@@ -25,27 +25,27 @@ namespace alb {
       T _value;
 
     public:
-      NoAtomic()
+      NoAtomic() noexcept
       {
       }
 
-      explicit NoAtomic(T v)
+      explicit NoAtomic(T v) noexcept
         : _value(std::move(v))
       {
       }
 
-      T load() const
+      T load() const noexcept
       {
         return _value;
       }
 
-      NoAtomic &operator=(T v)
+      NoAtomic &operator=(T v) noexcept
       {
         _value = std::move(v);
         return *this;
       }
 
-      bool compare_exchange_strong(T &, T v)
+      bool compare_exchange_strong(T &, T v) noexcept
       {
         _value = std::move(v);
         return true;

@@ -35,12 +35,12 @@ namespace alb {
       using value_type = T;
       static const size_t max_size = MaxSize;
 
-      stack()
+      stack() noexcept
         : _pos(-1)
       {
       }
 
-      bool push(T v)
+      bool push(T v) noexcept
       {
         if (_pos < static_cast<int>(MaxSize) - 1) {
           _pos++;
@@ -50,7 +50,7 @@ namespace alb {
         return false;
       }
 
-      bool pop(T &v)
+      bool pop(T &v) noexcept
       {
         if (_pos >= 0) {
           v = std::move(_elements[_pos]);
@@ -60,7 +60,7 @@ namespace alb {
         return false;
       }
 
-      bool empty() const
+      bool empty() const noexcept
       {
         return _pos == -1;
       }

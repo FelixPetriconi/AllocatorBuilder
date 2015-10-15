@@ -17,11 +17,11 @@ namespace alb {
     template <bool Used> uint64_t setUsed(uint64_t const &currentRegister, uint64_t const &mask);
 
     template <>
-    inline uint64_t setUsed<false>(uint64_t const &currentRegister, uint64_t const &mask)
+    inline uint64_t setUsed<false>(uint64_t const &currentRegister, uint64_t const &mask) noexcept
     {
       return currentRegister & (mask ^ uint64_t(-1));
     }
-    template <> inline uint64_t setUsed<true>(uint64_t const &currentRegister, uint64_t const &mask)
+    template <> inline uint64_t setUsed<true>(uint64_t const &currentRegister, uint64_t const &mask) noexcept
     {
       return currentRegister | mask;
     }

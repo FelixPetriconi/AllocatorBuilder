@@ -11,7 +11,6 @@
 
 #include "allocator_base.hpp"
 #include "internal/reallocator.hpp"
-#include <boost/config/suffix.hpp>
 
 namespace alb {
 
@@ -30,7 +29,7 @@ namespace alb {
      * \param n The number of bytes.
      * \return Block with memory information
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       if (n == 0) {
         return {};
@@ -48,7 +47,7 @@ namespace alb {
      * \param n The new size
      * \return True, if the operation was successful.
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<mallocator>::isHandledDefault(*this, b, n)) {
         return true;
@@ -67,7 +66,7 @@ namespace alb {
      * Frees the given block and resets it.
      * \param b Block to be freed.
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (b) {
         ::free(b.ptr);

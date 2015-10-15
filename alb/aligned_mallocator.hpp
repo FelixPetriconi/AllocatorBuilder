@@ -25,8 +25,8 @@ namespace alb {
   template <size_t DefaultAlignment = 16> class aligned_mallocator {
     static const unsigned int alignment = DefaultAlignment;
 
-#ifdef BOOST_MSVC
-    bool alignedReallocate(block &b, size_t n)
+#ifdef _MSC_VER
+    bool alignedReallocate(block &b, size_t n) noexcept
     {
       block reallocatedBlock{_aligned_realloc(b.ptr, n, DefaultAlignment), n};
 
@@ -40,7 +40,7 @@ namespace alb {
     // On posix there is no _aligned_realloc so we try a normal realloc
     // if the result is still aligned we are fine
     // otherwise we have to do it by hand
-    bool alignedReallocate(block &b, size_t n)
+    bool alignedReallocate(block &b, size_t n) noexcept
     {
       block reallocatedBlock(::realloc(b.ptr, n));
       if (reallocatedBlock.ptr != nullptr) {
@@ -68,9 +68,9 @@ namespace alb {
      * If the system cannot allocate the specified amount of memory then
      * a null Block is returned.
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
-#ifdef BOOST_MSVC
+#ifdef _MSC_VER
       return block{_aligned_malloc(n, DefaultAlignment), n};
 #else
       return block{(void *)memalign(DefaultAlignment, n), n};
@@ -87,7 +87,7 @@ namespace alb {
      * \param n The new size of the block
      * \return True, if the operation was successful
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<aligned_mallocator>::isHandledDefault(*this, b, n)) {
         return true;
@@ -100,10 +100,10 @@ namespace alb {
      * Frees the given block back to the system. The block gets nulled.
      * \param b The block, describing what memory shall be freed.
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (b) {
-#ifdef BOOST_MSVC
+#ifdef _MSC_VER
         _aligned_free(b.ptr);
 #else
         ::free(b.ptr);

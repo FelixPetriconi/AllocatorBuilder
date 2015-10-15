@@ -9,6 +9,8 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
+#include <limits>
+
 namespace alb {
 
   namespace internal {
@@ -19,8 +21,8 @@ namespace alb {
      * \ingroup group_internal
      */
     enum DynasticOptions : size_t {
-      DynasticUndefined = (size_t)-1,
-      DynasticDynamicSet = (size_t)-2
+      DynasticUndefined = std::numeric_limits<size_t>::max(),
+      DynasticDynamicSet = std::numeric_limits<size_t>::max()-1
     };
 
     /**
@@ -32,7 +34,7 @@ namespace alb {
      * \ingroup group_internal
      */
     template <size_t v, size_t DynamicEnableSwitch> struct dynastic {
-      size_t value() const
+      size_t value() const noexcept
       {
         return v;
       }
@@ -44,15 +46,17 @@ namespace alb {
       size_t _v;
 
     public:
-      dynastic()
+      dynastic() noexcept
         : _v(DynasticUndefined)
       {
       }
-      size_t value() const
+
+      size_t value() const noexcept
       {
         return _v;
       }
-      void value(size_t w)
+
+      void value(size_t w) noexcept
       {
         _v = w;
       }

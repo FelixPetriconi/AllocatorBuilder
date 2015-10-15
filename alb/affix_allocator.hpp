@@ -11,7 +11,6 @@
 
 #include "allocator_base.hpp"
 #include "internal/reallocator.hpp"
-#include <boost/optional.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -55,25 +54,45 @@ namespace alb {
   class affix_allocator {
     Allocator _allocator;
 
-    Prefix *innerToPrefix(const block &b) const
+    Prefix *innerToPrefix(const block &b) const noexcept
     {
       return static_cast<Prefix *>(b.ptr);
     }
 
-    Sufix *innerToSufix(const block &b) const
+    Sufix *innerToSufix(const block &b) const noexcept
     {
       return reinterpret_cast<Sufix *>(static_cast<char *>(b.ptr) + b.length - sufix_size);
     }
 
-    block toInnerBlock(const block &b) const
+    block toInnerBlock(const block &b) const noexcept
     {
       return {static_cast<char *>(b.ptr) - prefix_size, b.length + prefix_size + sufix_size};
     }
 
-    block toOuterBlock(const block &b) const
+    block toOuterBlock(const block &b) const noexcept
     {
       return {static_cast<char *>(b.ptr) + prefix_size, b.length - prefix_size - sufix_size};
     }
+
+    /* simple optional store of a Sufix if the sufix_size > 0 */
+    template <size_t s>
+    struct optinal_sufix_store
+    {
+      Sufix o_;
+      void store(Sufix* o) noexcept {
+        o_ = *o;
+      }
+      void unload(Sufix* s) noexcept {
+        new (s) Sufix(o_);
+      }
+    };
+
+    template <>
+    struct optinal_sufix_store<0>
+    {
+      void store(Sufix*) {}
+      void unload(Sufix*) {}
+    };
 
   public:
     affix_allocator(const affix_allocator &) = delete;
@@ -95,12 +114,12 @@ namespace alb {
     {
     }
 
-    affix_allocator(affix_allocator &&x)
+    affix_allocator(affix_allocator &&x) noexcept
     {
       *this = std::move(x);
     }
 
-    affix_allocator &operator=(affix_allocator &&x)
+    affix_allocator &operator=(affix_allocator &&x) noexcept
     {
       _allocator = std::move(x._allocator);
       return *this;
@@ -112,7 +131,7 @@ namespace alb {
      *          if a block is passed, that is not owned by this allocator!
      * \return Pointer to the Prefix before the given block
      */
-    Prefix *outerToPrefix(const block &b) const
+    Prefix *outerToPrefix(const block &b) const noexcept
     {
       return b ? (static_cast<Prefix *>(b.ptr) - 1) : nullptr;
     }
@@ -123,7 +142,7 @@ namespace alb {
     *          if a block is passed, that is not owned by this allocator!
     * \return Pointer to the sufix before the given block
     */
-    Sufix *outerToSufix(const block &b) const
+    Sufix *outerToSufix(const block &b) const noexcept
     {
       return b ? (reinterpret_cast<Sufix*>(static_cast<char *>(b.ptr) + b.length)) : nullptr;
     }
@@ -137,7 +156,7 @@ namespace alb {
      * \param n Specifies the number of requested bytes. n or more bytes are
      *          returned, depending on the alignment of the underlying Allocator.
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       if (n == 0) {
         return {};
@@ -159,10 +178,9 @@ namespace alb {
     /**
      * The given block gets deallocated. If Prefix or Sufix are defined then
      * their d'tor(s) are called.
-     * \param b The Block that should be freed. An assertion is raised, if the
-     *          block is not owned by the underlying Allocator
+     * \param b The Block that should be freed. 
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
@@ -185,7 +203,7 @@ namespace alb {
      */
     template <typename U = Allocator>
     typename std::enable_if<traits::has_owns<U>::value, bool>::type
-    owns(const block &b) const
+    owns(const block &b) const noexcept
     {
       return b && _allocator.owns(toInnerBlock(b));
     }
@@ -197,7 +215,8 @@ namespace alb {
      * \param n The new size (n = zero means a deallocation)
      * \return True if the operation was successful
      */
-    bool reallocate(block &b, size_t n)
+
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<affix_allocator>::isHandledDefault(*this, b, n)) {
         return true;
@@ -206,15 +225,11 @@ namespace alb {
 
       // Remember the old Sufix in case that it is available, because it must
       // be later placed to the new position
-      boost::optional<Sufix> oldSufix;
-      if (sufix_size > 0) {
-        oldSufix.reset(*outerToSufix(b));
-      }
+      optinal_sufix_store<sufix_size> oldSufix;
+      oldSufix.store(outerToSufix(b));
 
       if (_allocator.reallocate(innerBlock, n + prefix_size + sufix_size)) {
-        if (sufix_size > 0) {
-          new (innerToSufix(innerBlock)) Sufix(*oldSufix);
-        }
+        oldSufix.unload(innerToSufix(innerBlock));
         b = toOuterBlock(innerBlock);
         return true;
       }
@@ -223,15 +238,15 @@ namespace alb {
 
     /**
      * The method tries to expand the given block by at least delta bytes insito
-     * at the given location. This only This is only available if the underlaying
-     * Allocator implements ::expand().
+     * at the given location. This is only available if the underlaying Allocator 
+     * implements ::expand().
      * \param b The block that should be expanded
      * \param delta The number of bytes that the given block should be increased
      * \return True, if the operation was successful.
      */
     template <typename U = Allocator>
     typename std::enable_if<traits::has_expand<U>::value, bool>::type
-    expand(block &b, size_t delta)
+    expand(block &b, size_t delta) noexcept
     {
       if (delta == 0) {
         return true;
@@ -264,11 +279,11 @@ namespace alb {
      * \ingroup group_traits
      */
     template <class Allocator, typename T> struct affix_extractor {
-      static T *prefix(Allocator &, const block &)
+      static T *prefix(Allocator &, const block &) noexcept
       {
         return nullptr;
       }
-      static T *sufix(Allocator &, const block &)
+      static T *sufix(Allocator &, const block &) noexcept
       {
         return nullptr;
       }
@@ -276,11 +291,11 @@ namespace alb {
 
     template <class A, typename Prefix, typename Sufix, typename T>
     struct affix_extractor<affix_allocator<A, Prefix, Sufix>, T> {
-      static Prefix *prefix(affix_allocator<A, Prefix, Sufix> &allocator, const block &b)
+      static Prefix *prefix(affix_allocator<A, Prefix, Sufix> &allocator, const block &b) noexcept
       {
         return allocator.outerToPrefix(b);
       }
-      static Sufix *sufix(affix_allocator<A, Prefix, Sufix> &allocator, const block &b)
+      static Sufix *sufix(affix_allocator<A, Prefix, Sufix> &allocator, const block &b) noexcept
       {
         return allocator.outerToSufix(b);
       }

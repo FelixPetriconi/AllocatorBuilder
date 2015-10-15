@@ -16,8 +16,6 @@
 #include "internal/heap_helpers.hpp"
 
 #include <algorithm>
-#include <boost/assert.hpp>
-#include <boost/config.hpp>
 
 #ifdef min
 #undef min
@@ -51,7 +49,7 @@ namespace alb {
 
     Allocator _allocator;
 
-    void shrink()
+    void shrink() noexcept
     {
       _allocator.deallocate(_controlBuffer);
       _allocator.deallocate(_buffer);
@@ -66,24 +64,24 @@ namespace alb {
 
     using allocator = Allocator;
 
-    heap()
+    heap() noexcept
     {
       init();
     }
 
-    heap(size_t numberOfChunks, size_t chunkSize)
+    heap(size_t numberOfChunks, size_t chunkSize) noexcept
     {
       _numberOfChunks.value(internal::roundToAlignment(64, numberOfChunks));
       _chunkSize.value(internal::roundToAlignment(4, chunkSize));
       init();
     }
 
-    heap(heap &&x)
+    heap(heap &&x) noexcept
     {
       *this = std::move(x);
     }
 
-    heap &operator=(heap &&x)
+    heap &operator=(heap &&x) noexcept
     {
       if (this == &x) {
         return *this;
@@ -102,12 +100,12 @@ namespace alb {
       return *this;
     }
 
-    size_t number_of_chunk() const
+    size_t number_of_chunk() const noexcept
     {
       return _numberOfChunks.value();
     }
 
-    size_t chunk_size() const
+    size_t chunk_size() const noexcept
     {
       return _chunkSize.value();
     }
@@ -117,13 +115,13 @@ namespace alb {
       shrink();
     }
 
-    bool owns(const block &b) const
+    bool owns(const block &b) const noexcept
     {
       return b && _buffer.ptr <= b.ptr &&
              b.ptr < (static_cast<char *>(_buffer.ptr) + _buffer.length);
     }
 
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       if (n == 0) {
         return {};
@@ -159,7 +157,7 @@ namespace alb {
       return allocateWithRegisterOverlap(numberOfBlocks);
     }
 
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
@@ -183,12 +181,12 @@ namespace alb {
       b.reset();
     }
 
-    void deallocateAll()
+    void deallocateAll() noexcept
     {
       std::fill(_control, _control + _controlSize, (uint64_t)-1);
     }
 
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<heap>::isHandledDefault(*this, b, n)) {
         return true;
@@ -219,7 +217,7 @@ namespace alb {
       return internal::reallocateWithCopy(*this, *this, b, n);
     }
 
-    bool expand(block &b, size_t delta)
+    bool expand(block &b, size_t delta) noexcept
     {
       if (delta == 0) {
         return true;
@@ -250,15 +248,15 @@ namespace alb {
     }
 
   private:
-    void init()
+    void init() noexcept
     {
       _controlSize = _numberOfChunks.value() / 64;
       _controlBuffer = _allocator.allocate(sizeof(uint64_t) * _controlSize);
-      BOOST_ASSERT((bool)_controlBuffer);
+      assert((bool)_controlBuffer);
 
       _control = static_cast<uint64_t *>(_controlBuffer.ptr);
       _buffer = _allocator.allocate(_chunkSize.value() * _numberOfChunks.value());
-      BOOST_ASSERT((bool)_buffer);
+      assert((bool)_buffer);
 
       deallocateAll();
     }
@@ -269,7 +267,7 @@ namespace alb {
       int usedChunks;
     };
 
-    BlockContext blockToContext(const block &b)
+    BlockContext blockToContext(const block &b)  noexcept
     {
       const auto blockIndex = static_cast<int>(
           (static_cast<char *>(b.ptr) - static_cast<char *>(_buffer.ptr)) / _chunkSize.value());
@@ -277,9 +275,9 @@ namespace alb {
       return {blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / _chunkSize.value())};
     }
 
-    template <bool Used> bool testAndSetWithinSingleRegister(const BlockContext &context)
+    template <bool Used> bool testAndSetWithinSingleRegister(const BlockContext &context)  noexcept
     {
-      BOOST_ASSERT(context.subIndex + context.usedChunks <= 64);
+      assert(context.subIndex + context.usedChunks <= 64);
 
       uint64_t mask = (context.usedChunks == 64)
                           ? (uint64_t)-1
@@ -295,7 +293,7 @@ namespace alb {
       return true;
     }
 
-    template <bool Used> void setOverMultipleRegisters(const BlockContext &context)
+    template <bool Used> void setOverMultipleRegisters(const BlockContext &context)  noexcept
     {
       size_t chunksToTest = context.usedChunks;
       size_t subIndexStart = context.subIndex;
@@ -307,7 +305,7 @@ namespace alb {
         else
           mask = (chunksToTest >= 64) ? (uint64_t)-1 : ((1uLL << chunksToTest) - 1);
 
-        BOOST_ASSERT(registerIndex < _controlSize);
+        assert(registerIndex < _controlSize);
 
         uint64_t currentRegister, newRegister;
 
@@ -326,7 +324,7 @@ namespace alb {
       } while (chunksToTest > 0);
     }
 
-    template <bool Used> bool testAndSetOverMultipleRegisters(const BlockContext &context)
+    template <bool Used> bool testAndSetOverMultipleRegisters(const BlockContext &context)  noexcept
     {
       // This branch works on multiple chunks at the same time and so a real lock
       // is necessary.
@@ -365,9 +363,9 @@ namespace alb {
       return true;
     }
 
-    template <bool Used> void setWithinSingleRegister(const BlockContext &context)
+    template <bool Used> void setWithinSingleRegister(const BlockContext &context) noexcept
     {
-      BOOST_ASSERT(context.subIndex + context.usedChunks <= 64);
+      assert(context.subIndex + context.usedChunks <= 64);
 
       uint64_t mask = (context.usedChunks == 64)
                           ? (uint64_t)-1
@@ -379,7 +377,7 @@ namespace alb {
       _control[context.registerIndex] = newRegister;
     }
 
-    block allocateWithinASingleControlRegister(size_t numberOfBlocks)
+    block allocateWithinASingleControlRegister(size_t numberOfBlocks) noexcept
     {
       // first we have to look for at least one free block
       size_t controlIndex = 0;
@@ -412,7 +410,7 @@ namespace alb {
       return {};
     }
 
-    block allocateWithinCompleteControlRegister(size_t numberOfBlocks)
+    block allocateWithinCompleteControlRegister(size_t numberOfBlocks) noexcept
     {
       // first we have to look for at least full free block
       auto freeChunk = std::find_if(_control, _control + _controlSize,
@@ -428,7 +426,7 @@ namespace alb {
       return {static_cast<char *>(_buffer.ptr) + ptrOffset, numberOfBlocks * _chunkSize.value()};
     }
 
-    block allocateMultipleCompleteControlRegisters(size_t numberOfBlocks)
+    block allocateMultipleCompleteControlRegisters(size_t numberOfBlocks) noexcept
     {
       const auto neededChunks = static_cast<int>(numberOfBlocks / 64);
       auto freeFirstChunk =
@@ -449,7 +447,7 @@ namespace alb {
                    numberOfBlocks * _chunkSize.value());
     }
 
-    block allocateWithRegisterOverlap(size_t numberOfBlocks)
+    block allocateWithRegisterOverlap(size_t numberOfBlocks) noexcept
     {
       // search for free area
       auto p = reinterpret_cast<unsigned char *>(_control);
@@ -491,7 +489,7 @@ namespace alb {
       return {};
     }
 
-    void deallocateForMultipleCompleteControlRegister(const BlockContext &context)
+    void deallocateForMultipleCompleteControlRegister(const BlockContext &context) noexcept
     {
       const auto registerToFree = context.registerIndex + context.usedChunks / 64;
       for (auto i = context.registerIndex; i < registerToFree; i++) {
@@ -499,7 +497,7 @@ namespace alb {
       }
     }
 
-    void deallocateWithControlRegisterOverlap(const BlockContext &context)
+    void deallocateWithControlRegisterOverlap(const BlockContext &context) noexcept
     {
       setOverMultipleRegisters<true>(context);
     }

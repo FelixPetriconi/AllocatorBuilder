@@ -18,7 +18,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" ST
   set(CMAKE_LINK_FLAGS "-pthreads")
 endif()
 
-#set(BOOST_ROOT D:/boost_1_59_0)
+set(BOOST_ROOT D:/boost_1_59_0)
 set(Boost_USE_STATIC_LIBS        OFF)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     OFF)

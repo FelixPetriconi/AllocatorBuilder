@@ -63,7 +63,7 @@ namespace alb {
     static const unsigned number_of_batch_allocations = NumberOfBatchAllocations;
     static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
 
-    freelist_base()
+    freelist_base() noexcept
     {
     }
 
@@ -75,7 +75,7 @@ namespace alb {
      * \param minSize The lower boundary accepted by this Allocator
      * \param maxSize The upper boundary accepted by this Allocator
      */
-    freelist_base(size_t minSize, size_t maxSize)
+    freelist_base(size_t minSize, size_t maxSize) noexcept
     {
       _lowerBound.value(minSize);
       _upperBound.value(maxSize);
@@ -88,12 +88,13 @@ namespace alb {
      * \param minSize The lower boundary accepted by this Allocator
      * \param maxSize The upper boundary accepted by this Allocator
      */
-    void setMinMax(size_t minSize, size_t maxSize)
+    void setMinMax(size_t minSize, size_t maxSize) noexcept
     {
-      BOOST_ASSERT_MSG(_lowerBound.value() == internal::DynasticUndefined,
-                       "Changing the lower bound during after initialization is not wise!");
-      BOOST_ASSERT_MSG(_upperBound.value() == internal::DynasticUndefined,
-                       "Changing the upper bound during after initialization is not wise!");
+      assert(_lowerBound.value() == internal::DynasticUndefined);
+      // "Changing the lower bound during after initialization is not wise!"
+
+      assert(_upperBound.value() == internal::DynasticUndefined);
+      // "Changing the upper bound during after initialization is not wise!"
 
       _lowerBound.value(minSize);
       _upperBound.value(maxSize);
@@ -102,7 +103,7 @@ namespace alb {
     /**
      * Returns the lower boundary
      */
-    size_t min_size() const
+    size_t min_size() const noexcept
     {
       return _lowerBound.value();
     }
@@ -110,7 +111,7 @@ namespace alb {
     /**
      * Returns the upper boundary
      */
-    size_t max_size() const
+    size_t max_size() const noexcept
     {
       return _upperBound.value();
     }
@@ -139,10 +140,10 @@ namespace alb {
      *          upper boundary.
      * \return The allocated block
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
-      BOOST_ASSERT_MSG(_lowerBound.value() != ::std::numeric_limits<size_t>::max(), "The lower bound was not initialized!");
-      BOOST_ASSERT_MSG(_upperBound.value() != ::std::numeric_limits<size_t>::max(), "The upper bound was not initialized!");
+      assert(_lowerBound.value() != ::std::numeric_limits<size_t>::max()); // "The lower bound was not initialized!");
+      assert(_upperBound.value() != ::std::numeric_limits<size_t>::max()); // "The upper bound was not initialized!");
 
       if (_lowerBound.value() <= n && n <= _upperBound.value()) {
         void *freeBlock = nullptr;
@@ -161,7 +162,7 @@ namespace alb {
               // we use the very first block directly so we start at 1
               for (size_t i = 1; i < NumberOfBatchAllocations; i++) {
                 if (!_root.push(static_cast<char *>(batchAllocatedBlocks.ptr) + i * blockSize)) {
-                  BOOST_ASSERT(false);
+                  assert(false);
                   alb::block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) + i * blockSize,
                                       blockSize);
                   _allocator.deallocate(oldBlock);
@@ -195,7 +196,7 @@ namespace alb {
      * \param n The new size
      * \return True, if the reallocation was successful.
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
         return true;
@@ -208,7 +209,7 @@ namespace alb {
      * \param b The block to check
      * \return True, it is owned by this allocator
      */
-    bool owns(const block &b) const
+    bool owns(const block &b) const noexcept
     {
       return b && _lowerBound.value() <= b.length && b.length <= _upperBound.value();
     }
@@ -218,7 +219,7 @@ namespace alb {
      * is reset
      * \param b The block to free
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (b && owns(b)) {
         if (_root.push(b.ptr)) {
@@ -241,12 +242,12 @@ namespace alb {
   class shared_freelist : public freelist_base<true, Allocator, MinSize, MaxSize, PoolSize,
                                                NumberOfBatchAllocations> {
   public:
-    shared_freelist()
+    shared_freelist() noexcept
       : freelist_base<true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations>()
     {
     }
 
-    shared_freelist(size_t minSize, size_t maxSize)
+    shared_freelist(size_t minSize, size_t maxSize) noexcept
       : freelist_base<true, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations>(
             minSize, maxSize)
     {
@@ -264,12 +265,12 @@ namespace alb {
   class freelist : public freelist_base<false, Allocator, MinSize, MaxSize, PoolSize,
                                         NumberOfBatchAllocations> {
   public:
-    freelist()
+    freelist() noexcept
       : freelist_base<false, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations>()
     {
     }
 
-    freelist(size_t minSize, size_t maxSize)
+    freelist(size_t minSize, size_t maxSize) noexcept
       : freelist_base<false, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations>(
             minSize, maxSize)
     {

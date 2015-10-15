@@ -32,7 +32,7 @@ namespace alb {
      */
     template <class OldAllocator, class NewAllocator>
     bool reallocateWithCopy(OldAllocator &oldAllocator, NewAllocator &newAllocator, block &b,
-                            size_t n)
+                            size_t n) noexcept
     {
       auto newBlock = newAllocator.allocate(n);
       if (!newBlock) {
@@ -64,7 +64,7 @@ namespace alb {
     template <class Allocator>
     struct reallocator<Allocator,
                        typename std::enable_if<traits::has_expand<Allocator>::value>::type> {
-      static bool isHandledDefault(Allocator &allocator, block &b, size_t n)
+      static bool isHandledDefault(Allocator &allocator, block &b, size_t n) noexcept
       {
         if (b.length == n) {
           return true;
@@ -96,7 +96,7 @@ namespace alb {
     struct reallocator<Allocator,
                        typename std::enable_if<!traits::has_expand<Allocator>::value>::type> {
 
-      static bool isHandledDefault(Allocator &allocator, block &b, size_t n)
+      static bool isHandledDefault(Allocator &allocator, block &b, size_t n) noexcept
       {
         if (b.length == n) {
           return true;

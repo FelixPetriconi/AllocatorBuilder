@@ -10,8 +10,7 @@
 
 #pragma once
 
-#include <boost/assert.hpp>
-#include <boost/config/suffix.hpp>
+#include <cassert>
 #include <cstdint>
 
 namespace alb {
@@ -34,14 +33,14 @@ namespace alb {
     using value_type = T;
     static const size_t pattern = Pattern;
 
-    memory_corruption_detector()
+    memory_corruption_detector() noexcept
       : _pattern(Pattern)
     {
     }
 
     ~memory_corruption_detector()
     {
-      BOOST_ASSERT(_pattern == Pattern);
+      assert(_pattern == Pattern);
     }
   };
 

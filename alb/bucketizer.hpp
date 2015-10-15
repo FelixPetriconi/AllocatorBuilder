@@ -11,7 +11,7 @@
 
 #include "allocator_base.hpp"
 #include "internal/reallocator.hpp"
-#include <boost/assert.hpp>
+#include <cassert>
 
 namespace alb {
   /**
@@ -48,7 +48,7 @@ namespace alb {
 
     Allocator _buckets[number_of_buckets];
 
-    bucketizer()
+    bucketizer() noexcept
     {
       for (size_t i = 0; i < number_of_buckets; i++) {
         _buckets[i].setMinMax(MinSize + i * StepSize, MinSize + (i + 1) * StepSize - 1);
@@ -61,7 +61,7 @@ namespace alb {
      * \param n The number of bytes to be allocated
      * \return The Block describing the allocated memory
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       size_t i = 0;
       while (i < number_of_buckets) {
@@ -78,7 +78,7 @@ namespace alb {
      * \param b The block to be checked
      * \return Returns true, if the block is owned by one of the bucket items
      */
-    bool owns(const block &b) const
+    bool owns(const block &b) const noexcept
     {
       return b && (MinSize <= b.length && b.length <= MaxSize);
     }
@@ -93,7 +93,7 @@ namespace alb {
      * \param n The new size of the block.
      * \return True, if the reallocation was successful.
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (n != 0 && (n < MinSize || n > MaxSize)) {
         return false;
@@ -103,7 +103,7 @@ namespace alb {
         return true;
       }
 
-      BOOST_ASSERT(owns(b));
+      assert(owns(b));
 
       const auto alignedLength = internal::roundToAlignment(StepSize, n);
       auto currentAllocator = findMatchingAllocator(b.length);
@@ -120,13 +120,13 @@ namespace alb {
      * Frees the given block and resets it.
      * \param b The block, its memory should be freed
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
       }
       if (!owns(b)) {
-        BOOST_ASSERT_MSG(false, "It is not wise to let me deallocate a foreign Block!");
+        assert(!"It is not wise to let me deallocate a foreign Block!");
         return;
       }
 
@@ -140,7 +140,7 @@ namespace alb {
      */
     template <typename U = Allocator>
     typename std::enable_if<traits::has_deallocateAll<U>::value, void>::type
-    deallocateAll()
+    deallocateAll() noexcept
     {
       for (auto &item : _buckets) {
         traits::AllDeallocator<U>::doIt(item);
@@ -148,9 +148,9 @@ namespace alb {
     }
 
   private:
-    Allocator *findMatchingAllocator(size_t n)
+    Allocator *findMatchingAllocator(size_t n) noexcept
     {
-      BOOST_ASSERT(MinSize <= n && n <= MaxSize);
+      assert(MinSize <= n && n <= MaxSize);
       auto v = alb::internal::roundToAlignment(StepSize, n);
       return &_buckets[(v - MinSize) / StepSize];
     }

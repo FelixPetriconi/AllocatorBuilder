@@ -21,24 +21,24 @@ namespace alb {
    * \ingroup group_allocators
    */
   struct block {
-    block()
+    block() noexcept
       : ptr(nullptr)
       , length(0)
     {
     }
 
-    block(void *ptr, size_t length)
+    block(void *ptr, size_t length) noexcept
       : ptr(ptr)
       , length(length)
     {
     }
 
-    block(block &&x)
+    block(block &&x) noexcept
     {
       *this = std::move(x);
     }
 
-    block &operator=(block &&x)
+    block &operator=(block &&x) noexcept
     {
       ptr = x.ptr;
       length = x.length;
@@ -46,8 +46,8 @@ namespace alb {
       return *this;
     }
 
-    block &operator=(const block &x) = default;
-    block(const block &x) = default;
+    block &operator=(const block &x) noexcept = default;
+    block(const block &x) noexcept = default;
 
     /**
      * During destruction of any of this instance, the described memory
@@ -60,7 +60,7 @@ namespace alb {
     /**
      * Clears the block
      */
-    void reset()
+    void reset() noexcept
     {
       ptr = nullptr;
       length = 0;
@@ -94,13 +94,13 @@ namespace alb {
      *
      * \ingroup group_internal
      */
-    void blockCopy(const block &source, block &destination);
+    void blockCopy(const block &source, block &destination) noexcept;
 
     /**
      * Returns a upper rounded value of multiples of a
      * \ingroup group_internal
      */
-    inline size_t roundToAlignment(size_t basis, size_t n)
+    inline size_t roundToAlignment(size_t basis, size_t n) noexcept
     {
       auto remainder = n % basis;
       return n + ((remainder == 0) ? 0 : (basis - remainder));

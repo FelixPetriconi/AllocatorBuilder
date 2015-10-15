@@ -13,7 +13,7 @@
 #include "internal/noatomic.hpp"
 #include "internal/reallocator.hpp"
 #include <atomic>
-#include <boost/assert.hpp>
+#include <cassert>
 
 namespace alb {
 
@@ -32,18 +32,18 @@ namespace alb {
         typename traits::type_switch<std::atomic<Node *>, internal::NoAtomic<Node *>, Shared>::type;
 
     struct Node {
-      Node()
+      Node() noexcept
         : next{nullptr}
         , allocatedThisSize{0}
       {
       }
 
-      Node(Node &&x)
+      Node(Node &&x) noexcept
       {
         *this = std::move(x);
       }
 
-      Node &operator=(Node &&x)
+      Node &operator=(Node &&x) noexcept
       {
         allocator = std::move(x.allocator);
         next = x.next.load();
@@ -62,7 +62,7 @@ namespace alb {
 
     NodePtr _root;
 
-    block allocateNoGrow(size_t n)
+    block allocateNoGrow(size_t n) noexcept
     {
       block result;
       auto p = _root.load();
@@ -79,7 +79,7 @@ namespace alb {
       return result;
     }
 
-    Node *createNode()
+    Node *createNode() noexcept
     {
       // Create a temporary node with an allocator on the stack
       Node nodeOnStack;
@@ -106,7 +106,7 @@ namespace alb {
     /**
      * deletes the passed node and all decedents if available
      */
-    void eraseNode(Node *n)
+    void eraseNode(Node *n) noexcept
     {
       if (n == nullptr) {
         return;
@@ -126,12 +126,12 @@ namespace alb {
       stackNode.allocator.deallocate(allocatedBlock);
     }
 
-    void shrink()
+    void shrink() noexcept
     {
       eraseNode(_root.load());
     }
 
-    Node *findOwningNode(const block &b) const
+    Node *findOwningNode(const block &b) const noexcept
     {
       auto p = _root.load();
       while (p) {
@@ -151,17 +151,17 @@ namespace alb {
 
     static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
 
-    cascading_allocator_base()
+    cascading_allocator_base() noexcept
       : _root(nullptr)
     {
     }
 
-    cascading_allocator_base(cascading_allocator_base &&x)
+    cascading_allocator_base(cascading_allocator_base &&x) noexcept
     {
       *this = std::move(x);
     }
 
-    cascading_allocator_base &operator=(cascading_allocator_base &&x)
+    cascading_allocator_base &operator=(cascading_allocator_base &&x) noexcept
     {
       if (this == &x) {
         return *this;
@@ -184,7 +184,7 @@ namespace alb {
      * Sends the request to the first allocator, if it cannot fulfill the request
      * then the next Allocator is created and so on
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       if (n == 0) {
         return {};
@@ -228,14 +228,14 @@ namespace alb {
     /**
      * Frees the given block and resets it
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
       }
 
       if (!owns(b)) {
-        BOOST_ASSERT_MSG(false, "It is not wise to let me deallocate a foreign Block!");
+        assert(!"It is not wise to let me deallocate a foreign Block!");
         return;
       }
 
@@ -253,7 +253,7 @@ namespace alb {
      * \param n The new size
      * \param True, if the operation was successful
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (internal::reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
         return true;
@@ -280,7 +280,7 @@ namespace alb {
      */
     template<typename U = Allocator>
     typename std::enable_if<traits::has_expand<U>::value, bool>::type
-    expand(block &b, size_t delta)
+    expand(block &b, size_t delta) noexcept
     {
       auto p = findOwningNode(b);
       if (p == nullptr) {
@@ -294,7 +294,7 @@ namespace alb {
      * \param b The block to check
      * \return True, if one of the allocator owns it.
      */
-    bool owns(const block &b) const
+    bool owns(const block &b) const noexcept
     {
       return findOwningNode(b) != nullptr;
     }
@@ -307,7 +307,7 @@ namespace alb {
      */
     template <typename U = Allocator>
     typename std::enable_if<traits::has_deallocateAll<U>::value, void>::type
-    deallocateAll()
+    deallocateAll() noexcept
     {
       shrink();
     }
@@ -323,7 +323,7 @@ namespace alb {
   template <class Allocator>
   class shared_cascading_allocator : public cascading_allocator_base<true, Allocator> {
   public:
-    shared_cascading_allocator()
+    shared_cascading_allocator() noexcept
     {
     }
   };
@@ -338,7 +338,7 @@ namespace alb {
   template <class Allocator>
   class cascading_allocator : public cascading_allocator_base<false, Allocator> {
   public:
-    cascading_allocator()
+    cascading_allocator() noexcept
     {
     }
   };

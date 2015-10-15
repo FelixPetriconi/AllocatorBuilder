@@ -11,7 +11,6 @@
 
 #include "allocator_base.hpp"
 #include "internal/reallocator.hpp"
-#include <boost/type_traits/ice.hpp>
 
 namespace alb {
   /**
@@ -39,7 +38,7 @@ namespace alb {
      * \param n The number of bytes. Depending on the alignment of the allocator,
      *          the block might contain a bigger size
      */
-    block allocate(size_t n)
+    block allocate(size_t n) noexcept
     {
       if (n == 0) {
         return {};
@@ -55,7 +54,7 @@ namespace alb {
      * Frees the memory of the provided block and resets it.
      * \param b The block describing the memory to be freed.
      */
-    void deallocate(block &b)
+    void deallocate(block &b) noexcept
     {
       if (!b) {
         return;
@@ -74,7 +73,7 @@ namespace alb {
      * \param n The new size (Zero means deallocation.)
      * \return True if the operation was successful
      */
-    bool reallocate(block &b, size_t n)
+    bool reallocate(block &b, size_t n) noexcept
     {
       if (Primary::owns(b)) {
         if (internal::reallocator<Primary>::isHandledDefault(static_cast<Primary &>(*this), b, n)) {
@@ -109,7 +108,7 @@ namespace alb {
      */
     template <typename U = Primary, typename V = Fallback>
     typename std::enable_if<traits::has_expand<U>::value || traits::has_expand<V>::value, bool>::type
-    expand(block &b, size_t delta)
+    expand(block &b, size_t delta) noexcept
     {
       if (Primary::owns(b)) {
         if (traits::has_expand<U>::value) {
@@ -131,7 +130,7 @@ namespace alb {
      */
     template <typename U = Primary, typename V = Fallback>
     typename std::enable_if<traits::has_owns<U>::value && traits::has_owns<V>::value, bool>::type
-    owns(const block &b) const
+    owns(const block &b) const noexcept
     {
       return Primary::owns(b) || Fallback::owns(b);
     }
@@ -139,7 +138,7 @@ namespace alb {
     template <typename U = Primary, typename V = Fallback>
     typename std::enable_if<traits::has_deallocateAll<U>::value &&
                                                 traits::has_deallocateAll<V>::value, void>::type
-    deallocateAll()
+    deallocateAll() noexcept
     {
       Primary::deallocateAll();
       Fallback::deallocateAll();
