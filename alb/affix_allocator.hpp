@@ -29,6 +29,27 @@ namespace alb {
       using value_type = int;
       static const int pattern = 0;
     };
+
+    /* simple optional store of a Sufix if the sufix_size > 0 */
+    template <typename Sufix, size_t s>
+    struct optinal_sufix_store
+    {
+      Sufix o_;
+      void store(Sufix* o) noexcept {
+        o_ = *o;
+      }
+      void unload(Sufix* o) noexcept {
+        new (o) Sufix(o_);
+      }
+    };
+
+    template <typename Sufix>
+    struct optinal_sufix_store<Sufix, 0>
+    {
+      void store(Sufix*) {}
+      void unload(Sufix*) {}
+    };
+
   }
 
   /**
@@ -73,26 +94,6 @@ namespace alb {
     {
       return {static_cast<char *>(b.ptr) + prefix_size, b.length - prefix_size - sufix_size};
     }
-
-    /* simple optional store of a Sufix if the sufix_size > 0 */
-    template <size_t s>
-    struct optinal_sufix_store
-    {
-      Sufix o_;
-      void store(Sufix* o) noexcept {
-        o_ = *o;
-      }
-      void unload(Sufix* o) noexcept {
-        new (o) Sufix(o_);
-      }
-    };
-
-    template <>
-    struct optinal_sufix_store<0>
-    {
-      void store(Sufix*) {}
-      void unload(Sufix*) {}
-    };
 
   public:
     affix_allocator(const affix_allocator &) = delete;
@@ -225,7 +226,7 @@ namespace alb {
 
       // Remember the old Sufix in case that it is available, because it must
       // be later placed to the new position
-      optinal_sufix_store<sufix_size> oldSufix;
+      affix_allocator_helper::optinal_sufix_store<Sufix, sufix_size> oldSufix;
       oldSufix.store(outerToSufix(b));
 
       if (_allocator.reallocate(innerBlock, n + prefix_size + sufix_size)) {
