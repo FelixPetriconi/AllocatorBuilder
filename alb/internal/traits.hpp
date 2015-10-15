@@ -28,7 +28,7 @@ namespace alb {
         char dummy[2];
       };
 
-      template <typename U, bool (U::*)(block &, size_t)> struct Check;
+      template <typename U, bool (U::*)(block &, size_t) noexcept> struct Check;
       template <typename U> static Yes func(Check<U, &U::expand> *);
       template <typename U> static No func(...);
 
@@ -48,7 +48,7 @@ namespace alb {
         char dummy[2];
       };
 
-      template <typename U, void (U::*)()> struct Check;
+      template <typename U, void (U::*)()noexcept> struct Check;
       template <typename U> static Yes func(Check<U, &U::deallocateAll> *);
       template <typename U> static No func(...);
 
@@ -68,7 +68,7 @@ namespace alb {
         char dummy[2];
       };
 
-      template <typename U, bool (U::*)(const block &) const> struct Check;
+      template <typename U, bool (U::*)(const block &) const noexcept> struct Check;
       template <typename U> static Yes func(Check<U, &U::owns> *);
       template <typename U> static No func(...);
 
@@ -146,7 +146,7 @@ namespace alb {
 
     template <class Allocator>
     struct Expander<Allocator, typename std::enable_if<has_expand<Allocator>::value>::type> {
-      static bool doIt(Allocator &a, block &b, size_t delta)
+      static bool doIt(Allocator &a, block &b, size_t delta) noexcept
       {
         return a.expand(b, delta);
       }
@@ -154,7 +154,7 @@ namespace alb {
 
     template <class Allocator>
     struct Expander<Allocator, typename std::enable_if<!has_expand<Allocator>::value>::type> {
-      static bool doIt(Allocator &, block &, size_t)
+      static bool doIt(Allocator &, block &, size_t) noexcept
       {
         return false;
       }
@@ -171,7 +171,7 @@ namespace alb {
     template <class Allocator>
     struct AllDeallocator<Allocator,
                           typename std::enable_if<has_deallocateAll<Allocator>::value>::type> {
-      static void doIt(Allocator &a)
+      static void doIt(Allocator &a) noexcept
       {
         a.deallocateAll();
       }
@@ -180,7 +180,7 @@ namespace alb {
     template <class Allocator>
     struct AllDeallocator<Allocator,
                           typename std::enable_if<!has_deallocateAll<Allocator>::value>::type> {
-      static void doIt(Allocator &)
+      static void doIt(Allocator &) noexcept
       {
       }
     };
