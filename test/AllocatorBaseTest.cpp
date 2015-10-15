@@ -13,13 +13,13 @@
 
 TEST(roundToAlignmentTest, ThatForDifferentAlignmentsTheCorrectValuesAreCalculated)
 {
-  EXPECT_EQ(0, alb::internal::roundToAlignment(4, 0));
-  EXPECT_EQ(4, alb::internal::roundToAlignment(4, 1));
-  EXPECT_EQ(4, alb::internal::roundToAlignment(4, 4));
-  EXPECT_EQ(8, alb::internal::roundToAlignment(4, 5));
+  EXPECT_EQ(0u, alb::internal::roundToAlignment(4, 0));
+  EXPECT_EQ(4u, alb::internal::roundToAlignment(4, 1));
+  EXPECT_EQ(4u, alb::internal::roundToAlignment(4, 4));
+  EXPECT_EQ(8u, alb::internal::roundToAlignment(4, 5));
 
-  EXPECT_EQ(0, alb::internal::roundToAlignment(8, 0));
-  EXPECT_EQ(8, alb::internal::roundToAlignment(8, 1));
-  EXPECT_EQ(8, alb::internal::roundToAlignment(8, 8));
-  EXPECT_EQ(16, alb::internal::roundToAlignment(8, 9));
+  EXPECT_EQ(0u, alb::internal::roundToAlignment(8, 0));
+  EXPECT_EQ(8u, alb::internal::roundToAlignment(8, 1));
+  EXPECT_EQ(8u, alb::internal::roundToAlignment(8, 8));
+  EXPECT_EQ(16u, alb::internal::roundToAlignment(8, 9));
 }

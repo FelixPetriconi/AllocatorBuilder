@@ -15,6 +15,8 @@
 #include <alb/mallocator.hpp>
 #include "TestHelpers/Base.h"
 
+#include <algorithm>
+
 namespace {
   typedef alb::allocator_with_stats<
       alb::fallback_allocator<alb::stack_allocator<128, 4>, alb::test_helpers::TestMallocator>>
@@ -238,7 +240,7 @@ protected:
 
   void TearDown()
   {
-    EXPECT_EQ(0, alb::test_helpers::TestMallocator::currentlyAllocatedBytes());
+    EXPECT_EQ(0u, alb::test_helpers::TestMallocator::currentlyAllocatedBytes());
   }
 
   std::unique_ptr<Allocator> sut;
