@@ -14,7 +14,7 @@
 namespace alb {
   namespace Helpers {
 
-    template <bool Used> uint64_t setUsed(uint64_t const &currentRegister, uint64_t const &mask);
+    template <bool Used> uint64_t setUsed(uint64_t const &currentRegister, uint64_t const &mask) noexcept;
 
     template <>
     inline uint64_t setUsed<false>(uint64_t const &currentRegister, uint64_t const &mask) noexcept
