@@ -76,12 +76,12 @@ namespace alb {
     bool reallocate(block &b, size_t n) noexcept
     {
       if (Primary::owns(b)) {
-        if (internal::reallocator<Primary>::isHandledDefault(static_cast<Primary &>(*this), b, n)) {
+        if (internal::reallocator<Primary>::is_handled_default(static_cast<Primary &>(*this), b, n)) {
           return true;
         }
       }
       else {
-        if (internal::reallocator<Fallback>::isHandledDefault(static_cast<Fallback &>(*this), b,
+        if (internal::reallocator<Fallback>::is_handled_default(static_cast<Fallback &>(*this), b,
                                                               n)) {
           return true;
         }
@@ -91,7 +91,7 @@ namespace alb {
         if (Primary::reallocate(b, n)) {
           return true;
         }
-        return internal::reallocateWithCopy(static_cast<Primary &>(*this),
+        return internal::reallocate_with_copy(static_cast<Primary &>(*this),
                                             static_cast<Fallback &>(*this), b, n);
       }
 
@@ -112,12 +112,12 @@ namespace alb {
     {
       if (Primary::owns(b)) {
         if (traits::has_expand<U>::value) {
-          return traits::Expander<U>::doIt(static_cast<U&>(*this), b, delta);
+          return traits::Expander<U>::do_it(static_cast<U&>(*this), b, delta);
         }
         return false;
       }
       if (traits::has_expand<V>::value) {
-        return traits::Expander<V>::doIt(static_cast<V&>(*this), b, delta);
+        return traits::Expander<V>::do_it(static_cast<V&>(*this), b, delta);
       }
       return false;
     }
@@ -136,12 +136,12 @@ namespace alb {
     }
 
     template <typename U = Primary, typename V = Fallback>
-    typename std::enable_if<traits::has_deallocateAll<U>::value &&
-                                                traits::has_deallocateAll<V>::value, void>::type
-    deallocateAll() noexcept
+    typename std::enable_if<traits::has_deallocate_all<U>::value &&
+                                                traits::has_deallocate_all<V>::value, void>::type
+    deallocate_all() noexcept
     {
-      Primary::deallocateAll();
-      Fallback::deallocateAll();
+      Primary::deallocate_all();
+      Fallback::deallocate_all();
     }
   };
 }

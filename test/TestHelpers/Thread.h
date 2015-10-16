@@ -34,7 +34,7 @@ template <class Allocator>
 class TestWorker
 {
   std::unique_ptr<char[]> _reference;
-  Allocator& _allocator;
+  Allocator& allocator_;
   const int _maxUsedBytes;
 
   void init() {
@@ -45,7 +45,7 @@ class TestWorker
 
 public:
   TestWorker(Allocator& heap, int maxUsedBytes) 
-    : _allocator(heap)
+    : allocator_(heap)
     , _maxUsedBytes(maxUsedBytes) {
     init();
   }
@@ -60,24 +60,24 @@ public:
 
     for (auto i = 0; i < 1000000; i++) {
       
-      auto mem = _allocator.allocate(bytesToWork);
+      auto mem = allocator_.allocate(bytesToWork);
 
       if (mem) {
         ::memcpy(mem.ptr, _reference.get(), bytesToWork);
         EXPECT_MEM_EQ(mem.ptr, _reference.get(), bytesToWork);
       }
       if (bytesToWork < _maxUsedBytes / 2) {
-        if (_allocator.reallocate(mem, bytesToWork * 2)) {
+        if (allocator_.reallocate(mem, bytesToWork * 2)) {
           EXPECT_MEM_EQ(mem.ptr, _reference.get(), bytesToWork);
         }
       }
       else {
-        if (_allocator.reallocate(mem, bytesToWork / 2)) {
+        if (allocator_.reallocate(mem, bytesToWork / 2)) {
           EXPECT_MEM_EQ(mem.ptr, _reference.get(), bytesToWork / 2);
         }
       }
 
-      _allocator.deallocate(mem);
+      allocator_.deallocate(mem);
 
       ++bytesToWork;
     }
@@ -95,7 +95,7 @@ template <class Allocator>
 class MultipleAllocationsTester
 {
   std::unique_ptr<char[]> _reference;
-  Allocator& _allocator;
+  Allocator& allocator_;
   const int _maxUsedBytes;
   
   void init() {
@@ -106,7 +106,7 @@ class MultipleAllocationsTester
 
 public:
   MultipleAllocationsTester(Allocator& heap, int maxUsedBytes) 
-    : _allocator(heap)
+    : allocator_(heap)
     , _maxUsedBytes(maxUsedBytes) {
       init();
   }
@@ -122,13 +122,13 @@ public:
     std::vector<alb::block> mems;
 
     for (size_t i = 0; i < 8; i++) {
-      auto mem = _allocator.allocate(_maxUsedBytes);
+      auto mem = allocator_.allocate(_maxUsedBytes);
       ::memcpy(mem.ptr, _reference.get(), _maxUsedBytes);
       mems.push_back(mem);
     }
 
     for (auto i = 0; i < 1000000; i++) {
-      if (_allocator.reallocate(mems[memBlockIndex], bytesToWork)) {
+      if (allocator_.reallocate(mems[memBlockIndex], bytesToWork)) {
         if (mems[memBlockIndex]) {
           ::memcpy(mems[memBlockIndex].ptr, _reference.get(), bytesToWork);
           EXPECT_MEM_EQ(mems[memBlockIndex].ptr, _reference.get(), bytesToWork);
@@ -136,16 +136,16 @@ public:
       }
       ++bytesToWork;
       ++memBlockIndex;
-      _allocator.deallocate(mems[memBlockIndex]);
+      allocator_.deallocate(mems[memBlockIndex]);
 
-      mems[memBlockIndex] = _allocator.allocate(bytesToWork);
+      mems[memBlockIndex] = allocator_.allocate(bytesToWork);
       ::memcpy(mems[memBlockIndex].ptr, _reference.get(), bytesToWork);
 
       ++memBlockIndex;
     }
     
     for (size_t i = 0; i < 8; i++) {
-      _allocator.deallocate(mems[i]);
+      allocator_.deallocate(mems[i]);
     }
   }
 };
@@ -160,7 +160,7 @@ public:
 template <class Allocator, size_t ThreadNumber, class Tester, class TestParams>
 class TestWorkerCollector
 {
-  Allocator& _allocator;
+  Allocator& allocator_;
   std::promise<void> _go;
   std::shared_future<void> _ready;
 
@@ -188,11 +188,11 @@ class TestWorkerCollector
 
 public:
   TestWorkerCollector(Allocator& allocator, const TestParams& params) 
-    : _allocator(allocator)
+    : allocator_(allocator)
     , _ready(_go.get_future())
   {
     for (size_t i = 0; i < ThreadNumber; i++) {
-      _workerContexts[i].tester.reset( new Tester(_allocator, params[i]) );
+      _workerContexts[i].tester.reset( new Tester(allocator_, params[i]) );
       _workerContexts[i].done = std::async(std::launch::async,
         [this, i]() {
           _workerContexts[i].tester->setReady(_workerContexts[i].ready);

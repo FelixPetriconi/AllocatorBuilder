@@ -17,6 +17,7 @@
 
 #include <atomic>
 #include <algorithm>
+#include <numeric>
 #include <boost/thread.hpp>
 
 #ifdef min
@@ -35,7 +36,7 @@ namespace alb {
 
   /**
  * The SharedHeap implements a classic heap with a pre-allocated size of
- * _numberOfChunks.value() * _chunkSize.value()
+ * numberOfChunks_.value() * chunk_size_.value()
  * It has a overhead of one bit per block and linear complexity for allocation
  * and deallocation operations.
  * It is thread safe, except the moment of instantiation.
@@ -45,42 +46,40 @@ namespace alb {
  * \ingroup group_allocators group_shared
  */
   template <class Allocator, size_t NumberOfChunks, size_t ChunkSize> class shared_heap {
-    const uint64_t all_set;
-    const uint64_t all_zero;
+    static const uint64_t all_set = std::numeric_limits<uint64_t>::max();
+    static const uint64_t all_zero = 0u;
 
     internal::dynastic<(NumberOfChunks == internal::DynasticDynamicSet ? 0 : NumberOfChunks), 0>
-        _numberOfChunks;
+        numberOfChunks_;
 
-    internal::dynastic<(ChunkSize == internal::DynasticDynamicSet ? 0 : ChunkSize), 0> _chunkSize;
+    internal::dynastic<(ChunkSize == internal::DynasticDynamicSet ? 0 : ChunkSize), 0> chunk_size_;
 
-    block _buffer;
-    block _controlBuffer;
+    block buffer_;
+    block controlBuffer_;
 
     // bit field where 0 means used and 1 means free block
-    std::atomic<uint64_t> *_control;
-    size_t _controlSize;
+    std::atomic<uint64_t> *control_;
+    size_t controlSize_;
 
-    boost::shared_mutex _mutex;
-    Allocator _allocator;
+    boost::shared_mutex mutex_;
+    Allocator allocator_;
 
     void shrink() noexcept
     {
-      _allocator.deallocate(_controlBuffer);
-      _allocator.deallocate(_buffer);
-      _control = nullptr;
+      allocator_.deallocate(controlBuffer_);
+      allocator_.deallocate(buffer_);
+      control_ = nullptr;
     }
 
     shared_heap(const shared_heap &) = delete;
     shared_heap &operator=(const shared_heap &) = delete;
 
   public:
-    static const bool supports_truncated_deallocation = true;
+    static constexpr bool supports_truncated_deallocation = true;
 
     using allocator = Allocator;
 
     shared_heap() noexcept
-      : all_set(static_cast<uint64_t>(-1))
-      , all_zero(0)
     {
       init();
     }
@@ -89,8 +88,8 @@ namespace alb {
       : all_set(static_cast<uint64_t>(-1))
       , all_zero(0)
     {
-      _numberOfChunks.value(internal::roundToAlignment(64, numberOfChunks));
-      _chunkSize.value(internal::roundToAlignment(4, chunkSize));
+      numberOfChunks_.value(internal::round_to_alignment(64, numberOfChunks));
+      chunk_size_.value(internal::round_to_alignment(4, chunkSize));
       init();
     }
 
@@ -104,42 +103,41 @@ namespace alb {
       if (this == &x) {
         return *this;
       }
-      boost::unique_lock<boost::shared_mutex> guardThis(_mutex);
+      boost::unique_lock<boost::shared_mutex> guardThis(mutex_);
       shrink();
-      boost::unique_lock<boost::shared_mutex> guardX(x._mutex);
-      _numberOfChunks = std::move(x._numberOfChunks);
-      _chunkSize = std::move(x._chunkSize);
-      _buffer = std::move(x._buffer);
-      _controlBuffer = std::move(x._controlBuffer);
-      _control = std::move(x._control);
-      _controlSize = std::move(x._controlSize);
-      _allocator = std::move(x._allocator);
+      boost::unique_lock<boost::shared_mutex> guardX(x.mutex_);
+      numberOfChunks_ = std::move(x.numberOfChunks_);
+      chunk_size_ = std::move(x.chunk_size_);
+      buffer_ = std::move(x.buffer_);
+      controlBuffer_ = std::move(x.controlBuffer_);
+      control_ = std::move(x.control_);
+      controlSize_ = std::move(x.controlSize_);
+      allocator_ = std::move(x.allocator_);
 
-      x._control = nullptr;
+      x.control_ = nullptr;
 
       return *this;
     }
 
     size_t number_of_chunk() const noexcept
     {
-      return _numberOfChunks.value();
+      return numberOfChunks_.value();
     }
 
     size_t chunk_size() const noexcept
     {
-      return _chunkSize.value();
+      return chunk_size_.value();
     }
 
     ~shared_heap()
     {
-      boost::unique_lock<boost::shared_mutex> guard(_mutex);
       shrink();
     }
 
     bool owns(const block &b) const noexcept
     {
-      return b && _buffer.ptr <= b.ptr &&
-             b.ptr < (static_cast<char *>(_buffer.ptr) + _buffer.length);
+      return b && buffer_.ptr <= b.ptr &&
+             b.ptr < (static_cast<char *>(buffer_.ptr) + buffer_.length);
     }
 
     block allocate(size_t n) noexcept
@@ -149,33 +147,33 @@ namespace alb {
       }
 
       // The heap cannot handle such a big request
-      if (n > _chunkSize.value() * _numberOfChunks.value()) {
+      if (n > chunk_size_.value() * numberOfChunks_.value()) {
         return {};
       }
 
-      size_t numberOfAlignedBytes = internal::roundToAlignment(_chunkSize.value(), n);
-      size_t numberOfBlocks = numberOfAlignedBytes / _chunkSize.value();
-      numberOfBlocks = std::max(static_cast<size_t>(1), numberOfBlocks);
+      size_t numberOfAlignedBytes = internal::round_to_alignment(chunk_size_.value(), n);
+      size_t numberOfBlocks = numberOfAlignedBytes / chunk_size_.value();
+      numberOfBlocks = std::max(size_t(1), numberOfBlocks);
 
       if (numberOfBlocks < 64) {
-        auto result = allocateWithinASingleControlRegister(numberOfBlocks);
+        auto result = allocate_within_single_control_register(numberOfBlocks);
         if (result) {
           return result;
         }
       }
       else if (numberOfBlocks == 64) {
-        auto result = allocateWithinCompleteControlRegister(numberOfBlocks);
+        auto result = allocate_within_complete_control_register(numberOfBlocks);
         if (result) {
           return result;
         }
       }
       else if ((numberOfBlocks % 64) == 0) {
-        auto result = allocateMultipleCompleteControlRegisters(numberOfBlocks);
+        auto result = allocate_multiple_complete_control_registers(numberOfBlocks);
         if (result) {
           return result;
         }
       }
-      return allocateWithRegisterOverlap(numberOfBlocks);
+      return allocate_with_register_overlap(numberOfBlocks);
     }
 
     void deallocate(block &b) noexcept
@@ -185,62 +183,62 @@ namespace alb {
       }
       
       if (!owns(b)) {
-	    assert(!"It is not wise to let me deallocate a foreign Block!");
+	      assert(!"It is not wise to let me deallocate a foreign Block!");
         return;
       }
 
-      const auto context = blockToContext(b);
+      const auto context = block_to_context(b);
 
       // printf("Used Block %d in thread %d\n", blockIndex,
       // std::this_thread::get_id());
       if (context.subIndex + context.usedChunks <= 64) {
-        setWithinSingleRegister<shared_helpers::SharedLock, true>(context);
+        set_within_single_register<shared_helpers::SharedLock, true>(context);
       }
       else if ((context.usedChunks % 64) == 0) {
-        deallocateForMultipleCompleteControlRegister(context);
+        deallocate_for_multiple_complete_control_register(context);
       }
       else {
-        deallocateWithControlRegisterOverlap(context);
+        deallocate_with_control_register_overlap(context);
       }
       b.reset();
     }
 
-    void deallocateAll() noexcept
+    void deallocate_all() noexcept
     {
-      boost::unique_lock<boost::shared_mutex> guard(_mutex);
+      boost::unique_lock<boost::shared_mutex> guard(mutex_);
 
-      std::fill(_control, _control + _controlSize, static_cast<uint64_t>(-1));
+      std::fill(control_, control_ + controlSize_, std::numeric_limits<uint64_t>::max());
     }
 
     bool reallocate(block &b, size_t n) noexcept
     {
-      if (internal::reallocator<shared_heap>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<shared_heap>::is_handled_default(*this, b, n)) {
         return true;
       }
 
-      const auto numberOfBlocks = static_cast<int>(b.length / _chunkSize.value());
+      const auto numberOfBlocks = static_cast<int>(b.length / chunk_size_.value());
       const auto numberOfNewNeededBlocks =
-          static_cast<int>(internal::roundToAlignment(_chunkSize.value(), n) / _chunkSize.value());
+          static_cast<int>(internal::round_to_alignment(chunk_size_.value(), n) / chunk_size_.value());
 
       if (numberOfBlocks == numberOfNewNeededBlocks) {
         return true;
       }
       if (b.length > n) {
-        auto context = blockToContext(b);
+        auto context = block_to_context(b);
         if (context.subIndex + context.usedChunks <= 64) {
-          setWithinSingleRegister<shared_helpers::SharedLock, true>(
+          set_within_single_register<shared_helpers::SharedLock, true>(
               BlockContext{context.registerIndex, context.subIndex + numberOfNewNeededBlocks,
                            context.usedChunks - numberOfNewNeededBlocks});
         }
         else {
-          deallocateWithControlRegisterOverlap(
+          deallocate_with_control_register_overlap(
               BlockContext{context.registerIndex, context.subIndex + numberOfNewNeededBlocks,
                            context.usedChunks - numberOfNewNeededBlocks});
         }
-        b.length = numberOfNewNeededBlocks * _chunkSize.value();
+        b.length = numberOfNewNeededBlocks * chunk_size_.value();
         return true;
       }
-      return internal::reallocateWithCopy(*this, *this, b, n);
+      return internal::reallocate_with_copy(*this, *this, b, n);
     }
 
     bool expand(block &b, size_t delta) noexcept
@@ -249,23 +247,23 @@ namespace alb {
         return true;
       }
 
-      const auto context = blockToContext(b);
+      const auto context = block_to_context(b);
       const auto numberOfAdditionalNeededBlocks = static_cast<int>(
-          internal::roundToAlignment(_chunkSize.value(), delta) / _chunkSize.value());
+          internal::round_to_alignment(chunk_size_.value(), delta) / chunk_size_.value());
 
       if (context.subIndex + context.usedChunks + numberOfAdditionalNeededBlocks <= 64) {
-        if (testAndSetWithinSingleRegister<false>(
+        if (test_and_set_within_single_register<false>(
                 BlockContext{context.registerIndex, context.subIndex + context.usedChunks,
                              numberOfAdditionalNeededBlocks})) {
-          b.length += numberOfAdditionalNeededBlocks * _chunkSize.value();
+          b.length += numberOfAdditionalNeededBlocks * chunk_size_.value();
           return true;
         }
         return false;
       }
-      if (testAndSetOverMultipleRegisters<false>(BlockContext{context.registerIndex,
+      if (test_and_set_over_multiple_registers<false>(BlockContext{context.registerIndex,
                                                               context.subIndex + context.usedChunks,
                                                               numberOfAdditionalNeededBlocks})) {
-        b.length += numberOfAdditionalNeededBlocks * _chunkSize.value();
+        b.length += numberOfAdditionalNeededBlocks * chunk_size_.value();
         return true;
       }
 
@@ -275,17 +273,17 @@ namespace alb {
   private:
     void init() noexcept
     {
-      _controlSize = _numberOfChunks.value() / 64;
-      _controlBuffer = _allocator.allocate(sizeof(std::atomic<uint64_t>) * _controlSize);
-      assert((bool)_controlBuffer);
+      controlSize_ = numberOfChunks_.value() / 64;
+      controlBuffer_ = allocator_.allocate(sizeof(std::atomic<uint64_t>) * controlSize_);
+      assert((bool)controlBuffer_);
 
-      _control = static_cast<std::atomic<uint64_t> *>(_controlBuffer.ptr);
-      new (_control) std::atomic<uint64_t>[_controlSize]();
+      control_ = static_cast<std::atomic<uint64_t> *>(controlBuffer_.ptr);
+      new (control_) std::atomic<uint64_t>[controlSize_]();
 
-      _buffer = _allocator.allocate(_chunkSize.value() * _numberOfChunks.value());
-      assert((bool)_buffer);
+      buffer_ = allocator_.allocate(chunk_size_.value() * numberOfChunks_.value());
+      assert((bool)buffer_);
 
-      deallocateAll();
+      deallocate_all();
     }
 
     struct BlockContext {
@@ -294,35 +292,36 @@ namespace alb {
       int usedChunks;
     };
 
-    BlockContext blockToContext(const block &b) noexcept
+    BlockContext block_to_context(const block &b) noexcept
     {
       const auto blockIndex = static_cast<int>(
-          (static_cast<char *>(b.ptr) - static_cast<char *>(_buffer.ptr)) / _chunkSize.value());
+          (static_cast<char *>(b.ptr) - static_cast<char *>(buffer_.ptr)) / chunk_size_.value());
 
-      return {blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / _chunkSize.value())};
+      return {blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / chunk_size_.value())};
     }
 
-    template <bool Used> bool testAndSetWithinSingleRegister(const BlockContext &context) noexcept
+    template <bool Used> 
+    bool test_and_set_within_single_register(const BlockContext &context) noexcept
     {
       assert(context.subIndex + context.usedChunks <= 64);
 
-      uint64_t mask = (context.usedChunks == 64) ? all_set : (((1uLL << context.usedChunks) - 1)
+      uint64_t mask = (context.usedChunks == 64) ? all_set : (((uint64_t(1) << context.usedChunks) - 1)
                                                               << context.subIndex);
 
       uint64_t currentRegister, newRegister;
       do {
-        currentRegister = _control[context.registerIndex].load();
+        currentRegister = control_[context.registerIndex].load();
         if ((currentRegister & mask) != mask) {
           return false;
         }
-        newRegister = Helpers::setUsed<Used>(currentRegister, mask);
-        boost::shared_lock<boost::shared_mutex> guard(_mutex);
-      } while (!CAS(_control[context.registerIndex], currentRegister, newRegister));
+        newRegister = helpers::set_used<Used>(currentRegister, mask);
+        boost::shared_lock<boost::shared_mutex> guard(mutex_);
+      } while (!CAS(control_[context.registerIndex], currentRegister, newRegister));
       return true;
     }
 
     template <class LockPolicy, bool Used>
-    void setOverMultipleRegisters(const BlockContext &context) noexcept
+    void set_over_multiple_registers(const BlockContext &context) noexcept
     {
       size_t chunksToTest = context.usedChunks;
       size_t subIndexStart = context.subIndex;
@@ -330,18 +329,18 @@ namespace alb {
       do {
         size_t mask;
         if (subIndexStart > 0)
-          mask = ((1uLL << (64 - subIndexStart)) - 1) << subIndexStart;
+          mask = ((uint64_t(1) << (64 - subIndexStart)) - 1) << subIndexStart;
         else
-          mask = (chunksToTest >= 64) ? all_set : ((1uLL << chunksToTest) - 1);
+          mask = (chunksToTest >= 64) ? all_set : ((uint64_t(1) << chunksToTest) - 1);
 
-        assert(registerIndex < _controlSize);
+        assert(registerIndex < controlSize_);
 
         uint64_t currentRegister, newRegister;
         do {
-          currentRegister = _control[registerIndex].load();
-          newRegister = Helpers::setUsed<Used>(currentRegister, mask);
-          LockPolicy guard(_mutex);
-        } while (!CAS(_control[registerIndex], currentRegister, newRegister));
+          currentRegister = control_[registerIndex].load();
+          newRegister = helpers::set_used<Used>(currentRegister, mask);
+          LockPolicy guard(mutex_);
+        } while (!CAS(control_[registerIndex], currentRegister, newRegister));
 
         if (subIndexStart + chunksToTest > 64) {
           chunksToTest = subIndexStart + chunksToTest - 64;
@@ -354,7 +353,7 @@ namespace alb {
       } while (chunksToTest > 0);
     }
 
-    template <bool Used> bool testAndSetOverMultipleRegisters(const BlockContext &context) noexcept
+    template <bool Used> bool test_and_set_over_multiple_registers(const BlockContext &context) noexcept
     {
       static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t),
                     "Current assumption that std::atomic has no overhead on "
@@ -366,15 +365,15 @@ namespace alb {
       size_t subIndexStart = context.subIndex;
       size_t registerIndex = context.registerIndex;
 
-      boost::unique_lock<boost::shared_mutex> guard(_mutex);
+      boost::unique_lock<boost::shared_mutex> guard(mutex_);
       do {
         uint64_t mask;
         if (subIndexStart > 0)
-          mask = ((1uLL << (64 - subIndexStart)) - 1) << subIndexStart;
+          mask = ((uint64_t(1) << (64 - subIndexStart)) - 1) << subIndexStart;
         else
-          mask = (chunksToTest >= 64) ? all_set : ((1uLL << chunksToTest) - 1);
+          mask = (chunksToTest >= 64) ? all_set : ((uint64_t(1) << chunksToTest) - 1);
 
-        auto currentRegister = _control[registerIndex].load();
+        auto currentRegister = control_[registerIndex].load();
 
         if ((currentRegister & mask) != mask) {
           return false;
@@ -388,58 +387,58 @@ namespace alb {
           chunksToTest = 0;
         }
         registerIndex++;
-        if (registerIndex > _controlSize) {
+        if (registerIndex > controlSize_) {
           return false;
         }
       } while (chunksToTest > 0);
 
-      setOverMultipleRegisters<shared_helpers::NullLock, Used>(context);
+      set_over_multiple_registers<shared_helpers::NullLock, Used>(context);
 
       return true;
     }
 
-    template <class LockPolicy, bool Used> void setWithinSingleRegister(const BlockContext &context) noexcept
+    template <class LockPolicy, bool Used> void set_within_single_register(const BlockContext &context) noexcept
     {
       assert(context.subIndex + context.usedChunks <= 64);
 
-      uint64_t mask = (context.usedChunks == 64) ? all_set : (((1uLL << context.usedChunks) - 1)
+      uint64_t mask = (context.usedChunks == 64) ? all_set : (((uint64_t(1) << context.usedChunks) - 1)
                                                               << context.subIndex);
 
       uint64_t currentRegister, newRegister;
       do {
-        currentRegister = _control[context.registerIndex].load();
-        newRegister = Helpers::setUsed<Used>(currentRegister, mask);
-        LockPolicy guard(_mutex);
-      } while (!CAS(_control[context.registerIndex], currentRegister, newRegister));
+        currentRegister = control_[context.registerIndex].load();
+        newRegister = helpers::set_used<Used>(currentRegister, mask);
+        LockPolicy guard(mutex_);
+      } while (!CAS(control_[context.registerIndex], currentRegister, newRegister));
     }
 
-    block allocateWithinASingleControlRegister(size_t numberOfBlocks) noexcept
+    block allocate_within_single_control_register(size_t numberOfBlocks) noexcept
     {
       // we must assume that we may find a free location, but that it is later
       // already used during the set operation
       do {
         // first we have to look for at least one free block
         size_t controlIndex = 0;
-        while (controlIndex < _controlSize) {
-          auto currentControlRegister = _control[controlIndex].load();
+        while (controlIndex < controlSize_) {
+          auto currentControlRegister = control_[controlIndex].load();
 
           // == 0 means that all blocks are in use and no need to search further
           if (currentControlRegister != 0) {
-            uint64_t mask = (numberOfBlocks == 64) ? all_set : ((1uLL << numberOfBlocks) - 1);
+            uint64_t mask = (numberOfBlocks == 64) ? all_set : ((uint64_t(1) << numberOfBlocks) - 1);
 
             size_t i = 0;
             // Search for numberOfBlock bits that are set to one
             while (i <= 64 - numberOfBlocks) {
               if ((currentControlRegister & mask) == mask) {
-                auto newControlRegister = Helpers::setUsed<false>(currentControlRegister, mask);
+                auto newControlRegister = helpers::set_used<false>(currentControlRegister, mask);
 
-                boost::shared_lock<boost::shared_mutex> guard(_mutex);
+                boost::shared_lock<boost::shared_mutex> guard(mutex_);
 
-                if (CAS(_control[controlIndex], currentControlRegister, newControlRegister)) {
-                  size_t ptrOffset = (controlIndex * 64 + i) * _chunkSize.value();
+                if (CAS(control_[controlIndex], currentControlRegister, newControlRegister)) {
+                  size_t ptrOffset = (controlIndex * 64 + i) * chunk_size_.value();
 
-                  return block(static_cast<char *>(_buffer.ptr) + ptrOffset,
-                               numberOfBlocks * _chunkSize.value());
+                  return block(static_cast<char *>(buffer_.ptr) + ptrOffset,
+                               numberOfBlocks * chunk_size_.value());
                 }
               }
               i++;
@@ -448,50 +447,50 @@ namespace alb {
           }
           controlIndex++;
         }
-        if (controlIndex == _controlSize) {
+        if (controlIndex == controlSize_) {
           return block();
         }
       } while (true);
     }
 
-    block allocateWithinCompleteControlRegister(size_t numberOfBlocks) noexcept
+    block allocate_within_complete_control_register(size_t numberOfBlocks) noexcept
     {
       // we must assume that we may find a free location, but that it is later
       // already used during the CAS set operation
       do {
         // first we have to look for at least full free block
         auto freeChunk =
-            std::find_if(_control, _control + _controlSize,
+            std::find_if(control_, control_ + controlSize_,
                          [this](const std::atomic<uint64_t> &v) { return v.load() == all_set; });
 
-        if (freeChunk == _control + _controlSize) {
+        if (freeChunk == control_ + controlSize_) {
           return block();
         }
 
-        boost::shared_lock<boost::shared_mutex> guard(_mutex);
+        boost::shared_lock<boost::shared_mutex> guard(mutex_);
 
         if (CAS_P(freeChunk, const_cast<uint64_t &>(all_set), all_zero)) {
-          size_t ptrOffset = ((freeChunk - _control) * 64) * _chunkSize.value();
+          size_t ptrOffset = ((freeChunk - control_) * 64) * chunk_size_.value();
 
-          return block(static_cast<char *>(_buffer.ptr) + ptrOffset,
-                       numberOfBlocks * _chunkSize.value());
+          return block(static_cast<char *>(buffer_.ptr) + ptrOffset,
+                       numberOfBlocks * chunk_size_.value());
         }
       } while (true);
     }
 
-    block allocateMultipleCompleteControlRegisters(size_t numberOfBlocks) noexcept
+    block allocate_multiple_complete_control_registers(size_t numberOfBlocks) noexcept
     {
       // This branch works on multiple chunks at the same time and so a real
       // lock is necessary.
-      boost::unique_lock<boost::shared_mutex> guard(_mutex);
+      boost::unique_lock<boost::shared_mutex> guard(mutex_);
 
       const auto neededChunks = static_cast<int>(numberOfBlocks / 64);
       auto freeFirstChunk = std::search_n(
-          _control, _control + _controlSize, neededChunks, all_set,
+          control_, control_ + controlSize_, neededChunks, all_set,
           [](const std::atomic<uint64_t> &v, const uint64_t &p) { return v.load() == p; });
 
-      if (freeFirstChunk == _control + _controlSize) {
-        return block();
+      if (freeFirstChunk == control_ + controlSize_) {
+        return {};
       }
       auto p = freeFirstChunk;
       while (p < freeFirstChunk + neededChunks) {
@@ -499,28 +498,28 @@ namespace alb {
         ++p;
       }
 
-      size_t ptrOffset = ((freeFirstChunk - _control) * 64) * _chunkSize.value();
-      return block(static_cast<char *>(_buffer.ptr) + ptrOffset,
-                   numberOfBlocks * _chunkSize.value());
+      size_t ptrOffset = ((freeFirstChunk - control_) * 64) * chunk_size_.value();
+      return { static_cast<char *>(buffer_.ptr) + ptrOffset,
+                   numberOfBlocks * chunk_size_.value() };
     }
 
-    block allocateWithRegisterOverlap(size_t numberOfBlocks) noexcept
+    block allocate_with_register_overlap(size_t numberOfBlocks) noexcept
     {
       // search for free area
       static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t),
                     "Current assumption that std::atomic has no overhead on "
                     "integral types is not fulfilled!");
 
-      auto p = reinterpret_cast<unsigned char *>(_control);
+      auto p = reinterpret_cast<unsigned char *>(control_);
       const auto lastp =
-          reinterpret_cast<unsigned char *>(_control) + _controlSize * sizeof(uint64_t);
+          reinterpret_cast<unsigned char *>(control_) + controlSize_ * sizeof(uint64_t);
 
       auto freeBlocksCount = size_t(0);
       unsigned char *chunkStart = nullptr;
 
       // This branch works on multiple chunks at the same time and so a real
       // lock is necessary.
-      boost::unique_lock<boost::shared_mutex> guard(_mutex);
+      boost::unique_lock<boost::shared_mutex> guard(mutex_);
 
       while (p < lastp) {
         if (*p == 0xff) { // free
@@ -542,31 +541,31 @@ namespace alb {
 
       if (p != lastp && freeBlocksCount >= numberOfBlocks) {
         size_t ptrOffset =
-            (chunkStart - reinterpret_cast<unsigned char *>(_control)) * 8 * _chunkSize.value();
+            (chunkStart - reinterpret_cast<unsigned char *>(control_)) * 8 * chunk_size_.value();
 
-        block result(static_cast<char *>(_buffer.ptr) + ptrOffset,
-                     numberOfBlocks * _chunkSize.value());
+        block result(static_cast<char *>(buffer_.ptr) + ptrOffset,
+                     numberOfBlocks * chunk_size_.value());
 
-        setOverMultipleRegisters<shared_helpers::NullLock, false>(blockToContext(result));
+        set_over_multiple_registers<shared_helpers::NullLock, false>(block_to_context(result));
         return result;
       }
 
       return {};
     }
 
-    void deallocateForMultipleCompleteControlRegister(const BlockContext &context) noexcept
+    void deallocate_for_multiple_complete_control_register(const BlockContext &context) noexcept
     {
       const auto registerToFree = context.registerIndex + context.usedChunks / 64;
       for (auto i = context.registerIndex; i < registerToFree; i++) {
         // it is not necessary to use a unique lock is used here
-        boost::shared_lock<boost::shared_mutex> guard(_mutex);
-        _control[i] = static_cast<uint64_t>(-1);
+        boost::shared_lock<boost::shared_mutex> guard(mutex_);
+        control_[i] = static_cast<uint64_t>(-1);
       }
     }
 
-    void deallocateWithControlRegisterOverlap(const BlockContext &context) noexcept
+    void deallocate_with_control_register_overlap(const BlockContext &context) noexcept
     {
-      setOverMultipleRegisters<shared_helpers::SharedLock, true>(context);
+      set_over_multiple_registers<shared_helpers::SharedLock, true>(context);
     }
   };
 }

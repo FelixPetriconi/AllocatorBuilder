@@ -70,23 +70,23 @@ public:
 
   void checkThatExpectationsAreFulfilled()
   {
-    EXPECT_EQ(numOwns, allocator.numOwns());
-    EXPECT_EQ(numAllocate, allocator.numAllocate());
-    EXPECT_EQ(numAllocateOK, allocator.numAllocateOK());
-    EXPECT_EQ(numExpand, allocator.numExpand());
-    EXPECT_EQ(numExpandOK, allocator.numExpandOK());
-    EXPECT_EQ(numReallocate, allocator.numReallocate());
-    EXPECT_EQ(numReallocateOK, allocator.numReallocateOK());
-    EXPECT_EQ(numReallocateInPlace, allocator.numReallocateInPlace());
-    EXPECT_EQ(numDeallocate, allocator.numDeallocate());
-    EXPECT_EQ(numDeallocateAll, allocator.numDeallocateAll());
-    EXPECT_EQ(bytesAllocated, allocator.bytesAllocated());
-    EXPECT_EQ(bytesDeallocated, allocator.bytesDeallocated());
-    EXPECT_EQ(bytesExpanded, allocator.bytesExpanded());
-    EXPECT_EQ(bytesContracted, allocator.bytesContracted());
-    EXPECT_EQ(bytesMoved, allocator.bytesMoved());
-    EXPECT_EQ(bytesSlack, allocator.bytesSlack());
-    EXPECT_EQ(bytesHighTide, allocator.bytesHighTide());
+    EXPECT_EQ(numOwns, allocator.num_owns());
+    EXPECT_EQ(numAllocate, allocator.num_allocate());
+    EXPECT_EQ(numAllocateOK, allocator.num_allocate_ok());
+    EXPECT_EQ(numExpand, allocator.num_expand());
+    EXPECT_EQ(numExpandOK, allocator.num_expand_ok());
+    EXPECT_EQ(numReallocate, allocator.num_reallocate());
+    EXPECT_EQ(numReallocateOK, allocator.num_reallocate_ok());
+    EXPECT_EQ(numReallocateInPlace, allocator.num_reallocate_in_place());
+    EXPECT_EQ(numDeallocate, allocator.num_deallocate());
+    EXPECT_EQ(numDeallocateAll, allocator.num_deallocate_all());
+    EXPECT_EQ(bytesAllocated, allocator.bytes_allocated());
+    EXPECT_EQ(bytesDeallocated, allocator.bytes_deallocated());
+    EXPECT_EQ(bytesExpanded, allocator.bytes_expanded());
+    EXPECT_EQ(bytesContracted, allocator.bytes_contracted());
+    EXPECT_EQ(bytesMoved, allocator.bytes_moved());
+    EXPECT_EQ(bytesSlack, allocator.bytes_slack());
+    EXPECT_EQ(bytesHighTide, allocator.bytes_high_tide());
   }
 };
 

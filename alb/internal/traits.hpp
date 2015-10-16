@@ -37,11 +37,11 @@ namespace alb {
     };
 
     /**
-     * Trait that checks if the given class implements void deallocateAll()
+     * Trait that checks if the given class implements void deallocate_all()
      *
      * \ingroup group_traits
      */
-    template <typename T> struct has_deallocateAll {
+    template <typename T> struct has_deallocate_all {
     private:
       typedef char Yes;
       struct No {
@@ -49,7 +49,7 @@ namespace alb {
       };
 
       template <typename U, void (U::*)()noexcept> struct Check;
-      template <typename U> static Yes func(Check<U, &U::deallocateAll> *);
+      template <typename U> static Yes func(Check<U, &U::deallocate_all> *);
       template <typename U> static No func(...);
 
     public:
@@ -146,7 +146,7 @@ namespace alb {
 
     template <class Allocator>
     struct Expander<Allocator, typename std::enable_if<has_expand<Allocator>::value>::type> {
-      static bool doIt(Allocator &a, block &b, size_t delta) noexcept
+      static bool do_it(Allocator &a, block &b, size_t delta) noexcept
       {
         return a.expand(b, delta);
       }
@@ -154,7 +154,7 @@ namespace alb {
 
     template <class Allocator>
     struct Expander<Allocator, typename std::enable_if<!has_expand<Allocator>::value>::type> {
-      static bool doIt(Allocator &, block &, size_t) noexcept
+      static bool do_it(Allocator &, block &, size_t) noexcept
       {
         return false;
       }
@@ -162,7 +162,7 @@ namespace alb {
 
     /**
     * This class implements or hides, depending on the Allocators properties, the
-    * deallocateAll operation.
+    * deallocate_all operation.
     *
     * \ingroup group_traits
     */
@@ -170,17 +170,17 @@ namespace alb {
 
     template <class Allocator>
     struct AllDeallocator<Allocator,
-                          typename std::enable_if<has_deallocateAll<Allocator>::value>::type> {
-      static void doIt(Allocator &a) noexcept
+                          typename std::enable_if<has_deallocate_all<Allocator>::value>::type> {
+      static void do_it(Allocator &a) noexcept
       {
-        a.deallocateAll();
+        a.deallocate_all();
       }
     };
 
     template <class Allocator>
     struct AllDeallocator<Allocator,
-                          typename std::enable_if<!has_deallocateAll<Allocator>::value>::type> {
-      static void doIt(Allocator &) noexcept
+                          typename std::enable_if<!has_deallocate_all<Allocator>::value>::type> {
+      static void do_it(Allocator &) noexcept
       {
       }
     };

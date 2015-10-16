@@ -34,15 +34,15 @@ namespace alb {
   template <class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize>
   class bucketizer {
   public:
-    static const bool supports_truncated_deallocation = false;
+    static constexpr bool supports_truncated_deallocation = false;
 
     static_assert(MinSize < MaxSize, "MinSize must be smaller than MaxSize");
     static_assert((MaxSize - MinSize + 1) % StepSize == 0, "Incorrect ranges or step size!");
 
-    static const unsigned number_of_buckets = ((MaxSize - MinSize + 1) / StepSize);
-    static const unsigned max_size = MaxSize;
-    static const unsigned min_size = MinSize;
-    static const unsigned step_size = StepSize;
+    static constexpr unsigned number_of_buckets = ((MaxSize - MinSize + 1) / StepSize);
+    static constexpr unsigned max_size = MaxSize;
+    static constexpr unsigned min_size = MinSize;
+    static constexpr unsigned step_size = StepSize;
 
     using allocator = Allocator;
 
@@ -51,8 +51,12 @@ namespace alb {
     bucketizer() noexcept
     {
       for (size_t i = 0; i < number_of_buckets; i++) {
-        _buckets[i].setMinMax(MinSize + i * StepSize, MinSize + (i + 1) * StepSize - 1);
+        _buckets[i].set_min_max(MinSize + i * StepSize, MinSize + (i + 1) * StepSize - 1);
       }
+    }
+
+    static constexpr size_t good_size(size_t) {
+      return max_size;
     }
 
     /**
@@ -99,21 +103,21 @@ namespace alb {
         return false;
       }
 
-      if (internal::reallocator<bucketizer>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<bucketizer>::is_handled_default(*this, b, n)) {
         return true;
       }
 
       assert(owns(b));
 
-      const auto alignedLength = internal::roundToAlignment(StepSize, n);
-      auto currentAllocator = findMatchingAllocator(b.length);
-      auto newAllocator = findMatchingAllocator(alignedLength);
+      const auto alignedLength = internal::round_to_alignment(StepSize, n);
+      auto currentAllocator = find_matching_allocator(b.length);
+      auto newAllocator = find_matching_allocator(alignedLength);
 
       if (currentAllocator == newAllocator) {
         return true;
       }
 
-      return internal::reallocateWithCopy(*currentAllocator, *newAllocator, b, alignedLength);
+      return internal::reallocate_with_copy(*currentAllocator, *newAllocator, b, alignedLength);
     }
 
     /**
@@ -130,28 +134,28 @@ namespace alb {
         return;
       }
 
-      auto currentAllocator = findMatchingAllocator(b.length);
+      auto currentAllocator = find_matching_allocator(b.length);
       currentAllocator->deallocate(b);
     }
 
     /**
      * Deallocates all resources. Beware of possible dangling pointers!
-     * This method is only available if Allocator::deallocateAll is available
+     * This method is only available if Allocator::deallocate_all is available
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_deallocateAll<U>::value, void>::type
-    deallocateAll() noexcept
+    typename std::enable_if<traits::has_deallocate_all<U>::value, void>::type
+    deallocate_all() noexcept
     {
       for (auto &item : _buckets) {
-        traits::AllDeallocator<U>::doIt(item);
+        traits::AllDeallocator<U>::do_it(item);
       }
     }
 
   private:
-    Allocator *findMatchingAllocator(size_t n) noexcept
+    Allocator *find_matching_allocator(size_t n) noexcept
     {
       assert(MinSize <= n && n <= MaxSize);
-      auto v = alb::internal::roundToAlignment(StepSize, n);
+      auto v = alb::internal::round_to_alignment(StepSize, n);
       return &_buckets[(v - MinSize) / StepSize];
     }
   };

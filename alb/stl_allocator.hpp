@@ -27,7 +27,7 @@ namespace alb {
   };
 
   template <typename T, class Allocator> class stl_allocator {
-    typename Allocator::value_type &_allocator;
+    typename Allocator::value_type &allocator_;
 
   public:
     using size_type = size_t;
@@ -43,17 +43,17 @@ namespace alb {
     };
 
     stl_allocator()
-      : _allocator(Allocator::instance())
+      : allocator_(Allocator::instance())
     {
     }
     stl_allocator(const stl_allocator &)
-      : _allocator(Allocator::instance())
+      : allocator_(Allocator::instance())
     {
     }
 
     template <typename U>
     explicit stl_allocator(const stl_allocator<U, Allocator> &)
-      : _allocator(Allocator::instance())
+      : allocator_(Allocator::instance())
     {
     }
 
@@ -72,9 +72,9 @@ namespace alb {
 
     T *allocate(std::size_t n, const void * /*hint*/ = nullptr)
     {
-      auto b = _allocator.allocate(n * sizeof(T));
+      auto b = allocator_.allocate(n * sizeof(T));
       if (b) {
-        auto p = _allocator.outerToPrefix(b);
+        auto p = allocator_.outer_to_prefix(b);
         p->length = static_cast<unsigned>(b.length);
         return static_cast<T *>(b.ptr);
       }
@@ -84,9 +84,9 @@ namespace alb {
     void deallocate(T *ptr, std::size_t n)
     {
       block pseudoBlock(ptr, n);
-      auto p = _allocator.outerToPrefix(pseudoBlock);
+      auto p = allocator_.outer_to_prefix(pseudoBlock);
       block realBlock(ptr, p->length);
-      _allocator.deallocate(realBlock);
+      allocator_.deallocate(realBlock);
     }
 
     size_t max_size() const

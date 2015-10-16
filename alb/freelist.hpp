@@ -44,11 +44,11 @@ namespace alb {
   template <bool Shared, class Allocator, size_t MinSize, size_t MaxSize, unsigned PoolSize,
             unsigned NumberOfBatchAllocations>
   class freelist_base {
-    Allocator _allocator;
+    Allocator allocator_;
 
     typename traits::type_switch<boost::lockfree::stack<void *, boost::lockfree::fixed_sized<true>,
                                                         boost::lockfree::capacity<PoolSize>>,
-                                 internal::stack<void *, PoolSize>, Shared>::type _root;
+                                 internal::stack<void *, PoolSize>, Shared>::type root_;
 
     internal::dynastic<(MinSize == internal::DynasticDynamicSet ? internal::DynasticDynamicSet
                                                                 : MinSize),
@@ -88,7 +88,7 @@ namespace alb {
      * \param minSize The lower boundary accepted by this Allocator
      * \param maxSize The upper boundary accepted by this Allocator
      */
-    void setMinMax(size_t minSize, size_t maxSize) noexcept
+    void set_min_max(size_t minSize, size_t maxSize) noexcept
     {
       assert(_lowerBound.value() == internal::DynasticUndefined);
       // "Changing the lower bound during after initialization is not wise!"
@@ -123,9 +123,9 @@ namespace alb {
     ~freelist_base()
     {
       void *curBlock = nullptr;
-      while (_root.pop(curBlock)) {
+      while (root_.pop(curBlock)) {
         block oldBlock(curBlock, _upperBound.value());
-        _allocator.deallocate(oldBlock);
+        allocator_.deallocate(oldBlock);
       }
     }
 
@@ -148,7 +148,7 @@ namespace alb {
       if (_lowerBound.value() <= n && n <= _upperBound.value()) {
         void *freeBlock = nullptr;
 
-        if (_root.pop(freeBlock)) {
+        if (root_.pop(freeBlock)) {
           return {freeBlock, _upperBound.value()};
         }
         else {
@@ -156,32 +156,32 @@ namespace alb {
           if (supports_truncated_deallocation) {
             // allocating in a bunch to gain of having the allocator code in the
             // cache
-            auto batchAllocatedBlocks = _allocator.allocate(blockSize * NumberOfBatchAllocations);
+            auto batchAllocatedBlocks = allocator_.allocate(blockSize * NumberOfBatchAllocations);
 
             if (batchAllocatedBlocks) {
               // we use the very first block directly so we start at 1
               for (size_t i = 1; i < NumberOfBatchAllocations; i++) {
-                if (!_root.push(static_cast<char *>(batchAllocatedBlocks.ptr) + i * blockSize)) {
+                if (!root_.push(static_cast<char *>(batchAllocatedBlocks.ptr) + i * blockSize)) {
                   assert(false);
                   alb::block oldBlock(static_cast<char *>(batchAllocatedBlocks.ptr) + i * blockSize,
                                       blockSize);
-                  _allocator.deallocate(oldBlock);
+                  allocator_.deallocate(oldBlock);
                 }
               }
               // returning the first within block
               return {batchAllocatedBlocks.ptr, blockSize};
             }
-            return _allocator.allocate(blockSize);
+            return allocator_.allocate(blockSize);
           }
           else {
             for (size_t i = 0; i < NumberOfBatchAllocations - 1; i++) {
-              auto b = _allocator.allocate(blockSize);
-              if (!_root.push(b.ptr)) { // the list is full in the meantime, so we
+              auto b = allocator_.allocate(blockSize);
+              if (!root_.push(b.ptr)) { // the list is full in the meantime, so we
                                         // exit early
                 return b;
               }
             }
-            return _allocator.allocate(blockSize);
+            return allocator_.allocate(blockSize);
           }
         }
       }
@@ -198,7 +198,7 @@ namespace alb {
      */
     bool reallocate(block &b, size_t n) noexcept
     {
-      if (internal::reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<decltype(*this)>::is_handled_default(*this, b, n)) {
         return true;
       }
       return false;
@@ -222,11 +222,11 @@ namespace alb {
     void deallocate(block &b) noexcept
     {
       if (b && owns(b)) {
-        if (_root.push(b.ptr)) {
+        if (root_.push(b.ptr)) {
           b.reset();
           return;
         }
-        _allocator.deallocate(b);
+        allocator_.deallocate(b);
       }
     }
   };

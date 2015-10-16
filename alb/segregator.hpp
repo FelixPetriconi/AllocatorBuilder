@@ -32,9 +32,9 @@ namespace alb {
     using small_allocator = SmallAllocator;
     using large_allocator = LargeAllocator;
 
-    static const size_t threshold = Threshold;
+    static constexpr size_t threshold = Threshold;
 
-    static const bool supports_truncated_deallocation = 
+    static constexpr bool supports_truncated_deallocation = 
       SmallAllocator::supports_truncated_deallocation && 
       LargeAllocator::supports_truncated_deallocation;
 
@@ -80,7 +80,7 @@ namespace alb {
      */
     bool reallocate(block &b, size_t n) noexcept
     {
-      if (internal::reallocator<segregator>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<segregator>::is_handled_default(*this, b, n)) {
         return true;
       }
 
@@ -88,11 +88,11 @@ namespace alb {
         if (n <= Threshold) {
           return SmallAllocator::reallocate(b, n);
         }
-        return internal::reallocateWithCopy(*this, static_cast<LargeAllocator &>(*this), b, n);
+        return internal::reallocate_with_copy(*this, static_cast<LargeAllocator &>(*this), b, n);
       }
 
       if (n <= Threshold) {
-        return internal::reallocateWithCopy(*this, static_cast<SmallAllocator &>(*this), b, n);
+        return internal::reallocate_with_copy(*this, static_cast<SmallAllocator &>(*this), b, n);
       }
       return LargeAllocator::reallocate(b, n);
     }
@@ -114,13 +114,13 @@ namespace alb {
       }
       if (b.length <= Threshold) {
         if (traits::has_expand<U>::value) {
-          return traits::Expander<U>::doIt(static_cast<U&>(*this), b,
+          return traits::Expander<U>::do_it(static_cast<U&>(*this), b,
                                                         delta);
         }
         return false;
       }
       if (traits::has_expand<V>::value) {
-        return traits::Expander<V>::doIt(static_cast<V&>(*this), b,
+        return traits::Expander<V>::do_it(static_cast<V&>(*this), b,
                                                       delta);
       }
       return false;
@@ -150,10 +150,10 @@ namespace alb {
     template <typename U = SmallAllocator, typename V = LargeAllocator>
     typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
       traits::has_expand<LargeAllocator>::value, void>::type
-    deallocateAll() noexcept
+    deallocate_all() noexcept
     {
-      traits::AllDeallocator<U>::doIt(static_cast<U&>(*this));
-      traits::AllDeallocator<V>::doIt(static_cast<V&>(*this));
+      traits::AllDeallocator<U>::do_it(static_cast<U&>(*this));
+      traits::AllDeallocator<V>::do_it(static_cast<V&>(*this));
     }
   };
 }

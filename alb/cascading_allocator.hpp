@@ -60,12 +60,12 @@ namespace alb {
       size_t allocatedThisSize;
     };
 
-    NodePtr _root;
+    NodePtr root_;
 
-    block allocateNoGrow(size_t n) noexcept
+    block allocate_no_grow(size_t n) noexcept
     {
       block result;
-      auto p = _root.load();
+      auto p = root_.load();
       while (p) {
         result = p->allocator.allocate(n);
         if (result) {
@@ -79,7 +79,7 @@ namespace alb {
       return result;
     }
 
-    Node *createNode() noexcept
+    Node *create_node() noexcept
     {
       // Create a temporary node with an allocator on the stack
       Node nodeOnStack;
@@ -106,14 +106,14 @@ namespace alb {
     /**
      * deletes the passed node and all decedents if available
      */
-    void eraseNode(Node *n) noexcept
+    void erase_node(Node *n) noexcept
     {
       if (n == nullptr) {
         return;
       }
       if (n->next.load()) {
         // delete all possible next Nodes in the list
-        eraseNode(n->next.load());
+        erase_node(n->next.load());
         n->next = nullptr;
       }
       // Create a temporary node on the stack
@@ -128,12 +128,12 @@ namespace alb {
 
     void shrink() noexcept
     {
-      eraseNode(_root.load());
+      erase_node(root_.load());
     }
 
-    Node *findOwningNode(const block &b) const noexcept
+    Node *find_owning_node(const block &b) const noexcept
     {
-      auto p = _root.load();
+      auto p = root_.load();
       while (p) {
         if (p->allocator.owns(b)) {
           return p;
@@ -149,11 +149,15 @@ namespace alb {
   public:
     using allocator = Allocator;
 
-    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+    static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
 
     cascading_allocator_base() noexcept
-      : _root(nullptr)
+      : root_(nullptr)
     {
+    }
+
+    static constexpr size_t good_size(size_t n) {
+      return Allocator::good_size(n);
     }
 
     cascading_allocator_base(cascading_allocator_base &&x) noexcept
@@ -167,8 +171,8 @@ namespace alb {
         return *this;
       }
       shrink();
-      _root = std::move(x._root);
-      x._root = nullptr;
+      root_ = std::move(x.root_);
+      x.root_ = nullptr;
       return *this;
     }
 
@@ -190,38 +194,38 @@ namespace alb {
         return {};
       }
 
-      block result = allocateNoGrow(n);
+      block result = allocate_no_grow(n);
       if (result) {
         return result;
       }
 
       // no node at all there
-      if (_root.load() == nullptr) {
-        auto firstNode = createNode();
+      if (root_.load() == nullptr) {
+        auto firstNode = create_node();
         Node *nullNode = nullptr;
         // test if in the meantime someone else has created a node
-        if (!_root.compare_exchange_weak(nullNode, firstNode)) {
-          eraseNode(firstNode);
+        if (!root_.compare_exchange_weak(nullNode, firstNode)) {
+          erase_node(firstNode);
         }
 
-        result = allocateNoGrow(n);
+        result = allocate_no_grow(n);
         if (result) {
           return result;
         }
       }
 
       // a new node must be appended
-      auto newNode = createNode();
+      auto newNode = create_node();
       Node *nullNode = nullptr;
-      auto p = _root.load();
+      auto p = root_.load();
       do {
-        p = _root;
+        p = root_;
         while (p->next.load() != nullptr) {
           p = p->next;
         }
       } while (!p->next.compare_exchange_weak(nullNode, newNode));
 
-      result = allocateNoGrow(n);
+      result = allocate_no_grow(n);
       return result;
     }
 
@@ -239,7 +243,7 @@ namespace alb {
         return;
       }
 
-      auto p = findOwningNode(b);
+      auto p = find_owning_node(b);
       if (p != nullptr) {
         p->allocator.deallocate(b);
       }
@@ -255,11 +259,11 @@ namespace alb {
      */
     bool reallocate(block &b, size_t n) noexcept
     {
-      if (internal::reallocator<decltype(*this)>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<decltype(*this)>::is_handled_default(*this, b, n)) {
         return true;
       }
 
-      auto p = findOwningNode(b);
+      auto p = find_owning_node(b);
       if (p == nullptr) {
         return false;
       }
@@ -268,7 +272,7 @@ namespace alb {
         return true;
       }
 
-      return internal::reallocateWithCopy(*this, *this, b, n);
+      return internal::reallocate_with_copy(*this, *this, b, n);
     }
 
     /**
@@ -282,7 +286,7 @@ namespace alb {
     typename std::enable_if<traits::has_expand<U>::value, bool>::type
     expand(block &b, size_t delta) noexcept
     {
-      auto p = findOwningNode(b);
+      auto p = find_owning_node(b);
       if (p == nullptr) {
         return false;
       }
@@ -296,7 +300,7 @@ namespace alb {
      */
     bool owns(const block &b) const noexcept
     {
-      return findOwningNode(b) != nullptr;
+      return find_owning_node(b) != nullptr;
     }
 
     /**
@@ -306,8 +310,8 @@ namespace alb {
      * This is only available if the Allocator implements it as well.
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_deallocateAll<U>::value, void>::type
-    deallocateAll() noexcept
+    typename std::enable_if<traits::has_deallocate_all<U>::value, void>::type
+    deallocate_all() noexcept
     {
       shrink();
     }

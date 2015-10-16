@@ -469,7 +469,7 @@ TYPED_TEST(
   EXPECT_EQ(nullptr, mem.ptr);
   EXPECT_EQ(0u, mem.length);
 
-  this->sut.deallocateAll();
+  this->sut.deallocate_all();
   for (auto &b : blocks) {
     b = this->sut.allocate(64 * 8);
     EXPECT_NE(nullptr, b.ptr);

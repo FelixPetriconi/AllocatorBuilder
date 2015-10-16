@@ -22,15 +22,19 @@ namespace alb {
    *
    * \ingroup group_allocators group_shared
    */
-  template <size_t DefaultAlignment = 16> class aligned_mallocator {
-    static const unsigned int alignment = DefaultAlignment;
+  template <unsigned DefaultAlignment = 16> class aligned_mallocator {
+    static constexpr unsigned int alignment = DefaultAlignment;
+
+    static constexpr goodSize(size_t n) {
+      return internal::round_to_alignment(alignment, n);
+    }
 
 #ifdef _MSC_VER
-    bool alignedReallocate(block &b, size_t n) noexcept
+    bool aligned_reallocate(block &b, size_t n) noexcept
     {
-      block reallocatedBlock{_aligned_realloc(b.ptr, n, DefaultAlignment), n};
+      block reallocatedBlock{_aligned_realloc(b.ptr, n, alignment), n};
 
-      if (reallocatedBlock.ptr != nullptr) {
+      if (reallocatedBlock) {
         b = reallocatedBlock;
         return true;
       }
@@ -40,16 +44,16 @@ namespace alb {
     // On posix there is no _aligned_realloc so we try a normal realloc
     // if the result is still aligned we are fine
     // otherwise we have to do it by hand
-    bool alignedReallocate(block &b, size_t n) noexcept
+    bool aligned_reallocate(block &b, size_t n) noexcept
     {
       block reallocatedBlock(::realloc(b.ptr, n));
-      if (reallocatedBlock.ptr != nullptr) {
-        if (static_cast<size_t>(b.ptr) % DefaultAlignment != 0) {
+      if (reallocatedBlock) {
+        if (static_cast<size_t>(b.ptr) % alignment != 0) {
           auto newAlignedBlock = allocate(n);
           if (!newAlignedBlock) {
             return false;
           }
-          internal::blockCopy(b, newAlignedBlock);
+          internal::block_copy(b, newAlignedBlock);
         }
         else {
           b = reallocatedBlock;
@@ -62,7 +66,7 @@ namespace alb {
 #endif
 
   public:
-    static const bool supports_truncated_deallocation = false;
+    static constexpr bool supports_truncated_deallocation = false;
     /**
      * Allocates rounded up to the defined alignment the number of bytes.
      * If the system cannot allocate the specified amount of memory then
@@ -71,9 +75,9 @@ namespace alb {
     block allocate(size_t n) noexcept
     {
 #ifdef _MSC_VER
-      return block{_aligned_malloc(n, DefaultAlignment), n};
+      return block{_aligned_malloc(n, alignment), n};
 #else
-      return block{(void *)memalign(DefaultAlignment, n), n};
+      return block{(void *)memalign(alignment, n), n};
 #endif
     }
 
@@ -89,11 +93,11 @@ namespace alb {
      */
     bool reallocate(block &b, size_t n) noexcept
     {
-      if (internal::reallocator<aligned_mallocator>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<aligned_mallocator>::is_handled_default(*this, b, n)) {
         return true;
       }
 
-      return alignedReallocate(b, n);
+      return aligned_reallocate(b, n);
     }
 
     /**

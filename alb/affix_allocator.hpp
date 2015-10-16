@@ -73,24 +73,24 @@ namespace alb {
    */
   template <class Allocator, typename Prefix, typename Sufix = affix_allocator_helper::no_affix>
   class affix_allocator {
-    Allocator _allocator;
+    Allocator allocator_;
 
-    Prefix *innerToPrefix(const block &b) const noexcept
+    Prefix *inner_to_prefix(const block &b) const noexcept
     {
       return static_cast<Prefix *>(b.ptr);
     }
 
-    Sufix *innerToSufix(const block &b) const noexcept
+    Sufix *inner_to_sufix(const block &b) const noexcept
     {
       return reinterpret_cast<Sufix *>(static_cast<char *>(b.ptr) + b.length - sufix_size);
     }
 
-    block toInnerBlock(const block &b) const noexcept
+    block to_inner_block(const block &b) const noexcept
     {
       return {static_cast<char *>(b.ptr) - prefix_size, b.length + prefix_size + sufix_size};
     }
 
-    block toOuterBlock(const block &b) const noexcept
+    block to_outer_block(const block &b) const noexcept
     {
       return {static_cast<char *>(b.ptr) + prefix_size, b.length - prefix_size - sufix_size};
     }
@@ -99,21 +99,24 @@ namespace alb {
     affix_allocator(const affix_allocator &) = delete;
     affix_allocator &operator=(const affix_allocator &) = delete;
 
-    static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+    static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
 
     using allocator = Allocator;
     using prefix = Prefix;
     using sufix = Sufix;
 
-    static const unsigned int prefix_size =
+    static constexpr unsigned int prefix_size =
         std::is_same<Prefix, affix_allocator_helper::no_affix>::value ? 0 : sizeof(Prefix);
 
-    static const unsigned int sufix_size =
+    static constexpr unsigned int sufix_size =
         std::is_same<Sufix, affix_allocator_helper::no_affix>::value ? 0 : sizeof(Sufix);
 
-    affix_allocator()
-    {
+    static constexpr size_t good_size(size_t n) {
+      return Allocator::good_size(n);
     }
+
+    affix_allocator() noexcept
+    {}
 
     affix_allocator(affix_allocator &&x) noexcept
     {
@@ -122,7 +125,7 @@ namespace alb {
 
     affix_allocator &operator=(affix_allocator &&x) noexcept
     {
-      _allocator = std::move(x._allocator);
+      allocator_ = std::move(x.allocator_);
       return *this;
     }
 
@@ -132,7 +135,7 @@ namespace alb {
      *          if a block is passed, that is not owned by this allocator!
      * \return Pointer to the Prefix before the given block
      */
-    Prefix *outerToPrefix(const block &b) const noexcept
+    Prefix *outer_to_prefix(const block &b) const noexcept
     {
       return b ? (static_cast<Prefix *>(b.ptr) - 1) : nullptr;
     }
@@ -143,7 +146,7 @@ namespace alb {
     *          if a block is passed, that is not owned by this allocator!
     * \return Pointer to the sufix before the given block
     */
-    Sufix *outerToSufix(const block &b) const noexcept
+    Sufix *outer_to_sufix(const block &b) const noexcept
     {
       return b ? (reinterpret_cast<Sufix*>(static_cast<char *>(b.ptr) + b.length)) : nullptr;
     }
@@ -163,15 +166,15 @@ namespace alb {
         return {};
       }
 
-      auto innerMem = _allocator.allocate(prefix_size + n + sufix_size);
+      auto innerMem = allocator_.allocate(prefix_size + n + sufix_size);
       if (innerMem) {
         if (prefix_size > 0) {
-          new (innerToPrefix(innerMem)) Prefix{};
+          new (inner_to_prefix(innerMem)) Prefix{};
         }
         if (sufix_size > 0) {
-          new (innerToSufix(innerMem)) Sufix{};
+          new (inner_to_sufix(innerMem)) Sufix{};
         }
-        return toOuterBlock(innerMem);
+        return to_outer_block(innerMem);
       }
       return {};
     }
@@ -187,13 +190,13 @@ namespace alb {
         return;
       }
       if (prefix_size > 0) {
-        outerToPrefix(b)->~Prefix();
+        outer_to_prefix(b)->~Prefix();
       }
       if (sufix_size > 0) {
-        outerToSufix(b)->~Sufix();
+        outer_to_sufix(b)->~Sufix();
       }
-      auto innerBlock(toInnerBlock(b));
-      _allocator.deallocate(innerBlock);
+      auto innerBlock(to_inner_block(b));
+      allocator_.deallocate(innerBlock);
       b.reset();
     }
 
@@ -206,7 +209,7 @@ namespace alb {
     typename std::enable_if<traits::has_owns<U>::value, bool>::type
     owns(const block &b) const noexcept
     {
-      return b && _allocator.owns(toInnerBlock(b));
+      return b && allocator_.owns(to_inner_block(b));
     }
 
     /**
@@ -219,19 +222,19 @@ namespace alb {
 
     bool reallocate(block &b, size_t n) noexcept
     {
-      if (internal::reallocator<affix_allocator>::isHandledDefault(*this, b, n)) {
+      if (internal::reallocator<affix_allocator>::is_handled_default(*this, b, n)) {
         return true;
       }
-      auto innerBlock = toInnerBlock(b);
+      auto innerBlock = to_inner_block(b);
 
       // Remember the old Sufix in case that it is available, because it must
       // be later placed to the new position
       affix_allocator_helper::optinal_sufix_store<Sufix, sufix_size> oldSufix;
-      oldSufix.store(outerToSufix(b));
+      oldSufix.store(outer_to_sufix(b));
 
-      if (_allocator.reallocate(innerBlock, n + prefix_size + sufix_size)) {
-        oldSufix.unload(innerToSufix(innerBlock));
-        b = toOuterBlock(innerBlock);
+      if (allocator_.reallocate(innerBlock, n + prefix_size + sufix_size)) {
+        oldSufix.unload(inner_to_sufix(innerBlock));
+        b = to_outer_block(innerBlock);
         return true;
       }
       return false;
@@ -259,13 +262,13 @@ namespace alb {
       }
 
       auto oldBlock = b;
-      auto innerBlock = toInnerBlock(b);
+      auto innerBlock = to_inner_block(b);
 
-      if (_allocator.expand(innerBlock, delta)) {
+      if (allocator_.expand(innerBlock, delta)) {
         if (sufix_size > 0) {
-          new (innerToSufix(innerBlock)) Sufix(*outerToSufix(oldBlock));
+          new (inner_to_sufix(innerBlock)) Sufix(*outer_to_sufix(oldBlock));
         }
-        b = toOuterBlock(innerBlock);
+        b = to_outer_block(innerBlock);
         return true;
       }
       return false;
@@ -294,11 +297,11 @@ namespace alb {
     struct affix_extractor<affix_allocator<A, Prefix, Sufix>, T> {
       static Prefix *prefix(affix_allocator<A, Prefix, Sufix> &allocator, const block &b) noexcept
       {
-        return allocator.outerToPrefix(b);
+        return allocator.outer_to_prefix(b);
       }
       static Sufix *sufix(affix_allocator<A, Prefix, Sufix> &allocator, const block &b) noexcept
       {
-        return allocator.outerToSufix(b);
+        return allocator.outer_to_sufix(b);
       }
     };
   }

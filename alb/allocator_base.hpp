@@ -94,16 +94,17 @@ namespace alb {
      *
      * \ingroup group_internal
      */
-    void blockCopy(const block &source, block &destination) noexcept;
+    void block_copy(const block &source, block &destination) noexcept;
 
     /**
      * Returns a upper rounded value of multiples of a
      * \ingroup group_internal
      */
-    inline size_t roundToAlignment(size_t basis, size_t n) noexcept
+    inline constexpr size_t round_to_alignment(size_t basis, size_t n) noexcept
     {
-      auto remainder = n % basis;
-      return n + ((remainder == 0) ? 0 : (basis - remainder));
+//      auto remainder = n % basis;
+//      return n + ((remainder == 0) ? 0 : (basis - remainder));
+      return n + ((n % basis == 0) ? 0 : (basis - n % basis));
     }
 
   } // namespace Helper

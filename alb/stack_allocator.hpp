@@ -26,7 +26,7 @@ namespace alb {
     char _data[MaxSize];
     char *_p;
 
-    bool isLastUsedBlock(const block &b) const noexcept
+    bool is_last_used_block(const block &b) const noexcept
     {
       return (static_cast<char *>(b.ptr) + b.length == _p);
     }
@@ -51,7 +51,7 @@ namespace alb {
         return result;
       }
 
-      const auto alignedLength = internal::roundToAlignment(Alignment, n);
+      const auto alignedLength = internal::round_to_alignment(Alignment, n);
       if (alignedLength + _p > _data + MaxSize) { // not enough memory left
         return result;
       }
@@ -76,7 +76,7 @@ namespace alb {
       // If it was the most recent allocated MemoryBlock, then we can re-use the
       // memory. Otherwise this freed MemoryBlock is not available for further
       // allocations. Since all happens on the stack this is not a leak!
-      if (isLastUsedBlock(b)) {
+      if (is_last_used_block(b)) {
         _p = static_cast<char *>(b.ptr);
       }
       b.reset();
@@ -98,9 +98,9 @@ namespace alb {
         return true;
       }
 
-      const auto alignedLength = internal::roundToAlignment(Alignment, n);
+      const auto alignedLength = internal::round_to_alignment(Alignment, n);
 
-      if (isLastUsedBlock(b)) {
+      if (is_last_used_block(b)) {
         if (static_cast<char *>(b.ptr) + alignedLength <= _data + MaxSize) {
           b.length = alignedLength;
           _p = static_cast<char *>(b.ptr) + alignedLength;
@@ -110,7 +110,7 @@ namespace alb {
         return false;
       }
       if (b.length > n) {
-        b.length = internal::roundToAlignment(Alignment, n);
+        b.length = internal::round_to_alignment(Alignment, n);
         return true;
       }
 
@@ -118,7 +118,7 @@ namespace alb {
       // we cannot deallocate the old block, because it is in between used ones,
       //  so we have to "leak" here.
       if (newBlock) {
-        internal::blockCopy(b, newBlock);
+        internal::block_copy(b, newBlock);
         b = newBlock;
         return true;
       }
@@ -141,10 +141,10 @@ namespace alb {
         b = allocate(delta);
         return b.length != 0;
       }
-      if (!isLastUsedBlock(b)) {
+      if (!is_last_used_block(b)) {
         return false;
       }
-      auto alignedBytes = internal::roundToAlignment(Alignment, delta);
+      auto alignedBytes = internal::round_to_alignment(Alignment, delta);
       if (_p + alignedBytes > _data + MaxSize) {
         return false;
       }
@@ -168,7 +168,7 @@ namespace alb {
      * Be warned that all usage of previously allocated blocks results in
      * unpredictable results!
      */
-    void deallocateAll() noexcept
+    void deallocate_all() noexcept
     {
       _p = _data;
     }

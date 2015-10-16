@@ -12,7 +12,7 @@
 #include <cstring>
 #include <algorithm>
 
-void alb::internal::blockCopy(const alb::block& source, alb::block& destination) noexcept
+void alb::internal::block_copy(const alb::block& source, alb::block& destination) noexcept
 {
   ::memcpy(destination.ptr, source.ptr, std::min(source.length, destination.length));
 }

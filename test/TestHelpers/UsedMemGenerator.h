@@ -26,14 +26,14 @@ namespace test_helpers {
 template <class Allocator, size_t BytesPerBitMarker>
 class UsedMem
 {
-  Allocator& _allocator;
+  Allocator& allocator_;
   std::vector<block> _usedBlocks;    
   template <class A, size_t B>
   friend class UsedMemGenerator;
 
 public:
   UsedMem(Allocator& allocator)
-  : _allocator(allocator) {
+  : allocator_(allocator) {
   }
 
   const std::vector<block>& blocks() const { return _usedBlocks; }
@@ -52,10 +52,10 @@ public:
     char* p = const_cast<char*>(pattern);
     while (*p) {
       if (*p == '1') { 
-        _usedMem._usedBlocks.push_back(_usedMem._allocator.allocate(BytesPerBitMarker));
+        _usedMem._usedBlocks.push_back(_usedMem.allocator_.allocate(BytesPerBitMarker));
       }
       else if (*p == '0') {
-        _freedLater.push_back(_usedMem._allocator.allocate(BytesPerBitMarker));
+        _freedLater.push_back(_usedMem.allocator_.allocate(BytesPerBitMarker));
       }
       ++p;
     }
@@ -64,7 +64,7 @@ public:
 
   UsedMem<Allocator, BytesPerBitMarker> build() {
     for (auto& b : _freedLater) {
-      _usedMem._allocator.deallocate(b);
+      _usedMem.allocator_.deallocate(b);
     }
     return _usedMem;
   }
