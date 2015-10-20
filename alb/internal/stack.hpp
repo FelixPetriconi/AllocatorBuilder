@@ -13,57 +13,61 @@
 #include <boost/type_traits.hpp>
 
 namespace alb {
-  namespace internal {
+  inline namespace v_100 {
+    namespace internal {
 
-    /**
-     * Simple stack with the same interface as boost::lockfree::stack with a fixed
-     * number of elements
-     * It's intend is to be used as not shared variant in the FreeList
-     * \tparam T The element type to be put into the stack
-     * \tparam MaxSize The maximum number of elements that can be put into the stack
-     *
-     * \ingroup group_internal
-     */
-    template <typename T, unsigned MaxSize> class stack {
-      static_assert(boost::has_trivial_assign<T>::value, "T must be trivially copyable");
-      static_assert(boost::has_trivial_destructor<T>::value, "T must be trivially destroyable");
+      /**
+       * Simple stack with the same interface as boost::lockfree::stack with a fixed
+       * number of elements
+       * It's intend is to be used as not shared variant in the FreeList
+       * \tparam T The element type to be put into the stack
+       * \tparam MaxSize The maximum number of elements that can be put into the stack
+       *
+       * \ingroup group_internal
+       */
+      template <typename T, unsigned MaxSize> class stack {
+        static_assert(boost::has_trivial_assign<T>::value, "T must be trivially copyable");
+        static_assert(boost::has_trivial_destructor<T>::value, "T must be trivially destroyable");
 
-      T _elements[MaxSize];
-      int _pos;
+        T _elements[MaxSize];
+        int _pos;
 
-    public:
-      using value_type = T;
-      static const size_t max_size = MaxSize;
+      public:
+        using value_type = T;
+        static const size_t max_size = MaxSize;
 
-      stack() noexcept
-        : _pos(-1)
-      {
-      }
-
-      bool push(T v) noexcept
-      {
-        if (_pos < static_cast<int>(MaxSize) - 1) {
-          _pos++;
-          _elements[_pos] = std::move(v);
-          return true;
+        stack() noexcept
+          : _pos(-1)
+        {
         }
-        return false;
-      }
 
-      bool pop(T &v) noexcept
-      {
-        if (_pos >= 0) {
-          v = std::move(_elements[_pos]);
-          _pos--;
-          return true;
+        bool push(T v) noexcept
+        {
+          if (_pos < static_cast<int>(MaxSize) - 1) {
+            _pos++;
+            _elements[_pos] = std::move(v);
+            return true;
+          }
+          return false;
         }
-        return false;
-      }
 
-      bool empty() const noexcept
-      {
-        return _pos == -1;
-      }
-    };
+        bool pop(T &v) noexcept
+        {
+          if (_pos >= 0) {
+            v = std::move(_elements[_pos]);
+            _pos--;
+            return true;
+          }
+          return false;
+        }
+
+        bool empty() const noexcept
+        {
+          return _pos == -1;
+        }
+      };
+    }
   }
+
+  using namespace v_100;
 }

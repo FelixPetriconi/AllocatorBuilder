@@ -57,9 +57,11 @@ TEST_F(MallocatorTest, ThatReallocatingABlockToZeroResultsInAnEmptyBlock)
   EXPECT_FALSE(mem);
 }
 
+#if 0
 TEST_F(MallocatorTest, ThatReallocatingABlockToATooHugeFails)
 {
   mem = sut.allocate(8);
   EXPECT_FALSE(sut.reallocate(mem, std::numeric_limits<size_t>::max()));
   EXPECT_EQ(8u, mem.length);
 }
+#endif

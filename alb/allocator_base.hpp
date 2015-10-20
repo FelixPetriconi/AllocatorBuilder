@@ -15,97 +15,99 @@
 #include <stddef.h>
 
 namespace alb {
-
-  /**
-   * The value type to describe a memory block and it's length
-   * \ingroup group_allocators
-   */
-  struct block {
-    block() noexcept
-      : ptr(nullptr)
-      , length(0)
-    {
-    }
-
-    block(void *ptr, size_t length) noexcept
-      : ptr(ptr)
-      , length(length)
-    {
-    }
-
-    block(block &&x) noexcept
-    {
-      *this = std::move(x);
-    }
-
-    block &operator=(block &&x) noexcept
-    {
-      ptr = x.ptr;
-      length = x.length;
-      x.reset();
-      return *this;
-    }
-
-    block &operator=(const block &x) noexcept = default;
-    block(const block &x) noexcept = default;
-
+  inline namespace v_100 {
     /**
-     * During destruction of any of this instance, the described memory
-     * is not freed!
+     * The value type to describe a memory block and it's length
+     * \ingroup group_allocators
      */
-    ~block()
-    {
-    }
+    struct block {
+      block() noexcept
+        : ptr(nullptr)
+        , length(0)
+      {
+      }
 
-    /**
-     * Clears the block
-     */
-    void reset() noexcept
-    {
-      ptr = nullptr;
-      length = 0;
-    }
+      block(void *ptr, size_t length) noexcept
+        : ptr(ptr)
+        , length(length)
+      {
+      }
 
-    /**
-     * Bool operator to make the Allocator code better readable
-     */
-    explicit operator bool() const
-    {
-      return length != 0;
-    }
+      block(block &&x) noexcept
+      {
+        *this = std::move(x);
+      }
 
-    bool operator==(const block &rhs) const
-    {
-      return ptr == rhs.ptr && length == rhs.length;
-    }
+      block &operator=(block &&x) noexcept
+      {
+        ptr = x.ptr;
+        length = x.length;
+        x.reset();
+        return *this;
+      }
 
-    /// This points to the start address of the described memory block
-    void *ptr;
+      block &operator=(const block &x) noexcept = default;
+      block(const block &x) noexcept = default;
 
-    /// This describes the length of the reserved bytes.
-    size_t length;
-  };
+      /**
+       * During destruction of any of this instance, the described memory
+       * is not freed!
+       */
+      ~block()
+      {
+      }
 
-  namespace internal {
+      /**
+       * Clears the block
+       */
+      void reset() noexcept
+      {
+        ptr = nullptr;
+        length = 0;
+      }
 
-    /**
-     * Copies std::min(source.length, destination.length) bytes from source to
-     * destination
-     *
-     * \ingroup group_internal
-     */
-    void block_copy(const block &source, block &destination) noexcept;
+      /**
+       * Bool operator to make the Allocator code better readable
+       */
+      explicit operator bool() const
+      {
+        return length != 0;
+      }
 
-    /**
-     * Returns a upper rounded value of multiples of a
-     * \ingroup group_internal
-     */
-    inline constexpr size_t round_to_alignment(size_t basis, size_t n) noexcept
-    {
-//      auto remainder = n % basis;
-//      return n + ((remainder == 0) ? 0 : (basis - remainder));
-      return n + ((n % basis == 0) ? 0 : (basis - n % basis));
-    }
+      bool operator==(const block &rhs) const
+      {
+        return ptr == rhs.ptr && length == rhs.length;
+      }
 
-  } // namespace Helper
+      /// This points to the start address of the described memory block
+      void *ptr;
+
+      /// This describes the length of the reserved bytes.
+      size_t length;
+    };
+
+    namespace internal {
+
+      /**
+       * Copies std::min(source.length, destination.length) bytes from source to
+       * destination
+       *
+       * \ingroup group_internal
+       */
+      void block_copy(const block &source, block &destination) noexcept;
+
+      /**
+       * Returns a upper rounded value of multiples of a
+       * \ingroup group_internal
+       */
+      inline constexpr size_t round_to_alignment(size_t basis, size_t n) noexcept
+      {
+        //      auto remainder = n % basis;
+        //      return n + ((remainder == 0) ? 0 : (basis - remainder));
+        return n + ((n % basis == 0) ? 0 : (basis - n % basis));
+      }
+
+    } // namespace Helper
+  }
+  using namespace v_100;
 }
