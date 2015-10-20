@@ -46,8 +46,8 @@ namespace alb {
    * \ingroup group_allocators group_shared
    */
     template <class Allocator, size_t NumberOfChunks, size_t ChunkSize> class shared_heap {
-      static const uint64_t all_set = std::numeric_limits<uint64_t>::max();
-      static const uint64_t all_zero = 0u;
+      const uint64_t all_set = std::numeric_limits<uint64_t>::max();
+      const uint64_t all_zero = 0u;
 
       internal::dynastic<(NumberOfChunks == internal::DynasticDynamicSet ? 0 : NumberOfChunks), 0>
         numberOfChunks_;
