@@ -26,7 +26,7 @@ namespace alb {
     template <unsigned DefaultAlignment = 16> class aligned_mallocator {
       static constexpr unsigned int alignment = DefaultAlignment;
 
-      static constexpr goodSize(size_t n) {
+      static constexpr size_t good_size(size_t n) {
         return internal::round_to_alignment(alignment, n);
       }
 
