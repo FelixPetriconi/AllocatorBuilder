@@ -22,6 +22,7 @@ set(HEADERS
   ../alb/heap.hpp
   ../alb/mallocator.hpp
   ../alb/memory_corruption_detector.hpp
+  ../alb/null_allocator.hpp
   ../alb/segregator.hpp
   ../alb/freelist.hpp
   ../alb/shared_heap.hpp
