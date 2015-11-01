@@ -23,19 +23,13 @@ namespace alb {
        *
        * \ingroup group_traits
        */
-      template <typename T> struct has_expand {
-      private:
-        typedef char Yes;
-        struct No {
-          char dummy[2];
-        };
-
+      template <typename T> struct has_expand 
+      {
         template <typename U, bool (U::*)(block &, size_t) noexcept> struct Check;
-        template <typename U> static Yes func(Check<U, &U::expand> *);
-        template <typename U> static No func(...);
+        template <typename U> static constexpr bool test(Check<U, &U::expand> *) { return true; }
+        template <typename U> static constexpr bool test(...) { return false; }
 
-      public:
-        static const bool value = (sizeof(func<T>(nullptr)) == sizeof(Yes));
+        static constexpr bool value = test<T>(nullptr);
       };
 
       /**
@@ -43,19 +37,13 @@ namespace alb {
        *
        * \ingroup group_traits
        */
-      template <typename T> struct has_deallocate_all {
-      private:
-        typedef char Yes;
-        struct No {
-          char dummy[2];
-        };
-
+      template <typename T> struct has_deallocate_all 
+      {
         template <typename U, void (U::*)()noexcept> struct Check;
-        template <typename U> static Yes func(Check<U, &U::deallocate_all> *);
-        template <typename U> static No func(...);
+        template <typename U> static bool test(Check<U, &U::deallocate_all> *) { return true; }
+        template <typename U> static bool test(...) { return false; }
 
-      public:
-        static const bool value = (sizeof(func<T>(nullptr)) == sizeof(Yes));
+        static constexpr bool value = test<T>(nullptr);
       };
 
       /**
@@ -63,19 +51,13 @@ namespace alb {
        *
        * \ingroup group_traits
        */
-      template <typename T> struct has_owns {
-      private:
-        typedef char Yes;
-        struct No {
-          char dummy[2];
-        };
-
+      template <typename T> struct has_owns 
+      {
         template <typename U, bool (U::*)(const block &) const noexcept> struct Check;
-        template <typename U> static Yes func(Check<U, &U::owns> *);
-        template <typename U> static No func(...);
+        template <typename U> static constexpr bool test(Check<U, &U::owns> *) { return true; }
+        template <typename U> static constexpr bool test(...) { return false; }
 
-      public:
-        static const bool value = (sizeof(func<T>(nullptr)) == sizeof(Yes));
+        static constexpr bool value = test<T>(nullptr);
       };
 
       /**

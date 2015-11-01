@@ -20,7 +20,7 @@
 using namespace alb::test_helpers;
 
 class FallbackAllocatorTest
-    : public AllocatorBaseTest<alb::fallback_allocator<alb::stack_allocator<32>, alb::mallocator>> {
+    : public AllocatorBaseTest<alb::fallback_allocator<alb::stack_allocator<32,4>, alb::mallocator>> {
 protected:
   void SetUp()
   {

@@ -23,12 +23,12 @@ namespace alb {
      *
      * \ingroup group_allocators
      */
-    template <size_t MaxSize, size_t Alignment = 4> class stack_allocator {
-      char _data[MaxSize];
+    template <size_t MaxSize, size_t Alignment = 16> class stack_allocator {
+      alignas(Alignment) char _data[MaxSize];
+
       char *_p;
 
-      bool is_last_used_block(const block &b) const noexcept
-      {
+      bool is_last_used_block(const block &b) const noexcept {
         return (static_cast<char *>(b.ptr) + b.length == _p);
       }
 
@@ -44,8 +44,7 @@ namespace alb {
       {
       }
 
-      block allocate(size_t n) noexcept
-      {
+      block allocate(size_t n) noexcept {
         block result;
 
         if (n == 0) {
@@ -64,8 +63,7 @@ namespace alb {
         return result;
       }
 
-      void deallocate(block &b) noexcept
-      {
+      void deallocate(block &b) noexcept {
         if (!b) {
           return;
         }
@@ -83,8 +81,7 @@ namespace alb {
         b.reset();
       }
 
-      bool reallocate(block &b, size_t n) noexcept
-      {
+      bool reallocate(block &b, size_t n) noexcept {
         if (b.length == n) {
           return true;
         }
@@ -133,8 +130,7 @@ namespace alb {
        * \return true, if the operation was successful or false if not enough
        *         memory is left
        */
-      bool expand(block &b, size_t delta) noexcept
-      {
+      bool expand(block &b, size_t delta) noexcept {
         if (delta == 0) {
           return true;
         }
@@ -159,8 +155,7 @@ namespace alb {
        * allocator
        * \param b The block to be checked.
        */
-      bool owns(const block &b) const noexcept
-      {
+      bool owns(const block &b) const noexcept {
         return b && (b.ptr >= _data && b.ptr < _data + MaxSize);
       }
 
@@ -169,8 +164,7 @@ namespace alb {
        * Be warned that all usage of previously allocated blocks results in
        * unpredictable results!
        */
-      void deallocate_all() noexcept
-      {
+      void deallocate_all() noexcept {
         _p = _data;
       }
 

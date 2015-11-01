@@ -114,8 +114,8 @@ TYPED_TEST_CASE(FreeListWithParametrizedTest, TypesForFreeListWithParametrizedTe
 
 TYPED_TEST(FreeListWithParametrizedTest, ThatUpperAndLowerBoundIsSet)
 {
-  EXPECT_EQ(16, this->sut.min_size());
-  EXPECT_EQ(42, this->sut.max_size());
+  EXPECT_EQ(16u, this->sut.min_size());
+  EXPECT_EQ(42u, this->sut.max_size());
 }
 
 TYPED_TEST(FreeListWithParametrizedTest, ThatAllocationsBeyondTheBoundariesAreRejected)
