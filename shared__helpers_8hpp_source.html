@@ -119,77 +119,80 @@ $(document).ready(function(){initNavTree('shared__helpers_8hpp_source.html','');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>alb {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">namespace </span>shared_helpers {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classalb_1_1shared__helpers_1_1_null_lock.html">   23</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalb_1_1shared__helpers_1_1_null_lock.html">NullLock</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keyword">explicit</span> <a class="code" href="classalb_1_1shared__helpers_1_1_null_lock.html">NullLock</a>(boost::shared_mutex &amp;)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classalb_1_1shared__helpers_1_1_shared_lock.html">   35</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalb_1_1shared__helpers_1_1_shared_lock.html">SharedLock</a> {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      boost::shared_lock&lt;boost::shared_mutex&gt; _lock;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keyword">explicit</span> <a class="code" href="classalb_1_1shared__helpers_1_1_shared_lock.html">SharedLock</a>(boost::shared_mutex &amp;m)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        : _lock(m)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    };</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classalb_1_1shared__helpers_1_1_unique_lock.html">   50</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalb_1_1shared__helpers_1_1_unique_lock.html">UniqueLock</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      boost::unique_lock&lt;boost::shared_mutex&gt; _lock;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keyword">explicit</span> <a class="code" href="classalb_1_1shared__helpers_1_1_unique_lock.html">UniqueLock</a>(boost::shared_mutex &amp;m)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        : _lock(m)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    };</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structalb_1_1shared__helpers_1_1null__mutex.html">   60</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalb_1_1shared__helpers_1_1null__mutex.html">null_mutex</a> {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    };</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structalb_1_1shared__helpers_1_1null__lock.html">   63</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalb_1_1shared__helpers_1_1null__lock.html">null_lock</a> {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keyword">explicit</span> <a class="code" href="structalb_1_1shared__helpers_1_1null__lock.html">null_lock</a>(<a class="code" href="structalb_1_1shared__helpers_1_1null__mutex.html">null_mutex</a> &amp;)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    };</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="structalb_1_1shared__helpers_1_1lock__guard.html">   69</a></span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> M&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="structalb_1_1shared__helpers_1_1lock__guard_3_01null__mutex_01_4.html">   71</a></span>&#160;    <span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>&lt;<a class="code" href="structalb_1_1shared__helpers_1_1null__mutex.html">null_mutex</a>&gt; {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <a class="code" href="structalb_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>(<a class="code" href="structalb_1_1shared__helpers_1_1null__mutex.html">null_mutex</a> &amp;)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structalb_1_1shared__helpers_1_1lock__guard_3_01std_1_1mutex_01_4.html">   77</a></span>&#160;    <span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>&lt;std::mutex&gt; {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      std::unique_lock&lt;std::mutex&gt; _lock;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keyword">explicit</span> <a class="code" href="structalb_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>(std::mutex &amp;m)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        : _lock(m)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    };</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  } <span class="comment">// namespace helpers</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace alb</span></div>
-<div class="ttc" id="structalb_1_1shared__helpers_1_1null__mutex_html"><div class="ttname"><a href="structalb_1_1shared__helpers_1_1null__mutex.html">alb::shared_helpers::null_mutex</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00060">shared_helpers.hpp:60</a></div></div>
-<div class="ttc" id="classalb_1_1shared__helpers_1_1_null_lock_html"><div class="ttname"><a href="classalb_1_1shared__helpers_1_1_null_lock.html">alb::shared_helpers::NullLock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00023">shared_helpers.hpp:23</a></div></div>
-<div class="ttc" id="structalb_1_1shared__helpers_1_1lock__guard_html"><div class="ttname"><a href="structalb_1_1shared__helpers_1_1lock__guard.html">alb::shared_helpers::lock_guard</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00069">shared_helpers.hpp:69</a></div></div>
-<div class="ttc" id="classalb_1_1shared__helpers_1_1_shared_lock_html"><div class="ttname"><a href="classalb_1_1shared__helpers_1_1_shared_lock.html">alb::shared_helpers::SharedLock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00035">shared_helpers.hpp:35</a></div></div>
-<div class="ttc" id="classalb_1_1shared__helpers_1_1_unique_lock_html"><div class="ttname"><a href="classalb_1_1shared__helpers_1_1_unique_lock.html">alb::shared_helpers::UniqueLock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00050">shared_helpers.hpp:50</a></div></div>
-<div class="ttc" id="structalb_1_1shared__helpers_1_1null__lock_html"><div class="ttname"><a href="structalb_1_1shared__helpers_1_1null__lock.html">alb::shared_helpers::null_lock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00063">shared_helpers.hpp:63</a></div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">inline</span> <span class="keyword">namespace </span>v_100 {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">namespace </span>shared_helpers {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1shared__helpers_1_1_null_lock.html">   24</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1shared__helpers_1_1_null_lock.html">NullLock</a> {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalb_1_1v__100_1_1shared__helpers_1_1_null_lock.html">NullLock</a>(boost::shared_mutex &amp;) noexcept</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;      };</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock.html">   36</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock.html">SharedLock</a> {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        boost::shared_lock&lt;boost::shared_mutex&gt; _lock;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock.html">SharedLock</a>(boost::shared_mutex &amp;m) noexcept</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;          : _lock(m)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      };</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1shared__helpers_1_1_unique_lock.html">   51</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1shared__helpers_1_1_unique_lock.html">UniqueLock</a> {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        boost::unique_lock&lt;boost::shared_mutex&gt; _lock;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalb_1_1v__100_1_1shared__helpers_1_1_unique_lock.html">UniqueLock</a>(boost::shared_mutex &amp;m) noexcept</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;          : _lock(m)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html">   61</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html">null_mutex</a> {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      };</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1shared__helpers_1_1null__lock.html">   64</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1null__lock.html">null_lock</a> {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1null__lock.html">null_lock</a>(<a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html">null_mutex</a> &amp;) noexcept</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      };</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">   70</a></span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> M&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard_3_01null__mutex_01_4.html">   72</a></span>&#160;      <span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>&lt;<a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html">null_mutex</a>&gt; {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>(<a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html">null_mutex</a> &amp;) noexcept</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard_3_01std_1_1mutex_01_4.html">   78</a></span>&#160;      <span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>&lt;std::mutex&gt; {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        std::unique_lock&lt;std::mutex&gt; _lock;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">lock_guard</a>(std::mutex &amp;m) noexcept</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;          : _lock(m)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      };</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    } <span class="comment">// namespace helpers</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <span class="comment">// namespace alb</span></div>
+<div class="ttc" id="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard_html"><div class="ttname"><a href="structalb_1_1v__100_1_1shared__helpers_1_1lock__guard.html">alb::v_100::shared_helpers::lock_guard</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00070">shared_helpers.hpp:70</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock_html"><div class="ttname"><a href="classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock.html">alb::v_100::shared_helpers::SharedLock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00036">shared_helpers.hpp:36</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex_html"><div class="ttname"><a href="structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html">alb::v_100::shared_helpers::null_mutex</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00061">shared_helpers.hpp:61</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1shared__helpers_1_1_unique_lock_html"><div class="ttname"><a href="classalb_1_1v__100_1_1shared__helpers_1_1_unique_lock.html">alb::v_100::shared_helpers::UniqueLock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00051">shared_helpers.hpp:51</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1shared__helpers_1_1_null_lock_html"><div class="ttname"><a href="classalb_1_1v__100_1_1shared__helpers_1_1_null_lock.html">alb::v_100::shared_helpers::NullLock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00024">shared_helpers.hpp:24</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1shared__helpers_1_1null__lock_html"><div class="ttname"><a href="structalb_1_1v__100_1_1shared__helpers_1_1null__lock.html">alb::v_100::shared_helpers::null_lock</a></div><div class="ttdef"><b>Definition:</b> <a href="shared__helpers_8hpp_source.html#l00064">shared_helpers.hpp:64</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><a class="el" href="dir_a495994bfb37b97d8f7021416d3bed69.html">internal</a></li><li class="navelem"><b>shared_helpers.hpp</b></li>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

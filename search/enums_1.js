@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['statsoptions',['StatsOptions',['../group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e',1,'alb']]]
+  ['statsoptions',['StatsOptions',['../group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d',1,'alb::v_100']]]
 ];

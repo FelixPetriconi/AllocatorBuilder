@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setminmax',['setMinMax',['../classalb_1_1freelist__base.html#a393ef0ea0a4b4bc39a5f1ed95ad69061',1,'alb::freelist_base']]]
+  ['set_5fmin_5fmax',['set_min_max',['../classalb_1_1v__100_1_1freelist__base.html#aabab33f86088fd936152bc361f643a41',1,'alb::v_100::freelist_base']]]
 ];

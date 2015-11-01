@@ -119,296 +119,302 @@ $(document).ready(function(){initNavTree('cascading__allocator_8hpp_source.html'
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;internal/noatomic.hpp&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;internal/reallocator.hpp&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;atomic&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;boost/assert.hpp&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span>alb {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html">   29</a></span>&#160;  <span class="keyword">template</span> &lt;<span class="keywordtype">bool</span> Shared, <span class="keyword">typename</span> Allocator&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">struct </span>Node;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">using</span> NodePtr =</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">typename</span> <a class="code" href="structalb_1_1traits_1_1type__switch.html">traits::type_switch&lt;std::atomic&lt;Node *&gt;</a>, <a class="code" href="classalb_1_1internal_1_1_no_atomic.html">internal::NoAtomic&lt;Node *&gt;</a>, Shared&gt;::type;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keyword">inline</span> <span class="keyword">namespace </span>v_100 {</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html">   29</a></span>&#160;    <span class="keyword">template</span> &lt;<span class="keywordtype">bool</span> Shared, <span class="keyword">typename</span> Allocator&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      <span class="keyword">struct </span>Node;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      <span class="keyword">using</span> NodePtr =</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">typename</span> <a class="code" href="structalb_1_1v__100_1_1traits_1_1type__switch.html">traits::type_switch&lt;std::atomic&lt;Node *&gt;</a>, <a class="code" href="classalb_1_1v__100_1_1internal_1_1_no_atomic.html">internal::NoAtomic&lt;Node *&gt;</a>, Shared&gt;::type;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">struct </span>Node {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      Node()</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        : next{<span class="keyword">nullptr</span>}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        , allocatedThisSize{0}</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      <span class="keyword">struct </span>Node {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        Node() noexcept</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;          : next{ <span class="keyword">nullptr</span> }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;          , allocatedThisSize{ 0 }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      Node(Node &amp;&amp;x)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        *<span class="keyword">this</span> = std::move(x);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      }</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        Node(Node &amp;&amp;x) noexcept</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;          *<span class="keyword">this</span> = std::move(x);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      Node &amp;operator=(Node &amp;&amp;x)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        allocator = std::move(x.allocator);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        next = x.next.load();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        allocatedThisSize = x.allocatedThisSize;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        Node &amp;operator=(Node &amp;&amp;x) noexcept</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;          allocator = std::move(x.allocator);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;          next = x.next.load();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;          allocatedThisSize = x.allocatedThisSize;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        x.next = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        x.allocatedThisSize = 0;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;          x.next = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;          x.allocatedThisSize = 0;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;          <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      Allocator allocator;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      NodePtr next;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordtype">size_t</span> allocatedThisSize;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    };</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        Allocator allocator;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        NodePtr next;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">size_t</span> allocatedThisSize;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      };</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    NodePtr _root;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      NodePtr root_;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> allocateNoGrow(<span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <a class="code" href="structalb_1_1block.html">block</a> result;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">auto</span> p = _root.load();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keywordflow">while</span> (p) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        result = p-&gt;allocator.allocate(n);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;          <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">if</span> (!p-&gt;next.load()) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        p = p-&gt;next.load();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> allocate_no_grow(<span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> result;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">auto</span> p = root_.load();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">while</span> (p) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;          result = p-&gt;allocator.allocate(n);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;          <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;          }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;          <span class="keywordflow">if</span> (!p-&gt;next.load()) {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          p = p-&gt;next.load();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    Node *createNode()</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="comment">// Create a temporary node with an allocator on the stack</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      Node nodeOnStack;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      Node *create_node() noexcept</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">// Create a temporary node with an allocator on the stack</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        Node nodeOnStack;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="comment">// Use this allocator to create the first node in allocators space</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keyword">auto</span> nodeBlock = nodeOnStack.allocator.allocate(<span class="keyword">sizeof</span>(Node));</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="comment">// Use this allocator to create the first node in allocators space</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">auto</span> nodeBlock = nodeOnStack.allocator.allocate(<span class="keyword">sizeof</span>(Node));</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      nodeOnStack.allocatedThisSize = nodeBlock.length;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keyword">auto</span> result = <span class="keyword">reinterpret_cast&lt;</span>Node *<span class="keyword">&gt;</span>(nodeBlock.ptr);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        nodeOnStack.allocatedThisSize = nodeBlock.length;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">auto</span> result = <span class="keyword">static_cast&lt;</span>Node *<span class="keyword">&gt;</span>(nodeBlock.ptr);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keywordflow">if</span> (!result) {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">if</span> (!result) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="comment">// Create a new Node emplace</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keyword">new</span> (result) Node();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="comment">// Create a new Node emplace</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keyword">new</span> (result) Node();</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="comment">// Move the node from the stack to the allocated space</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      *result = std::move(nodeOnStack);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="comment">// Move the node from the stack to the allocated space</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        *result = std::move(nodeOnStack);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">void</span> eraseNode(Node *n)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">if</span> (n == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="keywordflow">if</span> (n-&gt;next.load()) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="comment">// delete all possible next Nodes in the list</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        eraseNode(n-&gt;next.load());</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        n-&gt;next = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="comment">// Create a temporary node on the stack</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      Node stackNode;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keywordtype">void</span> erase_node(Node *n) noexcept</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">if</span> (n == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;          <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">if</span> (n-&gt;next.load()) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;          <span class="comment">// delete all possible next Nodes in the list</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;          erase_node(n-&gt;next.load());</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;          n-&gt;next = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="comment">// Create a temporary node on the stack</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        Node stackNode;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="comment">// Move the allocator to the temporary node</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      stackNode = std::move(*n);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <a class="code" href="structalb_1_1block.html">block</a> allocatedBlock(n, stackNode.allocatedThisSize);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="comment">// Move the allocator to the temporary node</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        stackNode = std::move(*n);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> allocatedBlock(n, stackNode.allocatedThisSize);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      stackNode.allocator.deallocate(allocatedBlock);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        stackNode.allocator.deallocate(allocatedBlock);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      }</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span> shrink()</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      eraseNode(_root.load());</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keywordtype">void</span> shrink() noexcept</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        erase_node(root_.load());</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      }</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    Node *findOwningNode(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;b)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="keyword">auto</span> p = _root.load();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="keywordflow">while</span> (p) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">if</span> (p-&gt;allocator.owns(b)) {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;          <span class="keywordflow">return</span> p;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        p = p-&gt;next.load();</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      }</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      Node *find_owning_node(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) <span class="keyword">const</span> noexcept</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keyword">auto</span> p = root_.load();</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">while</span> (p) {</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;          <span class="keywordflow">if</span> (p-&gt;allocator.owns(b)) {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;          }</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;          p = p-&gt;next.load();</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      }</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a>(<span class="keyword">const</span> <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a>(<span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keyword">using</span> allocator = Allocator;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      <span class="keyword">using</span> allocator = Allocator;</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation = Allocator::supports_truncated_deallocation;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> supports_truncated_deallocation = Allocator::supports_truncated_deallocation;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a>()</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      : _root(<span class="keyword">nullptr</span>)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a>() noexcept</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        : root_(<span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      }</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a>(<a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x)</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    {</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      *<span class="keyword">this</span> = std::move(x);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;operator=(<a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x)</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <span class="keywordflow">if</span> (<span class="keyword">this</span> == &amp;x) {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      }</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      shrink();</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      _root = std::move(x._root);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      x._root = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#aeb45deda96b500dc00367e483dee3cb7">  178</a></span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html#aeb45deda96b500dc00367e483dee3cb7">~cascading_allocator_base</a>()</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      shrink();</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#a4a4916b7453ecfd2f25fb49015846cf8">  187</a></span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> <a class="code" href="classalb_1_1cascading__allocator__base.html#a4a4916b7453ecfd2f25fb49015846cf8">allocate</a>(<span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      <a class="code" href="structalb_1_1block.html">block</a> result = allocateNoGrow(n);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      <span class="comment">// no node at all there</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      <span class="keywordflow">if</span> (_root.load() == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keyword">auto</span> firstNode = createNode();</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        Node *nullNode = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="comment">// test if in the meantime someone else has created a node</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">if</span> (!_root.compare_exchange_weak(nullNode, firstNode)) {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;          eraseNode(firstNode);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        result = allocateNoGrow(n);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;          <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      <span class="comment">// a new node must be appended</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      <span class="keyword">auto</span> newNode = createNode();</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      Node *nullNode = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;      <span class="keyword">auto</span> p = _root.load();</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        p = _root;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordflow">while</span> (p-&gt;next.load() != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;          p = p-&gt;next;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        }</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      } <span class="keywordflow">while</span> (!p-&gt;next.compare_exchange_weak(nullNode, newNode));</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      result = allocateNoGrow(n);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> good_size(<span class="keywordtype">size_t</span> n) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">return</span> Allocator::good_size(n);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a>(<a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x) noexcept</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        *<span class="keyword">this</span> = std::move(x);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;operator=(<a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a> &amp;&amp;x) noexcept</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">if</span> (<span class="keyword">this</span> == &amp;x) {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;          <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        shrink();</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        root_ = std::move(x.root_);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        x.root_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a02f7c9e6a6b14c2e7561a37f5ab0087c">  182</a></span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a02f7c9e6a6b14c2e7561a37f5ab0087c">~cascading_allocator_base</a>()</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;      {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        shrink();</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      }</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8b80970a78ef9c7b8278d3bf53e0af0f">  191</a></span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8b80970a78ef9c7b8278d3bf53e0af0f">allocate</a>(<span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;          <span class="keywordflow">return</span>{};</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> result = allocate_no_grow(n);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;          <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="comment">// no node at all there</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">if</span> (root_.load() == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;          <span class="keyword">auto</span> firstNode = create_node();</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;          Node *nullNode = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;          <span class="comment">// test if in the meantime someone else has created a node</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;          <span class="keywordflow">if</span> (!root_.compare_exchange_weak(nullNode, firstNode)) {</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            erase_node(firstNode);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;          }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;          result = allocate_no_grow(n);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;          <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;          }</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="comment">// a new node must be appended</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keyword">auto</span> newNode = create_node();</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        Node *nullNode = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keyword">auto</span> p = root_.load();</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;          p = root_;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          <span class="keywordflow">while</span> (p-&gt;next.load() != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            p = p-&gt;next;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;          }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        } <span class="keywordflow">while</span> (!p-&gt;next.compare_exchange_weak(nullNode, newNode));</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#ad17a213edc72265208ecaf453dbaad88">  231</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classalb_1_1cascading__allocator__base.html#ad17a213edc72265208ecaf453dbaad88">deallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b)</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    {</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;      <span class="keywordflow">if</span> (!<a class="code" href="classalb_1_1cascading__allocator__base.html#aeaedbe51bceb0167577976cf7bbe301d">owns</a>(b)) {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        BOOST_ASSERT_MSG(<span class="keyword">false</span>, <span class="stringliteral">&quot;It is not wise to let me deallocate a foreign Block!&quot;</span>);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      }</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      <span class="keyword">auto</span> p = findOwningNode(b);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      <span class="keywordflow">if</span> (p != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        p-&gt;allocator.deallocate(b);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      }</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    }</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
-<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#a7f956a181f5ac5044d19f9215e168449">  256</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1cascading__allocator__base.html#a7f956a181f5ac5044d19f9215e168449">reallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    {</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;      <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1internal_1_1reallocator.html">internal::reallocator</a>&lt;decltype(*<span class="keyword">this</span>)&gt;::isHandledDefault(*<span class="keyword">this</span>, b, n)) {</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;      }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <span class="keyword">auto</span> p = findOwningNode(b);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      <span class="keywordflow">if</span> (p == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      }</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      <span class="keywordflow">if</span> (p-&gt;allocator.reallocate(b, n)) {</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      }</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        result = allocate_no_grow(n);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;      }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#ae7975d818e4f1ef962951c7f64c63fc3">  235</a></span>&#160;      <span class="keywordtype">void</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#ae7975d818e4f1ef962951c7f64c63fc3">deallocate</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) noexcept</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      {</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;          <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a5a42bf1ba391e6002497673dfed455ff">owns</a>(b)) {</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;          assert(!<span class="stringliteral">&quot;It is not wise to let me deallocate a foreign Block!&quot;</span>);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;          <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        }</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keyword">auto</span> p = find_owning_node(b);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keywordflow">if</span> (p != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;          p-&gt;allocator.deallocate(b);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      }</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
+<div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#adef990b489c6c62fee2111b046ec0d3b">  260</a></span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#adef990b489c6c62fee2111b046ec0d3b">reallocate</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="structalb_1_1v__100_1_1internal_1_1reallocator.html">internal::reallocator</a>&lt;decltype(*<span class="keyword">this</span>)&gt;::is_handled_default(*<span class="keyword">this</span>, b, n)) {</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        }</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keyword">auto</span> p = find_owning_node(b);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordflow">if</span> (p == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        }</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">internal::reallocateWithCopy</a>(*<span class="keyword">this</span>, *<span class="keyword">this</span>, b, n);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;U&gt;::value, <span class="keywordtype">bool</span>&gt;::type</div>
-<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#a49a1d775a793486bdef842860752825f">  283</a></span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html#a49a1d775a793486bdef842860752825f">expand</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> delta)</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;      <span class="keyword">auto</span> p = findOwningNode(b);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;      <span class="keywordflow">if</span> (p == <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      }</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      <span class="keywordflow">return</span> p-&gt;allocator.expand(b, delta);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#aeaedbe51bceb0167577976cf7bbe301d">  297</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1cascading__allocator__base.html#aeaedbe51bceb0167577976cf7bbe301d">owns</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;b)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;      <span class="keywordflow">return</span> findOwningNode(b) != <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    }</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_deallocateAll&lt;U&gt;::value, <span class="keywordtype">void</span>&gt;::type</div>
-<div class="line"><a name="l00310"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator__base.html#ae3b33bdaeb2e089915d82e003a46c148">  310</a></span>&#160;    <a class="code" href="classalb_1_1cascading__allocator__base.html#ae3b33bdaeb2e089915d82e003a46c148">deallocateAll</a>()</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      shrink();</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    }</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  };</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00324"></a><span class="lineno"><a class="line" href="classalb_1_1shared__cascading__allocator.html">  324</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classalb_1_1shared__cascading__allocator.html">shared_cascading_allocator</a> : <span class="keyword">public</span> <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a>&lt;true, Allocator&gt; {</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <a class="code" href="classalb_1_1shared__cascading__allocator.html">shared_cascading_allocator</a>()</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    {</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  };</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00339"></a><span class="lineno"><a class="line" href="classalb_1_1cascading__allocator.html">  339</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classalb_1_1cascading__allocator.html">cascading_allocator</a> : <span class="keyword">public</span> <a class="code" href="classalb_1_1cascading__allocator__base.html">cascading_allocator_base</a>&lt;false, Allocator&gt; {</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <a class="code" href="classalb_1_1cascading__allocator.html">cascading_allocator</a>()</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    {</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    }</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;  };</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;}</div>
-<div class="ttc" id="group__group__internal_html_gaedffaf55cd427fcfe22ab28685925bbf"><div class="ttname"><a href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">alb::internal::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00034">reallocator.hpp:34</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1type__switch_html"><div class="ttname"><a href="structalb_1_1traits_1_1type__switch.html">alb::traits::type_switch</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00196">traits.hpp:196</a></div></div>
-<div class="ttc" id="classalb_1_1internal_1_1_no_atomic_html"><div class="ttname"><a href="classalb_1_1internal_1_1_no_atomic.html">alb::internal::NoAtomic</a></div><div class="ttdef"><b>Definition:</b> <a href="noatomic_8hpp_source.html#l00024">noatomic.hpp:24</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_a49a1d775a793486bdef842860752825f"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#a49a1d775a793486bdef842860752825f">alb::cascading_allocator_base::expand</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; U &gt;::value, bool &gt;::type expand(block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00283">cascading_allocator.hpp:283</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_ae3b33bdaeb2e089915d82e003a46c148"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#ae3b33bdaeb2e089915d82e003a46c148">alb::cascading_allocator_base::deallocateAll</a></div><div class="ttdeci">std::enable_if&lt; traits::has_deallocateAll&lt; U &gt;::value, void &gt;::type deallocateAll()</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00310">cascading_allocator.hpp:310</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html">alb::cascading_allocator_base</a></div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00029">cascading_allocator.hpp:29</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_ad17a213edc72265208ecaf453dbaad88"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#ad17a213edc72265208ecaf453dbaad88">alb::cascading_allocator_base::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00231">cascading_allocator.hpp:231</a></div></div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
-<div class="ttc" id="classalb_1_1shared__cascading__allocator_html"><div class="ttname"><a href="classalb_1_1shared__cascading__allocator.html">alb::shared_cascading_allocator</a></div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00324">cascading_allocator.hpp:324</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator_html"><div class="ttname"><a href="classalb_1_1cascading__allocator.html">alb::cascading_allocator</a></div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00339">cascading_allocator.hpp:339</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_aeaedbe51bceb0167577976cf7bbe301d"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#aeaedbe51bceb0167577976cf7bbe301d">alb::cascading_allocator_base::owns</a></div><div class="ttdeci">bool owns(const block &amp;b) const </div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00297">cascading_allocator.hpp:297</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_a7f956a181f5ac5044d19f9215e168449"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#a7f956a181f5ac5044d19f9215e168449">alb::cascading_allocator_base::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00256">cascading_allocator.hpp:256</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_a4a4916b7453ecfd2f25fb49015846cf8"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#a4a4916b7453ecfd2f25fb49015846cf8">alb::cascading_allocator_base::allocate</a></div><div class="ttdeci">block allocate(size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00187">cascading_allocator.hpp:187</a></div></div>
-<div class="ttc" id="classalb_1_1cascading__allocator__base_html_aeb45deda96b500dc00367e483dee3cb7"><div class="ttname"><a href="classalb_1_1cascading__allocator__base.html#aeb45deda96b500dc00367e483dee3cb7">alb::cascading_allocator_base::~cascading_allocator_base</a></div><div class="ttdeci">~cascading_allocator_base()</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00178">cascading_allocator.hpp:178</a></div></div>
-<div class="ttc" id="structalb_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1internal_1_1reallocator.html">alb::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00056">reallocator.hpp:56</a></div></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordflow">if</span> (p-&gt;allocator.reallocate(b, n)) {</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618">internal::reallocate_with_copy</a>(*<span class="keyword">this</span>, *<span class="keyword">this</span>, b, n);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;      <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;U&gt;::value, <span class="keywordtype">bool</span>&gt;::type</div>
+<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8b5872d3210e014a676f2acf02d0dd48">  287</a></span>&#160;        <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8b5872d3210e014a676f2acf02d0dd48">expand</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> delta) noexcept</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      {</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keyword">auto</span> p = find_owning_node(b);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keywordflow">if</span> (p == <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        }</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordflow">return</span> p-&gt;allocator.expand(b, delta);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      }</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00301"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a5a42bf1ba391e6002497673dfed455ff">  301</a></span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a5a42bf1ba391e6002497673dfed455ff">owns</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) <span class="keyword">const</span> noexcept</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;      {</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">return</span> find_owning_node(b) != <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      }</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      <span class="keyword">typename</span> std::enable_if&lt;traits::has_deallocate_all&lt;U&gt;::value, <span class="keywordtype">void</span>&gt;::type</div>
+<div class="line"><a name="l00314"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8df1b6d494a4ccdfd89a6b7b29e2b62b">  314</a></span>&#160;        <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8df1b6d494a4ccdfd89a6b7b29e2b62b">deallocate_all</a>() noexcept</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      {</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        shrink();</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      }</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    };</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
+<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1shared__cascading__allocator.html">  328</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1shared__cascading__allocator.html">shared_cascading_allocator</a> : <span class="keyword">public</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a>&lt;true, Allocator&gt; {</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1shared__cascading__allocator.html">shared_cascading_allocator</a>() noexcept</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;      {</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;      }</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    };</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
+<div class="line"><a name="l00343"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1cascading__allocator.html">  343</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1cascading__allocator.html">cascading_allocator</a> : <span class="keyword">public</span> <a class="code" href="classalb_1_1v__100_1_1cascading__allocator__base.html">cascading_allocator_base</a>&lt;false, Allocator&gt; {</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;      <a class="code" href="classalb_1_1v__100_1_1cascading__allocator.html">cascading_allocator</a>() noexcept</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      {</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      }</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    };</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;  }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;}</div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_a8df1b6d494a4ccdfd89a6b7b29e2b62b"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8df1b6d494a4ccdfd89a6b7b29e2b62b">alb::v_100::cascading_allocator_base::deallocate_all</a></div><div class="ttdeci">std::enable_if&lt; traits::has_deallocate_all&lt; U &gt;::value, void &gt;::type deallocate_all() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00314">cascading_allocator.hpp:314</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1shared__cascading__allocator_html"><div class="ttname"><a href="classalb_1_1v__100_1_1shared__cascading__allocator.html">alb::v_100::shared_cascading_allocator</a></div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00328">cascading_allocator.hpp:328</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1v__100_1_1internal_1_1reallocator.html">alb::v_100::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00057">reallocator.hpp:57</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_a8b80970a78ef9c7b8278d3bf53e0af0f"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8b80970a78ef9c7b8278d3bf53e0af0f">alb::v_100::cascading_allocator_base::allocate</a></div><div class="ttdeci">block allocate(size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00191">cascading_allocator.hpp:191</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_ae7975d818e4f1ef962951c7f64c63fc3"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#ae7975d818e4f1ef962951c7f64c63fc3">alb::v_100::cascading_allocator_base::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00235">cascading_allocator.hpp:235</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator_html"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator.html">alb::v_100::cascading_allocator</a></div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00343">cascading_allocator.hpp:343</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_adef990b489c6c62fee2111b046ec0d3b"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#adef990b489c6c62fee2111b046ec0d3b">alb::v_100::cascading_allocator_base::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00260">cascading_allocator.hpp:260</a></div></div>
+<div class="ttc" id="group__group__internal_html_gaacb3444b98b7b0d6beaab8f950014618"><div class="ttname"><a href="group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618">alb::v_100::internal::reallocate_with_copy</a></div><div class="ttdeci">bool reallocate_with_copy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00035">reallocator.hpp:35</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html">alb::v_100::cascading_allocator_base</a></div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00029">cascading_allocator.hpp:29</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_a5a42bf1ba391e6002497673dfed455ff"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#a5a42bf1ba391e6002497673dfed455ff">alb::v_100::cascading_allocator_base::owns</a></div><div class="ttdeci">bool owns(const block &amp;b) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00301">cascading_allocator.hpp:301</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1internal_1_1_no_atomic_html"><div class="ttname"><a href="classalb_1_1v__100_1_1internal_1_1_no_atomic.html">alb::v_100::internal::NoAtomic</a></div><div class="ttdef"><b>Definition:</b> <a href="noatomic_8hpp_source.html#l00025">noatomic.hpp:25</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_a8b5872d3210e014a676f2acf02d0dd48"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#a8b5872d3210e014a676f2acf02d0dd48">alb::v_100::cascading_allocator_base::expand</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; U &gt;::value, bool &gt;::type expand(block &amp;b, size_t delta) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00287">cascading_allocator.hpp:287</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1cascading__allocator__base_html_a02f7c9e6a6b14c2e7561a37f5ab0087c"><div class="ttname"><a href="classalb_1_1v__100_1_1cascading__allocator__base.html#a02f7c9e6a6b14c2e7561a37f5ab0087c">alb::v_100::cascading_allocator_base::~cascading_allocator_base</a></div><div class="ttdeci">~cascading_allocator_base()</div><div class="ttdef"><b>Definition:</b> <a href="cascading__allocator_8hpp_source.html#l00182">cascading_allocator.hpp:182</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1traits_1_1type__switch_html"><div class="ttname"><a href="structalb_1_1v__100_1_1traits_1_1type__switch.html">alb::v_100::traits::type_switch</a></div><div class="ttdef"><b>Definition:</b> <a href="traits_8hpp_source.html#l00180">traits.hpp:180</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html">alb::v_100::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>cascading_allocator.hpp</b></li>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

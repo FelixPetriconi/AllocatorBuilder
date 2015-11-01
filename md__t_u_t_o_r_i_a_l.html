@@ -163,13 +163,13 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 </div><!-- fragment --><p> Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap. The code from the string class would be rewritten to this: </p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line">  <span class="keyword">using namespace </span>alb;</div>
-<div class="line">  <span class="keyword">typedef</span> <a class="code" href="classalb_1_1shared__freelist.html">shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt;</a> FList;</div>
-<div class="line">  <a class="code" href="classalb_1_1segregator.html">segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;</a>, <a class="code" href="classalb_1_1mallocator.html">mallocator</a>&gt; myAllocator;</div>
+<div class="line">  <span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
+<div class="line">  segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">class </span>string {</div>
 <div class="line">  <span class="keywordtype">char</span> local_[16];</div>
-<div class="line">  <a class="code" href="structalb_1_1block.html">alb::block</a> chunk_;</div>
+<div class="line">  <a class="code" href="structalb_1_1v__100_1_1block.html">alb::block</a> chunk_;</div>
 <div class="line">  <span class="keywordtype">char</span> *data_;</div>
 <div class="line"><span class="keyword">public</span>:</div>
 <div class="line">  string(<span class="keyword">const</span> <span class="keywordtype">char</span>* t) : data_(nullptr) {</div>
@@ -225,7 +225,7 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="line">}</div>
 </div><!-- fragment --> <h3>Solution</h3>
 <p>Let's make the assumption that MyAllocator is a combined allocator from the Allocator-Builder (ALB) library that should serve as the basis of the memory allocation.</p>
-<p>We cannot use this MyAllocator directly, because the ALB relies on the fact that always an <a class="el" href="structalb_1_1block.html">alb::block</a> must be passed to deallocate(). </p>
+<p>We cannot use this MyAllocator directly, because the ALB relies on the fact that always an alb::block must be passed to deallocate(). </p>
 <div class="fragment"><div class="line"><span class="keyword">struct </span>block {</div>
 <div class="line">  <span class="keywordtype">void</span>* ptr;</div>
 <div class="line">  <span class="keywordtype">size_t</span> length;</div>
@@ -253,9 +253,9 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> operatorDeleteInternal(<span class="keywordtype">void</span>* ptr) {</div>
 <div class="line">  <span class="keywordflow">if</span> (ptr) {</div>
-<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> pseudoBlock(ptr, 1);</div>
+<div class="line">    <a class="code" href="structalb_1_1v__100_1_1block.html">alb::block</a> pseudoBlock(ptr, 1);</div>
 <div class="line">    <span class="keyword">auto</span> p = myGlobalAllocator.outerToPrefix(pseudoBlock);</div>
-<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> realBlock(ptr, *p);</div>
+<div class="line">    <a class="code" href="structalb_1_1v__100_1_1block.html">alb::block</a> realBlock(ptr, *p);</div>
 <div class="line">    myGlobalAllocator.deallocate(realBlock);</div>
 <div class="line">  }  </div>
 <div class="line">}</div>
@@ -301,9 +301,9 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> operatorDeleteInternal(<span class="keywordtype">void</span>* ptr) {</div>
 <div class="line">  <span class="keywordflow">if</span> (ptr) {</div>
-<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> pseudoBlock(ptr, 1);</div>
+<div class="line">    <a class="code" href="structalb_1_1v__100_1_1block.html">alb::block</a> pseudoBlock(ptr, 1);</div>
 <div class="line">    <span class="keyword">auto</span> p = <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;::instance</a>().outerToPrefix(pseudoBlock);</div>
-<div class="line">    <a class="code" href="structalb_1_1block.html">alb::block</a> realBlock(ptr, *p);</div>
+<div class="line">    <a class="code" href="structalb_1_1v__100_1_1block.html">alb::block</a> realBlock(ptr, *p);</div>
 <div class="line">    <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;::instance</a>().deallocate(realBlock);</div>
 <div class="line">  }  </div>
 <div class="line">}</div>
@@ -330,7 +330,7 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

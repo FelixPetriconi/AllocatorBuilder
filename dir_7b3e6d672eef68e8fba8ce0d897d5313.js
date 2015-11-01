@@ -14,6 +14,7 @@ var dir_7b3e6d672eef68e8fba8ce0d897d5313 =
     [ "heap.hpp", "heap_8hpp_source.html", null ],
     [ "mallocator.hpp", "mallocator_8hpp_source.html", null ],
     [ "memory_corruption_detector.hpp", "memory__corruption__detector_8hpp_source.html", null ],
+    [ "null_allocator.hpp", "null__allocator_8hpp_source.html", null ],
     [ "segregator.hpp", "segregator_8hpp_source.html", null ],
     [ "shared_heap.hpp", "shared__heap_8hpp_source.html", null ],
     [ "stack_allocator.hpp", "stack__allocator_8hpp_source.html", null ],

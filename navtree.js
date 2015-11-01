@@ -22,7 +22,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classalb_1_1shared__cascading__allocator.html"
+"classalb_1_1v__100_1_1mallocator.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

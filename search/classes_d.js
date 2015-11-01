@@ -1,12 +1,8 @@
 var searchData=
 [
-  ['segregator',['segregator',['../classalb_1_1segregator.html',1,'alb']]],
-  ['shared_5fcascading_5fallocator',['shared_cascading_allocator',['../classalb_1_1shared__cascading__allocator.html',1,'alb']]],
-  ['shared_5ffreelist',['shared_freelist',['../classalb_1_1shared__freelist.html',1,'alb']]],
-  ['shared_5fheap',['shared_heap',['../classalb_1_1shared__heap.html',1,'alb']]],
-  ['sharedlock',['SharedLock',['../classalb_1_1shared__helpers_1_1_shared_lock.html',1,'alb::shared_helpers']]],
-  ['stack',['stack',['../classalb_1_1internal_1_1stack.html',1,'alb::internal']]],
-  ['stack_5fallocator',['stack_allocator',['../classalb_1_1stack__allocator.html',1,'alb']]],
-  ['stl_5fallocator',['stl_allocator',['../classalb_1_1stl__allocator.html',1,'alb']]],
-  ['stl_5fallocator_3c_20void_2c_20allocator_20_3e',['stl_allocator&lt; void, Allocator &gt;',['../classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4.html',1,'alb']]]
+  ['reallocator',['reallocator',['../structalb_1_1v__100_1_1internal_1_1reallocator.html',1,'alb::v_100::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt; traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_992b5f7969648c64b2ef064428307286.html',1,'alb::v_100::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt;!traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_249cd369dde0762b1c21cc0a7d289991.html',1,'alb::v_100::internal']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html',1,'alb::stl_allocator&lt; void, Allocator &gt;']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_1_1rebind.html',1,'alb::stl_allocator']]]
 ];

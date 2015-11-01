@@ -129,454 +129,449 @@ $(document).ready(function(){initNavTree('allocator__with__stats_8hpp_source.htm
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define MEMBER_ACCESSOR(X)                                                                         \</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">private:                                                                                           \</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">  size_t _##X;                                                                                     \</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">  size_t X##_;                                                                                     \</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">                                                                                                   \</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">public:                                                                                            \</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">  size_t X() const                                                                                 \</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">  size_t X() const noexcept                                                                         \</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">  {                                                                                                \</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">    return _##X;                                                                                   \</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">    return X##_;                                                                                   \</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">  }</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">   43</a></span>&#160;  <span class="keyword">enum</span> <a class="code" href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">StatsOptions</a> : <span class="keywordtype">unsigned</span> {</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea939b71f5ad8e813a0f4f8413cb61c89c">   47</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea939b71f5ad8e813a0f4f8413cb61c89c">NumOwns</a> = 1u &lt;&lt; 0,</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab80022e29d5bae62e68c9734fb548924">   52</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab80022e29d5bae62e68c9734fb548924">NumAllocate</a> = 1u &lt;&lt; 1,</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea40f60ee04d59c258ea6dd81fd9e16b8c">   58</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea40f60ee04d59c258ea6dd81fd9e16b8c">NumAllocateOK</a> = 1u &lt;&lt; 2,</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab58d6196e3e5e94e2702d29a3ee53484">   63</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab58d6196e3e5e94e2702d29a3ee53484">NumExpand</a> = 1u &lt;&lt; 3,</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7f2615cbd55b85265b07ad5ad1cb07a">   68</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7f2615cbd55b85265b07ad5ad1cb07a">NumExpandOK</a> = 1u &lt;&lt; 4,</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea3742d31c2be75c887e336d0222740e73">   73</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea3742d31c2be75c887e336d0222740e73">NumReallocate</a> = 1u &lt;&lt; 5,</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab804de5c6bba7bedfa30e47e323c1dc0">   78</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab804de5c6bba7bedfa30e47e323c1dc0">NumReallocateOK</a> = 1u &lt;&lt; 6,</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaa59dc9a06c9cd0eb4b46ef6c763a8411">   88</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaa59dc9a06c9cd0eb4b46ef6c763a8411">NumReallocateInPlace</a> = 1u &lt;&lt; 7,</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea4f6e0eccf232107e0ee9e2c55c9a161a">   92</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea4f6e0eccf232107e0ee9e2c55c9a161a">NumDeallocate</a> = 1u &lt;&lt; 8,</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea58c3399e283a2535a01e2c29e513f7f9">   96</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea58c3399e283a2535a01e2c29e513f7f9">NumDeallocateAll</a> = 1u &lt;&lt; 9,</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067">  100</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067">NumAll</a> = (1u &lt;&lt; 10) - 1,</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">  109</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">BytesAllocated</a> = 1u &lt;&lt; 10,</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6">  116</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6">BytesDeallocated</a> = 1u &lt;&lt; 11,</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea403c350cc94e681c61c704cded01c905">  121</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea403c350cc94e681c61c704cded01c905">BytesExpanded</a> = 1u &lt;&lt; 12,</div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea6d73bcd5695456ece814e9bd1366137d">  126</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea6d73bcd5695456ece814e9bd1366137d">BytesContracted</a> = 1u &lt;&lt; 13,</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafdcffb4e313b41fc6823ee26226c2d8a">  134</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafdcffb4e313b41fc6823ee26226c2d8a">BytesMoved</a> = 1u &lt;&lt; 14,</div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab8b22d9e60b79be3a1b80ee0f77e935c">  140</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab8b22d9e60b79be3a1b80ee0f77e935c">BytesSlack</a> = 1u &lt;&lt; 15,</div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea605c9d0c8a2fa87dc7da57bfa62dbabc">  145</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea605c9d0c8a2fa87dc7da57bfa62dbabc">BytesHighTide</a> = 1u &lt;&lt; 16,</div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea61bdda740c50be6aedaa2555348b3446">  149</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea61bdda740c50be6aedaa2555348b3446">BytesAll</a> = ((1u &lt;&lt; 17) - 1) &amp; ~<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067">NumAll</a>,</div>
-<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafd6c62c38511b7b74d66b764f99119c8">  155</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafd6c62c38511b7b74d66b764f99119c8">CallerSize</a> = 1u &lt;&lt; 17,</div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eabf7eb918554b9176b7e92cc1c0588c46">  160</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eabf7eb918554b9176b7e92cc1c0588c46">CallerFile</a> = 1u &lt;&lt; 18,</div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea59e7920e7410642a0fb3937064214f3c">  165</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea59e7920e7410642a0fb3937064214f3c">CallerFunction</a> = 1u &lt;&lt; 19,</div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea318002baa2fdb08016a0492cbbe08245">  170</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea318002baa2fdb08016a0492cbbe08245">CallerLine</a> = 1u &lt;&lt; 20,</div>
-<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7a04307da616ff98706d196e0d97473">  174</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7a04307da616ff98706d196e0d97473">CallerTime</a> = 1u &lt;&lt; 21,</div>
-<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea5e3daa39efc189540266b5780c4a91cb">  178</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea5e3daa39efc189540266b5780c4a91cb">CallerAll</a> = ((1u &lt;&lt; 22) - 1) &amp; ~<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067">NumAll</a> &amp; ~<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea61bdda740c50be6aedaa2555348b3446">BytesAll</a>,</div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">  182</a></span>&#160;    <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">All</a> = (1u &lt;&lt; 22) - 1</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  };</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html">  205</a></span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keywordtype">unsigned</span> Flags = alb::StatsOptions::All&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1allocator__with__stats.html">allocator_with_stats</a> {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">  213</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> {</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      <span class="keywordtype">size_t</span> callerSize;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span> *callerFile;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">char</span> *callerFunction;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="keywordtype">int</span> callerLine;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      <span class="comment">/* The comparison does not take the allocation time into account</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">       * It is a template to be able to compare the AllocationInfo from different allocators</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">       */</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> RHS&gt; <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> RHS &amp;rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keywordflow">return</span> callerSize == rhs.callerSize &amp;&amp;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;               (callerFile == rhs.callerFile || ::strcmp(callerFile, rhs.callerFile) == 0) &amp;&amp;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;               (callerFunction == rhs.callerFunction ||</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                ::strcmp(callerFunction, rhs.callerFunction) == 0);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      }</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;      std::chrono::time_point&lt;std::chrono::system_clock&gt; callerTime;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;      <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *previous, *next;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    };</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats_1_1_allocations.html">  241</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations.html">Allocations</a> {</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">  246</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keyword">using</span> iterator_category = std::bidirectional_iterator_tag;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keyword">using</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">value_type</a> = <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keyword">using</span> difference_type = ptrdiff_t;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keyword">using</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">pointer</a> = <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">value_type</a>;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keyword">using</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">const_pointer</a> = <span class="keyword">const</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">pointer</a>;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keyword">using</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">reference</a> = <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">value_type</a>;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keyword">using</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">const_reference</a> = <span class="keyword">const</span> <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">reference</a>;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a>()</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;          : _node{<span class="keyword">nullptr</span>}</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">inline</span> <span class="keyword">namespace </span>v_100 {</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">   44</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">StatsOptions</a> : <span class="keywordtype">unsigned</span> {</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe">   48</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe">NumOwns</a> = 1u &lt;&lt; 0,</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da248c1866b0579eb951a5f1fce818e191">   53</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da248c1866b0579eb951a5f1fce818e191">NumAllocate</a> = 1u &lt;&lt; 1,</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da40089c7520f624b382c6c9c8f78efe2b">   59</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da40089c7520f624b382c6c9c8f78efe2b">NumAllocateOK</a> = 1u &lt;&lt; 2,</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3addd395bbf152fd4b9f78025326f4be">   64</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3addd395bbf152fd4b9f78025326f4be">NumExpand</a> = 1u &lt;&lt; 3,</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6a1bcb8d0425b1f931ffd6c8fd4dd46e">   69</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6a1bcb8d0425b1f931ffd6c8fd4dd46e">NumExpandOK</a> = 1u &lt;&lt; 4,</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6268fa314945366fd99e7ea9535291aa">   74</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6268fa314945366fd99e7ea9535291aa">NumReallocate</a> = 1u &lt;&lt; 5,</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da34727fadfba473f27c8504085af565bb">   79</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da34727fadfba473f27c8504085af565bb">NumReallocateOK</a> = 1u &lt;&lt; 6,</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3e5aa2b31b5a735a54bbda421c2f8051">   89</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3e5aa2b31b5a735a54bbda421c2f8051">NumReallocateInPlace</a> = 1u &lt;&lt; 7,</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da9ccc9d812aa0f4dd30a3bd60b3a2db45">   93</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da9ccc9d812aa0f4dd30a3bd60b3a2db45">NumDeallocate</a> = 1u &lt;&lt; 8,</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daabb3d13891074fb8668483ae8dc034ba">   97</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daabb3d13891074fb8668483ae8dc034ba">NumDeallocateAll</a> = 1u &lt;&lt; 9,</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0">  101</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0">NumAll</a> = (1u &lt;&lt; 10) - 1,</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">  110</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">BytesAllocated</a> = 1u &lt;&lt; 10,</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12">  117</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12">BytesDeallocated</a> = 1u &lt;&lt; 11,</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad4ea44b6a13a9fb2966c28da1d4b5f84">  122</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad4ea44b6a13a9fb2966c28da1d4b5f84">BytesExpanded</a> = 1u &lt;&lt; 12,</div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daa39256fb8b97aa16a53b7637f466fa35">  127</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daa39256fb8b97aa16a53b7637f466fa35">BytesContracted</a> = 1u &lt;&lt; 13,</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da247fbd8ba97025435469ae0c37557dff">  135</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da247fbd8ba97025435469ae0c37557dff">BytesMoved</a> = 1u &lt;&lt; 14,</div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dabab725d5eb1a6c1de0d559ea63e9fe2f">  141</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dabab725d5eb1a6c1de0d559ea63e9fe2f">BytesSlack</a> = 1u &lt;&lt; 15,</div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dade3fd4fac879c64b3ec1a77789eda305">  146</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dade3fd4fac879c64b3ec1a77789eda305">BytesHighTide</a> = 1u &lt;&lt; 16,</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0e005712c14a8ca77c98de258228362d">  150</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0e005712c14a8ca77c98de258228362d">BytesAll</a> = ((1u &lt;&lt; 17) - 1) &amp; ~<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0">NumAll</a>,</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dac354c5e2faeb89d616369eb68304a8b8">  156</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dac354c5e2faeb89d616369eb68304a8b8">CallerSize</a> = 1u &lt;&lt; 17,</div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71">  161</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71">CallerFile</a> = 1u &lt;&lt; 18,</div>
+<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0308ff9834bf54778fb294b3add7a042">  166</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0308ff9834bf54778fb294b3add7a042">CallerFunction</a> = 1u &lt;&lt; 19,</div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619">  171</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619">CallerLine</a> = 1u &lt;&lt; 20,</div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518">  175</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518">CallerTime</a> = 1u &lt;&lt; 21,</div>
+<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad5cde8e0cc8b550019204cc4cc519422">  179</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad5cde8e0cc8b550019204cc4cc519422">CallerAll</a> = ((1u &lt;&lt; 22) - 1) &amp; ~<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0">NumAll</a> &amp; ~<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0e005712c14a8ca77c98de258228362d">BytesAll</a>,</div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da1d7891a5ae773c8d48ceb9eed87855fc">  183</a></span>&#160;      <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da1d7891a5ae773c8d48ceb9eed87855fc">All</a> = (1u &lt;&lt; 22) - 1</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    };</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html">  206</a></span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keywordtype">unsigned</span> Flags = alb::StatsOptions::All&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html">allocator_with_stats</a> {</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">  214</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> {</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordtype">size_t</span> callerSize;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span> *callerFile;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span> *callerFunction;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordtype">int</span> callerLine;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="comment">/* The comparison does not take the allocation time into account</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">        * It is a template to be able to compare the AllocationInfo from different allocators</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> RHS&gt; <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> RHS &amp;rhs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;          <span class="keywordflow">return</span> callerSize == rhs.callerSize &amp;&amp;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            (callerFile == rhs.callerFile || ::strcmp(callerFile, rhs.callerFile) == 0) &amp;&amp;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            (callerFunction == rhs.callerFunction ||</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;              ::strcmp(callerFunction, rhs.callerFunction) == 0);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        }</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        std::chrono::time_point&lt;std::chrono::system_clock&gt; callerTime;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *previous, *next;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      };</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">  242</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a> {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">  247</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;          <span class="keyword">using</span> iterator_category = std::bidirectional_iterator_tag;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;          <span class="keyword">using</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">value_type</a> = <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;          <span class="keyword">using</span> difference_type = ptrdiff_t;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;          <span class="keyword">using</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">pointer</a> = <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">value_type</a>;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;          <span class="keyword">using</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">const_pointer</a> = <span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">pointer</a>;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;          <span class="keyword">using</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">reference</a> = <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">value_type</a>;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;          <span class="keyword">using</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">const_reference</a> = <span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">reference</a>;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;          <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a>()</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            : _node{ <span class="keyword">nullptr</span> }</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;          {}</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a>(<a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *data)</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;          : _node{data}</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        {</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">reference</a> operator*()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;          <span class="keywordflow">return</span> _node;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        }</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">pointer</a> operator-&gt;()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;          <span class="keywordflow">return</span> &amp;(operator*());</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;operator++()</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;          _node = _node-&gt;next;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;          <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        }</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> operator++(<span class="keywordtype">int</span>)</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;          <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> tmp = *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;          ++*<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;          <span class="keywordflow">return</span> tmp;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;          <span class="keyword">explicit</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a>(<a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *data)</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            : _node{ data }</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;          {}</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;          <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">reference</a> operator*()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keywordflow">return</span> _node;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;          }</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;          <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">pointer</a> operator-&gt;()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="keywordflow">return</span> &amp;(operator*());</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;          }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;          <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;operator++() {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            _node = _node-&gt;next;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;          }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;          <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> operator++(<span class="keywordtype">int</span>) {</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> tmp = *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            ++*<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="keywordflow">return</span> tmp;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;          }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;          <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;operator--() {</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            _node = _node-&gt;previous();</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;          }</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;operator--()</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;          _node = _node-&gt;previous();</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;          <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;          <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> operator--(<span class="keywordtype">int</span>) {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> tmp = *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            --*<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">return</span> tmp;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;          }</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> operator--(<span class="keywordtype">int</span>)</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        {</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;          <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> tmp = *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;          --*<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;          <span class="keywordflow">return</span> tmp;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        }</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;x, <span class="keyword">const</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;y)</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        {</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;          <span class="keywordflow">return</span> x._node == y._node;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;          <span class="keyword">friend</span> <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;x, <span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;y) {</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            <span class="keywordflow">return</span> x._node == y._node;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;          }</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;          <span class="keyword">friend</span> <span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;x, <span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;y) {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <span class="keywordflow">return</span> !(x == y);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;          }</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;          <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *_node;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        };</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keyword">friend</span> <span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;x, <span class="keyword">const</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a> &amp;y)</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        {</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;          <span class="keywordflow">return</span> !(x == y);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        }</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *_node;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      };</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="keyword">using</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">const_iterator</a> = <span class="keyword">const</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a>;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="keyword">using</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">const_iterator</a> = <span class="keyword">const</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">iterator</a>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a>(<a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *root)</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;          : _begin(root)</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;          , _end(nullptr)</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        {}</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        const_iterator cbegin()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;          <span class="keywordflow">return</span> _begin;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        }</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      <span class="keyword">explicit</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations.html">Allocations</a>(<a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *root)</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        : _begin(root)</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        , _end(nullptr)</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      {</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;      }</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;      const_iterator cbegin()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keywordflow">return</span> _begin;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;      }</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;      const_iterator cend()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordflow">return</span> _end;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;      }</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      <span class="keywordtype">bool</span> empty()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="keyword">      </span>{</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordflow">return</span> _begin == _end;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      }</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      <span class="keyword">const</span> const_iterator _begin;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      <span class="keyword">const</span> const_iterator _end;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    };</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> HasPerAllocationState =</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        (Flags &amp;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;         (<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7a04307da616ff98706d196e0d97473">StatsOptions::CallerTime</a> | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eabf7eb918554b9176b7e92cc1c0588c46">StatsOptions::CallerFile</a> | <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea318002baa2fdb08016a0492cbbe08245">StatsOptions::CallerLine</a>)) != 0;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">// Simplification for defining all members and accessors.</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">#define MEMBER_ACCESSORS                                                                           \</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numOwns)                                                                         \</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numAllocate)                                                                     \</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numAllocateOK)                                                                   \</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numExpand)                                                                       \</span></div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numExpandOK)                                                                     \</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numReallocate)                                                                   \</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numReallocateOK)                                                                 \</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numReallocateInPlace)                                                            \</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numDeallocate)                                                                   \</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(numDeallocateAll)                                                                \</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesAllocated)                                                                  \</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesDeallocated)                                                                \</span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesExpanded)                                                                   \</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesContracted)                                                                 \</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesMoved)                                                                      \</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesSlack)                                                                      \</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">  MEMBER_ACCESSOR(bytesHighTide)</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    MEMBER_ACCESSORS</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="preprocessor">#undef MEMBER_ACCESSOR</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#undef MEMBER_ACCESSORS</span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> supports_truncated_deallocation = Allocator::supports_truncated_deallocation;</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> has_per_allocation_state = HasPerAllocationState;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    allocator_with_stats()</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;      : _numOwns(0)</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;      , _numAllocate(0)</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      , _numAllocateOK(0)</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;      , _numExpand(0)</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;      , _numExpandOK(0)</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;      , _numReallocate(0)</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;      , _numReallocateOK(0)</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;      , _numReallocateInPlace(0)</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;      , _numDeallocate(0)</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;      , _numDeallocateAll(0)</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;      , _bytesAllocated(0)</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;      , _bytesDeallocated(0)</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;      , _bytesExpanded(0)</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;      , _bytesContracted(0)</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;      , _bytesMoved(0)</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;      , _bytesSlack(0)</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;      , _bytesHighTide(0)</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;      , _root(nullptr)</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    {</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    }</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
-<div class="line"><a name="l00413"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html#acf429b4993d47a19f66a7c3d17c35b46">  413</a></span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> <a class="code" href="classalb_1_1allocator__with__stats.html#acf429b4993d47a19f66a7c3d17c35b46">allocate</a>(<span class="keywordtype">size_t</span> n, <span class="keyword">const</span> <span class="keywordtype">char</span> *file = <span class="keyword">nullptr</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *<span class="keyword">function</span> = <span class="keyword">nullptr</span>,</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                   <span class="keywordtype">int</span> line = 0)</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    {</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;      <span class="keyword">auto</span> result = _allocator.allocate(n);</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;      up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab80022e29d5bae62e68c9734fb548924">StatsOptions::NumAllocate</a>, _numAllocate);</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;      upOK(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea40f60ee04d59c258ea6dd81fd9e16b8c">StatsOptions::NumAllocateOK</a>, _numAllocateOK, n &gt; 0 &amp;&amp; result);</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;      add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">StatsOptions::BytesAllocated</a>, _bytesAllocated, result.length);</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;      updateHighTide();</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;      <span class="keywordflow">if</span> (result &amp;&amp; has_per_allocation_state) {</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        <a class="code" href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *stat =</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;            <a class="code" href="structalb_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(_allocator), AllocationInfo&gt;::prefix</a>(_allocator,</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;                                                                                  result);</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        set(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafd6c62c38511b7b74d66b764f99119c8">StatsOptions::CallerSize</a>, stat-&gt;callerSize, n);</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        set(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eabf7eb918554b9176b7e92cc1c0588c46">StatsOptions::CallerFile</a>, stat-&gt;callerFile, file);</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        set(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea59e7920e7410642a0fb3937064214f3c">StatsOptions::CallerFunction</a>, stat-&gt;callerFunction, <span class="keyword">function</span>);</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        set(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea318002baa2fdb08016a0492cbbe08245">StatsOptions::CallerLine</a>, stat-&gt;callerLine, line);</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        set(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7a04307da616ff98706d196e0d97473">StatsOptions::CallerTime</a>, stat-&gt;callerTime, std::chrono::system_clock::now());</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <span class="comment">// push into caller info stack</span></div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keywordflow">if</span> (_root) {</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;          _root-&gt;previous = stat;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;          stat-&gt;next = _root;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;          stat-&gt;previous = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;          _root = stat;</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        }</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        <span class="keywordflow">else</span> { <span class="comment">// create the new stack</span></div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;          stat-&gt;previous = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;          stat-&gt;next = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;          _root = stat;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        }</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;      }</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    }</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        const_iterator cend()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;          <span class="keywordflow">return</span> _end;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        }</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordtype">bool</span> empty()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;          <span class="keywordflow">return</span> _begin == _end;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;      <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keyword">const</span> const_iterator _begin;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keyword">const</span> const_iterator _end;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;      };</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;      <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> HasPerAllocationState =</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        (Flags &amp;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;          (<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518">StatsOptions::CallerTime</a> | <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71">StatsOptions::CallerFile</a> | <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619">StatsOptions::CallerLine</a>)) != 0;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;      <span class="comment">// Simplification for defining all members and accessors.</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="preprocessor">#define MEMBER_ACCESSORS                                                                           \</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_owns)                                                                         \</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_allocate)                                                                     \</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_allocate_ok)                                                                   \</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_expand)                                                                       \</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_expand_ok)                                                                     \</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_reallocate)                                                                   \</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_reallocate_ok)                                                                 \</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_reallocate_in_place)                                                            \</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_deallocate)                                                                   \</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(num_deallocate_all)                                                                \</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_allocated)                                                                  \</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_deallocated)                                                                \</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_expanded)                                                                   \</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_contracted)                                                                 \</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_moved)                                                                      \</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_slack)                                                                      \</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="preprocessor">    MEMBER_ACCESSOR(bytes_high_tide)</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;      MEMBER_ACCESSORS</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor">#undef MEMBER_ACCESSOR</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#undef MEMBER_ACCESSORS</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> supports_truncated_deallocation = Allocator::supports_truncated_deallocation;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;      <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> has_per_allocation_state = HasPerAllocationState;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;      allocator_with_stats() noexcept</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        : num_owns_(0)</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        , num_allocate_(0)</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        , num_allocate_ok_(0)</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        , num_expand_(0)</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        , num_expand_ok_(0)</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        , num_reallocate_(0)</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        , num_reallocate_ok_(0)</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        , num_reallocate_in_place_(0)</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        , num_deallocate_(0)</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        , num_deallocate_all_(0)</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        , bytes_allocated_(0)</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        , bytes_deallocated_(0)</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        , bytes_expanded_(0)</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        , bytes_contracted_(0)</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        , bytes_moved_(0)</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        , bytes_slack_(0)</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        , bytes_high_tide_(0)</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        , root_(<span class="keywordtype">nullptr</span>)</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;      {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;      }</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
+<div class="line"><a name="l00400"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html#ac1ae0b60015424bcc7441cce4f9b536d">  400</a></span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html#ac1ae0b60015424bcc7441cce4f9b536d">allocate</a>(<span class="keywordtype">size_t</span> n, <span class="keyword">const</span> <span class="keywordtype">char</span> *file = <span class="keyword">nullptr</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *<span class="keyword">function</span> = <span class="keyword">nullptr</span>,</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keywordtype">int</span> line = 0) noexcept</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;      {</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        <span class="keyword">auto</span> result = allocator_.allocate(n);</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da248c1866b0579eb951a5f1fce818e191">StatsOptions::NumAllocate</a>, num_allocate_);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        upOK(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da40089c7520f624b382c6c9c8f78efe2b">StatsOptions::NumAllocateOK</a>, num_allocate_ok_, n &gt; 0 &amp;&amp; result);</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">StatsOptions::BytesAllocated</a>, bytes_allocated_, result.length);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        update_high_tide();</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <span class="keywordflow">if</span> (has_per_allocation_state) {</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;          <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;            <a class="code" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a> *stat =</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;              <a class="code" href="structalb_1_1v__100_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(allocator_), AllocationInfo&gt;::prefix</a>(allocator_,</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                result);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;            set(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dac354c5e2faeb89d616369eb68304a8b8">StatsOptions::CallerSize</a>, stat-&gt;callerSize, n);</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;            set(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71">StatsOptions::CallerFile</a>, stat-&gt;callerFile, file);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            set(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0308ff9834bf54778fb294b3add7a042">StatsOptions::CallerFunction</a>, stat-&gt;callerFunction, <span class="keyword">function</span>);</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            set(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619">StatsOptions::CallerLine</a>, stat-&gt;callerLine, line);</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            set(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518">StatsOptions::CallerTime</a>, stat-&gt;callerTime, std::chrono::system_clock::now());</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            <span class="comment">// push into caller info stack</span></div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            <span class="keywordflow">if</span> (root_) {</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;              root_-&gt;previous = stat;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;              stat-&gt;next = root_;</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;              stat-&gt;previous = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;              root_ = stat;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;            }</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            <span class="keywordflow">else</span> { <span class="comment">// create the new stack</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;              stat-&gt;previous = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;              stat-&gt;next = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;              root_ = stat;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;            }</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;          }</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        }</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;      }</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
+<div class="line"><a name="l00445"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html#ad8938fd6f8267c35e391b02d576ee8ce">  445</a></span>&#160;      <span class="keywordtype">void</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html#ad8938fd6f8267c35e391b02d576ee8ce">deallocate</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) noexcept</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;      {</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da9ccc9d812aa0f4dd30a3bd60b3a2db45">StatsOptions::NumDeallocate</a>, num_deallocate_);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12">StatsOptions::BytesDeallocated</a>, bytes_deallocated_, b.length);</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00456"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html#a1534a6c684d7e0733c515fabb43d4b85">  456</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classalb_1_1allocator__with__stats.html#a1534a6c684d7e0733c515fabb43d4b85">deallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b)</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    {</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;      up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea4f6e0eccf232107e0ee9e2c55c9a161a">StatsOptions::NumDeallocate</a>, _numDeallocate);</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;      add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6">StatsOptions::BytesDeallocated</a>, _bytesDeallocated, b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>);</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;      <span class="keywordflow">if</span> (b &amp;&amp; has_per_allocation_state) {</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;        <span class="keyword">auto</span> stat =</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;            <a class="code" href="structalb_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(_allocator), AllocationInfo&gt;::prefix</a>(_allocator, b);</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;        <span class="keywordflow">if</span> (stat-&gt;previous) {</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;          stat-&gt;previous-&gt;next = stat-&gt;next;</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        }</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        <span class="keywordflow">if</span> (stat-&gt;next) {</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;          stat-&gt;next-&gt;previous = stat-&gt;previous;</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        }</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        <span class="keywordflow">if</span> (stat == _root) {</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;          _root = stat-&gt;previous;</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;        }</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;      }</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;      _allocator.deallocate(b);</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    }</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;</div>
-<div class="line"><a name="l00485"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html#a20679da0417e2a4f4311955c745c93ef">  485</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1allocator__with__stats.html#a20679da0417e2a4f4311955c745c93ef">reallocate</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    {</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;      <span class="keyword">auto</span> originalBlock = b;</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;      <span class="keyword">auto</span> wasRootBlock(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;      <span class="keywordflow">if</span> (b &amp;&amp; has_per_allocation_state) {</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        wasRootBlock =</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;            _root ==</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;            <a class="code" href="structalb_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(_allocator), AllocationInfo&gt;::prefix</a>(_allocator, b);</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;      }</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;      up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea3742d31c2be75c887e336d0222740e73">StatsOptions::NumReallocate</a>, _numReallocate);</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;      <span class="keywordflow">if</span> (!_allocator.reallocate(b, n)) {</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;      }</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;      up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab804de5c6bba7bedfa30e47e323c1dc0">StatsOptions::NumReallocateOK</a>, _numReallocateOK);</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;      std::make_signed&lt;size_t&gt;::type delta = b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> - originalBlock.length;</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;      <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a> == originalBlock.ptr) {</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;        up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaa59dc9a06c9cd0eb4b46ef6c763a8411">StatsOptions::NumReallocateInPlace</a>, _numReallocateInPlace);</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        <span class="keywordflow">if</span> (delta &gt; 0) {</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;          add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">StatsOptions::BytesAllocated</a>, _bytesAllocated, delta);</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;          add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea403c350cc94e681c61c704cded01c905">StatsOptions::BytesExpanded</a>, _bytesExpanded, delta);</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        }</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;          add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6">StatsOptions::BytesDeallocated</a>, _bytesDeallocated, -delta);</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;          add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea6d73bcd5695456ece814e9bd1366137d">StatsOptions::BytesContracted</a>, _bytesContracted, -delta);</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        }</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;      } <span class="comment">// was moved to a new location</span></div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">StatsOptions::BytesAllocated</a>, _bytesAllocated, b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>);</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafdcffb4e313b41fc6823ee26226c2d8a">StatsOptions::BytesMoved</a>, _bytesMoved, originalBlock.length);</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6">StatsOptions::BytesDeallocated</a>, _bytesDeallocated, originalBlock.length);</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        <span class="keywordflow">if</span> (b &amp;&amp; has_per_allocation_state) {</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;          <span class="keyword">auto</span> stat =</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;              <a class="code" href="structalb_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(_allocator), AllocationInfo&gt;::prefix</a>(_allocator, b);</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;          <span class="keywordflow">if</span> (stat-&gt;next) {</div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;            stat-&gt;next-&gt;previous = stat;</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;          }</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;          <span class="keywordflow">if</span> (stat-&gt;previous) {</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;            stat-&gt;previous-&gt;next = stat;</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;          }</div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;          <span class="keywordflow">if</span> (wasRootBlock) {</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;            _root = stat;</div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;          }</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;        }</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;      }</div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;      updateHighTide();</div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    }</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;</div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_owns&lt;U&gt;::value, <span class="keywordtype">bool</span>&gt;::type</div>
-<div class="line"><a name="l00545"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html#aee3f9f9328a1183642bc9af441b2d87e">  545</a></span>&#160;    <a class="code" href="classalb_1_1allocator__with__stats.html#aee3f9f9328a1183642bc9af441b2d87e">owns</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;b)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;      up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea939b71f5ad8e813a0f4f8413cb61c89c">StatsOptions::NumOwns</a>, _numOwns);</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;      <span class="keywordflow">return</span> _allocator.owns(b);</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    }</div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;</div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;    <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;U&gt;::value, <span class="keywordtype">bool</span>&gt;::type</div>
-<div class="line"><a name="l00562"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html#a7437cd9406365e02c158fb0615bcfab9">  562</a></span>&#160;    <a class="code" href="classalb_1_1allocator__with__stats.html#a7437cd9406365e02c158fb0615bcfab9">expand</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> delta)</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;    {</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;      up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab58d6196e3e5e94e2702d29a3ee53484">StatsOptions::NumExpand</a>, _numExpand);</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;      <span class="keyword">auto</span> oldLength = b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>;</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;      <span class="keyword">auto</span> result = _allocator.expand(b, delta);</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;      <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;        up(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7f2615cbd55b85265b07ad5ad1cb07a">StatsOptions::NumExpandOK</a>, _numExpandOK);</div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea403c350cc94e681c61c704cded01c905">StatsOptions::BytesExpanded</a>, _bytesExpanded, b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> - oldLength);</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        add(<a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">StatsOptions::BytesAllocated</a>, _bytesAllocated, b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> - oldLength);</div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        updateHighTide();</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        <span class="comment">// if (b &amp;&amp; has_per_allocation_state) {</span></div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        <span class="comment">//   auto stat = traits::AffixExtractor&lt;</span></div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        <span class="comment">//       decltype(_allocator), AllocationInfo&gt;::prefix(_allocator, b);</span></div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;        <span class="comment">// }</span></div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;      }</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    }</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;</div>
-<div class="line"><a name="l00585"></a><span class="lineno"><a class="line" href="classalb_1_1allocator__with__stats.html#ad1aedb64b1d7c8c19bd89a7f4aa0e117">  585</a></span>&#160;    <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations.html">Allocations</a> <a class="code" href="classalb_1_1allocator__with__stats.html#ad1aedb64b1d7c8c19bd89a7f4aa0e117">allocations</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classalb_1_1allocator__with__stats_1_1_allocations.html">Allocations</a>(_root);</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    }</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> up(<a class="code" href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">StatsOptions</a> option, T &amp;value)</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    {</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        ++value;</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;    }</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> upOK(<a class="code" href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">StatsOptions</a> option, T &amp;value, <span class="keywordtype">bool</span> ok)</div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    {</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option &amp;&amp; ok)</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        ++value;</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    }</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;    <span class="keywordtype">void</span> add(<a class="code" href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">StatsOptions</a> option, T &amp;value, <span class="keyword">typename</span> std::make_signed&lt;T&gt;::type delta)</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;    {</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        value += delta;</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    }</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;</div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> set(<a class="code" href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">StatsOptions</a> option, T &amp;value, T t)</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    {</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; option)</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        value = std::move(t);</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    }</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    <span class="keywordtype">void</span> updateHighTide()</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;    {</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;      <span class="keywordflow">if</span> (Flags &amp; <a class="code" href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea605c9d0c8a2fa87dc7da57bfa62dbabc">StatsOptions::BytesHighTide</a>) {</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">size_t</span> currentlyAllocated = _bytesAllocated - _bytesDeallocated;</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        <span class="keywordflow">if</span> (_bytesHighTide &lt; currentlyAllocated) {</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;          _bytesHighTide = currentlyAllocated;</div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        }</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;      }</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    }</div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;    <span class="keyword">typename</span> traits::type_switch&lt;affix_allocator&lt;Allocator, AllocationInfo&gt;, Allocator,</div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;                                 HasPerAllocationState&gt;::type _allocator;</div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    AllocationInfo *_root;</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;  };</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;}</div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html_a7437cd9406365e02c158fb0615bcfab9"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html#a7437cd9406365e02c158fb0615bcfab9">alb::allocator_with_stats::expand</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; U &gt;::value, bool &gt;::type expand(block &amp;b, size_t delta)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00562">allocator_with_stats.hpp:562</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab80022e29d5bae62e68c9734fb548924"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab80022e29d5bae62e68c9734fb548924">alb::NumAllocate</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00052">allocator_with_stats.hpp:52</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea605c9d0c8a2fa87dc7da57bfa62dbabc"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea605c9d0c8a2fa87dc7da57bfa62dbabc">alb::BytesHighTide</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00145">allocator_with_stats.hpp:145</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab804de5c6bba7bedfa30e47e323c1dc0"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab804de5c6bba7bedfa30e47e323c1dc0">alb::NumReallocateOK</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00078">allocator_with_stats.hpp:78</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea6d73bcd5695456ece814e9bd1366137d"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea6d73bcd5695456ece814e9bd1366137d">alb::BytesContracted</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00126">allocator_with_stats.hpp:126</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab7f2615cbd55b85265b07ad5ad1cb07a"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7f2615cbd55b85265b07ad5ad1cb07a">alb::NumExpandOK</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00068">allocator_with_stats.hpp:68</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab1aff775503dae675821c3ec595ef3c6">alb::BytesDeallocated</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00116">allocator_with_stats.hpp:116</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html">alb::allocator_with_stats</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00205">allocator_with_stats.hpp:205</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html_a1534a6c684d7e0733c515fabb43d4b85"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html#a1534a6c684d7e0733c515fabb43d4b85">alb::allocator_with_stats::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00456">allocator_with_stats.hpp:456</a></div></div>
-<div class="ttc" id="group__group__stats_html_ga90b7c6bcb3c172c158e7ed0de600294e"><div class="ttname"><a href="group__group__stats.html#ga90b7c6bcb3c172c158e7ed0de600294e">alb::StatsOptions</a></div><div class="ttdeci">StatsOptions</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00043">allocator_with_stats.hpp:43</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eafd6c62c38511b7b74d66b764f99119c8"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafd6c62c38511b7b74d66b764f99119c8">alb::CallerSize</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00155">allocator_with_stats.hpp:155</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea58c3399e283a2535a01e2c29e513f7f9"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea58c3399e283a2535a01e2c29e513f7f9">alb::NumDeallocateAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00096">allocator_with_stats.hpp:96</a></div></div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
-<div class="ttc" id="structalb_1_1allocator__with__stats_1_1_allocation_info_html"><div class="ttname"><a href="structalb_1_1allocator__with__stats_1_1_allocation_info.html">alb::allocator_with_stats::AllocationInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00213">allocator_with_stats.hpp:213</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator_html"><div class="ttname"><a href="classalb_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">alb::allocator_with_stats::Allocations::iterator</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00246">allocator_with_stats.hpp:246</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea3742d31c2be75c887e336d0222740e73"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea3742d31c2be75c887e336d0222740e73">alb::NumReallocate</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00073">allocator_with_stats.hpp:73</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea47b253f3fe612f9dc1ea05088ec86aee">alb::BytesAllocated</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00109">allocator_with_stats.hpp:109</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eabf7eb918554b9176b7e92cc1c0588c46"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eabf7eb918554b9176b7e92cc1c0588c46">alb::CallerFile</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00160">allocator_with_stats.hpp:160</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea61bdda740c50be6aedaa2555348b3446"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea61bdda740c50be6aedaa2555348b3446">alb::BytesAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00149">allocator_with_stats.hpp:149</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eaa59dc9a06c9cd0eb4b46ef6c763a8411"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaa59dc9a06c9cd0eb4b46ef6c763a8411">alb::NumReallocateInPlace</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00088">allocator_with_stats.hpp:88</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html_a20679da0417e2a4f4311955c745c93ef"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html#a20679da0417e2a4f4311955c745c93ef">alb::allocator_with_stats::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00485">allocator_with_stats.hpp:485</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea5e3daa39efc189540266b5780c4a91cb"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea5e3daa39efc189540266b5780c4a91cb">alb::CallerAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00178">allocator_with_stats.hpp:178</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaf5758bf8a77afbc9af0bdcb1fd505067">alb::NumAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00100">allocator_with_stats.hpp:100</a></div></div>
-<div class="ttc" id="structalb_1_1traits_1_1affix__extractor_html"><div class="ttname"><a href="structalb_1_1traits_1_1affix__extractor.html">alb::traits::affix_extractor</a></div><div class="ttdef"><b>Definition:</b> <a href="affix__allocator_8hpp_source.html#l00266">affix_allocator.hpp:266</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_aba144d1fa4c47c4cf5987205a6e430f0"><div class="ttname"><a href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">alb::block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00083">allocator_base.hpp:83</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html_aee3f9f9328a1183642bc9af441b2d87e"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html#aee3f9f9328a1183642bc9af441b2d87e">alb::allocator_with_stats::owns</a></div><div class="ttdeci">std::enable_if&lt; traits::has_owns&lt; U &gt;::value, bool &gt;::type owns(const block &amp;b) const </div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00545">allocator_with_stats.hpp:545</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_1_1_allocations_html"><div class="ttname"><a href="classalb_1_1allocator__with__stats_1_1_allocations.html">alb::allocator_with_stats::Allocations</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00241">allocator_with_stats.hpp:241</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea4f6e0eccf232107e0ee9e2c55c9a161a"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea4f6e0eccf232107e0ee9e2c55c9a161a">alb::NumDeallocate</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00092">allocator_with_stats.hpp:92</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_a2b1bb23abc665def50a3bcfa460027d8"><div class="ttname"><a href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">alb::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab8b22d9e60b79be3a1b80ee0f77e935c"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab8b22d9e60b79be3a1b80ee0f77e935c">alb::BytesSlack</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00140">allocator_with_stats.hpp:140</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eaeb7feec6ed456484226153d5e242d74a">alb::All</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00182">allocator_with_stats.hpp:182</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eafdcffb4e313b41fc6823ee26226c2d8a"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eafdcffb4e313b41fc6823ee26226c2d8a">alb::BytesMoved</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00134">allocator_with_stats.hpp:134</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html_ad1aedb64b1d7c8c19bd89a7f4aa0e117"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html#ad1aedb64b1d7c8c19bd89a7f4aa0e117">alb::allocator_with_stats::allocations</a></div><div class="ttdeci">Allocations allocations() const </div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00585">allocator_with_stats.hpp:585</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea318002baa2fdb08016a0492cbbe08245"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea318002baa2fdb08016a0492cbbe08245">alb::CallerLine</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00170">allocator_with_stats.hpp:170</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea59e7920e7410642a0fb3937064214f3c"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea59e7920e7410642a0fb3937064214f3c">alb::CallerFunction</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00165">allocator_with_stats.hpp:165</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea939b71f5ad8e813a0f4f8413cb61c89c"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea939b71f5ad8e813a0f4f8413cb61c89c">alb::NumOwns</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00047">allocator_with_stats.hpp:47</a></div></div>
-<div class="ttc" id="classalb_1_1allocator__with__stats_html_acf429b4993d47a19f66a7c3d17c35b46"><div class="ttname"><a href="classalb_1_1allocator__with__stats.html#acf429b4993d47a19f66a7c3d17c35b46">alb::allocator_with_stats::allocate</a></div><div class="ttdeci">block allocate(size_t n, const char *file=nullptr, const char *function=nullptr, int line=0)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00413">allocator_with_stats.hpp:413</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea40f60ee04d59c258ea6dd81fd9e16b8c"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea40f60ee04d59c258ea6dd81fd9e16b8c">alb::NumAllocateOK</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00058">allocator_with_stats.hpp:58</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab7a04307da616ff98706d196e0d97473"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab7a04307da616ff98706d196e0d97473">alb::CallerTime</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00174">allocator_with_stats.hpp:174</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294eab58d6196e3e5e94e2702d29a3ee53484"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294eab58d6196e3e5e94e2702d29a3ee53484">alb::NumExpand</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00063">allocator_with_stats.hpp:63</a></div></div>
-<div class="ttc" id="group__group__stats_html_gga90b7c6bcb3c172c158e7ed0de600294ea403c350cc94e681c61c704cded01c905"><div class="ttname"><a href="group__group__stats.html#gga90b7c6bcb3c172c158e7ed0de600294ea403c350cc94e681c61c704cded01c905">alb::BytesExpanded</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00121">allocator_with_stats.hpp:121</a></div></div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        <span class="keywordflow">if</span> (has_per_allocation_state) {</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;          <span class="keywordflow">if</span> (b) {</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;            <span class="keyword">auto</span> stat =</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;              <a class="code" href="structalb_1_1v__100_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(allocator_), AllocationInfo&gt;::prefix</a>(allocator_, b);</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            <span class="keywordflow">if</span> (stat-&gt;previous) {</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;              stat-&gt;previous-&gt;next = stat-&gt;next;</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            }</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            <span class="keywordflow">if</span> (stat-&gt;next) {</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;              stat-&gt;next-&gt;previous = stat-&gt;previous;</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            }</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            <span class="keywordflow">if</span> (stat == root_) {</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;              root_ = stat-&gt;previous;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            }</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;          }</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;        }</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        allocator_.deallocate(b);</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;      }</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;</div>
+<div class="line"><a name="l00476"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html#ad849234f18a1d7d2695efe1fdf18cad0">  476</a></span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html#ad849234f18a1d7d2695efe1fdf18cad0">reallocate</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;      {</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        <span class="keyword">auto</span> originalBlock = b;</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        <span class="keyword">auto</span> wasRootBlock(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        <span class="keywordflow">if</span> (has_per_allocation_state) {</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;          <span class="keywordflow">if</span> (b) {</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;            wasRootBlock =</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;              root_ ==</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;              <a class="code" href="structalb_1_1v__100_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(allocator_), AllocationInfo&gt;::prefix</a>(allocator_, b);</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;          }</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        }</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6268fa314945366fd99e7ea9535291aa">StatsOptions::NumReallocate</a>, num_reallocate_);</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        <span class="keywordflow">if</span> (!allocator_.reallocate(b, n)) {</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        }</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da34727fadfba473f27c8504085af565bb">StatsOptions::NumReallocateOK</a>, num_reallocate_ok_);</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;        std::make_signed&lt;size_t&gt;::type delta = b.length - originalBlock.length;</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        <span class="keywordflow">if</span> (b.ptr == originalBlock.ptr) {</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;          up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3e5aa2b31b5a735a54bbda421c2f8051">StatsOptions::NumReallocateInPlace</a>, num_reallocate_in_place_);</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;          <span class="keywordflow">if</span> (delta &gt; 0) {</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;            add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">StatsOptions::BytesAllocated</a>, bytes_allocated_, delta);</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;            add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad4ea44b6a13a9fb2966c28da1d4b5f84">StatsOptions::BytesExpanded</a>, bytes_expanded_, delta);</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;          }</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;          <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;            add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12">StatsOptions::BytesDeallocated</a>, bytes_deallocated_, -delta);</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;            add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daa39256fb8b97aa16a53b7637f466fa35">StatsOptions::BytesContracted</a>, bytes_contracted_, -delta);</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;          }</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        } <span class="comment">// was moved to a new location</span></div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;          add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">StatsOptions::BytesAllocated</a>, bytes_allocated_, b.length);</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;          add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da247fbd8ba97025435469ae0c37557dff">StatsOptions::BytesMoved</a>, bytes_moved_, originalBlock.length);</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;          add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12">StatsOptions::BytesDeallocated</a>, bytes_deallocated_, originalBlock.length);</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;          <span class="keywordflow">if</span> (has_per_allocation_state) {</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;            <span class="keywordflow">if</span> (b) {</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;              <span class="keyword">auto</span> stat =</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;                <a class="code" href="structalb_1_1v__100_1_1traits_1_1affix__extractor.html">traits::affix_extractor&lt;decltype(allocator_), AllocationInfo&gt;::prefix</a>(allocator_, b);</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;              <span class="keywordflow">if</span> (stat-&gt;next) {</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;                stat-&gt;next-&gt;previous = stat;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;              }</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;              <span class="keywordflow">if</span> (stat-&gt;previous) {</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;                stat-&gt;previous-&gt;next = stat;</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;              }</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;              <span class="keywordflow">if</span> (wasRootBlock) {</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;                root_ = stat;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;              }</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;            }</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;          }</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        }</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;        update_high_tide();</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;      }</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;      <span class="keyword">typename</span> std::enable_if&lt;traits::has_owns&lt;U&gt;::value, <span class="keywordtype">bool</span>&gt;::type</div>
+<div class="line"><a name="l00540"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6">  540</a></span>&#160;        <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6">owns</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) <span class="keyword">const</span> noexcept</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;      {</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe">StatsOptions::NumOwns</a>, num_owns_);</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        <span class="keywordflow">return</span> allocator_.owns(b);</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;      }</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U = Allocator&gt;</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;      <span class="keyword">typename</span> std::enable_if&lt;traits::has_expand&lt;U&gt;::value, <span class="keywordtype">bool</span>&gt;::type</div>
+<div class="line"><a name="l00557"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html#acec9b4750598723a7047151bb1bb398f">  557</a></span>&#160;        <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html#acec9b4750598723a7047151bb1bb398f">expand</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> delta) noexcept</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;      {</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;        up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3addd395bbf152fd4b9f78025326f4be">StatsOptions::NumExpand</a>, num_expand_);</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        <span class="keyword">auto</span> oldLength = b.length;</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        <span class="keyword">auto</span> result = allocator_.expand(b, delta);</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;          up(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6a1bcb8d0425b1f931ffd6c8fd4dd46e">StatsOptions::NumExpandOK</a>, num_expand_ok_);</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;          add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad4ea44b6a13a9fb2966c28da1d4b5f84">StatsOptions::BytesExpanded</a>, bytes_expanded_, b.length - oldLength);</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;          add(<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">StatsOptions::BytesAllocated</a>, bytes_allocated_, b.length - oldLength);</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;          update_high_tide();</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;          <span class="comment">// if (b &amp;&amp; has_per_allocation_state) {</span></div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;          <span class="comment">//   auto stat = traits::AffixExtractor&lt;</span></div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;          <span class="comment">//       decltype(allocator_), AllocationInfo&gt;::prefix(allocator_, b);</span></div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;          <span class="comment">// }</span></div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        }</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;      }</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;</div>
+<div class="line"><a name="l00580"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1allocator__with__stats.html#a33b80f840c12bea616ea8988446f9773">  580</a></span>&#160;      <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats.html#a33b80f840c12bea616ea8988446f9773">allocations</a>() const noexcept</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;      {</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a>(root_);</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;      }</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> up(<a class="code" href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">StatsOptions</a> option, T &amp;value) noexcept</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;      {</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        <span class="keywordflow">if</span> (Flags &amp; option)</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;          ++value;</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;      }</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> upOK(<a class="code" href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">StatsOptions</a> option, T &amp;value, <span class="keywordtype">bool</span> ok) noexcept</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;      {</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        <span class="keywordflow">if</span> (Flags &amp; option &amp;&amp; ok)</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;          ++value;</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;      }</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;      <span class="keywordtype">void</span> <span class="keyword">inline</span> add(<a class="code" href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">StatsOptions</a> option, T &amp;value, <span class="keyword">typename</span> std::make_signed&lt;T&gt;::type delta) noexcept</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;      {</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;        <span class="keywordflow">if</span> (Flags &amp; option)</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;          value += delta;</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;      }</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> set(<a class="code" href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">StatsOptions</a> option, T &amp;value, T t) noexcept</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;      {</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        <span class="keywordflow">if</span> (Flags &amp; option)</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;          value = std::move(t);</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;      }</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;      <span class="keywordtype">void</span> update_high_tide() noexcept</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;      {</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        <span class="keywordflow">if</span> (Flags &amp; <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dade3fd4fac879c64b3ec1a77789eda305">StatsOptions::BytesHighTide</a>) {</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;          <span class="keyword">const</span> <span class="keywordtype">size_t</span> currentlyAllocated = bytes_allocated_ - bytes_deallocated_;</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;          <span class="keywordflow">if</span> (bytes_high_tide_ &lt; currentlyAllocated) {</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;            bytes_high_tide_ = currentlyAllocated;</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;          }</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        }</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;      }</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;      <span class="keyword">typename</span> traits::type_switch&lt;affix_allocator&lt;Allocator, AllocationInfo&gt;, Allocator,</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        HasPerAllocationState&gt;::type allocator_;</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;      AllocationInfo *root_;</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    };</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;  }</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;}</div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da9ccc9d812aa0f4dd30a3bd60b3a2db45"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da9ccc9d812aa0f4dd30a3bd60b3a2db45">alb::v_100::NumDeallocate</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00093">allocator_with_stats.hpp:93</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da34727fadfba473f27c8504085af565bb"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da34727fadfba473f27c8504085af565bb">alb::v_100::NumReallocateOK</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00079">allocator_with_stats.hpp:79</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00206">allocator_with_stats.hpp:206</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da1d7891a5ae773c8d48ceb9eed87855fc"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da1d7891a5ae773c8d48ceb9eed87855fc">alb::v_100::All</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00183">allocator_with_stats.hpp:183</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da6a1bcb8d0425b1f931ffd6c8fd4dd46e"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6a1bcb8d0425b1f931ffd6c8fd4dd46e">alb::v_100::NumExpandOK</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00069">allocator_with_stats.hpp:69</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88dabab725d5eb1a6c1de0d559ea63e9fe2f"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dabab725d5eb1a6c1de0d559ea63e9fe2f">alb::v_100::BytesSlack</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00141">allocator_with_stats.hpp:141</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da6268fa314945366fd99e7ea9535291aa"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6268fa314945366fd99e7ea9535291aa">alb::v_100::NumReallocate</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00074">allocator_with_stats.hpp:74</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html_ac1ae0b60015424bcc7441cce4f9b536d"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html#ac1ae0b60015424bcc7441cce4f9b536d">alb::v_100::allocator_with_stats::allocate</a></div><div class="ttdeci">block allocate(size_t n, const char *file=nullptr, const char *function=nullptr, int line=0) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00400">allocator_with_stats.hpp:400</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da3e5aa2b31b5a735a54bbda421c2f8051"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3e5aa2b31b5a735a54bbda421c2f8051">alb::v_100::NumReallocateInPlace</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00089">allocator_with_stats.hpp:89</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619">alb::v_100::CallerLine</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00171">allocator_with_stats.hpp:171</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88daabb3d13891074fb8668483ae8dc034ba"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daabb3d13891074fb8668483ae8dc034ba">alb::v_100::NumDeallocateAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00097">allocator_with_stats.hpp:97</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info_html"><div class="ttname"><a href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">alb::v_100::allocator_with_stats::AllocationInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00214">allocator_with_stats.hpp:214</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe">alb::v_100::NumOwns</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00048">allocator_with_stats.hpp:48</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da40089c7520f624b382c6c9c8f78efe2b"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da40089c7520f624b382c6c9c8f78efe2b">alb::v_100::NumAllocateOK</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00059">allocator_with_stats.hpp:59</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da3addd395bbf152fd4b9f78025326f4be"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3addd395bbf152fd4b9f78025326f4be">alb::v_100::NumExpand</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00064">allocator_with_stats.hpp:64</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71">alb::v_100::CallerFile</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00161">allocator_with_stats.hpp:161</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88daa39256fb8b97aa16a53b7637f466fa35"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daa39256fb8b97aa16a53b7637f466fa35">alb::v_100::BytesContracted</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00127">allocator_with_stats.hpp:127</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88dad4ea44b6a13a9fb2966c28da1d4b5f84"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad4ea44b6a13a9fb2966c28da1d4b5f84">alb::v_100::BytesExpanded</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00122">allocator_with_stats.hpp:122</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da247fbd8ba97025435469ae0c37557dff"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da247fbd8ba97025435469ae0c37557dff">alb::v_100::BytesMoved</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00135">allocator_with_stats.hpp:135</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_html"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">alb::v_100::allocator_with_stats::Allocations</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00242">allocator_with_stats.hpp:242</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88dade3fd4fac879c64b3ec1a77789eda305"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dade3fd4fac879c64b3ec1a77789eda305">alb::v_100::BytesHighTide</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00146">allocator_with_stats.hpp:146</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html_ad8938fd6f8267c35e391b02d576ee8ce"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html#ad8938fd6f8267c35e391b02d576ee8ce">alb::v_100::allocator_with_stats::deallocate</a></div><div class="ttdeci">void deallocate(block &amp;b) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00445">allocator_with_stats.hpp:445</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html_a33b80f840c12bea616ea8988446f9773"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html#a33b80f840c12bea616ea8988446f9773">alb::v_100::allocator_with_stats::allocations</a></div><div class="ttdeci">Allocations allocations() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00580">allocator_with_stats.hpp:580</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da248c1866b0579eb951a5f1fce818e191"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da248c1866b0579eb951a5f1fce818e191">alb::v_100::NumAllocate</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00053">allocator_with_stats.hpp:53</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1traits_1_1affix__extractor_html"><div class="ttname"><a href="structalb_1_1v__100_1_1traits_1_1affix__extractor.html">alb::v_100::traits::affix_extractor</a></div><div class="ttdef"><b>Definition:</b> <a href="affix__allocator_8hpp_source.html#l00286">affix_allocator.hpp:286</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html_acec9b4750598723a7047151bb1bb398f"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html#acec9b4750598723a7047151bb1bb398f">alb::v_100::allocator_with_stats::expand</a></div><div class="ttdeci">std::enable_if&lt; traits::has_expand&lt; U &gt;::value, bool &gt;::type expand(block &amp;b, size_t delta) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00557">allocator_with_stats.hpp:557</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html_ad849234f18a1d7d2695efe1fdf18cad0"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html#ad849234f18a1d7d2695efe1fdf18cad0">alb::v_100::allocator_with_stats::reallocate</a></div><div class="ttdeci">bool reallocate(block &amp;b, size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00476">allocator_with_stats.hpp:476</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_html_af684bf1ee328cf65feb243c2a7e3c0a6"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6">alb::v_100::allocator_with_stats::owns</a></div><div class="ttdeci">std::enable_if&lt; traits::has_owns&lt; U &gt;::value, bool &gt;::type owns(const block &amp;b) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00540">allocator_with_stats.hpp:540</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518">alb::v_100::CallerTime</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00175">allocator_with_stats.hpp:175</a></div></div>
+<div class="ttc" id="group__group__stats_html_gabf604ca0a6095e2bdb3649c1ff8ee88d"><div class="ttname"><a href="group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d">alb::v_100::StatsOptions</a></div><div class="ttdeci">StatsOptions</div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00044">allocator_with_stats.hpp:44</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da29805bc67e72aa9512cbe684b3b83d12">alb::v_100::BytesDeallocated</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00117">allocator_with_stats.hpp:117</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88dad5cde8e0cc8b550019204cc4cc519422"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dad5cde8e0cc8b550019204cc4cc519422">alb::v_100::CallerAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00179">allocator_with_stats.hpp:179</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da0e005712c14a8ca77c98de258228362d"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0e005712c14a8ca77c98de258228362d">alb::v_100::BytesAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00150">allocator_with_stats.hpp:150</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88dac354c5e2faeb89d616369eb68304a8b8"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dac354c5e2faeb89d616369eb68304a8b8">alb::v_100::CallerSize</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00156">allocator_with_stats.hpp:156</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0">alb::v_100::NumAll</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00101">allocator_with_stats.hpp:101</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da25ab238b665b3e6b6cfc2b667c6d8905">alb::v_100::BytesAllocated</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00110">allocator_with_stats.hpp:110</a></div></div>
+<div class="ttc" id="group__group__stats_html_ggabf604ca0a6095e2bdb3649c1ff8ee88da0308ff9834bf54778fb294b3add7a042"><div class="ttname"><a href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da0308ff9834bf54778fb294b3add7a042">alb::v_100::CallerFunction</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00166">allocator_with_stats.hpp:166</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator_html"><div class="ttname"><a href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html">alb::v_100::allocator_with_stats::Allocations::iterator</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__with__stats_8hpp_source.html#l00247">allocator_with_stats.hpp:247</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html">alb::v_100::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>allocator_with_stats.hpp</b></li>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

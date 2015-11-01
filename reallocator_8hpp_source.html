@@ -119,84 +119,87 @@ $(document).ready(function(){initNavTree('reallocator_8hpp_source.html','');});
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>alb {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">namespace </span>internal {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> OldAllocator, <span class="keyword">class</span> NewAllocator&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">   34</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">reallocateWithCopy</a>(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, <a class="code" href="structalb_1_1block.html">block</a> &amp;b,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                            <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="keyword">auto</span> newBlock = newAllocator.allocate(n);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keywordflow">if</span> (!newBlock) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <a class="code" href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">blockCopy</a>(b, newBlock);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      oldAllocator.deallocate(b);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      b = newBlock;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalb_1_1internal_1_1reallocator.html">   56</a></span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keyword">typename</span> Enabled = <span class="keywordtype">void</span>&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1internal_1_1reallocator.html">reallocator</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_01traits8b4817eda3068661cb0d30babc998106.html">   65</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalb_1_1internal_1_1reallocator.html">reallocator</a>&lt;Allocator,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                       typename std::enable_if&lt;traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt; {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> isHandledDefault(Allocator &amp;allocator, <a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> == n) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;          allocator.deallocate(b);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          b = allocator.allocate(n);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">if</span> (n &gt; b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;          <span class="keywordflow">if</span> (allocator.expand(b, n - b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>)) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;          }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    };</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="structalb_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_3_9traits_dd6fc1d114e402e4028660b053968644.html">   96</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalb_1_1internal_1_1reallocator.html">reallocator</a>&lt;Allocator,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                       typename std::enable_if&lt;!traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt; {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> isHandledDefault(Allocator &amp;allocator, <a class="code" href="structalb_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a> == n) {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordflow">if</span> (n == 0) {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;          allocator.deallocate(b);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">if</span> (!b) {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;          b = allocator.allocate(n);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    };</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  } <span class="comment">// namespace Helper</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
-<div class="ttc" id="group__group__internal_html_gaedffaf55cd427fcfe22ab28685925bbf"><div class="ttname"><a href="group__group__internal.html#gaedffaf55cd427fcfe22ab28685925bbf">alb::internal::reallocateWithCopy</a></div><div class="ttdeci">bool reallocateWithCopy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00034">reallocator.hpp:34</a></div></div>
-<div class="ttc" id="group__group__internal_html_ga0c9ba541089bd5bf613476c5999ea079"><div class="ttname"><a href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">alb::internal::blockCopy</a></div><div class="ttdeci">void blockCopy(const block &amp;source, block &amp;destination)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8cpp_source.html#l00015">allocator_base.cpp:15</a></div></div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_a2b1bb23abc665def50a3bcfa460027d8"><div class="ttname"><a href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">alb::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
-<div class="ttc" id="structalb_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1internal_1_1reallocator.html">alb::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00056">reallocator.hpp:56</a></div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">inline</span> <span class="keyword">namespace </span>v_100 {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> OldAllocator, <span class="keyword">class</span> NewAllocator&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618">   35</a></span>&#160;      <span class="keywordtype">bool</span> <a class="code" href="group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618">reallocate_with_copy</a>(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">auto</span> newBlock = newAllocator.allocate(n);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">if</span> (!newBlock) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <a class="code" href="group__group__internal.html#ga0de14a60bc57421d0ef97d714f7b58ce">block_copy</a>(b, newBlock);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        oldAllocator.deallocate(b);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        b = newBlock;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1internal_1_1reallocator.html">   57</a></span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator, <span class="keyword">typename</span> Enabled = <span class="keywordtype">void</span>&gt; <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1internal_1_1reallocator.html">reallocator</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_992b5f7969648c64b2ef064428307286.html">   66</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1internal_1_1reallocator.html">reallocator</a>&lt;Allocator,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        typename std::enable_if&lt;traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt; {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> is_handled_default(Allocator &amp;allocator, <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;          <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a> == n) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;          }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;          <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            allocator.deallocate(b);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            b = allocator.allocate(n);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;          }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;          <span class="keywordflow">if</span> (n &gt; b.<a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">if</span> (allocator.expand(b, n - b.<a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>)) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;              <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;          }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      };</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">class</span> Allocator&gt;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_249cd369dde0762b1c21cc0a7d289991.html">   97</a></span>&#160;      <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1internal_1_1reallocator.html">reallocator</a>&lt;Allocator,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        typename std::enable_if&lt;!traits::has_expand&lt;Allocator&gt;::value&gt;::type&gt; {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> is_handled_default(Allocator &amp;allocator, <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;          <span class="keywordflow">if</span> (b.<a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a> == n) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;          }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;          <span class="keywordflow">if</span> (n == 0) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            allocator.deallocate(b);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;          }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;          <span class="keywordflow">if</span> (!b) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            b = allocator.allocate(n);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;          }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      };</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    } <span class="comment">// namespace Helper</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="ttc" id="structalb_1_1v__100_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1v__100_1_1internal_1_1reallocator.html">alb::v_100::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00057">reallocator.hpp:57</a></div></div>
+<div class="ttc" id="group__group__internal_html_ga0de14a60bc57421d0ef97d714f7b58ce"><div class="ttname"><a href="group__group__internal.html#ga0de14a60bc57421d0ef97d714f7b58ce">alb::v_100::internal::block_copy</a></div><div class="ttdeci">void block_copy(const block &amp;source, block &amp;destination) noexcept</div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html_a7a81cd7161b7084bc6a04544039f5cad"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">alb::v_100::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
+<div class="ttc" id="group__group__internal_html_gaacb3444b98b7b0d6beaab8f950014618"><div class="ttname"><a href="group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618">alb::v_100::internal::reallocate_with_copy</a></div><div class="ttdeci">bool reallocate_with_copy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00035">reallocator.hpp:35</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html">alb::v_100::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><a class="el" href="dir_a495994bfb37b97d8f7021416d3bed69.html">internal</a></li><li class="navelem"><b>reallocator.hpp</b></li>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

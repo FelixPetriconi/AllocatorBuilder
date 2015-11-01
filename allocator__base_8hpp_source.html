@@ -121,87 +121,90 @@ $(document).ready(function(){initNavTree('allocator__base_8hpp_source.html','');
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>alb {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structalb_1_1block.html">   23</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structalb_1_1block.html">block</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a>()</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      : <a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>(<span class="keyword">nullptr</span>)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      , <a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>(0)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    }</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">inline</span> <span class="keyword">namespace </span>v_100 {</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1block.html">   23</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structalb_1_1v__100_1_1block.html">block</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a>() noexcept</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        : <a class="code" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">ptr</a>(<span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        , <a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>(0)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      }</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a>(<span class="keywordtype">void</span> *<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>, <span class="keywordtype">size_t</span> <a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      : <a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>(ptr)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      , <a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>(length)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a>(<span class="keywordtype">void</span> *<a class="code" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">ptr</a>, <span class="keywordtype">size_t</span> <a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>) noexcept</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        : <a class="code" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">ptr</a>(ptr)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        , <a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>(length)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a>(<a class="code" href="structalb_1_1block.html">block</a> &amp;&amp;x)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      *<span class="keyword">this</span> = std::move(x);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a>(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;&amp;x) noexcept</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        *<span class="keyword">this</span> = std::move(x);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> &amp;operator=(<a class="code" href="structalb_1_1block.html">block</a> &amp;&amp;x)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      ptr = x.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      length = x.length;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      x.reset();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;operator=(<a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;&amp;x) noexcept</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        ptr = x.<a class="code" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">ptr</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        length = x.length;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        x.reset();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;x) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="structalb_1_1block.html">block</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;x) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;x) noexcept = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html">block</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;x) noexcept = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalb_1_1block.html#a3b370266a1556312fdfff9c0dd054c81">   56</a></span>&#160;    <a class="code" href="structalb_1_1block.html#a3b370266a1556312fdfff9c0dd054c81">~block</a>()</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1block.html#a18ceceaf2bd4e866d174beed39d4a60b">   56</a></span>&#160;      <a class="code" href="structalb_1_1v__100_1_1block.html#a18ceceaf2bd4e866d174beed39d4a60b">~block</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba">   63</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba">reset</a>()</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      ptr = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      length = 0;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1block.html#a6007929c63e92c3f78998237f2a78c08">   63</a></span>&#160;      <span class="keywordtype">void</span> <a class="code" href="structalb_1_1v__100_1_1block.html#a6007929c63e92c3f78998237f2a78c08">reset</a>() noexcept</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        ptr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        length = 0;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structalb_1_1block.html#a4eff774bd1de27c3dab0a2048e71d49f">   72</a></span>&#160;    <span class="keyword">explicit</span> <span class="keyword">operator</span> bool()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordflow">return</span> length != 0;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1block.html#a6f895a202ab1f78e5f5793f5b53e3280">   72</a></span>&#160;      <span class="keyword">explicit</span> <span class="keyword">operator</span> bool()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> length != 0;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      }</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordflow">return</span> ptr == rhs.<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a> &amp;&amp; length == rhs.<a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;rhs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">      </span>{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> ptr == rhs.<a class="code" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">ptr</a> &amp;&amp; length == rhs.<a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">   83</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">ptr</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">   83</a></span>&#160;      <span class="keywordtype">void</span> *<a class="code" href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">ptr</a>;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">   86</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">length</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  };</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">   86</a></span>&#160;      <span class="keywordtype">size_t</span> <a class="code" href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">length</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    };</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">namespace </span>internal {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">namespace </span>internal {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">blockCopy</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1block.html">block</a> &amp;source, <a class="code" href="structalb_1_1block.html">block</a> &amp;destination);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="keywordtype">void</span> <a class="code" href="group__group__internal.html#ga0de14a60bc57421d0ef97d714f7b58ce">block_copy</a>(<span class="keyword">const</span> <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;source, <a class="code" href="structalb_1_1v__100_1_1block.html">block</a> &amp;destination) noexcept;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="group__group__internal.html#gaf90cc079b977ea84f5b8009f9a33f467">  103</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">size_t</span> <a class="code" href="group__group__internal.html#gaf90cc079b977ea84f5b8009f9a33f467">roundToAlignment</a>(<span class="keywordtype">size_t</span> basis, <span class="keywordtype">size_t</span> n)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keyword">auto</span> remainder = n % basis;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">return</span> n + ((remainder == 0) ? 0 : (basis - remainder));</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  } <span class="comment">// namespace Helper</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
-<div class="ttc" id="group__group__internal_html_ga0c9ba541089bd5bf613476c5999ea079"><div class="ttname"><a href="group__group__internal.html#ga0c9ba541089bd5bf613476c5999ea079">alb::internal::blockCopy</a></div><div class="ttdeci">void blockCopy(const block &amp;source, block &amp;destination)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8cpp_source.html#l00015">allocator_base.cpp:15</a></div></div>
-<div class="ttc" id="structalb_1_1block_html"><div class="ttname"><a href="structalb_1_1block.html">alb::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
-<div class="ttc" id="group__group__internal_html_gaf90cc079b977ea84f5b8009f9a33f467"><div class="ttname"><a href="group__group__internal.html#gaf90cc079b977ea84f5b8009f9a33f467">alb::internal::roundToAlignment</a></div><div class="ttdeci">size_t roundToAlignment(size_t basis, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00103">allocator_base.hpp:103</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_a9ecbc0c6dc703ab50e8e83ff8bf626ba"><div class="ttname"><a href="structalb_1_1block.html#a9ecbc0c6dc703ab50e8e83ff8bf626ba">alb::block::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00063">allocator_base.hpp:63</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_a3b370266a1556312fdfff9c0dd054c81"><div class="ttname"><a href="structalb_1_1block.html#a3b370266a1556312fdfff9c0dd054c81">alb::block::~block</a></div><div class="ttdeci">~block()</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00056">allocator_base.hpp:56</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_aba144d1fa4c47c4cf5987205a6e430f0"><div class="ttname"><a href="structalb_1_1block.html#aba144d1fa4c47c4cf5987205a6e430f0">alb::block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00083">allocator_base.hpp:83</a></div></div>
-<div class="ttc" id="structalb_1_1block_html_a2b1bb23abc665def50a3bcfa460027d8"><div class="ttname"><a href="structalb_1_1block.html#a2b1bb23abc665def50a3bcfa460027d8">alb::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="group__group__internal.html#ga07010650a31b773525e0256432cea022">  103</a></span>&#160;      <span class="keyword">inline</span> constexpr <span class="keywordtype">size_t</span> <a class="code" href="group__group__internal.html#ga07010650a31b773525e0256432cea022">round_to_alignment</a>(<span class="keywordtype">size_t</span> basis, <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="comment">//      auto remainder = n % basis;</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="comment">//      return n + ((remainder == 0) ? 0 : (basis - remainder));</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">return</span> n + ((n % basis == 0) ? 0 : (basis - n % basis));</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    } <span class="comment">// namespace Helper</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html_a6007929c63e92c3f78998237f2a78c08"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#a6007929c63e92c3f78998237f2a78c08">alb::v_100::block::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00063">allocator_base.hpp:63</a></div></div>
+<div class="ttc" id="group__group__internal_html_ga0de14a60bc57421d0ef97d714f7b58ce"><div class="ttname"><a href="group__group__internal.html#ga0de14a60bc57421d0ef97d714f7b58ce">alb::v_100::internal::block_copy</a></div><div class="ttdeci">void block_copy(const block &amp;source, block &amp;destination) noexcept</div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html_a7a81cd7161b7084bc6a04544039f5cad"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">alb::v_100::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
+<div class="ttc" id="group__group__internal_html_ga07010650a31b773525e0256432cea022"><div class="ttname"><a href="group__group__internal.html#ga07010650a31b773525e0256432cea022">alb::v_100::internal::round_to_alignment</a></div><div class="ttdeci">constexpr size_t round_to_alignment(size_t basis, size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00103">allocator_base.hpp:103</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html_a18ceceaf2bd4e866d174beed39d4a60b"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#a18ceceaf2bd4e866d174beed39d4a60b">alb::v_100::block::~block</a></div><div class="ttdeci">~block()</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00056">allocator_base.hpp:56</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html_ae10ba6c080a1adf072b45fcf3baf8209"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209">alb::v_100::block::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">This points to the start address of the described memory block. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00083">allocator_base.hpp:83</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html">alb::v_100::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>allocator_base.hpp</b></li>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

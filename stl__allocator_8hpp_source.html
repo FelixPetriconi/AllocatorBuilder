@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('stl__allocator_8hpp_source.html','');}
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  };</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">class</span> Allocator&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1stl__allocator.html">stl_allocator</a> {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">typename</span> Allocator::value_type &amp;_allocator;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">typename</span> Allocator::value_type &amp;allocator_;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">using</span> size_type = size_t;</div>
@@ -149,17 +149,17 @@ $(document).ready(function(){initNavTree('stl__allocator_8hpp_source.html','');}
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    };</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="classalb_1_1stl__allocator.html">stl_allocator</a>()</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      : _allocator(Allocator::instance())</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      : allocator_(Allocator::instance())</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="classalb_1_1stl__allocator.html">stl_allocator</a>(<span class="keyword">const</span> <a class="code" href="classalb_1_1stl__allocator.html">stl_allocator</a> &amp;)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      : _allocator(Allocator::instance())</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      : allocator_(Allocator::instance())</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">explicit</span> stl_allocator(<span class="keyword">const</span> stl_allocator&lt;U, Allocator&gt; &amp;)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      : _allocator(Allocator::instance())</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      : allocator_(Allocator::instance())</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
@@ -178,9 +178,9 @@ $(document).ready(function(){initNavTree('stl__allocator_8hpp_source.html','');}
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    T *allocate(std::size_t n, <span class="keyword">const</span> <span class="keywordtype">void</span> * <span class="comment">/*hint*/</span> = <span class="keyword">nullptr</span>)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keyword">auto</span> b = _allocator.allocate(n * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keyword">auto</span> b = allocator_.allocate(n * <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keywordflow">if</span> (b) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">auto</span> p = _allocator.outerToPrefix(b);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">auto</span> p = allocator_.outer_to_prefix(b);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        p-&gt;length = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span><span class="keyword">&gt;</span>(b.length);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T *<span class="keyword">&gt;</span>(b.ptr);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      }</div>
@@ -190,9 +190,9 @@ $(document).ready(function(){initNavTree('stl__allocator_8hpp_source.html','');}
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> deallocate(T *ptr, std::size_t n)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      block pseudoBlock(ptr, n);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">auto</span> p = _allocator.outerToPrefix(pseudoBlock);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">auto</span> p = allocator_.outer_to_prefix(pseudoBlock);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      block realBlock(ptr, p-&gt;length);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      _allocator.deallocate(realBlock);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      allocator_.deallocate(realBlock);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">size_t</span> max_size()<span class="keyword"> const</span></div>
@@ -202,17 +202,17 @@ $(document).ready(function(){initNavTree('stl__allocator_8hpp_source.html','');}
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> construct(pointer ptr)</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      ::new (reinterpret_cast&lt;void *&gt;(ptr)) T;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      ::new (static_cast&lt;void *&gt;(ptr)) T;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    };</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    template &lt;class U&gt; <span class="keywordtype">void</span> construct(pointer ptr, const U &amp;val)</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      ::new (reinterpret_cast&lt;void *&gt;(ptr)) T(val);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      ::new (static_cast&lt;void *&gt;(ptr)) T(val);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    };</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">void</span> construct(pointer ptr, const T &amp;val)</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      ::new (reinterpret_cast&lt;void *&gt;(ptr)) T(val);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      ::new (static_cast&lt;void *&gt;(ptr)) T(val);</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    };</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">void</span> destroy(pointer p)</div>
@@ -241,7 +241,7 @@ $(document).ready(function(){initNavTree('stl__allocator_8hpp_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><b>stl_allocator.hpp</b></li>
-    <li class="footer">Generated on Sat Oct 10 2015 14:19:58 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
