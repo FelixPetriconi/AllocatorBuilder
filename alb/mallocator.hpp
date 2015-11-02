@@ -22,6 +22,8 @@ namespace alb {
     class mallocator {
     public:
       static constexpr bool supports_truncated_deallocation = false;
+      static constexpr unsigned alignment = 4;
+
       /**
        * Allocates the specified number of bytes.
        * If the system cannot allocate the specified amount of memory then
@@ -49,7 +51,7 @@ namespace alb {
        */
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<mallocator>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 

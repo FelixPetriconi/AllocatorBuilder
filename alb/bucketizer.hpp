@@ -36,6 +36,7 @@ namespace alb {
     class bucketizer {
     public:
       static constexpr bool supports_truncated_deallocation = false;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       static_assert(MinSize < MaxSize, "MinSize must be smaller than MaxSize");
       static_assert((MaxSize - MinSize + 1) % StepSize == 0, "Incorrect ranges or step size!");
@@ -56,8 +57,8 @@ namespace alb {
         }
       }
 
-      static constexpr size_t good_size(size_t) {
-        return max_size;
+      static constexpr size_t good_size(size_t n) noexcept {
+        return (number_of_buckets - (max_size - n)/step_size + 1) * step_size;
       }
 
       /**
@@ -104,7 +105,7 @@ namespace alb {
           return false;
         }
 
-        if (internal::reallocator<bucketizer>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 

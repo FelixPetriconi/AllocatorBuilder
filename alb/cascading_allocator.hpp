@@ -150,6 +150,7 @@ namespace alb {
       using allocator = Allocator;
 
       static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       cascading_allocator_base() noexcept
         : root_(nullptr)
@@ -259,7 +260,7 @@ namespace alb {
        */
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<decltype(*this)>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 

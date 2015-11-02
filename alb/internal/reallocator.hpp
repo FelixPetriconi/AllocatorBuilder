@@ -114,6 +114,11 @@ namespace alb {
         }
       };
 
+      template <typename Allocator>
+      bool is_reallocation_handled_default(Allocator& allocator, block& b, size_t n) noexcept
+      {
+        return reallocator<Allocator>::is_handled_default(allocator, b, n);
+      }
     } // namespace Helper
   }
   using namespace v_100;

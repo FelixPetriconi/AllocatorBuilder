@@ -34,7 +34,8 @@ namespace test_helpers
     static std::atomic<size_t> _allocatedMem;
 
   public:
-    static const bool supports_truncated_deallocation = false;
+    static constexpr bool supports_truncated_deallocation = false;
+    static constexpr unsigned alignment = alb::mallocator::alignment;
 
     TestMallocator() {}
 

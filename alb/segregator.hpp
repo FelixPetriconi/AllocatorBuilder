@@ -38,6 +38,10 @@ namespace alb {
         SmallAllocator::supports_truncated_deallocation &&
         LargeAllocator::supports_truncated_deallocation;
 
+      static constexpr unsigned alignment = 
+        (SmallAllocator::alignment > LargeAllocator::alignment) ? 
+          SmallAllocator::alignment : LargeAllocator::alignment;
+
       /**
        * Allocates the specified number of bytes. If the operation was not
        * successful
@@ -80,7 +84,7 @@ namespace alb {
        */
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<segregator>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 

@@ -61,9 +61,10 @@ namespace alb {
       heap &operator=(const heap &) = delete;
 
     public:
-      static constexpr bool supports_truncated_deallocation = true;
-
       using allocator = Allocator;
+
+      static constexpr bool supports_truncated_deallocation = true;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       heap() noexcept
       {
@@ -189,7 +190,7 @@ namespace alb {
 
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<heap>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 

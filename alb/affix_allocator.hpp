@@ -101,6 +101,7 @@ namespace alb {
       affix_allocator &operator=(const affix_allocator &) = delete;
 
       static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       using allocator = Allocator;
       using prefix = Prefix;
@@ -223,7 +224,7 @@ namespace alb {
 
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<affix_allocator>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
         auto innerBlock = to_inner_block(b);

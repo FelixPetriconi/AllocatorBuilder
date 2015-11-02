@@ -31,8 +31,9 @@ namespace alb {
         "Primary- and Fallback-Allocator cannot be both of the same base!");
 
     public:
-      static const bool supports_truncated_deallocation = Primary::supports_truncated_deallocation ||
+      static constexpr bool supports_truncated_deallocation = Primary::supports_truncated_deallocation ||
         Fallback::supports_truncated_deallocation;
+      static constexpr unsigned alignment = (Primary::alignment > Fallback::alignment) ? Primary::alignment : Fallback::alignment;
 
       /**
        * Allocates the requested number of bytes.
@@ -77,12 +78,12 @@ namespace alb {
       bool reallocate(block &b, size_t n) noexcept
       {
         if (Primary::owns(b)) {
-          if (internal::reallocator<Primary>::is_handled_default(static_cast<Primary &>(*this), b, n)) {
+          if (internal::is_reallocation_handled_default(static_cast<Primary &>(*this), b, n)) {
             return true;
           }
         }
         else {
-          if (internal::reallocator<Fallback>::is_handled_default(static_cast<Fallback &>(*this), b,
+          if (internal::is_reallocation_handled_default(static_cast<Fallback &>(*this), b,
             n)) {
             return true;
           }

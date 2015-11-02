@@ -75,9 +75,9 @@ namespace alb {
       shared_heap &operator=(const shared_heap &) = delete;
 
     public:
-      static constexpr bool supports_truncated_deallocation = true;
-
       using allocator = Allocator;
+      static constexpr bool supports_truncated_deallocation = true;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       shared_heap() noexcept
       {
@@ -85,11 +85,11 @@ namespace alb {
       }
 
       shared_heap(size_t numberOfChunks, size_t chunkSize) noexcept
-        : all_set(static_cast<uint64_t>(-1))
+        : all_set(std::numeric_limits<uint64_t>::max())
         , all_zero(0)
       {
         numberOfChunks_.value(internal::round_to_alignment(64, numberOfChunks));
-        chunk_size_.value(internal::round_to_alignment(4, chunkSize));
+        chunk_size_.value(internal::round_to_alignment(alignment, chunkSize));
         init();
       }
 
@@ -212,7 +212,7 @@ namespace alb {
 
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<shared_heap>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 

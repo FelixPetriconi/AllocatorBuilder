@@ -39,6 +39,24 @@ TEST_F(BucketizerTest, ThatMinAndMaxSizeOfTheBucketItemsAreSetSpecifiedByThePara
   EXPECT_EQ(64u, sut._buckets[2].max_size());
 }
 
+TEST_F(BucketizerTest, ThatGoodSizeReturnsTheNextMatchingBucketSize)
+{
+  EXPECT_EQ(32u, AllocatorUnderTest::good_size(17));
+  EXPECT_EQ(32u, AllocatorUnderTest::good_size(18));
+  EXPECT_EQ(32u, AllocatorUnderTest::good_size(31));
+  EXPECT_EQ(32u, AllocatorUnderTest::good_size(32));
+
+  EXPECT_EQ(48u, AllocatorUnderTest::good_size(33));
+  EXPECT_EQ(48u, AllocatorUnderTest::good_size(34));
+  EXPECT_EQ(48u, AllocatorUnderTest::good_size(47));
+  EXPECT_EQ(48u, AllocatorUnderTest::good_size(48));
+
+  EXPECT_EQ(64u, AllocatorUnderTest::good_size(49));
+  EXPECT_EQ(64u, AllocatorUnderTest::good_size(50));
+  EXPECT_EQ(64u, AllocatorUnderTest::good_size(63));
+  EXPECT_EQ(64u, AllocatorUnderTest::good_size(64));
+}
+
 TEST_F(BucketizerTest, ThatAllocatingBeyondTheAllocatorsRangeResultsInAnEmptyBlock)
 {
   auto mem = sut.allocate(0);

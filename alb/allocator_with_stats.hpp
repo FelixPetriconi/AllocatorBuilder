@@ -254,7 +254,6 @@ public:                                                                         
           using reference = value_type;
           using const_reference = const reference;
 
-        public:
           iterator()
             : _node{ nullptr }
           {}
@@ -359,9 +358,9 @@ public:                                                                         
 #undef MEMBER_ACCESSOR
 #undef MEMBER_ACCESSORS
 
-        static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
-
+      static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
       static constexpr bool has_per_allocation_state = HasPerAllocationState;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       allocator_with_stats() noexcept
         : num_owns_(0)

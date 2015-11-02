@@ -60,9 +60,10 @@ namespace alb {
 
     public:
       using allocator = Allocator;
-      static const unsigned pool_size = PoolSize;
-      static const unsigned number_of_batch_allocations = NumberOfBatchAllocations;
-      static const bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+      static constexpr unsigned pool_size = PoolSize;
+      static constexpr unsigned number_of_batch_allocations = NumberOfBatchAllocations;
+      static constexpr bool supports_truncated_deallocation = Allocator::supports_truncated_deallocation;
+      static constexpr unsigned alignment = Allocator::alignment;
 
       freelist_base() noexcept
       {
@@ -199,7 +200,7 @@ namespace alb {
        */
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<decltype(*this)>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
         return false;
