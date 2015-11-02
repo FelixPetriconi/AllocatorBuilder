@@ -10,6 +10,7 @@
 #pragma once
 
 #include "allocator_base.hpp"
+#include "internal/reallocator.hpp"
 
 namespace alb {
   inline namespace v_100 {
@@ -94,7 +95,7 @@ namespace alb {
        */
       bool reallocate(block &b, size_t n) noexcept
       {
-        if (internal::reallocator<aligned_mallocator>::is_handled_default(*this, b, n)) {
+        if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
 
