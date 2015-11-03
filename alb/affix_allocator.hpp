@@ -59,7 +59,8 @@ namespace alb {
      * It is used by the alb::allocator_with_stats
      * It automatically places an object of type Prefix before the returned memory
      * location and an object of type Sufix after it. In case that they are of type
-     * affix_allocatorHelper::Empty nothing is inserted.
+     * affix_allocatorHelper::Empty nothing is inserted. Depending on the alignment 
+     * of the used Allocator, Prefix, memory and Sufix are each aligned.
      * Prefix and Sufix, if used, must be trivially copyable. (This cannot be
      * statically asserted, because this would block the possibility to use this
      * allocator as guard for memory under- or overflow.
@@ -83,7 +84,7 @@ namespace alb {
 
       Sufix *inner_to_sufix(const block &b) const noexcept
       {
-        return reinterpret_cast<Sufix *>(static_cast<char *>(b.ptr) + b.length - sufix_size);
+        return reinterpret_cast<Sufix*>(static_cast<char*>(b.ptr) + b.length - sufix_size);
       }
 
       block to_inner_block(const block &b) const noexcept

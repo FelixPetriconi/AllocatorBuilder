@@ -23,7 +23,9 @@ namespace alb {
      *
      * \ingroup group_allocators
      */
-    template <size_t MaxSize, size_t Alignment = 16> class stack_allocator {
+    template <size_t MaxSize, size_t Alignment = 16> 
+    
+    class stack_allocator {
       alignas(Alignment) char _data[MaxSize];
 
       char *_p;

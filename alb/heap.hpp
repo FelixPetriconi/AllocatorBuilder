@@ -16,6 +16,7 @@
 #include "internal/heap_helpers.hpp"
 
 #include <algorithm>
+#include <cassert>
 
 #ifdef min
 #undef min
@@ -35,7 +36,9 @@ namespace alb {
      *
      * \ingroup group_allocators
      */
-    template <class Allocator, size_t NumberOfChunks, size_t ChunkSize> class heap {
+    template <class Allocator, size_t NumberOfChunks, size_t ChunkSize> 
+    class heap 
+    {
       internal::dynastic<(NumberOfChunks == internal::DynasticDynamicSet ? 0 : NumberOfChunks), 0>
         numberOfChunks_;
 
@@ -45,13 +48,15 @@ namespace alb {
       block controlBuffer_;
 
       // bit field where 0 means used and 1 means free block
+      static const uint64_t all_set = std::numeric_limits<uint64_t>::max();
+      static const uint64_t all_zero = uint64_t(0);
+
       uint64_t *control_;
       size_t controlSize_;
 
       Allocator allocator_;
 
-      void shrink() noexcept
-      {
+      void shrink() noexcept {
         allocator_.deallocate(controlBuffer_);
         allocator_.deallocate(buffer_);
         control_ = nullptr;
@@ -66,72 +71,64 @@ namespace alb {
       static constexpr bool supports_truncated_deallocation = true;
       static constexpr unsigned alignment = Allocator::alignment;
 
-      heap() noexcept
-      {
+      heap() noexcept {
         init();
       }
 
-      heap(size_t numberOfChunks, size_t chunkSize) noexcept
-      {
+      heap(size_t numberOfChunks, size_t chunkSize) noexcept {
         numberOfChunks_.value(internal::round_to_alignment(64, numberOfChunks));
         chunk_size_.value(internal::round_to_alignment(4, chunkSize));
         init();
       }
 
-      heap(heap &&x) noexcept
-      {
+      heap(heap &&x) noexcept {
         *this = std::move(x);
       }
 
-      heap &operator=(heap &&x) noexcept
-      {
+      heap &operator=(heap &&x) noexcept {
         if (this == &x) {
           return *this;
         }
         shrink();
         numberOfChunks_ = std::move(x.numberOfChunks_);
-        chunk_size_ = std::move(x.chunk_size_);
-        buffer_ = std::move(x.buffer_);
-        controlBuffer_ = std::move(x.controlBuffer_);
-        control_ = std::move(x.control_);
-        controlSize_ = std::move(x.controlSize_);
-        allocator_ = std::move(x.allocator_);
+        chunk_size_     = std::move(x.chunk_size_);
+        buffer_         = std::move(x.buffer_);
+        controlBuffer_  = std::move(x.controlBuffer_);
+        control_        = std::move(x.control_);
+        controlSize_    = std::move(x.controlSize_);
+        allocator_      = std::move(x.allocator_);
 
-        x.control_ = nullptr;
+        x.control_      = nullptr;
 
         return *this;
       }
 
-      size_t number_of_chunk() const noexcept
-      {
-        return numberOfChunks_.value();
-      }
-
-      size_t chunk_size() const noexcept
-      {
-        return chunk_size_.value();
-      }
-
-      ~heap()
-      {
+      ~heap() {
         shrink();
       }
 
-      bool owns(const block &b) const noexcept
-      {
+      size_t number_of_chunk() const noexcept {
+        return numberOfChunks_.value();
+      }
+
+      size_t chunk_size() const noexcept {
+        return chunk_size_.value();
+      }
+
+      bool owns(const block &b) const noexcept {
         return b && buffer_.ptr <= b.ptr &&
           b.ptr < (static_cast<char *>(buffer_.ptr) + buffer_.length);
       }
 
-      block allocate(size_t n) noexcept
-      {
+      block allocate(size_t n) noexcept {
+        block result;
         if (n == 0) {
-          return{};
+          return result;
         }
 
         // The heap cannot handle such a big request
         if (n > chunk_size_.value() * numberOfChunks_.value()) {
-          return{};
+          return result;
         }
 
         size_t numberOfAlignedBytes = internal::round_to_alignment(chunk_size_.value(), n);
@@ -139,28 +136,29 @@ namespace alb {
         numberOfBlocks = std::max(size_t(1), numberOfBlocks);
 
         if (numberOfBlocks < 64) {
-          auto result = allocate_within_single_control_register(numberOfBlocks);
+          result = allocate_within_single_control_register(numberOfBlocks);
           if (result) {
             return result;
           }
         }
         else if (numberOfBlocks == 64) {
-          auto result = allocate_within_complete_control_register(numberOfBlocks);
+          result = allocate_within_complete_control_register(numberOfBlocks);
           if (result) {
             return result;
           }
         }
         else if ((numberOfBlocks % 64) == 0) {
-          auto result = allocate_multiple_complete_control_registers(numberOfBlocks);
+          result = allocate_multiple_complete_control_registers(numberOfBlocks);
           if (result) {
             return result;
           }
         }
-        return allocate_with_register_overlap(numberOfBlocks);
+
+        result = allocate_with_register_overlap(numberOfBlocks);
+        return result;
       }
 
-      void deallocate(block &b) noexcept
-      {
+      void deallocate(block &b) noexcept {
         if (!b) {
           return;
         }
@@ -183,13 +181,11 @@ namespace alb {
         b.reset();
       }
 
-      void deallocate_all() noexcept
-      {
-        std::fill(control_, control_ + controlSize_, (uint64_t)-1);
+      void deallocate_all() noexcept {
+        std::fill(control_, control_ + controlSize_, all_set);
       }
 
-      bool reallocate(block &b, size_t n) noexcept
-      {
+      bool reallocate(block &b, size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
@@ -219,8 +215,7 @@ namespace alb {
         return internal::reallocate_with_copy(*this, *this, b, n);
       }
 
-      bool expand(block &b, size_t delta) noexcept
-      {
+      bool expand(block &b, size_t delta) noexcept {
         if (delta == 0) {
           return true;
         }
@@ -250,8 +245,10 @@ namespace alb {
       }
 
     private:
-      void init() noexcept
-      {
+      void init() noexcept {
+        assert(chunk_size_.value() > alignment);
+        assert(chunk_size_.value() % alignment == 0);
+
         controlSize_ = numberOfChunks_.value() / 64;
         controlBuffer_ = allocator_.allocate(sizeof(uint64_t) * controlSize_);
         assert((bool)controlBuffer_);
@@ -263,26 +260,26 @@ namespace alb {
         deallocate_all();
       }
 
-      struct BlockContext {
+      struct BlockContext 
+      {
         int registerIndex;
         int subIndex;
         int usedChunks;
       };
 
-      BlockContext block_to_context(const block &b)  noexcept
-      {
+      BlockContext block_to_context(const block &b)  noexcept {
         const auto blockIndex = static_cast<int>(
           (static_cast<char *>(b.ptr) - static_cast<char *>(buffer_.ptr)) / chunk_size_.value());
 
         return{ blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / chunk_size_.value()) };
       }
 
-      template <bool Used> bool test_and_set_within_single_register(const BlockContext &context)  noexcept
-      {
+      template <bool Used> 
+      bool test_and_set_within_single_register(const BlockContext &context)  noexcept {
         assert(context.subIndex + context.usedChunks <= 64);
 
         uint64_t mask = (context.usedChunks == 64)
-          ? (uint64_t)-1
+          ? all_set
           : (((uint64_t(1) << context.usedChunks) - 1) << context.subIndex);
 
         uint64_t currentRegister, newRegister;
@@ -295,8 +292,8 @@ namespace alb {
         return true;
       }
 
-      template <bool Used> void set_over_multiple_registers(const BlockContext &context)  noexcept
-      {
+      template <bool Used> 
+      void set_over_multiple_registers(const BlockContext &context)  noexcept {
         size_t chunksToTest = context.usedChunks;
         size_t subIndexStart = context.subIndex;
         size_t registerIndex = context.registerIndex;
@@ -305,7 +302,7 @@ namespace alb {
           if (subIndexStart > 0)
             mask = ((uint64_t(1) << (64 - subIndexStart)) - 1) << subIndexStart;
           else
-            mask = (chunksToTest >= 64) ? (uint64_t)-1 : ((uint64_t(1) << chunksToTest) - 1);
+            mask = (chunksToTest >= 64) ? all_set : ((uint64_t(1) << chunksToTest) - 1);
 
           assert(registerIndex < controlSize_);
 
@@ -326,8 +323,8 @@ namespace alb {
         } while (chunksToTest > 0);
       }
 
-      template <bool Used> bool test_and_set_over_multiple_registers(const BlockContext &context)  noexcept
-      {
+      template <bool Used> 
+      bool test_and_set_over_multiple_registers(const BlockContext &context)  noexcept {
         // This branch works on multiple chunks at the same time and so a real lock
         // is necessary.
         size_t chunksToTest = context.usedChunks;
@@ -339,7 +336,7 @@ namespace alb {
           if (subIndexStart > 0)
             mask = ((uint64_t(1) << (64 - subIndexStart)) - 1) << subIndexStart;
           else
-            mask = (chunksToTest >= 64) ? (uint64_t)-1 : ((uint64_t(1) << chunksToTest) - 1);
+            mask = (chunksToTest >= 64) ? all_set : ((uint64_t(1) << chunksToTest) - 1);
 
           auto currentRegister = control_[registerIndex];
 
@@ -365,12 +362,12 @@ namespace alb {
         return true;
       }
 
-      template <bool Used> void set_within_single_register(const BlockContext &context) noexcept
-      {
+      template <bool Used> 
+      void set_within_single_register(const BlockContext &context) noexcept {
         assert(context.subIndex + context.usedChunks <= 64);
 
         uint64_t mask = (context.usedChunks == 64)
-          ? (uint64_t)-1
+          ? all_set
           : (((uint64_t(1) << context.usedChunks) - 1) << context.subIndex);
 
         uint64_t currentRegister, newRegister;
@@ -379,8 +376,9 @@ namespace alb {
         control_[context.registerIndex] = newRegister;
       }
 
-      block allocate_within_single_control_register(size_t numberOfBlocks) noexcept
-      {
+      block allocate_within_single_control_register(size_t numberOfBlocks) noexcept {
+        block result;
+
         // first we have to look for at least one free block
         size_t controlIndex = 0;
         while (controlIndex < controlSize_) {
@@ -388,7 +386,8 @@ namespace alb {
 
           // == 0 means that all blocks are in use and no need to search further
           if (currentControlRegister != 0) {
-            uint64_t mask = (numberOfBlocks == 64) ? (uint64_t)-1 : ((uint64_t(1) << numberOfBlocks) - 1);
+            uint64_t mask = (numberOfBlocks == 64) ? 
+              all_set : ((uint64_t(1) << numberOfBlocks) - 1);
 
             size_t i = 0;
             // Search for numberOfBlock bits that are set to one
@@ -400,8 +399,10 @@ namespace alb {
 
                 size_t ptrOffset = (controlIndex * 64 + i) * chunk_size_.value();
 
-                return{ static_cast<char *>(buffer_.ptr) + ptrOffset,
-                        numberOfBlocks * chunk_size_.value() };
+                result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+                result.length = numberOfBlocks * chunk_size_.value();
+                
+                return result;
               }
               i++;
               mask <<= 1;
@@ -409,34 +410,40 @@ namespace alb {
           }
           controlIndex++;
         }
-        return{};
+
+        return result;
       }
 
-      block allocate_within_complete_control_register(size_t numberOfBlocks) noexcept
-      {
+      block allocate_within_complete_control_register(size_t numberOfBlocks) noexcept {
+        block result;
+
         // first we have to look for at least full free block
         auto freeChunk = std::find_if(control_, control_ + controlSize_,
-          [this](const uint64_t &v) { return v == (uint64_t)-1; });
+          [this](const uint64_t &v) { return v == all_set; });
 
         if (freeChunk == control_ + controlSize_) {
-          return{};
+          return result;
         }
 
         *freeChunk = 0;
         size_t ptrOffset = ((freeChunk - control_) * 64) * chunk_size_.value();
 
-        return{ static_cast<char *>(buffer_.ptr) + ptrOffset, numberOfBlocks * chunk_size_.value() };
+        result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+        result.length = numberOfBlocks * chunk_size_.value();
+
+        return result;
       }
 
-      block allocate_multiple_complete_control_registers(size_t numberOfBlocks) noexcept
-      {
+      block allocate_multiple_complete_control_registers(size_t numberOfBlocks) noexcept {
+        block result;
+
         const auto neededChunks = static_cast<int>(numberOfBlocks / 64);
         auto freeFirstChunk =
-          std::search_n(control_, control_ + controlSize_, neededChunks, (uint64_t)-1,
+          std::search_n(control_, control_ + controlSize_, neededChunks, all_set,
             [](uint64_t const &v, uint64_t const &p) { return v == p; });
 
         if (freeFirstChunk == control_ + controlSize_) {
-          return{};
+          return result;
         }
         auto p = freeFirstChunk;
         while (p < freeFirstChunk + neededChunks) {
@@ -445,12 +452,16 @@ namespace alb {
         }
 
         size_t ptrOffset = ((freeFirstChunk - control_) * 64) * chunk_size_.value();
-        return block(static_cast<char *>(buffer_.ptr) + ptrOffset,
-          numberOfBlocks * chunk_size_.value());
+
+        result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+        result.length = numberOfBlocks * chunk_size_.value();
+
+        return result;
       }
 
-      block allocate_with_register_overlap(size_t numberOfBlocks) noexcept
-      {
+      block allocate_with_register_overlap(size_t numberOfBlocks) noexcept {
+        block result;
+
         // search for free area
         auto p = reinterpret_cast<unsigned char *>(control_);
         const auto lastp =
@@ -481,21 +492,21 @@ namespace alb {
           size_t ptrOffset =
             (chunkStart - reinterpret_cast<unsigned char *>(control_)) * 8 * chunk_size_.value();
 
-          block result{ static_cast<char *>(buffer_.ptr) + ptrOffset,
-                       numberOfBlocks * chunk_size_.value() };
+          result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+          result.length = numberOfBlocks * chunk_size_.value();
 
           set_over_multiple_registers<false>(block_to_context(result));
           return result;
         }
 
-        return{};
+        return result;
       }
 
       void deallocate_for_multiple_complete_control_register(const BlockContext &context) noexcept
       {
         const auto registerToFree = context.registerIndex + context.usedChunks / 64;
-        for (auto i = context.registerIndex; i < registerToFree; i++) {
-          control_[i] = (uint64_t)-1;
+        for (auto i = context.registerIndex; i < registerToFree; ++i) {
+          control_[i] = all_set;
         }
       }
 

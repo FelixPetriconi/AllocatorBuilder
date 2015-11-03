@@ -45,7 +45,8 @@ namespace alb {
    *
    * \ingroup group_allocators group_shared
    */
-    template <class Allocator, size_t NumberOfChunks, size_t ChunkSize> class shared_heap {
+    template <class Allocator, size_t NumberOfChunks, size_t ChunkSize> 
+    class shared_heap {
       const uint64_t all_set = std::numeric_limits<uint64_t>::max();
       const uint64_t all_zero = 0u;
 
@@ -64,8 +65,7 @@ namespace alb {
       boost::shared_mutex mutex_;
       Allocator allocator_;
 
-      void shrink() noexcept
-      {
+      void shrink() noexcept {
         allocator_.deallocate(controlBuffer_);
         allocator_.deallocate(buffer_);
         control_ = nullptr;
@@ -79,76 +79,69 @@ namespace alb {
       static constexpr bool supports_truncated_deallocation = true;
       static constexpr unsigned alignment = Allocator::alignment;
 
-      shared_heap() noexcept
-      {
+      shared_heap() noexcept {
         init();
       }
 
       shared_heap(size_t numberOfChunks, size_t chunkSize) noexcept
         : all_set(std::numeric_limits<uint64_t>::max())
-        , all_zero(0)
-      {
+        , all_zero(0) {
+
         numberOfChunks_.value(internal::round_to_alignment(64, numberOfChunks));
         chunk_size_.value(internal::round_to_alignment(alignment, chunkSize));
         init();
       }
 
-      shared_heap(shared_heap &&x) noexcept
-      {
+      shared_heap(shared_heap &&x) noexcept {
         *this = std::move(x);
       }
 
-      shared_heap &operator=(shared_heap &&x) noexcept
-      {
+      shared_heap &operator=(shared_heap &&x) noexcept {
         if (this == &x) {
           return *this;
         }
         boost::unique_lock<boost::shared_mutex> guardThis(mutex_);
         shrink();
         boost::unique_lock<boost::shared_mutex> guardX(x.mutex_);
-        numberOfChunks_ = std::move(x.numberOfChunks_);
-        chunk_size_ = std::move(x.chunk_size_);
-        buffer_ = std::move(x.buffer_);
-        controlBuffer_ = std::move(x.controlBuffer_);
-        control_ = std::move(x.control_);
-        controlSize_ = std::move(x.controlSize_);
-        allocator_ = std::move(x.allocator_);
+        numberOfChunks_   = std::move(x.numberOfChunks_);
+        chunk_size_       = std::move(x.chunk_size_);
+        buffer_           = std::move(x.buffer_);
+        controlBuffer_    = std::move(x.controlBuffer_);
+        control_          = std::move(x.control_);
+        controlSize_      = std::move(x.controlSize_);
+        allocator_        = std::move(x.allocator_);
 
         x.control_ = nullptr;
 
         return *this;
       }
 
-      size_t number_of_chunk() const noexcept
-      {
+      size_t number_of_chunk() const noexcept {
         return numberOfChunks_.value();
       }
 
-      size_t chunk_size() const noexcept
-      {
+      size_t chunk_size() const noexcept {
         return chunk_size_.value();
       }
 
-      ~shared_heap()
-      {
+      ~shared_heap() {
         shrink();
       }
 
-      bool owns(const block &b) const noexcept
-      {
+      bool owns(const block &b) const noexcept {
         return b && buffer_.ptr <= b.ptr &&
           b.ptr < (static_cast<char *>(buffer_.ptr) + buffer_.length);
       }
 
-      block allocate(size_t n) noexcept
-      {
+      block allocate(size_t n) noexcept {
+        block result;
         if (n == 0) {
-          return{};
+          return result;
         }
 
         // The heap cannot handle such a big request
         if (n > chunk_size_.value() * numberOfChunks_.value()) {
-          return{};
+          return result;
         }
 
         size_t numberOfAlignedBytes = internal::round_to_alignment(chunk_size_.value(), n);
@@ -156,28 +149,28 @@ namespace alb {
         numberOfBlocks = std::max(size_t(1), numberOfBlocks);
 
         if (numberOfBlocks < 64) {
-          auto result = allocate_within_single_control_register(numberOfBlocks);
+          result = allocate_within_single_control_register(numberOfBlocks);
           if (result) {
             return result;
           }
         }
         else if (numberOfBlocks == 64) {
-          auto result = allocate_within_complete_control_register(numberOfBlocks);
+          result = allocate_within_complete_control_register(numberOfBlocks);
           if (result) {
             return result;
           }
         }
         else if ((numberOfBlocks % 64) == 0) {
-          auto result = allocate_multiple_complete_control_registers(numberOfBlocks);
+          result = allocate_multiple_complete_control_registers(numberOfBlocks);
           if (result) {
             return result;
           }
         }
-        return allocate_with_register_overlap(numberOfBlocks);
+        result = allocate_with_register_overlap(numberOfBlocks);
+        return result;
       }
 
-      void deallocate(block &b) noexcept
-      {
+      void deallocate(block &b) noexcept {
         if (!b) {
           return;
         }
@@ -203,15 +196,12 @@ namespace alb {
         b.reset();
       }
 
-      void deallocate_all() noexcept
-      {
+      void deallocate_all() noexcept {
         boost::unique_lock<boost::shared_mutex> guard(mutex_);
-
-        std::fill(control_, control_ + controlSize_, std::numeric_limits<uint64_t>::max());
+        std::fill(control_, control_ + controlSize_, all_set);
       }
 
-      bool reallocate(block &b, size_t n) noexcept
-      {
+      bool reallocate(block &b, size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
@@ -241,8 +231,7 @@ namespace alb {
         return internal::reallocate_with_copy(*this, *this, b, n);
       }
 
-      bool expand(block &b, size_t delta) noexcept
-      {
+      bool expand(block &b, size_t delta) noexcept {
         if (delta == 0) {
           return true;
         }
@@ -271,38 +260,36 @@ namespace alb {
       }
 
     private:
-      void init() noexcept
-      {
+      void init() noexcept {
         controlSize_ = numberOfChunks_.value() / 64;
-        controlBuffer_ = allocator_.allocate(sizeof(std::atomic<uint64_t>) * controlSize_);
+        controlBuffer_ = allocator_.allocate( sizeof(std::atomic<uint64_t>) * controlSize_ );
         assert((bool)controlBuffer_);
 
         control_ = static_cast<std::atomic<uint64_t> *>(controlBuffer_.ptr);
         new (control_) std::atomic<uint64_t>[controlSize_]();
 
-        buffer_ = allocator_.allocate(chunk_size_.value() * numberOfChunks_.value());
+        buffer_ = allocator_.allocate( chunk_size_.value() * numberOfChunks_.value() );
         assert((bool)buffer_);
 
         deallocate_all();
       }
 
-      struct BlockContext {
+      struct BlockContext 
+      {
         int registerIndex;
         int subIndex;
         int usedChunks;
       };
 
-      BlockContext block_to_context(const block &b) noexcept
-      {
+      BlockContext block_to_context(const block &b) noexcept {
         const auto blockIndex = static_cast<int>(
           (static_cast<char *>(b.ptr) - static_cast<char *>(buffer_.ptr)) / chunk_size_.value());
 
-        return{ blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / chunk_size_.value()) };
+        return { blockIndex / 64, blockIndex % 64, static_cast<int>(b.length / chunk_size_.value()) };
       }
 
       template <bool Used>
-      bool test_and_set_within_single_register(const BlockContext &context) noexcept
-      {
+      bool test_and_set_within_single_register(const BlockContext &context) noexcept {
         assert(context.subIndex + context.usedChunks <= 64);
 
         uint64_t mask = (context.usedChunks == 64) ? all_set : (((uint64_t(1) << context.usedChunks) - 1)
@@ -321,8 +308,7 @@ namespace alb {
       }
 
       template <class LockPolicy, bool Used>
-      void set_over_multiple_registers(const BlockContext &context) noexcept
-      {
+      void set_over_multiple_registers(const BlockContext &context) noexcept {
         size_t chunksToTest = context.usedChunks;
         size_t subIndexStart = context.subIndex;
         size_t registerIndex = context.registerIndex;
@@ -353,8 +339,8 @@ namespace alb {
         } while (chunksToTest > 0);
       }
 
-      template <bool Used> bool test_and_set_over_multiple_registers(const BlockContext &context) noexcept
-      {
+      template <bool Used> 
+      bool test_and_set_over_multiple_registers(const BlockContext &context) noexcept {
         static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t),
           "Current assumption that std::atomic has no overhead on "
           "integral types is not fulfilled!");
@@ -397,8 +383,8 @@ namespace alb {
         return true;
       }
 
-      template <class LockPolicy, bool Used> void set_within_single_register(const BlockContext &context) noexcept
-      {
+      template <class LockPolicy, bool Used> 
+      void set_within_single_register(const BlockContext &context) noexcept {
         assert(context.subIndex + context.usedChunks <= 64);
 
         uint64_t mask = (context.usedChunks == 64) ? all_set : (((uint64_t(1) << context.usedChunks) - 1)
@@ -412,8 +398,8 @@ namespace alb {
         } while (!CAS(control_[context.registerIndex], currentRegister, newRegister));
       }
 
-      block allocate_within_single_control_register(size_t numberOfBlocks) noexcept
-      {
+      block allocate_within_single_control_register(size_t numberOfBlocks) noexcept {
+        block result;
         // we must assume that we may find a free location, but that it is later
         // already used during the set operation
         do {
@@ -437,8 +423,10 @@ namespace alb {
                   if (CAS(control_[controlIndex], currentControlRegister, newControlRegister)) {
                     size_t ptrOffset = (controlIndex * 64 + i) * chunk_size_.value();
 
-                    return block(static_cast<char *>(buffer_.ptr) + ptrOffset,
-                      numberOfBlocks * chunk_size_.value());
+                    result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+                    result.length =  numberOfBlocks * chunk_size_.value();
+
+                    return result;
                   }
                 }
                 i++;
@@ -448,13 +436,12 @@ namespace alb {
             controlIndex++;
           }
           if (controlIndex == controlSize_) {
-            return block();
+            return result;
           }
         } while (true);
       }
 
-      block allocate_within_complete_control_register(size_t numberOfBlocks) noexcept
-      {
+      block allocate_within_complete_control_register(size_t numberOfBlocks) noexcept {
         // we must assume that we may find a free location, but that it is later
         // already used during the CAS set operation
         do {
@@ -478,8 +465,8 @@ namespace alb {
         } while (true);
       }
 
-      block allocate_multiple_complete_control_registers(size_t numberOfBlocks) noexcept
-      {
+      block allocate_multiple_complete_control_registers(size_t numberOfBlocks) noexcept {
+        block result;
         // This branch works on multiple chunks at the same time and so a real
         // lock is necessary.
         boost::unique_lock<boost::shared_mutex> guard(mutex_);
@@ -490,7 +477,7 @@ namespace alb {
           [](const std::atomic<uint64_t> &v, const uint64_t &p) { return v.load() == p; });
 
         if (freeFirstChunk == control_ + controlSize_) {
-          return{};
+          return result;
         }
         auto p = freeFirstChunk;
         while (p < freeFirstChunk + neededChunks) {
@@ -499,12 +486,13 @@ namespace alb {
         }
 
         size_t ptrOffset = ((freeFirstChunk - control_) * 64) * chunk_size_.value();
-        return{ static_cast<char *>(buffer_.ptr) + ptrOffset,
-                     numberOfBlocks * chunk_size_.value() };
+        result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+        result.length = numberOfBlocks * chunk_size_.value();
+        return result;
       }
 
-      block allocate_with_register_overlap(size_t numberOfBlocks) noexcept
-      {
+      block allocate_with_register_overlap(size_t numberOfBlocks) noexcept {
+        block result;
         // search for free area
         static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t),
           "Current assumption that std::atomic has no overhead on "
@@ -543,18 +531,17 @@ namespace alb {
           size_t ptrOffset =
             (chunkStart - reinterpret_cast<unsigned char *>(control_)) * 8 * chunk_size_.value();
 
-          block result(static_cast<char *>(buffer_.ptr) + ptrOffset,
-            numberOfBlocks * chunk_size_.value());
+          result.ptr = static_cast<char *>(buffer_.ptr) + ptrOffset;
+          result.length = numberOfBlocks * chunk_size_.value();
 
           set_over_multiple_registers<shared_helpers::NullLock, false>(block_to_context(result));
           return result;
         }
 
-        return{};
+        return result;
       }
 
-      void deallocate_for_multiple_complete_control_register(const BlockContext &context) noexcept
-      {
+      void deallocate_for_multiple_complete_control_register(const BlockContext &context) noexcept {
         const auto registerToFree = context.registerIndex + context.usedChunks / 64;
         for (auto i = context.registerIndex; i < registerToFree; i++) {
           // it is not necessary to use a unique lock is used here

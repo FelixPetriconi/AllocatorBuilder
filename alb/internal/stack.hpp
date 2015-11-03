@@ -25,27 +25,27 @@ namespace alb {
        *
        * \ingroup group_internal
        */
-      template <typename T, unsigned MaxSize> class stack {
+      template <typename T, unsigned MaxSize> 
+      class stack {
         static_assert(boost::has_trivial_assign<T>::value, "T must be trivially copyable");
         static_assert(boost::has_trivial_destructor<T>::value, "T must be trivially destroyable");
 
-        T _elements[MaxSize];
-        int _pos;
+        T elements_[MaxSize];
+        int pos_;
 
       public:
         using value_type = T;
         static const size_t max_size = MaxSize;
 
         stack() noexcept
-          : _pos(-1)
-        {
-        }
+          : pos_(-1)
+        {}
 
         bool push(T v) noexcept
         {
-          if (_pos < static_cast<int>(MaxSize) - 1) {
-            _pos++;
-            _elements[_pos] = std::move(v);
+          if (pos_ < static_cast<int>(MaxSize) - 1) {
+            pos_++;
+            elements_[pos_] = std::move(v);
             return true;
           }
           return false;
@@ -53,9 +53,9 @@ namespace alb {
 
         bool pop(T &v) noexcept
         {
-          if (_pos >= 0) {
-            v = std::move(_elements[_pos]);
-            _pos--;
+          if (pos_ >= 0) {
+            v = std::move(elements_[pos_]);
+            pos_--;
             return true;
           }
           return false;
@@ -63,7 +63,7 @@ namespace alb {
 
         bool empty() const noexcept
         {
-          return _pos == -1;
+          return pos_ == -1;
         }
       };
     }

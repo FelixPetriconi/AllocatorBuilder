@@ -31,16 +31,19 @@ namespace alb {
        * \param n The number of bytes.
        * \return Block with memory information
        */
-      block allocate(size_t n) noexcept
-      {
+      block allocate(size_t n) noexcept {
+        block result;
+
         if (n == 0) {
-          return{};
+          return result;
         }
-        void *p = ::malloc(n);
+        auto p = ::malloc(n);
         if (p != nullptr) {
-          return{ p, n };
+          result.ptr = p;
+          result.length = n;
+          return result;
         }
-        return{};
+        return result;
       }
 
       /**
@@ -49,8 +52,7 @@ namespace alb {
        * \param n The new size
        * \return True, if the operation was successful.
        */
-      bool reallocate(block &b, size_t n) noexcept
-      {
+      bool reallocate(block &b, size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }

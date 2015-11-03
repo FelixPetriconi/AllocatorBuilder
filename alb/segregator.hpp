@@ -24,7 +24,8 @@ namespace alb {
      * \ingroup group_allocators group_shared
      */
     template <size_t Threshold, class SmallAllocator, class LargeAllocator>
-    class segregator : private SmallAllocator, private LargeAllocator {
+    class segregator : private SmallAllocator, private LargeAllocator 
+    {
       static_assert(!traits::both_same_base<SmallAllocator, LargeAllocator>::value,
         "Small- and Large-Allocator cannot be both of base!");
 
@@ -49,20 +50,24 @@ namespace alb {
        * \param n Number of requested bytes
        * \return Block with the memory information.
        */
-      block allocate(size_t n) noexcept
-      {
+      block allocate(size_t n) noexcept {
+        block result;
         if (n <= Threshold) {
-          return SmallAllocator::allocate(n);
+          result = SmallAllocator::allocate(n);
+
         }
-        return LargeAllocator::allocate(n);
+        else {
+          result = LargeAllocator::allocate(n);
+        }
+        
+        return result;
       }
 
       /**
        * Frees the given block and resets it.
        * \param b The block to be freed.
        */
-      void deallocate(block &b) noexcept
-      {
+      void deallocate(block &b) noexcept {
         if (!b) {
           return;
         }
@@ -82,8 +87,7 @@ namespace alb {
        *
        * \ingroup group_allocators group_shared
        */
-      bool reallocate(block &b, size_t n) noexcept
-      {
+      bool reallocate(block &b, size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
           return true;
         }
@@ -111,8 +115,8 @@ namespace alb {
       template <typename U = SmallAllocator, typename V = LargeAllocator>
       typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
         traits::has_expand<LargeAllocator>::value, bool>::type
-        expand(block &b, size_t delta) noexcept
-      {
+        expand(block &b, size_t delta) noexcept {
+
         if (b.length <= Threshold && b.length + delta > Threshold) {
           return false;
         }
@@ -139,8 +143,8 @@ namespace alb {
       template <typename U = SmallAllocator, typename V = LargeAllocator>
       typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
         traits::has_expand<LargeAllocator>::value, bool>::type
-        owns(const block &b) const noexcept
-      {
+        owns(const block &b) const noexcept {
+
         if (b.length <= Threshold) {
           return U::owns(b);
         }
@@ -154,8 +158,7 @@ namespace alb {
       template <typename U = SmallAllocator, typename V = LargeAllocator>
       typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
         traits::has_expand<LargeAllocator>::value, void>::type
-        deallocate_all() noexcept
-      {
+        deallocate_all() noexcept {
         traits::AllDeallocator<U>::do_it(static_cast<U&>(*this));
         traits::AllDeallocator<V>::do_it(static_cast<V&>(*this));
       }

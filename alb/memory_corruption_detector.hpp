@@ -24,24 +24,25 @@ namespace alb {
      *
      * \ingroup group_internal
      */
-    template <typename T, size_t Pattern> class memory_corruption_detector {
+    template <typename T, size_t Pattern> 
+    class memory_corruption_detector 
+    {
       static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
         "Memory check not for supported types");
 
-      T _pattern;
+      T pattern_;
 
     public:
       using value_type = T;
       static const size_t pattern = Pattern;
 
       memory_corruption_detector() noexcept
-        : _pattern(Pattern)
-      {
-      }
+        : pattern_(Pattern)
+      {}
 
       ~memory_corruption_detector()
       {
-        assert(_pattern == Pattern);
+        assert(pattern_ == Pattern);
       }
     };
 

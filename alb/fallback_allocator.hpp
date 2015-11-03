@@ -23,7 +23,8 @@ namespace alb {
      * \ingroup group_allocators group_shared
      */
     template <class Primary, class Fallback>
-    class fallback_allocator : public Primary, public Fallback {
+    class fallback_allocator : public Primary, public Fallback 
+    {
       using primary = Primary;
       using fallback = Fallback;
 
@@ -33,19 +34,21 @@ namespace alb {
     public:
       static constexpr bool supports_truncated_deallocation = Primary::supports_truncated_deallocation ||
         Fallback::supports_truncated_deallocation;
-      static constexpr unsigned alignment = (Primary::alignment > Fallback::alignment) ? Primary::alignment : Fallback::alignment;
+      
+      static constexpr unsigned alignment = (Primary::alignment > Fallback::alignment) ? 
+        Primary::alignment : Fallback::alignment;
 
       /**
        * Allocates the requested number of bytes.
        * \param n The number of bytes. Depending on the alignment of the allocator,
        *          the block might contain a bigger size
        */
-      block allocate(size_t n) noexcept
-      {
+      block allocate(size_t n) noexcept {
+        block result;
         if (n == 0) {
-          return{};
+          return result;
         }
-        block result{ Primary::allocate(n) };
+        result = Primary::allocate(n);
         if (!result)
           result = Fallback::allocate(n);
 
@@ -56,8 +59,7 @@ namespace alb {
        * Frees the memory of the provided block and resets it.
        * \param b The block describing the memory to be freed.
        */
-      void deallocate(block &b) noexcept
-      {
+      void deallocate(block &b) noexcept {
         if (!b) {
           return;
         }
@@ -75,8 +77,7 @@ namespace alb {
        * \param n The new size (Zero means deallocation.)
        * \return True if the operation was successful
        */
-      bool reallocate(block &b, size_t n) noexcept
-      {
+      bool reallocate(block &b, size_t n) noexcept {
         if (Primary::owns(b)) {
           if (internal::is_reallocation_handled_default(static_cast<Primary &>(*this), b, n)) {
             return true;
@@ -110,8 +111,7 @@ namespace alb {
        */
       template <typename U = Primary, typename V = Fallback>
       typename std::enable_if<traits::has_expand<U>::value || traits::has_expand<V>::value, bool>::type
-        expand(block &b, size_t delta) noexcept
-      {
+        expand(block &b, size_t delta) noexcept {
         if (Primary::owns(b)) {
           if (traits::has_expand<U>::value) {
             return traits::Expander<U>::do_it(static_cast<U&>(*this), b, delta);
@@ -132,16 +132,14 @@ namespace alb {
        */
       template <typename U = Primary, typename V = Fallback>
       typename std::enable_if<traits::has_owns<U>::value && traits::has_owns<V>::value, bool>::type
-        owns(const block &b) const noexcept
-      {
+        owns(const block &b) const noexcept {
         return Primary::owns(b) || Fallback::owns(b);
       }
 
       template <typename U = Primary, typename V = Fallback>
       typename std::enable_if<traits::has_deallocate_all<U>::value &&
         traits::has_deallocate_all<V>::value, void>::type
-        deallocate_all() noexcept
-      {
+        deallocate_all() noexcept {
         Primary::deallocate_all();
         Fallback::deallocate_all();
       }

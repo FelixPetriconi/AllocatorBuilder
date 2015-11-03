@@ -14,12 +14,13 @@ namespace alb {
     unsigned length;
   };
 
-  template <class Allocator> class global_allocator {
+  template <class Allocator> 
+  class global_allocator 
+  {
   public:
     using value_type = Allocator;
 
-    static Allocator &instance()
-    {
+    static Allocator &instance() {
       static Allocator in;
       return in;
     }

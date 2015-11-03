@@ -22,39 +22,36 @@ namespace alb {
         *
         * \ingroup group_internal
         */
-      template <typename T> class NoAtomic {
-        T _value;
+      template <typename T> 
+      class NoAtomic 
+      {
+        T value_;
 
       public:
         NoAtomic() noexcept
-        {
-        }
+        {}
 
         explicit NoAtomic(T v) noexcept
-          : _value(std::move(v))
-        {
+          : value_(std::move(v))
+        {}
+
+        T load() const noexcept {
+          return value_;
         }
 
-        T load() const noexcept
-        {
-          return _value;
-        }
-
-        NoAtomic &operator=(T v) noexcept
-        {
-          _value = std::move(v);
+        NoAtomic &operator=(T v) noexcept {
+          value_ = std::move(v);
           return *this;
         }
 
         bool compare_exchange_strong(T &, T v) noexcept
         {
-          _value = std::move(v);
+          value_ = std::move(v);
           return true;
         }
 
-        operator T() const
-        {
-          return _value;
+        operator T() const {
+          return value_;
         }
       };
     }
