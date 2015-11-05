@@ -29,7 +29,7 @@ namespace alb {
     template <bool Shared, typename Allocator> class cascading_allocator_base {
       struct Node;
       using NodePtr =
-        typename traits::type_switch<std::atomic<Node *>, internal::NoAtomic<Node *>, Shared>::type;
+        typename traits::type_switch<std::atomic<Node *>, internal::no_atomic<Node *>, Shared>::type;
 
       struct Node {
         Node() noexcept

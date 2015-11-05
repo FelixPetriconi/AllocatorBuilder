@@ -23,15 +23,17 @@ namespace alb {
         * \ingroup group_internal
         */
       template <typename T> 
-      class NoAtomic 
+      class no_atomic 
       {
         T value_;
 
       public:
-        NoAtomic() noexcept
+        using type = T;
+
+        no_atomic() noexcept
         {}
 
-        explicit NoAtomic(T v) noexcept
+        explicit no_atomic(T v) noexcept
           : value_(std::move(v))
         {}
 
@@ -39,7 +41,7 @@ namespace alb {
           return value_;
         }
 
-        NoAtomic &operator=(T v) noexcept {
+        no_atomic &operator=(T v) noexcept {
           value_ = std::move(v);
           return *this;
         }
@@ -53,6 +55,13 @@ namespace alb {
         operator T() const {
           return value_;
         }
+
+        T operator++() { return ++value_; }
+        T operator++(int) { return value_++; }
+        T operator--() { return --value_;} 
+        T operator--(int) { return value_--; }
+        T operator+=(T arg) { return value_ += arg; }
+        T operator-=(T arg) { return value_ -= arg; }
       };
     }
   }

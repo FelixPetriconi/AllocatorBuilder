@@ -15,6 +15,9 @@
 
 #include "allocator_base.hpp"
 #include "affix_allocator.hpp"
+#include "internal/traits.hpp"
+#include "internal/noatomic.hpp"
+#include <atomic>
 #include <chrono>
 
 namespace alb {
@@ -24,12 +27,11 @@ namespace alb {
 
 /// Simple way to define member and accessors
 #define MEMBER_ACCESSOR(X)                                                     \
-  \
 private:                                                                       \
-  size_t X##_;                                                                 \
-  \
+  statistic_type X##_;                                                         \
 public:                                                                        \
-  size_t X() const noexcept { return X##_; }
+  size_t X() const noexcept { return X##_.load(); }                            \
+
 
 inline namespace v_100 {
 /**
@@ -203,8 +205,8 @@ enum StatsOptions : unsigned {
 *
 * \ingroup group_allocators group_stats
 */
-template <class Allocator, unsigned Flags = alb::StatsOptions::All>
-class allocator_with_stats {
+template <bool Shared, class Allocator, unsigned Flags = alb::StatsOptions::All>
+class allocator_with_stats_base {
 public:
   /**
   * In case that we store allocation state, we use an affix_allocator to store
@@ -318,6 +320,8 @@ public:
       (Flags & (StatsOptions::CallerTime | StatsOptions::CallerFile |
                 StatsOptions::CallerLine)) != 0;
 
+  using statistic_type = typename traits::type_switch<std::atomic<size_t>, internal::no_atomic<size_t>, Shared>::type;
+
 // Simplification for defining all members and accessors.
 #define MEMBER_ACCESSORS                                                       \
   MEMBER_ACCESSOR(num_owns)                                                    \
@@ -348,24 +352,24 @@ public:
   static constexpr bool has_per_allocation_state = HasPerAllocationState;
   static constexpr unsigned alignment = Allocator::alignment;
 
-  allocator_with_stats() noexcept : num_owns_(0),
-                                    num_allocate_(0),
-                                    num_allocate_ok_(0),
-                                    num_expand_(0),
-                                    num_expand_ok_(0),
-                                    num_reallocate_(0),
-                                    num_reallocate_ok_(0),
-                                    num_reallocate_in_place_(0),
-                                    num_deallocate_(0),
-                                    num_deallocate_all_(0),
-                                    bytes_allocated_(0),
-                                    bytes_deallocated_(0),
-                                    bytes_expanded_(0),
-                                    bytes_contracted_(0),
-                                    bytes_moved_(0),
-                                    bytes_slack_(0),
-                                    bytes_high_tide_(0),
-                                    root_(nullptr) {}
+  allocator_with_stats_base() noexcept : num_owns_(0),
+                                         num_allocate_(0),
+                                         num_allocate_ok_(0),
+                                         num_expand_(0),
+                                         num_expand_ok_(0),
+                                         num_reallocate_(0),
+                                         num_reallocate_ok_(0),
+                                         num_reallocate_in_place_(0),
+                                         num_deallocate_(0),
+                                         num_deallocate_all_(0),
+                                         bytes_allocated_(0),
+                                         bytes_deallocated_(0),
+                                         bytes_expanded_(0),
+                                         bytes_contracted_(0),
+                                         bytes_moved_(0),
+                                         bytes_slack_(0),
+                                         bytes_high_tide_(0),
+                                         root_(nullptr) {}
 
   /**
   * The number of specified bytes gets allocated by the underlying Allocator.
@@ -585,7 +589,7 @@ private:
   */
   template <typename T>
   void inline add(StatsOptions option, T &value,
-                  typename std::make_signed<T>::type delta) const noexcept {
+                  typename std::make_signed<typename T::type>::type delta) const noexcept {
     if (Flags & option)
       value += delta;
   }
@@ -621,6 +625,22 @@ private:
 
   AllocationInfo *root_;
 };
+
+
+template <class Allocator, unsigned Flags = alb::StatsOptions::All>
+class allocator_with_stats : public allocator_with_stats_base<false, Allocator, Flags>
+{
+public:
+  allocator_with_stats() noexcept {}
+};
+
+// template <class Allocator, unsigned Flags = alb::StatsOptions::All>
+// class shared_allocator_with_stats : public allocator_with_stats_base<true, Allocator, Flags>
+// {
+// public:
+//  shared_allocator_with_stats() noexcept {}
+//};
+
 }
 using namespace v_100;
 }
