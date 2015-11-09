@@ -184,22 +184,27 @@ $(document).ready(function(){initNavTree('reallocator_8hpp_source.html','');});
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      };</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    } <span class="comment">// namespace Helper</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Allocator&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <span class="keywordtype">bool</span> is_reallocation_handled_default(Allocator&amp; allocator, <a class="code" href="structalb_1_1v__100_1_1block.html">block</a>&amp; b, <span class="keywordtype">size_t</span> n) noexcept</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structalb_1_1v__100_1_1internal_1_1reallocator.html">reallocator&lt;Allocator&gt;::is_handled_default</a>(allocator, b, n);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    } <span class="comment">// namespace Helper</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
 <div class="ttc" id="structalb_1_1v__100_1_1internal_1_1reallocator_html"><div class="ttname"><a href="structalb_1_1v__100_1_1internal_1_1reallocator.html">alb::v_100::internal::reallocator</a></div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00057">reallocator.hpp:57</a></div></div>
-<div class="ttc" id="group__group__internal_html_ga0de14a60bc57421d0ef97d714f7b58ce"><div class="ttname"><a href="group__group__internal.html#ga0de14a60bc57421d0ef97d714f7b58ce">alb::v_100::internal::block_copy</a></div><div class="ttdeci">void block_copy(const block &amp;source, block &amp;destination) noexcept</div></div>
-<div class="ttc" id="structalb_1_1v__100_1_1block_html_a7a81cd7161b7084bc6a04544039f5cad"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">alb::v_100::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00086">allocator_base.hpp:86</a></div></div>
+<div class="ttc" id="group__group__internal_html_ga0de14a60bc57421d0ef97d714f7b58ce"><div class="ttname"><a href="group__group__internal.html#ga0de14a60bc57421d0ef97d714f7b58ce">alb::v_100::internal::block_copy</a></div><div class="ttdeci">void block_copy(const block &amp;source, block &amp;destination) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8cpp_source.html#l00015">allocator_base.cpp:15</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html_a7a81cd7161b7084bc6a04544039f5cad"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad">alb::v_100::block::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">This describes the length of the reserved bytes. </div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00088">allocator_base.hpp:88</a></div></div>
 <div class="ttc" id="group__group__internal_html_gaacb3444b98b7b0d6beaab8f950014618"><div class="ttname"><a href="group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618">alb::v_100::internal::reallocate_with_copy</a></div><div class="ttdeci">bool reallocate_with_copy(OldAllocator &amp;oldAllocator, NewAllocator &amp;newAllocator, block &amp;b, size_t n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="reallocator_8hpp_source.html#l00035">reallocator.hpp:35</a></div></div>
-<div class="ttc" id="structalb_1_1v__100_1_1block_html"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html">alb::v_100::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00023">allocator_base.hpp:23</a></div></div>
+<div class="ttc" id="structalb_1_1v__100_1_1block_html"><div class="ttname"><a href="structalb_1_1v__100_1_1block.html">alb::v_100::block</a></div><div class="ttdef"><b>Definition:</b> <a href="allocator__base_8hpp_source.html#l00025">allocator_base.hpp:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><a class="el" href="dir_a495994bfb37b97d8f7021416d3bed69.html">internal</a></li><li class="navelem"><b>reallocator.hpp</b></li>
-    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
+    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

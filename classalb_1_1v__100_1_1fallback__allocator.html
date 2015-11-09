@@ -149,8 +149,10 @@ template&lt;typename U  = Primary, typename V  = Fallback&gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a2ba520c0ce74a3797347f5a2fdc70c41"><td class="memItemLeft" align="right" valign="top">static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
-<tr class="separator:a2ba520c0ce74a3797347f5a2fdc70c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64e5799cd022030ebb33391b0ac2d29d"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
+<tr class="separator:a64e5799cd022030ebb33391b0ac2d29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa610c8b39a428c5e677306ddf0df573"><td class="memItemLeft" align="right" valign="top">static constexpr unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>alignment</b></td></tr>
+<tr class="separator:aaa610c8b39a428c5e677306ddf0df573"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Primary, class Fallback&gt;<br/>
@@ -198,7 +200,7 @@ template&lt;class Primary , class Fallback &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00042">42</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00046">46</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -233,7 +235,7 @@ template&lt;class Primary , class Fallback &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00058">58</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00062">62</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -282,7 +284,7 @@ template&lt;typename U  = Primary, typename V  = Fallback&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation could be performed successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00112">112</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00114">114</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -320,7 +322,7 @@ template&lt;typename U  = Primary, typename V  = Fallback&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the block comes from one of the allocators. </dd></dl>
 
-<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00134">134</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00135">135</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -367,12 +369,12 @@ template&lt;class Primary , class Fallback &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00077">77</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00080">80</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a2ba520c0ce74a3797347f5a2fdc70c41"></a>
+<a class="anchor" id="aaa610c8b39a428c5e677306ddf0df573"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -382,7 +384,33 @@ template&lt;class Primary , class Fallback &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const bool <a class="el" href="classalb_1_1v__100_1_1fallback__allocator.html">alb::v_100::fallback_allocator</a>&lt; Primary, Fallback &gt;::supports_truncated_deallocation</td>
+          <td class="memname">constexpr unsigned <a class="el" href="classalb_1_1v__100_1_1fallback__allocator.html">alb::v_100::fallback_allocator</a>&lt; Primary, Fallback &gt;::alignment</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= (Primary::alignment &gt; Fallback::alignment) ? </div>
+<div class="line">        Primary::alignment : Fallback::alignment</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00038">38</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a64e5799cd022030ebb33391b0ac2d29d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Primary , class Fallback &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classalb_1_1v__100_1_1fallback__allocator.html">alb::v_100::fallback_allocator</a>&lt; Primary, Fallback &gt;::supports_truncated_deallocation</td>
         </tr>
       </table>
   </td>
@@ -394,7 +422,7 @@ template&lt;class Primary , class Fallback &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= Primary::supports_truncated_deallocation ||</div>
 <div class="line">        Fallback::supports_truncated_deallocation</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00034">34</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="fallback__allocator_8hpp_source.html#l00035">35</a> of file <a class="el" href="fallback__allocator_8hpp_source.html">fallback_allocator.hpp</a>.</p>
 
 </div>
 </div>
@@ -407,7 +435,7 @@ template&lt;class Primary , class Fallback &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><b>v_100</b></li><li class="navelem"><a class="el" href="classalb_1_1v__100_1_1fallback__allocator.html">fallback_allocator</a></li>
-    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
+    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

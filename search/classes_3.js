@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['dynastic',['dynastic',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
-  ['dynastic_3c_20dynamicenableswitch_2c_20dynamicenableswitch_20_3e',['dynastic&lt; DynamicEnableSwitch, DynamicEnableSwitch &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html',1,'alb::v_100::internal']]],
-  ['dynastic_3c_28chunksize_3d_3dinternal_3a_3adynasticdynamicset_3f0_3achunksize_29_2c_200_20_3e',['dynastic&lt;(ChunkSize==internal::DynasticDynamicSet?0:ChunkSize), 0 &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
-  ['dynastic_3c_28maxsize_3d_3dinternal_3a_3adynasticdynamicset_3finternal_3a_3adynasticdynamicset_3amaxsize_29_2c_20internal_3a_3adynasticdynamicset_20_3e',['dynastic&lt;(MaxSize==internal::DynasticDynamicSet?internal::DynasticDynamicSet:MaxSize), internal::DynasticDynamicSet &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
-  ['dynastic_3c_28minsize_3d_3dinternal_3a_3adynasticdynamicset_3finternal_3a_3adynasticdynamicset_3aminsize_29_2c_20internal_3a_3adynasticdynamicset_20_3e',['dynastic&lt;(MinSize==internal::DynasticDynamicSet?internal::DynasticDynamicSet:MinSize), internal::DynasticDynamicSet &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
-  ['dynastic_3c_28numberofchunks_3d_3dinternal_3a_3adynasticdynamicset_3f0_3anumberofchunks_29_2c_200_20_3e',['dynastic&lt;(NumberOfChunks==internal::DynasticDynamicSet?0:NumberOfChunks), 0 &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]]
+  ['cascading_5fallocator',['cascading_allocator',['../classalb_1_1v__100_1_1cascading__allocator.html',1,'alb::v_100']]],
+  ['cascading_5fallocator_5fbase',['cascading_allocator_base',['../classalb_1_1v__100_1_1cascading__allocator__base.html',1,'alb::v_100']]],
+  ['cascading_5fallocator_5fbase_3c_20false_2c_20allocator_20_3e',['cascading_allocator_base&lt; false, Allocator &gt;',['../classalb_1_1v__100_1_1cascading__allocator__base.html',1,'alb::v_100']]],
+  ['cascading_5fallocator_5fbase_3c_20true_2c_20allocator_20_3e',['cascading_allocator_base&lt; true, Allocator &gt;',['../classalb_1_1v__100_1_1cascading__allocator__base.html',1,'alb::v_100']]],
+  ['check',['Check',['../structalb_1_1v__100_1_1traits_1_1has__owns_1_1_check.html',1,'alb::v_100::traits::has_owns']]],
+  ['check',['Check',['../structalb_1_1v__100_1_1traits_1_1has__deallocate__all_1_1_check.html',1,'alb::v_100::traits::has_deallocate_all']]],
+  ['check',['Check',['../structalb_1_1v__100_1_1traits_1_1has__expand_1_1_check.html',1,'alb::v_100::traits::has_expand']]]
 ];

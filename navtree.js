@@ -22,7 +22,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classalb_1_1v__100_1_1mallocator.html"
+"classalb_1_1v__100_1_1internal_1_1no__atomic.html",
+"structalb_1_1v__100_1_1traits_1_1both__same__base_3_01_allocator_3_01_a1_00_01_p1_01_4_00_01_all60173a1c510c327924848d08dea467ca.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

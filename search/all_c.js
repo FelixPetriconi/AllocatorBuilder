@@ -1,9 +1,20 @@
 var searchData=
 [
-  ['operator_20bool',['operator bool',['../structalb_1_1v__100_1_1block.html#a6f895a202ab1f78e5f5793f5b53e3280',1,'alb::v_100::block']]],
-  ['optinal_5fsufix_5fstore',['optinal_sufix_store',['../structalb_1_1v__100_1_1affix__allocator__helper_1_1optinal__sufix__store.html',1,'alb::v_100::affix_allocator_helper']]],
-  ['optinal_5fsufix_5fstore_3c_20sufix_2c_200_20_3e',['optinal_sufix_store&lt; Sufix, 0 &gt;',['../structalb_1_1v__100_1_1affix__allocator__helper_1_1optinal__sufix__store_3_01_sufix_00_010_01_4.html',1,'alb::v_100::affix_allocator_helper']]],
-  ['outer_5fto_5fprefix',['outer_to_prefix',['../classalb_1_1v__100_1_1affix__allocator.html#a53eb7f6a8741cf873b6b30fc443ca118',1,'alb::v_100::affix_allocator']]],
-  ['outer_5fto_5fsufix',['outer_to_sufix',['../classalb_1_1v__100_1_1affix__allocator.html#a5b84dbd0e3cce418d1a754b19e2d161a',1,'alb::v_100::affix_allocator']]],
-  ['owns',['owns',['../classalb_1_1v__100_1_1affix__allocator.html#aec85020485994060ab31102914a34017',1,'alb::v_100::affix_allocator::owns()'],['../classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6',1,'alb::v_100::allocator_with_stats::owns()'],['../classalb_1_1v__100_1_1bucketizer.html#a1dedc6785231a1433ec8bf647d56bd55',1,'alb::v_100::bucketizer::owns()'],['../classalb_1_1v__100_1_1cascading__allocator__base.html#a5a42bf1ba391e6002497673dfed455ff',1,'alb::v_100::cascading_allocator_base::owns()'],['../classalb_1_1v__100_1_1fallback__allocator.html#a62485326fc498ee37dabe6b979ecc441',1,'alb::v_100::fallback_allocator::owns()'],['../classalb_1_1v__100_1_1freelist__base.html#abec6195f50eba8b9aefc10245864bae0',1,'alb::v_100::freelist_base::owns()'],['../classalb_1_1v__100_1_1segregator.html#ae5791ca8c6e071d8834e8f6c46f40ab5',1,'alb::v_100::segregator::owns()'],['../classalb_1_1v__100_1_1stack__allocator.html#aa8868924cb99525d4dc65d5349fde661',1,'alb::v_100::stack_allocator::owns()']]]
+  ['no_5faffix',['no_affix',['../structalb_1_1v__100_1_1affix__helper_1_1no__affix.html',1,'alb::v_100::affix_helper']]],
+  ['no_5fatomic',['no_atomic',['../classalb_1_1v__100_1_1internal_1_1no__atomic.html',1,'alb::v_100::internal']]],
+  ['null_5fallocator',['null_allocator',['../classalb_1_1v__100_1_1null__allocator.html',1,'alb::v_100']]],
+  ['null_5flock',['null_lock',['../structalb_1_1v__100_1_1shared__helpers_1_1null__lock.html',1,'alb::v_100::shared_helpers']]],
+  ['null_5fmutex',['null_mutex',['../structalb_1_1v__100_1_1shared__helpers_1_1null__mutex.html',1,'alb::v_100::shared_helpers']]],
+  ['nulllock',['NullLock',['../classalb_1_1v__100_1_1shared__helpers_1_1_null_lock.html',1,'alb::v_100::shared_helpers']]],
+  ['numall',['NumAll',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da875b928f5a04d21b2e064d715fe8f7c0',1,'alb::v_100']]],
+  ['numallocate',['NumAllocate',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da248c1866b0579eb951a5f1fce818e191',1,'alb::v_100']]],
+  ['numallocateok',['NumAllocateOK',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da40089c7520f624b382c6c9c8f78efe2b',1,'alb::v_100']]],
+  ['numdeallocate',['NumDeallocate',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da9ccc9d812aa0f4dd30a3bd60b3a2db45',1,'alb::v_100']]],
+  ['numdeallocateall',['NumDeallocateAll',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88daabb3d13891074fb8668483ae8dc034ba',1,'alb::v_100']]],
+  ['numexpand',['NumExpand',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3addd395bbf152fd4b9f78025326f4be',1,'alb::v_100']]],
+  ['numexpandok',['NumExpandOK',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6a1bcb8d0425b1f931ffd6c8fd4dd46e',1,'alb::v_100']]],
+  ['numowns',['NumOwns',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe',1,'alb::v_100']]],
+  ['numreallocate',['NumReallocate',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da6268fa314945366fd99e7ea9535291aa',1,'alb::v_100']]],
+  ['numreallocateinplace',['NumReallocateInPlace',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da3e5aa2b31b5a735a54bbda421c2f8051',1,'alb::v_100']]],
+  ['numreallocateok',['NumReallocateOK',['../group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da34727fadfba473f27c8504085af565bb',1,'alb::v_100']]]
 ];

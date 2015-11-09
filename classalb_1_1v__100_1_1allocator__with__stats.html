@@ -106,359 +106,59 @@ $(document).ready(function(){initNavTree('classalb_1_1v__100_1_1allocator__with_
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classalb_1_1v__100_1_1allocator__with__stats-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alb::v_100::allocator_with_stats&lt; Allocator, Flags &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__group__allocators.html">Allocators</a> &#124; <a class="el" href="group__group__stats.html">Statistic</a></div></div>  </div>
+<div class="title">alb::v_100::allocator_with_stats&lt; Allocator, Flags &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>&gt;</code></p>
+<p>Inherits <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html">alb::v_100::allocator_with_stats_base&lt; false, Allocator, Flags &gt;</a>.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html">AllocationInfo</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ac1ae0b60015424bcc7441cce4f9b536d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1v__100_1_1block.html">block</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html#ac1ae0b60015424bcc7441cce4f9b536d">allocate</a> (size_t n, const char *file=nullptr, const char *function=nullptr, int line=0) noexcept</td></tr>
-<tr class="separator:ac1ae0b60015424bcc7441cce4f9b536d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8938fd6f8267c35e391b02d576ee8ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html#ad8938fd6f8267c35e391b02d576ee8ce">deallocate</a> (<a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) noexcept</td></tr>
-<tr class="separator:ad8938fd6f8267c35e391b02d576ee8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad849234f18a1d7d2695efe1fdf18cad0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html#ad849234f18a1d7d2695efe1fdf18cad0">reallocate</a> (<a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, size_t n) noexcept</td></tr>
-<tr class="separator:ad849234f18a1d7d2695efe1fdf18cad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af684bf1ee328cf65feb243c2a7e3c0a6"><td class="memTemplParams" colspan="2">template&lt;typename U  = Allocator&gt; </td></tr>
-<tr class="memitem:af684bf1ee328cf65feb243c2a7e3c0a6"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classalb_1_1v__100_1_1allocator__with__stats__base"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classalb_1_1v__100_1_1allocator__with__stats__base')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html">alb::v_100::allocator_with_stats_base&lt; false, Allocator, Flags &gt;</a></td></tr>
+<tr class="memitem:a232fc686f06d6f74d384f2334708fa75 inherit pub_types_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a232fc686f06d6f74d384f2334708fa75"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>statistic_type</b> = typename <a class="el" href="structalb_1_1v__100_1_1traits_1_1type__switch.html">traits::type_switch</a>&lt; std::atomic&lt; size_t &gt;, <a class="el" href="classalb_1_1v__100_1_1internal_1_1no__atomic.html">internal::no_atomic</a>&lt; size_t &gt;, Shared &gt;::type</td></tr>
+<tr class="separator:a232fc686f06d6f74d384f2334708fa75 inherit pub_types_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html">alb::v_100::allocator_with_stats_base&lt; false, Allocator, Flags &gt;</a></td></tr>
+<tr class="memitem:a5344621350fdfaa73d6b58958bd584f1 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structalb_1_1v__100_1_1block.html">block</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html#a5344621350fdfaa73d6b58958bd584f1">allocate</a> (size_t n, const char *file=nullptr, const char *function=nullptr, int line=0) noexcept</td></tr>
+<tr class="separator:a5344621350fdfaa73d6b58958bd584f1 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f109c137880cb58390453f5c57341a0 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html#a5f109c137880cb58390453f5c57341a0">deallocate</a> (<a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) noexcept</td></tr>
+<tr class="separator:a5f109c137880cb58390453f5c57341a0 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540f58aab41e39faacf9102d4d1f2073 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html#a540f58aab41e39faacf9102d4d1f2073">reallocate</a> (<a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, size_t n) noexcept</td></tr>
+<tr class="separator:a540f58aab41e39faacf9102d4d1f2073 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3345899ae329ceeb61a407fe3abaa2e2 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
 &lt; <a class="el" href="structalb_1_1v__100_1_1traits_1_1has__owns.html">traits::has_owns</a>&lt; U &gt;::value, <br class="typebreak"/>
-bool &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6">owns</a> (const <a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) const noexcept</td></tr>
-<tr class="separator:af684bf1ee328cf65feb243c2a7e3c0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acec9b4750598723a7047151bb1bb398f"><td class="memTemplParams" colspan="2">template&lt;typename U  = Allocator&gt; </td></tr>
-<tr class="memitem:acec9b4750598723a7047151bb1bb398f"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+bool &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html#a3345899ae329ceeb61a407fe3abaa2e2">owns</a> (const <a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b) const noexcept</td></tr>
+<tr class="separator:a3345899ae329ceeb61a407fe3abaa2e2 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef99dfe24a03bf91165d1cea424a67d inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
 &lt; <a class="el" href="structalb_1_1v__100_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt; U &gt;<br class="typebreak"/>
-::value, bool &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html#acec9b4750598723a7047151bb1bb398f">expand</a> (<a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, size_t delta) noexcept</td></tr>
-<tr class="separator:acec9b4750598723a7047151bb1bb398f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b80f840c12bea616ea8988446f9773"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html#a33b80f840c12bea616ea8988446f9773">allocations</a> () const noexcept</td></tr>
-<tr class="separator:a33b80f840c12bea616ea8988446f9773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:abb210131e23796d5ed0915ed56103ffd"><td class="memItemLeft" align="right" valign="top">static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasPerAllocationState</b></td></tr>
-<tr class="separator:abb210131e23796d5ed0915ed56103ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76e5b2c44af802e20a0add2b863dce61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76e5b2c44af802e20a0add2b863dce61"></a>
+::value, bool &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html#a1ef99dfe24a03bf91165d1cea424a67d">expand</a> (<a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;b, size_t delta) noexcept</td></tr>
+<tr class="separator:a1ef99dfe24a03bf91165d1cea424a67d inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54bb9f0bfeb9399606ada41b28c45a77 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top">Allocations&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html#a54bb9f0bfeb9399606ada41b28c45a77">allocations</a> () const noexcept</td></tr>
+<tr class="separator:a54bb9f0bfeb9399606ada41b28c45a77 inherit pub_methods_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats__base.html">alb::v_100::allocator_with_stats_base&lt; false, Allocator, Flags &gt;</a></td></tr>
+<tr class="memitem:a6f42ba18728dfc29769086d84ed9bc68 inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f42ba18728dfc29769086d84ed9bc68"></a>
+static const bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasPerAllocationState</b></td></tr>
+<tr class="separator:a6f42ba18728dfc29769086d84ed9bc68 inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776225a29784fea631092d5730e8310e inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a776225a29784fea631092d5730e8310e"></a>
 static MEMBER_ACCESSORS <br class="typebreak"/>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = Allocator::supports_truncated_deallocation</td></tr>
-<tr class="separator:a76e5b2c44af802e20a0add2b863dce61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63df7c703d8be5ff0293e24224e29dd9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63df7c703d8be5ff0293e24224e29dd9"></a>
-static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_per_allocation_state</b> = HasPerAllocationState</td></tr>
-<tr class="separator:a63df7c703d8be5ff0293e24224e29dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
+<tr class="separator:a776225a29784fea631092d5730e8310e inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51d1730e4a0da6055e1f020c0d39a907 inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51d1730e4a0da6055e1f020c0d39a907"></a>
+static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_per_allocation_state</b></td></tr>
+<tr class="separator:a51d1730e4a0da6055e1f020c0d39a907 inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8193544b0248b647f535f890cfd53886 inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8193544b0248b647f535f890cfd53886"></a>
+static constexpr unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>alignment</b></td></tr>
+<tr class="separator:a8193544b0248b647f535f890cfd53886 inherit pub_static_attribs_classalb_1_1v__100_1_1allocator__with__stats__base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Allocator, unsigned Flags = alb::StatsOptions::All&gt;<br/>
 class alb::v_100::allocator_with_stats&lt; Allocator, Flags &gt;</h3>
 
-<p>This Allocator serves as a facade in front of the specified allocator to collect statistics during runtime about all operations done on this instance. This is an implementation that is not intended to be used in a shared environment.</p>
-<p>In case that caller information shall be collected, the Allocator parameter is encapsulated with an ALB::affix_allocator. In this case alb::allocator_with_stats::AllocationInfo is in used as Prefix and so all caller information is prepended to every allocated block. Be aware that collecting of caller informations adds on top of each allocation sizeof(AllocatorWithStats::AllocationInfo) bytes! With a good optimizing compiler only the code for the enabled statistic information gets created. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Allocator</td><td>The allocator that performs all allocations </td></tr>
-    <tr><td class="paramname">Flags</td><td>Specifies what kind of statistics get collected </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00206">206</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac1ae0b60015424bcc7441cce4f9b536d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structalb_1_1v__100_1_1block.html">block</a> <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::allocate </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>file</em> = <code>nullptr</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>function</em> = <code>nullptr</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>line</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The number of specified bytes gets allocated by the underlying Allocator. Depending on the specified Flag, the allocating statistic information is stored. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">n</td><td>The requested number of bytes </td></tr>
-    <tr><td class="paramname">file</td><td>The file name of the caller location (Only stored if CallerFile is enabled) </td></tr>
-    <tr><td class="paramname">function</td><td>The callers function (Only stored if CallerFunction is enabled) </td></tr>
-    <tr><td class="paramname">line</td><td>The callers line in source code (Only stored if CallerLine is enabled) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00400">400</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a33b80f840c12bea616ea8988446f9773"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html">Allocations</a> <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::allocations </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Accessor to all currently outstanding memory allocations. The ownership of all elements belong to this class. </p>
-<dl class="section return"><dt>Returns</dt><dd>A container with all AllocationInfos </dd></dl>
-
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00580">580</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad8938fd6f8267c35e391b02d576ee8ce"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::deallocate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The specified block gets freed by the underlaying Allocator Depending on the specified Flag, the deallocating statistic information is stored. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>Block to be freed </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00445">445</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acec9b4750598723a7047151bb1bb398f"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<div class="memtemplate">
-template&lt;typename U  = Allocator&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1v__100_1_1traits_1_1has__expand.html">traits::has_expand</a>&lt;U&gt;::value, bool&gt;::type <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::expand </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>delta</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The given block is passed to the underlying Allocator to be expanded This method is only available if the underlying allocator implements it. Depending on the specified Flag, the expand statistic information is stored. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>The block that should be expanded </td></tr>
-    <tr><td class="paramname">delta</td><td>The amount of bytes that should be tried to expanded </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
-
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00557">557</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af684bf1ee328cf65feb243c2a7e3c0a6"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<div class="memtemplate">
-template&lt;typename U  = Allocator&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::enable_if&lt;<a class="el" href="structalb_1_1v__100_1_1traits_1_1has__owns.html">traits::has_owns</a>&lt;U&gt;::value, bool&gt;::type <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::owns </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The given block is passed to the underlying Allocator to be checked for ownership. This method is only available if the underlying Allocator implements it. Depending on the specified Flag, only the owns statistic information is stored. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>The block its ownership shall be checked </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00540">540</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad849234f18a1d7d2695efe1fdf18cad0"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::reallocate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structalb_1_1v__100_1_1block.html">block</a> &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The specified block gets reallocated by the underlaying Allocator Depending on the specified Flag, the reallocating statistic information is stored. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>The block that should be reallocated. </td></tr>
-    <tr><td class="paramname">n</td><td>The new size. If zero, then a deallocation takes place </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
-
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00476">476</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="abb210131e23796d5ed0915ed56103ffd"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const bool <a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">alb::v_100::allocator_with_stats</a>&lt; Allocator, Flags &gt;::HasPerAllocationState</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">        (Flags &amp;</div>
-<div class="line">          (<a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da479c1ed1e3637b0fd0a274ed1565a518">StatsOptions::CallerTime</a> | <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da409001a20207e18e1612e4472b570a71">StatsOptions::CallerFile</a> | <a class="code" href="group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88dafdc63797aba0927e4d0a0ace4fdb6619">StatsOptions::CallerLine</a>)) != 0</div>
-</div><!-- fragment -->
-<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00333">333</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="allocator__with__stats_8hpp_source.html#l00635">635</a> of file <a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a>.</p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>alb/<a class="el" href="allocator__with__stats_8hpp_source.html">allocator_with_stats.hpp</a></li>
 </ul>
 </div><!-- contents -->
@@ -467,7 +167,7 @@ template&lt;class Allocator , unsigned Flags = alb::StatsOptions::All&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><b>v_100</b></li><li class="navelem"><a class="el" href="classalb_1_1v__100_1_1allocator__with__stats.html">allocator_with_stats</a></li>
-    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
+    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

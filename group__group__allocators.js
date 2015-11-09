@@ -6,14 +6,14 @@ var group__group__allocators =
       [ "sufix", "classalb_1_1v__100_1_1affix__allocator.html#ac53d18df0bdaa11c7ed88f1df2478c94", null ],
       [ "affix_allocator", "classalb_1_1v__100_1_1affix__allocator.html#a508f71d333957317a20cf94d628686ab", null ],
       [ "affix_allocator", "classalb_1_1v__100_1_1affix__allocator.html#a34b84c2582a6e4e8b24d996b5f2fa3ea", null ],
-      [ "affix_allocator", "classalb_1_1v__100_1_1affix__allocator.html#ad077dbeea261481e15936010b1dc1176", null ],
+      [ "affix_allocator", "classalb_1_1v__100_1_1affix__allocator.html#a837245356a9e6db1632aa861555750f2", null ],
       [ "allocate", "classalb_1_1v__100_1_1affix__allocator.html#ac5f858739c2f0be2e7c88d9bb22a8678", null ],
       [ "deallocate", "classalb_1_1v__100_1_1affix__allocator.html#afaaf10cb7e7eb534f1bcf0de4f10f926", null ],
       [ "expand", "classalb_1_1v__100_1_1affix__allocator.html#ae83146efcc2e1583287e327d2cae5131", null ],
       [ "operator=", "classalb_1_1v__100_1_1affix__allocator.html#a361a989f035ff4256c13f5924bfd7102", null ],
-      [ "operator=", "classalb_1_1v__100_1_1affix__allocator.html#a21ecb05afec8791484b82362ad53b975", null ],
-      [ "outer_to_prefix", "classalb_1_1v__100_1_1affix__allocator.html#a53eb7f6a8741cf873b6b30fc443ca118", null ],
-      [ "outer_to_sufix", "classalb_1_1v__100_1_1affix__allocator.html#a5b84dbd0e3cce418d1a754b19e2d161a", null ],
+      [ "operator=", "classalb_1_1v__100_1_1affix__allocator.html#ab844df195614125908457713d843a9bb", null ],
+      [ "outer_to_prefix", "classalb_1_1v__100_1_1affix__allocator.html#a12d0b438f1bc3da0cf5b67f698f4a878", null ],
+      [ "outer_to_sufix", "classalb_1_1v__100_1_1affix__allocator.html#a1ccf5b353138d7269996ee1b31c0e4c8", null ],
       [ "owns", "classalb_1_1v__100_1_1affix__allocator.html#aec85020485994060ab31102914a34017", null ],
       [ "reallocate", "classalb_1_1v__100_1_1affix__allocator.html#aac3f21f8ead6848079d6488eb1d9abd3", null ]
     ] ],
@@ -36,14 +36,15 @@ var group__group__allocators =
       [ "length", "structalb_1_1v__100_1_1block.html#a7a81cd7161b7084bc6a04544039f5cad", null ],
       [ "ptr", "structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209", null ]
     ] ],
-    [ "allocator_with_stats", "classalb_1_1v__100_1_1allocator__with__stats.html", [
-      [ "allocator_with_stats", "classalb_1_1v__100_1_1allocator__with__stats.html#af2ebbfaaf36a7d8f7b6309637c7dbde2", null ],
-      [ "allocate", "classalb_1_1v__100_1_1allocator__with__stats.html#ac1ae0b60015424bcc7441cce4f9b536d", null ],
-      [ "allocations", "classalb_1_1v__100_1_1allocator__with__stats.html#a33b80f840c12bea616ea8988446f9773", null ],
-      [ "deallocate", "classalb_1_1v__100_1_1allocator__with__stats.html#ad8938fd6f8267c35e391b02d576ee8ce", null ],
-      [ "expand", "classalb_1_1v__100_1_1allocator__with__stats.html#acec9b4750598723a7047151bb1bb398f", null ],
-      [ "owns", "classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6", null ],
-      [ "reallocate", "classalb_1_1v__100_1_1allocator__with__stats.html#ad849234f18a1d7d2695efe1fdf18cad0", null ]
+    [ "allocator_with_stats_base", "classalb_1_1v__100_1_1allocator__with__stats__base.html", [
+      [ "statistic_type", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a232fc686f06d6f74d384f2334708fa75", null ],
+      [ "allocator_with_stats_base", "classalb_1_1v__100_1_1allocator__with__stats__base.html#ab9c4d9837b2ad929ddc926fac9503a84", null ],
+      [ "allocate", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a5344621350fdfaa73d6b58958bd584f1", null ],
+      [ "allocations", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a54bb9f0bfeb9399606ada41b28c45a77", null ],
+      [ "deallocate", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a5f109c137880cb58390453f5c57341a0", null ],
+      [ "expand", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a1ef99dfe24a03bf91165d1cea424a67d", null ],
+      [ "owns", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a3345899ae329ceeb61a407fe3abaa2e2", null ],
+      [ "reallocate", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a540f58aab41e39faacf9102d4d1f2073", null ]
     ] ],
     [ "bucketizer", "classalb_1_1v__100_1_1bucketizer.html", [
       [ "allocator", "classalb_1_1v__100_1_1bucketizer.html#ac859e1bcbff5dfc79666674f447584c3", null ],

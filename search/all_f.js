@@ -1,16 +1,12 @@
 var searchData=
 [
-  ['shared_20allocators',['Shared Allocators',['../group__group__shared.html',1,'']]],
-  ['statistic',['Statistic',['../group__group__stats.html',1,'']]],
-  ['segregator',['segregator',['../classalb_1_1v__100_1_1segregator.html',1,'alb::v_100']]],
-  ['set_5fmin_5fmax',['set_min_max',['../classalb_1_1v__100_1_1freelist__base.html#aabab33f86088fd936152bc361f643a41',1,'alb::v_100::freelist_base']]],
-  ['shared_5fcascading_5fallocator',['shared_cascading_allocator',['../classalb_1_1v__100_1_1shared__cascading__allocator.html',1,'alb::v_100']]],
-  ['shared_5ffreelist',['shared_freelist',['../classalb_1_1v__100_1_1shared__freelist.html',1,'alb::v_100']]],
-  ['shared_5fheap',['shared_heap',['../classalb_1_1v__100_1_1shared__heap.html',1,'alb::v_100']]],
-  ['sharedlock',['SharedLock',['../classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock.html',1,'alb::v_100::shared_helpers']]],
-  ['stack',['stack',['../classalb_1_1v__100_1_1internal_1_1stack.html',1,'alb::v_100::internal']]],
-  ['stack_5fallocator',['stack_allocator',['../classalb_1_1v__100_1_1stack__allocator.html',1,'alb::v_100']]],
-  ['statsoptions',['StatsOptions',['../group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d',1,'alb::v_100']]],
-  ['stl_5fallocator',['stl_allocator',['../classalb_1_1stl__allocator.html',1,'alb']]],
-  ['stl_5fallocator_3c_20void_2c_20allocator_20_3e',['stl_allocator&lt; void, Allocator &gt;',['../classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4.html',1,'alb']]]
+  ['reallocate',['reallocate',['../classalb_1_1v__100_1_1affix__allocator.html#aac3f21f8ead6848079d6488eb1d9abd3',1,'alb::v_100::affix_allocator::reallocate()'],['../classalb_1_1v__100_1_1aligned__mallocator.html#ab9705da05e70646d89ad34257e0caad1',1,'alb::v_100::aligned_mallocator::reallocate()'],['../classalb_1_1v__100_1_1allocator__with__stats__base.html#a540f58aab41e39faacf9102d4d1f2073',1,'alb::v_100::allocator_with_stats_base::reallocate()'],['../classalb_1_1v__100_1_1bucketizer.html#af4c1adbcb192ac45b604276a7bf3aa16',1,'alb::v_100::bucketizer::reallocate()'],['../classalb_1_1v__100_1_1cascading__allocator__base.html#adef990b489c6c62fee2111b046ec0d3b',1,'alb::v_100::cascading_allocator_base::reallocate()'],['../classalb_1_1v__100_1_1fallback__allocator.html#aa33f4e3fed18b595743404150035bdb9',1,'alb::v_100::fallback_allocator::reallocate()'],['../classalb_1_1v__100_1_1freelist__base.html#a6ebb2de82312229c25da060f1ff3dc42',1,'alb::v_100::freelist_base::reallocate()'],['../classalb_1_1v__100_1_1mallocator.html#a10afd5c8a558091f64c2e2d6f63adbae',1,'alb::v_100::mallocator::reallocate()'],['../group__group__shared.html#gab6fdddcb1fd38c207ac2aaff51d99679',1,'alb::v_100::segregator::reallocate()']]],
+  ['reallocate_5fwith_5fcopy',['reallocate_with_copy',['../group__group__internal.html#gaacb3444b98b7b0d6beaab8f950014618',1,'alb::v_100::internal']]],
+  ['reallocator',['reallocator',['../structalb_1_1v__100_1_1internal_1_1reallocator.html',1,'alb::v_100::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt; traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_992b5f7969648c64b2ef064428307286.html',1,'alb::v_100::internal']]],
+  ['reallocator_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21traits_3a_3ahas_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['reallocator&lt; Allocator, typename std::enable_if&lt;!traits::has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_249cd369dde0762b1c21cc0a7d289991.html',1,'alb::v_100::internal']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_1_1rebind.html',1,'alb::stl_allocator']]],
+  ['rebind',['rebind',['../structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html',1,'alb::stl_allocator&lt; void, Allocator &gt;']]],
+  ['reset',['reset',['../structalb_1_1v__100_1_1block.html#a6007929c63e92c3f78998237f2a78c08',1,'alb::v_100::block']]],
+  ['round_5fto_5falignment',['round_to_alignment',['../group__group__internal.html#ga07010650a31b773525e0256432cea022',1,'alb::v_100::internal']]]
 ];

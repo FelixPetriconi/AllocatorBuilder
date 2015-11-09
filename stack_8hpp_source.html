@@ -122,27 +122,27 @@ $(document).ready(function(){initNavTree('stack_8hpp_source.html','');});
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">inline</span> <span class="keyword">namespace </span>v_100 {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">namespace </span>internal {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1internal_1_1stack.html">   28</a></span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">unsigned</span> MaxSize&gt; <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1internal_1_1stack.html">stack</a> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        static_assert(boost::has_trivial_assign&lt;T&gt;::value, <span class="stringliteral">&quot;T must be trivially copyable&quot;</span>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        static_assert(boost::has_trivial_destructor&lt;T&gt;::value, <span class="stringliteral">&quot;T must be trivially destroyable&quot;</span>);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        T _elements[MaxSize];</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">int</span> _pos;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">using</span> value_type = T;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_size = MaxSize;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="classalb_1_1v__100_1_1internal_1_1stack.html">stack</a>() noexcept</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;          : _pos(-1)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">unsigned</span> MaxSize&gt; </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classalb_1_1v__100_1_1internal_1_1stack.html">   29</a></span>&#160;      <span class="keyword">class </span><a class="code" href="classalb_1_1v__100_1_1internal_1_1stack.html">stack</a> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        static_assert(boost::has_trivial_assign&lt;T&gt;::value, <span class="stringliteral">&quot;T must be trivially copyable&quot;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        static_assert(boost::has_trivial_destructor&lt;T&gt;::value, <span class="stringliteral">&quot;T must be trivially destroyable&quot;</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        T elements_[MaxSize];</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">int</span> pos_;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">using</span> value_type = T;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_size = MaxSize;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="classalb_1_1v__100_1_1internal_1_1stack.html">stack</a>() noexcept</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;          : pos_(-1)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {}</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">bool</span> push(T v) noexcept</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;          <span class="keywordflow">if</span> (_pos &lt; static_cast&lt;int&gt;(MaxSize) - 1) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            _pos++;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            _elements[_pos] = std::move(v);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;          <span class="keywordflow">if</span> (pos_ &lt; static_cast&lt;int&gt;(MaxSize) - 1) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            pos_++;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            elements_[pos_] = std::move(v);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;          }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -150,9 +150,9 @@ $(document).ready(function(){initNavTree('stack_8hpp_source.html','');});
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">bool</span> pop(T &amp;v) noexcept</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;          <span class="keywordflow">if</span> (_pos &gt;= 0) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            v = std::move(_elements[_pos]);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            _pos--;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;          <span class="keywordflow">if</span> (pos_ &gt;= 0) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            v = std::move(elements_[pos_]);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            pos_--;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;          }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('stack_8hpp_source.html','');});
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">bool</span> empty() <span class="keyword">const</span> noexcept</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;          <span class="keywordflow">return</span> _pos == -1;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;          <span class="keywordflow">return</span> pos_ == -1;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      };</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
@@ -168,14 +168,14 @@ $(document).ready(function(){initNavTree('stack_8hpp_source.html','');});
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">using namespace </span>v_100;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
-<div class="ttc" id="classalb_1_1v__100_1_1internal_1_1stack_html"><div class="ttname"><a href="classalb_1_1v__100_1_1internal_1_1stack.html">alb::v_100::internal::stack</a></div><div class="ttdef"><b>Definition:</b> <a href="stack_8hpp_source.html#l00028">stack.hpp:28</a></div></div>
+<div class="ttc" id="classalb_1_1v__100_1_1internal_1_1stack_html"><div class="ttname"><a href="classalb_1_1v__100_1_1internal_1_1stack.html">alb::v_100::internal::stack</a></div><div class="ttdef"><b>Definition:</b> <a href="stack_8hpp_source.html#l00029">stack.hpp:29</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7b3e6d672eef68e8fba8ce0d897d5313.html">alb</a></li><li class="navelem"><a class="el" href="dir_a495994bfb37b97d8f7021416d3bed69.html">internal</a></li><li class="navelem"><b>stack.hpp</b></li>
-    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
+    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

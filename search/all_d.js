@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['ptr',['ptr',['../structalb_1_1v__100_1_1block.html#ae10ba6c080a1adf072b45fcf3baf8209',1,'alb::v_100::block']]]
+  ['operator_20bool',['operator bool',['../structalb_1_1v__100_1_1block.html#a6f895a202ab1f78e5f5793f5b53e3280',1,'alb::v_100::block']]],
+  ['optinal_5fsufix_5fstore',['optinal_sufix_store',['../structalb_1_1v__100_1_1affix__helper_1_1optinal__sufix__store.html',1,'alb::v_100::affix_helper']]],
+  ['optinal_5fsufix_5fstore_3c_20sufix_2c_200_20_3e',['optinal_sufix_store&lt; Sufix, 0 &gt;',['../structalb_1_1v__100_1_1affix__helper_1_1optinal__sufix__store_3_01_sufix_00_010_01_4.html',1,'alb::v_100::affix_helper']]],
+  ['outer_5fto_5fprefix',['outer_to_prefix',['../classalb_1_1v__100_1_1affix__allocator.html#a12d0b438f1bc3da0cf5b67f698f4a878',1,'alb::v_100::affix_allocator']]],
+  ['outer_5fto_5fsufix',['outer_to_sufix',['../classalb_1_1v__100_1_1affix__allocator.html#a1ccf5b353138d7269996ee1b31c0e4c8',1,'alb::v_100::affix_allocator']]],
+  ['owns',['owns',['../classalb_1_1v__100_1_1affix__allocator.html#aec85020485994060ab31102914a34017',1,'alb::v_100::affix_allocator::owns()'],['../classalb_1_1v__100_1_1allocator__with__stats__base.html#a3345899ae329ceeb61a407fe3abaa2e2',1,'alb::v_100::allocator_with_stats_base::owns()'],['../classalb_1_1v__100_1_1bucketizer.html#a1dedc6785231a1433ec8bf647d56bd55',1,'alb::v_100::bucketizer::owns()'],['../classalb_1_1v__100_1_1cascading__allocator__base.html#a5a42bf1ba391e6002497673dfed455ff',1,'alb::v_100::cascading_allocator_base::owns()'],['../classalb_1_1v__100_1_1fallback__allocator.html#a62485326fc498ee37dabe6b979ecc441',1,'alb::v_100::fallback_allocator::owns()'],['../classalb_1_1v__100_1_1freelist__base.html#abec6195f50eba8b9aefc10245864bae0',1,'alb::v_100::freelist_base::owns()'],['../classalb_1_1v__100_1_1segregator.html#ae5791ca8c6e071d8834e8f6c46f40ab5',1,'alb::v_100::segregator::owns()'],['../classalb_1_1v__100_1_1stack__allocator.html#aa8868924cb99525d4dc65d5349fde661',1,'alb::v_100::stack_allocator::owns()']]]
 ];

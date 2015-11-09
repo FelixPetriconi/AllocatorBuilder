@@ -143,9 +143,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a3b9b62aac1e3108f3a8af8949ebeb26a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b9b62aac1e3108f3a8af8949ebeb26a"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>good_size</b> (size_t)</td></tr>
-<tr class="separator:a3b9b62aac1e3108f3a8af8949ebeb26a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5186c93f67a687e9501a7bef1510f31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5186c93f67a687e9501a7bef1510f31"></a>
+static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>good_size</b> (size_t n) noexcept</td></tr>
+<tr class="separator:af5186c93f67a687e9501a7bef1510f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -158,6 +158,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:addb3f4e3a192382f365cb1be51ac06bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addb3f4e3a192382f365cb1be51ac06bc"></a>
 static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b> = false</td></tr>
 <tr class="separator:addb3f4e3a192382f365cb1be51ac06bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa65a5d386110e331955dbfeb12e1f876"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa65a5d386110e331955dbfeb12e1f876"></a>
+static constexpr unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>alignment</b> = Allocator::alignment</td></tr>
+<tr class="separator:aa65a5d386110e331955dbfeb12e1f876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99995bb255f43dbb2360f7f921b78021"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99995bb255f43dbb2360f7f921b78021"></a>
 static constexpr unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_buckets</b> = ((MaxSize - MinSize + 1) / StepSize)</td></tr>
 <tr class="separator:a99995bb255f43dbb2360f7f921b78021"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,7 +223,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The Block describing the allocated memory </dd></dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00069">69</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00070">70</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -255,7 +258,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00128">128</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00129">129</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -285,7 +288,7 @@ template&lt;typename U  = Allocator&gt; </div>
 </div><div class="memdoc">
 <p>Deallocates all resources. Beware of possible dangling pointers! This method is only available if Allocator::deallocate_all is available </p>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00148">148</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00149">149</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -321,7 +324,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true, if the block is owned by one of the bucket items </dd></dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00086">86</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00087">87</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -368,7 +371,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the reallocation was successful. </dd></dl>
 
-<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00101">101</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
+<p>Definition at line <a class="el" href="bucketizer_8hpp_source.html#l00102">102</a> of file <a class="el" href="bucketizer_8hpp_source.html">bucketizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +384,7 @@ template&lt;class Allocator , unsigned MinSize, unsigned MaxSize, unsigned StepS
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><b>v_100</b></li><li class="navelem"><a class="el" href="classalb_1_1v__100_1_1bucketizer.html">bucketizer</a></li>
-    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
+    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

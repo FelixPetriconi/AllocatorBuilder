@@ -165,6 +165,8 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>th
 <tr class="separator:a7b3f956b2e9c3f916654da3aac430ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad167c57c52f8bd5a32a40cd4f9a3b3e"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>supports_truncated_deallocation</b></td></tr>
 <tr class="separator:aad167c57c52f8bd5a32a40cd4f9a3b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab33279ddc08e454e97eec39ea7691a70"><td class="memItemLeft" align="right" valign="top">static constexpr unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>alignment</b></td></tr>
+<tr class="separator:ab33279ddc08e454e97eec39ea7691a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;size_t Threshold, class SmallAllocator, class LargeAllocator&gt;<br/>
@@ -214,7 +216,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Block with the memory information. </dd></dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00048">48</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00053">53</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -249,7 +251,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00060">60</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00070">70</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -279,7 +281,7 @@ template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </div
 </div><div class="memdoc">
 <p>Deallocates all memory. This is available if one of the allocators implement it. </p>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00153">153</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00161">161</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -328,7 +330,7 @@ template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </div
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the operation was successful </dd></dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00110">110</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00118">118</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -366,11 +368,38 @@ template&lt;typename U  = SmallAllocator, typename V  = LargeAllocator&gt; </div
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if one of the allocator owns it. </dd></dl>
 
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00138">138</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00146">146</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ab33279ddc08e454e97eec39ea7691a70"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr unsigned <a class="el" href="classalb_1_1v__100_1_1segregator.html">alb::v_100::segregator</a>&lt; Threshold, SmallAllocator, LargeAllocator &gt;::alignment</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">        (SmallAllocator::alignment &gt; LargeAllocator::alignment) ? </div>
+<div class="line">          SmallAllocator::alignment : LargeAllocator::alignment</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00042">42</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aad167c57c52f8bd5a32a40cd4f9a3b3e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -394,7 +423,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 <div class="line">        SmallAllocator::supports_truncated_deallocation &amp;&amp;</div>
 <div class="line">        LargeAllocator::supports_truncated_deallocation</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00037">37</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
+<p>Definition at line <a class="el" href="segregator_8hpp_source.html#l00038">38</a> of file <a class="el" href="segregator_8hpp_source.html">segregator.hpp</a>.</p>
 
 </div>
 </div>
@@ -407,7 +436,7 @@ template&lt;size_t Threshold, class SmallAllocator , class LargeAllocator &gt; <
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>alb</b></li><li class="navelem"><b>v_100</b></li><li class="navelem"><a class="el" href="classalb_1_1v__100_1_1segregator.html">segregator</a></li>
-    <li class="footer">Generated on Sun Nov 1 2015 22:51:11 for Allocator Builder by
+    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

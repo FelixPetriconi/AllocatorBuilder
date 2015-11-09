@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['expander',['Expander',['../structalb_1_1v__100_1_1traits_1_1_expander.html',1,'alb::v_100::traits']]],
-  ['expander_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_20has_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Expander&lt; Allocator, typename std::enable_if&lt; has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1v__100_1_1traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_01aade064e4ce02a00362c51264340537b.html',1,'alb::v_100::traits']]],
-  ['expander_3c_20allocator_2c_20typename_20std_3a_3aenable_5fif_3c_21has_5fexpand_3c_20allocator_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['Expander&lt; Allocator, typename std::enable_if&lt;!has_expand&lt; Allocator &gt;::value &gt;::type &gt;',['../structalb_1_1v__100_1_1traits_1_1_expander_3_01_allocator_00_01typename_01std_1_1enable__if_3_9hc0772030e9c2676db8544a7657a1a21c.html',1,'alb::v_100::traits']]]
+  ['deleter',['deleter',['../classalb_1_1v__100_1_1deleter.html',1,'alb::v_100']]],
+  ['dynastic',['dynastic',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
+  ['dynastic_3c_20dynamicenableswitch_2c_20dynamicenableswitch_20_3e',['dynastic&lt; DynamicEnableSwitch, DynamicEnableSwitch &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html',1,'alb::v_100::internal']]],
+  ['dynastic_3c_28chunksize_3d_3dinternal_3a_3adynasticdynamicset_3f0_3achunksize_29_2c_200_20_3e',['dynastic&lt;(ChunkSize==internal::DynasticDynamicSet?0:ChunkSize), 0 &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
+  ['dynastic_3c_28maxsize_3d_3dinternal_3a_3adynasticdynamicset_3finternal_3a_3adynasticdynamicset_3amaxsize_29_2c_20internal_3a_3adynasticdynamicset_20_3e',['dynastic&lt;(MaxSize==internal::DynasticDynamicSet?internal::DynasticDynamicSet:MaxSize), internal::DynasticDynamicSet &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
+  ['dynastic_3c_28minsize_3d_3dinternal_3a_3adynasticdynamicset_3finternal_3a_3adynasticdynamicset_3aminsize_29_2c_20internal_3a_3adynasticdynamicset_20_3e',['dynastic&lt;(MinSize==internal::DynasticDynamicSet?internal::DynasticDynamicSet:MinSize), internal::DynasticDynamicSet &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]],
+  ['dynastic_3c_28numberofchunks_3d_3dinternal_3a_3adynasticdynamicset_3f0_3anumberofchunks_29_2c_200_20_3e',['dynastic&lt;(NumberOfChunks==internal::DynasticDynamicSet?0:NumberOfChunks), 0 &gt;',['../structalb_1_1v__100_1_1internal_1_1dynastic.html',1,'alb::v_100::internal']]]
 ];

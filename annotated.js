@@ -5,15 +5,18 @@ var annotated =
         [ "atomic_shared_ptr", "classalb_1_1internal_1_1atomic__shared__ptr.html", "classalb_1_1internal_1_1atomic__shared__ptr" ]
       ] ],
       [ "v_100", null, [
-        [ "affix_allocator_helper", null, [
-          [ "no_affix", "structalb_1_1v__100_1_1affix__allocator__helper_1_1no__affix.html", "structalb_1_1v__100_1_1affix__allocator__helper_1_1no__affix" ],
-          [ "optinal_sufix_store", "structalb_1_1v__100_1_1affix__allocator__helper_1_1optinal__sufix__store.html", "structalb_1_1v__100_1_1affix__allocator__helper_1_1optinal__sufix__store" ],
-          [ "optinal_sufix_store< Sufix, 0 >", "structalb_1_1v__100_1_1affix__allocator__helper_1_1optinal__sufix__store_3_01_sufix_00_010_01_4.html", "structalb_1_1v__100_1_1affix__allocator__helper_1_1optinal__sufix__store_3_01_sufix_00_010_01_4" ]
+        [ "affix_helper", null, [
+          [ "affix_creator", "structalb_1_1v__100_1_1affix__helper_1_1affix__creator.html", null ],
+          [ "affix_creator< Affix, typename std::enable_if< std::is_default_constructible< Affix >::value >::type >", "structalb_1_1v__100_1_1affix__helper_1_1affix__creator_3_01_affix_00_01typename_01std_1_1enable_a23197d2c0def9c4665645fd06bbb69b.html", null ],
+          [ "affix_creator< Affix, typename std::enable_if<!std::is_default_constructible< Affix >::value >::type >", "structalb_1_1v__100_1_1affix__helper_1_1affix__creator_3_01_affix_00_01typename_01std_1_1enable_1649328819c9f5f1f0ec089549853642.html", null ],
+          [ "no_affix", "structalb_1_1v__100_1_1affix__helper_1_1no__affix.html", "structalb_1_1v__100_1_1affix__helper_1_1no__affix" ],
+          [ "optinal_sufix_store", "structalb_1_1v__100_1_1affix__helper_1_1optinal__sufix__store.html", "structalb_1_1v__100_1_1affix__helper_1_1optinal__sufix__store" ],
+          [ "optinal_sufix_store< Sufix, 0 >", "structalb_1_1v__100_1_1affix__helper_1_1optinal__sufix__store_3_01_sufix_00_010_01_4.html", "structalb_1_1v__100_1_1affix__helper_1_1optinal__sufix__store_3_01_sufix_00_010_01_4" ]
         ] ],
         [ "internal", null, [
           [ "dynastic", "structalb_1_1v__100_1_1internal_1_1dynastic.html", "structalb_1_1v__100_1_1internal_1_1dynastic" ],
           [ "dynastic< DynamicEnableSwitch, DynamicEnableSwitch >", "structalb_1_1v__100_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html", "structalb_1_1v__100_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4" ],
-          [ "NoAtomic", "classalb_1_1v__100_1_1internal_1_1_no_atomic.html", "classalb_1_1v__100_1_1internal_1_1_no_atomic" ],
+          [ "no_atomic", "classalb_1_1v__100_1_1internal_1_1no__atomic.html", "classalb_1_1v__100_1_1internal_1_1no__atomic" ],
           [ "reallocator", "structalb_1_1v__100_1_1internal_1_1reallocator.html", null ],
           [ "reallocator< Allocator, typename std::enable_if< traits::has_expand< Allocator >::value >::type >", "structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_992b5f7969648c64b2ef064428307286.html", null ],
           [ "reallocator< Allocator, typename std::enable_if<!traits::has_expand< Allocator >::value >::type >", "structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_249cd369dde0762b1c21cc0a7d289991.html", null ],
@@ -59,6 +62,11 @@ var annotated =
         [ "affix_allocator", "classalb_1_1v__100_1_1affix__allocator.html", "classalb_1_1v__100_1_1affix__allocator" ],
         [ "aligned_mallocator", "classalb_1_1v__100_1_1aligned__mallocator.html", "classalb_1_1v__100_1_1aligned__mallocator" ],
         [ "block", "structalb_1_1v__100_1_1block.html", "structalb_1_1v__100_1_1block" ],
+        [ "deleter", "classalb_1_1v__100_1_1deleter.html", "classalb_1_1v__100_1_1deleter" ],
+        [ "_Unique_if", "structalb_1_1v__100_1_1___unique__if.html", "structalb_1_1v__100_1_1___unique__if" ],
+        [ "_Unique_if< T[], Allocator >", "structalb_1_1v__100_1_1___unique__if_3_01_t[]_00_01_allocator_01_4.html", "structalb_1_1v__100_1_1___unique__if_3_01_t[]_00_01_allocator_01_4" ],
+        [ "_Unique_if< T[N], Allocator >", "structalb_1_1v__100_1_1___unique__if_3_01_t[_n]_00_01_allocator_01_4.html", "structalb_1_1v__100_1_1___unique__if_3_01_t[_n]_00_01_allocator_01_4" ],
+        [ "allocator_with_stats_base", "classalb_1_1v__100_1_1allocator__with__stats__base.html", "classalb_1_1v__100_1_1allocator__with__stats__base" ],
         [ "allocator_with_stats", "classalb_1_1v__100_1_1allocator__with__stats.html", "classalb_1_1v__100_1_1allocator__with__stats" ],
         [ "bucketizer", "classalb_1_1v__100_1_1bucketizer.html", "classalb_1_1v__100_1_1bucketizer" ],
         [ "cascading_allocator_base", "classalb_1_1v__100_1_1cascading__allocator__base.html", "classalb_1_1v__100_1_1cascading__allocator__base" ],

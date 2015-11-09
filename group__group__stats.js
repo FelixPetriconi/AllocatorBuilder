@@ -1,49 +1,50 @@
 var group__group__stats =
 [
-    [ "allocator_with_stats", "classalb_1_1v__100_1_1allocator__with__stats.html", [
-      [ "allocator_with_stats", "classalb_1_1v__100_1_1allocator__with__stats.html#af2ebbfaaf36a7d8f7b6309637c7dbde2", null ],
-      [ "allocate", "classalb_1_1v__100_1_1allocator__with__stats.html#ac1ae0b60015424bcc7441cce4f9b536d", null ],
-      [ "allocations", "classalb_1_1v__100_1_1allocator__with__stats.html#a33b80f840c12bea616ea8988446f9773", null ],
-      [ "deallocate", "classalb_1_1v__100_1_1allocator__with__stats.html#ad8938fd6f8267c35e391b02d576ee8ce", null ],
-      [ "expand", "classalb_1_1v__100_1_1allocator__with__stats.html#acec9b4750598723a7047151bb1bb398f", null ],
-      [ "owns", "classalb_1_1v__100_1_1allocator__with__stats.html#af684bf1ee328cf65feb243c2a7e3c0a6", null ],
-      [ "reallocate", "classalb_1_1v__100_1_1allocator__with__stats.html#ad849234f18a1d7d2695efe1fdf18cad0", null ]
+    [ "allocator_with_stats_base", "classalb_1_1v__100_1_1allocator__with__stats__base.html", [
+      [ "statistic_type", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a232fc686f06d6f74d384f2334708fa75", null ],
+      [ "allocator_with_stats_base", "classalb_1_1v__100_1_1allocator__with__stats__base.html#ab9c4d9837b2ad929ddc926fac9503a84", null ],
+      [ "allocate", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a5344621350fdfaa73d6b58958bd584f1", null ],
+      [ "allocations", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a54bb9f0bfeb9399606ada41b28c45a77", null ],
+      [ "deallocate", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a5f109c137880cb58390453f5c57341a0", null ],
+      [ "expand", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a1ef99dfe24a03bf91165d1cea424a67d", null ],
+      [ "owns", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a3345899ae329ceeb61a407fe3abaa2e2", null ],
+      [ "reallocate", "classalb_1_1v__100_1_1allocator__with__stats__base.html#a540f58aab41e39faacf9102d4d1f2073", null ]
     ] ],
-    [ "AllocationInfo", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html", [
-      [ "operator==", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#aaab683e402afbbb9fdd43aefde8fdee0", null ],
-      [ "callerFile", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#a1d94c3ce6fb2ffd6ed89e99a46156adf", null ],
-      [ "callerFunction", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#a222ba4793cd5c4635bbaefaa4192fae9", null ],
-      [ "callerLine", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#ada88fbfbd96b6297da2764cdf2993418", null ],
-      [ "callerSize", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#a99b336298e6580735c6b44d43e71e74b", null ],
-      [ "callerTime", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#a612fe396cf97007d76c2dc12db5ce9aa", null ],
-      [ "next", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#a6d7f2e672e59c61d8376bee1f1eb35db", null ],
-      [ "previous", "structalb_1_1v__100_1_1allocator__with__stats_1_1_allocation_info.html#ad5d782e2dd4a9108abdc89966bbb95fa", null ]
+    [ "AllocationInfo", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html", [
+      [ "operator==", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#af260ec62d4a12d6ddffa067e81449cd6", null ],
+      [ "callerFile", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#a1ab2a07c01055daa4bf397feac09f2cf", null ],
+      [ "callerFunction", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#a0496a112ac27c9fec17964fcf2bbc332", null ],
+      [ "callerLine", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#ac151ca098edccc57ca661054755f4d89", null ],
+      [ "callerSize", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#a8ef5328cad1e2bac6f4594ed2cd40d6b", null ],
+      [ "callerTime", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#a84afebffe2e87522355f6b23c69f7038", null ],
+      [ "next", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#ae7dbfce1f5ec1ec356949f8f22bb1ba7", null ],
+      [ "previous", "structalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocation_info.html#adf631af0ad2af072ae71ff03900d6baf", null ]
     ] ],
-    [ "Allocations", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html", [
-      [ "iterator", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html", [
-        [ "const_pointer", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a546c9139a0dd235fc1cfc37523f84369", null ],
-        [ "const_reference", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a09d313998047654a451a987b9a198e17", null ],
-        [ "difference_type", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a55375434d099841decce7f46d92a70a2", null ],
-        [ "iterator_category", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a0da2d11173a71dd87585f38f929294ab", null ],
-        [ "pointer", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#af069519519eca9da973122d37cea1429", null ],
-        [ "reference", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a224844666c9cd0be2aba0aaf5f807c06", null ],
-        [ "value_type", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a64a53c98bcfc14a7328d5181e8635285", null ],
-        [ "iterator", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#acc0aa57299441998c7b17bd8f2f8e9da", null ],
-        [ "iterator", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a2265e8a9f758c6cd0dfa0f09272f837d", null ],
-        [ "operator*", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#abff6f9f16fd8c4092431bb9602300850", null ],
-        [ "operator++", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a61e5b0c2b61b34a31bcf81e553d520bf", null ],
-        [ "operator++", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a0f6ae7c72b1c0e369991e76ecb6501b0", null ],
-        [ "operator--", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a603d785a6ecede56990a248532300ce3", null ],
-        [ "operator--", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#ae33b65fc44ea84a043867480bf90ab15", null ],
-        [ "operator->", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a87e9613b6a37baa39ddaa72ef8158d0b", null ],
-        [ "operator!=", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a7b72dc027791ed77b52aa33e2a14d0ac", null ],
-        [ "operator==", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations_1_1iterator.html#a3ef5c6aec26d844de3a1fea4b7eab52a", null ]
+    [ "Allocations", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations.html", [
+      [ "iterator", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html", [
+        [ "const_pointer", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#aa401895c6d6cadb78c6437c0669daa82", null ],
+        [ "const_reference", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a4a14d440045dd9ae634f150ed4474fc1", null ],
+        [ "difference_type", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#aa795d49a7e1550105f877dc357bedf4b", null ],
+        [ "iterator_category", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#ac86013dc9feee0898cf6c01f96ad3cf3", null ],
+        [ "pointer", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a590ad28e25d151bf1055eab50358bf45", null ],
+        [ "reference", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a5a0a82ad7693aed62110421ab2b25e8a", null ],
+        [ "value_type", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#af0587c027ee85d2931ae648424ecd23b", null ],
+        [ "iterator", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#ab423fca872a065141640d3934068ee0c", null ],
+        [ "iterator", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a56e598bedc6e48ce514ce93b6ffdb79a", null ],
+        [ "operator*", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#aece03fefd39d26c4c6de7a4ab64f8a1b", null ],
+        [ "operator++", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a7efdf2c9536805d952d2a1f42cf0dfb3", null ],
+        [ "operator++", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#aabba589372e82669764ec521085d73c3", null ],
+        [ "operator--", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#aa9384638b51aca59284ebcb3418f61d6", null ],
+        [ "operator--", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a081b228af1754afb2d8268e72b7a5275", null ],
+        [ "operator->", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a727caaf2d262adba752670033e1368c8", null ],
+        [ "operator!=", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a7b72dc027791ed77b52aa33e2a14d0ac", null ],
+        [ "operator==", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations_1_1iterator.html#a3ef5c6aec26d844de3a1fea4b7eab52a", null ]
       ] ],
-      [ "const_iterator", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html#ab76f3d2a9441224ecebe4c2cbfa1e5f3", null ],
-      [ "Allocations", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html#a8b96015fa7113dc13905e3d56ffbbd86", null ],
-      [ "cbegin", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html#a2e132c1076cb2a67a1f24aea50c98620", null ],
-      [ "cend", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html#acef0283f0eaae1a095a83d6f783bfedc", null ],
-      [ "empty", "classalb_1_1v__100_1_1allocator__with__stats_1_1_allocations.html#a42901f6ed2834c3a1eb1be3e490bae5b", null ]
+      [ "const_iterator", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations.html#a6c9930373c0c833400e75c3fa55162cc", null ],
+      [ "Allocations", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations.html#a49beae77a5b92d70cfe6cd58b173c77d", null ],
+      [ "cbegin", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations.html#a57d99730ed451092800597be0dbff8f8", null ],
+      [ "cend", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations.html#a809b1017de0f9ca97910858e21077b54", null ],
+      [ "empty", "classalb_1_1v__100_1_1allocator__with__stats__base_1_1_allocations.html#a99eaaac3fc59d1f66d11f18fd7545c94", null ]
     ] ],
     [ "StatsOptions", "group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d", [
       [ "NumOwns", "group__group__stats.html#ggabf604ca0a6095e2bdb3649c1ff8ee88da352262dff697e7080ecda5d8c9ac77fe", null ],
