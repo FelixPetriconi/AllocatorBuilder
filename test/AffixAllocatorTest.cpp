@@ -47,7 +47,7 @@ protected:
 using TypesToTest = ::testing::Types<
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<unsigned, PrefixMarker>>,
-    alb::affix_allocator<alb::stack_allocator<512, 4>, alb::affix_allocator_helper::no_affix,
+    alb::affix_allocator<alb::stack_allocator<512, 4>, alb::affix_helper::no_affix,
                          alb::memory_corruption_detector<unsigned, SufixMarker>>,
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<unsigned, PrefixMarker>,

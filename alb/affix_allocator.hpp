@@ -11,6 +11,7 @@
 
 #include "allocator_base.hpp"
 #include "internal/reallocator.hpp"
+#include "internal/affix_helper.hpp"
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -19,39 +20,6 @@
 
 namespace alb {
   inline namespace v_100 {
-    namespace affix_allocator_helper {
-      /**
-       * This special kind of no_affix is necessary to have the possibility to test
-       * the
-       * affix_allocator in a generic way. This must be used to disable a Prefix or
-       * Sufix.
-       */
-      struct no_affix {
-        using value_type = int;
-        static const int pattern = 0;
-      };
-
-      /* simple optional store of a Sufix if the sufix_size > 0 */
-      template <typename Sufix, size_t s>
-      struct optinal_sufix_store
-      {
-        Sufix o_;
-        void store(Sufix* o) noexcept {
-          o_ = *o;
-        }
-        void unload(Sufix* o) noexcept {
-          new (o) Sufix(o_);
-        }
-      };
-
-      template <typename Sufix>
-      struct optinal_sufix_store<Sufix, 0>
-      {
-        void store(Sufix*) {}
-        void unload(Sufix*) {}
-      };
-
-    }
 
     /**
      * This allocator enables the possibility to surround allocated memory blocks
@@ -73,7 +41,7 @@ namespace alb {
      *
      * \ingroup group_allocators group_shared
      */
-    template <class Allocator, typename Prefix, typename Sufix = affix_allocator_helper::no_affix>
+    template <class Allocator, typename Prefix, typename Sufix = affix_helper::no_affix>
     class affix_allocator 
     {
       Allocator allocator_;
@@ -110,10 +78,10 @@ namespace alb {
       using sufix = Sufix;
 
       static constexpr size_t prefix_size =
-        std::is_same<Prefix, affix_allocator_helper::no_affix>::value ? 0 : internal::round_to_alignment(alignment, sizeof(Prefix));
+        std::is_same<Prefix, affix_helper::no_affix>::value ? 0 : internal::round_to_alignment(alignment, sizeof(Prefix));
 
       static constexpr size_t sufix_size =
-        std::is_same<Sufix, affix_allocator_helper::no_affix>::value ? 0 : internal::round_to_alignment(alignment, sizeof(Sufix));
+        std::is_same<Sufix, affix_helper::no_affix>::value ? 0 : internal::round_to_alignment(alignment, sizeof(Sufix));
 
       static constexpr size_t good_size(size_t n) {
         return Allocator::good_size(n);
@@ -167,10 +135,10 @@ namespace alb {
         auto innerMem = allocator_.allocate(prefix_size + n + sufix_size);
         if (innerMem) {
           if (prefix_size > 0) {
-            new (inner_to_prefix(innerMem)) Prefix{};
+            affix_helper::create_affix_in_place<Prefix>(inner_to_prefix(innerMem), *this);
           }
           if (sufix_size > 0) {
-            new (inner_to_sufix(innerMem)) Sufix{};
+            affix_helper::create_affix_in_place<Sufix>(inner_to_sufix(innerMem), *this);
           }
           result = to_outer_block(innerMem);
           return result;
@@ -228,7 +196,7 @@ namespace alb {
 
         // Remember the old Sufix in case that it is available, because it must
         // be later placed to the new position
-        affix_allocator_helper::optinal_sufix_store<Sufix, sufix_size> oldSufix;
+        affix_helper::optinal_sufix_store<Sufix, sufix_size> oldSufix;
         oldSufix.store(outer_to_sufix(b));
 
         if (allocator_.reallocate(innerBlock, n + prefix_size + sufix_size)) {

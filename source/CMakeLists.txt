@@ -1,6 +1,6 @@
 project(ALB)
 
-include_directories("${PROJECT_SOURCE_DIR}/../alb")
+include_directories("${PROJECT_SOURCE_DIR}/../alb;${PROJECT_SOURCE_DIR}/../alb/internal")
 
 if(WIN32)
   add_definitions(-D_WIN32_WINNT=0x0501)
@@ -8,6 +8,7 @@ endif(WIN32)
 
 set(SOURCE
   allocator_base.cpp
+  array_creation_evaluator.cpp
 )
 
 set(HEADERS
@@ -28,6 +29,8 @@ set(HEADERS
   ../alb/shared_heap.hpp
   ../alb/stack_allocator.hpp
   ../alb/stl_allocator.hpp
+  ../alb/internal/affix_helper.hpp
+  ../alb/internal/array_creation_evaluator.hpp
   ../alb/internal/dynastic.hpp
   ../alb/internal/heap_helpers.hpp
   ../alb/internal/noatomic.hpp

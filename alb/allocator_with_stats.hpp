@@ -189,7 +189,7 @@ enum StatsOptions : unsigned {
 * This Allocator serves as a facade in front of the specified allocator to
 * collect statistics during runtime about all operations done on this instance.
 * This is an implementation that is not intended to be used in a shared
-* environment.
+* environment when statistics for file, line or time is enabled
 *
 * In case that caller information shall be collected, the Allocator
 * parameter is encapsulated with an ALB::affix_allocator. In this case
@@ -199,7 +199,7 @@ enum StatsOptions : unsigned {
 * allocation
 * sizeof(AllocatorWithStats::AllocationInfo) bytes!
 * With a good optimizing compiler only the code for the enabled
-* statistic information gets created.
+* statistic information is created.
 * \tparam Allocator The allocator that performs all allocations
 * \tparam Flags Specifies what kind of statistics get collected
 *
@@ -224,7 +224,8 @@ public:
     * It is a template to be able to compare the AllocationInfo from different
     * allocators
     */
-    template <typename RHS> bool operator==(const RHS &rhs) const {
+    template <typename RHS> 
+    bool operator==(const RHS &rhs) const {
       return callerSize == rhs.callerSize &&
              (callerFile == rhs.callerFile ||
               ::strcmp(callerFile, rhs.callerFile) == 0) &&
@@ -319,6 +320,9 @@ public:
   static const bool HasPerAllocationState =
       (Flags & (StatsOptions::CallerTime | StatsOptions::CallerFile |
                 StatsOptions::CallerLine)) != 0;
+  
+  static_assert(HasPerAllocationState && !Shared,
+    "Currently it is not supported to collect per file/line/time stats in shared mode!");
 
   using statistic_type = typename traits::type_switch<std::atomic<size_t>, internal::no_atomic<size_t>, Shared>::type;
 

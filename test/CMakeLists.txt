@@ -33,6 +33,7 @@ set(SOURCE
   FallbackAllocatorTest.cpp 
   HeapTest
   MallocatorTest.cpp
+  MemoryTest.cpp
   NullAllocatorTest.cpp
   SegregatorTest.cpp    
   FreeListTest.cpp

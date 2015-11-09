@@ -12,6 +12,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <iostream>
 
 namespace alb {
   inline namespace v_100 {
@@ -42,6 +43,13 @@ namespace alb {
 
       ~memory_corruption_detector()
       {
+#ifndef NDEBUG
+        if (pattern_ != Pattern)
+        {
+          std::cout << std::to_string(pattern_) << " is unequal to " << std::to_string(Pattern) << "!" << std::endl;
+          throw 42;
+        }
+#endif        
         assert(pattern_ == Pattern);
       }
     };
