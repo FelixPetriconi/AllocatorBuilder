@@ -23,7 +23,7 @@ var NAVTREEINDEX =
 [
 ".html",
 "classalb_1_1v__100_1_1internal_1_1no__atomic.html",
-"structalb_1_1v__100_1_1traits_1_1both__same__base_3_01_allocator_3_01_a1_00_01_p1_01_4_00_01_all60173a1c510c327924848d08dea467ca.html"
+"structalb_1_1v__100_1_1internal_1_1dynastic_3_01_dynamic_enable_switch_00_01_dynamic_enable_switch_01_4.html#a579b0218dee78726ae47467464457bea"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

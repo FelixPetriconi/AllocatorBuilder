@@ -101,34 +101,39 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="title">Tutorial </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Temporary memory inside a function</h2>
+<div class="textblock"><h1>Temporary memory inside a function</h1>
 <h3>Problem</h3>
 <p>Let's say that we need an unknown amount of memory inside a function. There are different ways to handle this:</p>
 <ul>
-<li>Create a buffer on the stack that is large enough to handle all cases. ** If it is absolute sure that we never need more memory and that there is never the risk of a stack overflow then this is easiest solution and we should go for it. <div class="fragment"><div class="line"><span class="keywordtype">char</span> buffer[1024];</div>
+<li>Create a buffer on the stack that is large enough to handle all cases. ** If it is absolute sure that we never need more memory and that there is never the risk of a stack overflow then this is easiest solution and we should go for it. <div class="fragment"><div class="line">{C++}</div>
+<div class="line">  <span class="keywordtype">char</span> buffer[1024];</div>
 </div><!-- fragment --></li>
-<li>We can dynamically allocate it on the stack with ::alloca(). ** If we are not sure about the needed amount of memory this is more dynamic solution than the fixed buffer. Of course this is as fast as a fixed buffer on the stack, but it introduces the risk of a stack overflow. <div class="fragment"><div class="line"><span class="keywordtype">char</span>* buffer = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(::alloca(1024));</div>
+<li>We can dynamically allocate it on the stack with ::alloca(). ** If we are not sure about the needed amount of memory this is more dynamic solution than the fixed buffer. Of course this is as fast as a fixed buffer on the stack, but it introduces the risk of a stack overflow. <div class="fragment"><div class="line">{C++}</div>
+<div class="line">  <span class="keywordtype">char</span>* buffer = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(::alloca(1024));</div>
 </div><!-- fragment --></li>
-<li>If would like to avoid by any chance a stack overflow we could go for the heap by using a unique_ptr&lt;&gt; ** The probability of going out of memory is normally much lower than a stack overflow. But it has the disadvantage that in most of the cases it is much slower, because a call to ::malloc() normally implies a lock and other threads cannot allocate or deallocate at the same time. <div class="fragment"><div class="line">unique_ptr&lt;char[]&gt; buffer(<span class="keyword">new</span> <span class="keywordtype">char</span>[1024]);</div>
+<li>If would like to avoid by any chance a stack overflow we could go for the heap by using a unique_ptr&lt;&gt; ** The probability of going out of memory is normally much lower than a stack overflow. But it has the disadvantage that in most of the cases it is much slower, because a call to ::malloc() normally implies a lock and other threads cannot allocate or deallocate at the same time. <div class="fragment"><div class="line">{C++}</div>
+<div class="line">  unique_ptr&lt;char[]&gt; buffer(<span class="keyword">new</span> <span class="keywordtype">char</span>[1024]);</div>
 </div><!-- fragment --></li>
 </ul>
 <h3>Solution</h3>
 <p>The best would be, if we would have a solution that takes the memory if possible from the stack and if not it goes to the heap. One way would be to use a fallback_allocator in the following way: </p>
-<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> StackThreshold = 4096;</div>
-<div class="line"><span class="keyword">typedef</span> fallback_allocator&lt;stack_allocator&lt;StackThreshold&gt;, mallocator&gt; LocalAllocator; </div>
-<div class="line">LocalAllocator myAllocator;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line">  <span class="keyword">const</span> <span class="keywordtype">int</span> StackThreshold = 4096;</div>
+<div class="line">  <span class="keyword">typedef</span> fallback_allocator&lt;stack_allocator&lt;StackThreshold&gt;, mallocator&gt; LocalAllocator; </div>
+<div class="line">  LocalAllocator myAllocator;</div>
 <div class="line"></div>
-<div class="line"><span class="keyword">auto</span> mem = myAllocator.allocate(1024);</div>
-<div class="line"><span class="keyword">auto</span> buffer = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(mem.ptr);</div>
+<div class="line">  <span class="keyword">auto</span> mem = myAllocator.allocate(1024);</div>
+<div class="line">  <span class="keyword">auto</span> buffer = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(mem.ptr);</div>
 <div class="line"></div>
-<div class="line">...</div>
+<div class="line">  ...</div>
 <div class="line"></div>
-<div class="line">myAllocator.deallocate(mem); <span class="comment">// this should be better put into a scope finalizer like SCOPE_EXIT</span></div>
+<div class="line">  myAllocator.deallocate(mem); <span class="comment">// this should be better put into a scope finalizer like SCOPE_EXIT</span></div>
 </div><!-- fragment --><p> Now we get the memory from the stack until 4096 bytes. Just beyond this, a call to ::malloc() would be done. From my point of view this is a cleaner solution. As well it offers the possibility, easily to expand or reallocate the returned block; by design it automatically covers moving data allocated on the stack to the heap, if not enough memory is left on the stack.</p>
 <h2>Memory pool for strings</h2>
 <h3>Problem</h3>
 <p>Many string class designs use today for short strings a so called "small string optimization". That means that the characters of the string a stored in a const buffer member or the class if the string is shorter than 16 bytes e.g. Memory is allocated from the heap if the representing text is longer. Something similar like: (I do not claim that this is best possible implementation :-) ) </p>
-<div class="fragment"><div class="line"><span class="keyword">class </span>string {</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">class </span>string {</div>
 <div class="line">  <span class="keywordtype">char</span> local_[16];</div>
 <div class="line">  unique_ptr&lt;char[]&gt; p_;</div>
 <div class="line">  <span class="keywordtype">int</span> length_;</div>
@@ -153,15 +158,19 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="line">   }</div>
 <div class="line">};</div>
 </div><!-- fragment --><p> Let's further assume that SIMD CPU instructions are used in further methods to implement comparison, copy etc. These instructions work on modern CPUs (at least on x86) always on 16 bytes chunks. So we would allocate on the heap the memory in 16 bytes aligned chunks, e.g. 32, 48, 64 etc. So it would be good, if the allocator, that we want to use, automatically returns such aligned memory. But that is not all. Further we assume that our application does lot's of string operations. So there would be lot's of allocation and deallocation operations. We already discussed that these operations are quite expensive. So why not keep the not any more used memory blocks in a pool (or free-list) and reuse them soon. So we start with a freelist: </p>
-<div class="fragment"><div class="line">freelist&lt;mallocator, 0, 32, 1024&gt; myFreelist;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line">freelist&lt;mallocator, 0, 32, 1024&gt; myFreelist;</div>
 </div><!-- fragment --><p> This instance allocates all memory from the heap (via the mallocator) and it stores elements up to 32 bytes in the pool. The max pool size is 1024 elements. This allocator would help for strings that would never be bigger than 32 bytes. In normal cases they get bigger, so let's use a bucketizer that can manage several free-lists: </p>
-<div class="fragment"><div class="line"><span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
 <div class="line">bucketizer&lt;FList, 17, 512, 16&gt; myBucket;</div>
 </div><!-- fragment --><p> So the typedef specifies a free-list that's min- and max size can be changed during runtime. (Normally this values are set during compile time). The bucketizer creates free-lists in increasing 16 bytes steps capacity, [17-32], [33-48], [49-64], ... Each free-list has a maximum capacity of 1024 elements. So now we can handle strings up to the length of 512 bytes. If this strings can get longer, we have to add a segregator: </p>
-<div class="fragment"><div class="line"><span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
 <div class="line">segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
 </div><!-- fragment --><p> Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap. The code from the string class would be rewritten to this: </p>
-<div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line">  <span class="keyword">using namespace </span>alb;</div>
 <div class="line">  <span class="keyword">typedef</span> shared_freelist&lt;mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024&gt; FList;</div>
 <div class="line">  segregator&lt;512, bucketizer&lt;FList, 17, 512, 16&gt;, mallocator&gt; myAllocator;</div>
@@ -193,10 +202,34 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="line">    myAllocator.deallocate(chunk_);</div>
 <div class="line">  }</div>
 <div class="line">};</div>
+</div><!-- fragment --> <h2>Creation of unique_ptr and shared_ptr objects</h2>
+<h3>Problem</h3>
+<p>The std::make_unique and std::make_shared creation function cannot take their memory from custom allocators. They always allocate the memory via the global ::new() functions.</p>
+<h3>Solution</h3>
+<p>Create an ALB allocator of any that type that has as the outmost allocator an alb::affix_allocator. </p>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">using</span> MyAllocator = <a class="code" href="classalb_1_1v__100_1_1affix__allocator.html">alb::affix_allocator&lt;alb::stack_allocator&lt;4096&gt;</a>, <span class="keywordtype">size_t</span>&gt;</div>
+</div><!-- fragment --><p>Now use the ALB variants of these factory functions.</p>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line">MyAllocator myAllocator;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// Let&#39;s create a unique Foo that needs as parameter Foo1stParam and Foo2ndParam</span></div>
+<div class="line"><span class="keyword">auto</span> myFoo = alb::make_unique&lt;Foo&gt;(myAllocator, Foo1stPara, Foo2ndParam);</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// Let&#39;s create an array of 42 Foo</span></div>
+<div class="line"><span class="keyword">auto</span> moreFoo = alb::make_unique&lt;Foo[]&gt;(myAllocator, 42);</div>
+<div class="line"></div>
+<div class="line"><span class="comment">// Let&#39;s create an shared object of Foo</span></div>
+<div class="line"><span class="keyword">auto</span> mySharedFoo = alb::make_shared&lt;Foo&gt;(myAllocator, Foo1stPara, Foo2ndParam);</div>
+</div><!-- fragment --><h2>Construction and Destruction of objects in random order on the stack</h2>
+<h3>Problem</h3>
+<h3>Solution</h3>
+<div class="fragment"><div class="line">{C++}</div>
 </div><!-- fragment --><h2>Replacement of global ::new() and ::delete()</h2>
 <h3>Problem</h3>
 <p>Let's assume that we see potential in replacing the standard heap with our own, custom optimized version. In general this is pretty easy. We only have to replace the global new(), new[]() and the corresponding delete operators. A regular implementation might look like: </p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
 <div class="line">  <span class="keyword">auto</span> result = ::malloc(sz);</div>
 <div class="line">  <span class="keywordflow">if</span> (result) </div>
 <div class="line">    <span class="keywordflow">return</span> result;</div>
@@ -226,12 +259,14 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 </div><!-- fragment --> <h3>Solution</h3>
 <p>Let's make the assumption that MyAllocator is a combined allocator from the Allocator-Builder (ALB) library that should serve as the basis of the memory allocation.</p>
 <p>We cannot use this MyAllocator directly, because the ALB relies on the fact that always an alb::block must be passed to deallocate(). </p>
-<div class="fragment"><div class="line"><span class="keyword">struct </span>block {</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">struct </span>block {</div>
 <div class="line">  <span class="keywordtype">void</span>* ptr;</div>
 <div class="line">  <span class="keywordtype">size_t</span> length;</div>
 <div class="line">};</div>
 </div><!-- fragment --><p> Beside the pointer to the memory it contains the length. The operator ::delete(void*) does not get passed the size of the block. So we have to keep track by ourselves. Probably the easiest way is to encapsulate our MyAllocator within an affix_allocator with a prefix that contains the length of the block. I choose for the moment the prefix of type uint32_t, because that can cover memory allocations up to 4GB which is fine for now. (When we come to the point, that it might happen, our application needs more than 4GB in a single chunk, then we can change the prefix to uint64_t). </p>
-<div class="fragment"><div class="line"><span class="keyword">typedef</span> affix_allocator&lt;MyAllocator,uint32_t&gt; MyAllocatorPrefixed;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keyword">typedef</span> affix_allocator&lt;MyAllocator,uint32_t&gt; MyAllocatorPrefixed;</div>
 </div><!-- fragment --><p> Let's make as a next step two convenience function for allocation and releasing the memory: </p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line">  MyAllocatorPrefixed myGlobalAllocator;</div>
@@ -259,33 +294,23 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <div class="line">    myGlobalAllocator.deallocate(realBlock);</div>
 <div class="line">  }  </div>
 <div class="line">}</div>
-</div><!-- fragment --><p> The global operators would become: </p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>(std::size_t sz) {</div>
-<div class="line">  <span class="keywordflow">return</span> operatorNewInternal(sz);</div>
-<div class="line">}</div>
-<div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](std::size_t sz) {</div>
-<div class="line">  <span class="keywordflow">return</span> operatorNewInternal(sz);</div>
-<div class="line">}</div>
-<div class="line"></div>
-<div class="line"><span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keywordtype">void</span>* ptr)</div>
-<div class="line">{</div>
-<div class="line">  operatorDeleteInternal(ptr);</div>
-<div class="line">}</div>
-<div class="line"></div>
-<div class="line"><span class="keywordtype">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keywordtype">void</span>* ptr)</div>
-<div class="line">{</div>
-<div class="line">  operatorDeleteInternal(ptr);</div>
-<div class="line">}</div>
-</div><!-- fragment --><p> We are almost done. Finally we have to cope the problem of unknown initialization order before main(). So we encapsulate the allocator into a singleton and then we are done. </p>
-<div class="fragment"><div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line">~~~C++</div>
+<div class="line">The global operators would become:</div>
+</div><!-- fragment --><p> void* operator new(std::size_t sz) { return operatorNewInternal(sz); }</p>
+<p>void* operator new[](std::size_t sz) { return operatorNewInternal(sz); }</p>
+<p>void operator delete(void* ptr) { operatorDeleteInternal(ptr); }</p>
+<p>void operator delete[](void* ptr) { operatorDeleteInternal(ptr); } </p>
+<div class="fragment"><div class="line">We are almost done. Finally we have to cope the problem of unknown initialization order before main(). So we encapsulate the allocator into a singleton and then we are done. </div>
+<div class="line">~~~C++</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line">  MyAllocatorPrefixed&amp; myGlobalAllocator() {</div>
 <div class="line">    <span class="keyword">static</span> MyAllocatorPrefixed instance;</div>
 <div class="line">    <span class="keywordflow">return</span> instance;</div>
 <div class="line">  }</div>
 <div class="line">}</div>
 </div><!-- fragment --><p> Or even better, we use a ready template from the ALB library and change the code of the helper functions to: </p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span>* operatorNewInternal(std::size_t n) {</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line"><span class="keywordtype">void</span>* operatorNewInternal(std::size_t n) {</div>
 <div class="line">  <span class="keywordflow">if</span> (n == 0) {</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line">  }</div>
@@ -312,25 +337,28 @@ $(document).ready(function(){initNavTree('md__t_u_t_o_r_i_a_l.html','');});
 <p>Let's assume for the moment that we have a STL container under heavy load and with lot's of size changes or lot's of re-balancing in case of a tree base one. (I know, that changing the design in a way, that regularly rebalancing of the tree is avoided totally is even better.) But stick to the idea for the moment. So we have to implement the complete interface as it is described e.g. in Nicolai Josuttis excellent book "The Standard Template Library". &ndash;&gt; Refer to adendum pdf! </p>
 <h3>Solution</h3>
 <p>Not very much must be done. Just take the generic <a class="el" href="classalb_1_1stl__allocator.html">alb::stl_allocator</a> and we are done: </p>
-<div class="fragment"><div class="line"><a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;</a> globalInstance;</div>
-<div class="line"><span class="keyword">struct </span>MyValues;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line">  <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;</a> globalInstance;</div>
+<div class="line">  <span class="keyword">struct </span>MyValues;</div>
 <div class="line"></div>
-<div class="line"><span class="keyword">typedef</span> <a class="code" href="classalb_1_1stl__allocator.html">alb::stl_allocator&lt;MyValues, alb::global_allocator&lt;MyAllocator&gt;</a>&gt;  MySTLAllocator;</div>
+<div class="line">  <span class="keyword">typedef</span> <a class="code" href="classalb_1_1stl__allocator.html">alb::stl_allocator&lt;MyValues, alb::global_allocator&lt;MyAllocator&gt;</a>&gt;  MySTLAllocator;</div>
 </div><!-- fragment --><p> Now we can use in in our code as: </p>
-<div class="fragment"><div class="line">std::vector&lt;MyValues, MySTLAllocator&gt; myValueVector;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line">  std::vector&lt;MyValues, MySTLAllocator&gt; myValueVector;</div>
 </div><!-- fragment --><p> Or when we have to deal with a map: </p>
-<div class="fragment"><div class="line"><a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;</a> globalInstance;</div>
-<div class="line"><span class="keyword">struct </span>MyValues;</div>
-<div class="line"><span class="keyword">typedef</span> std::pair&lt;const int, MyValue&gt; MyMapPair;</div>
-<div class="line"><span class="keyword">typedef</span> <a class="code" href="classalb_1_1stl__allocator.html">alb::stl_allocator&lt;MyMapPair, alb::global_allocator&lt;MyAllocator&gt;</a>&gt;  MyMapAllocator;</div>
+<div class="fragment"><div class="line">{C++}</div>
+<div class="line">  <a class="code" href="classalb_1_1global__allocator.html">alb::global_allocator&lt;MyAllocator&gt;</a> globalInstance;</div>
+<div class="line">  <span class="keyword">struct </span>MyValues;</div>
+<div class="line">  <span class="keyword">typedef</span> std::pair&lt;const int, MyValue&gt; MyMapPair;</div>
+<div class="line">  <span class="keyword">typedef</span> <a class="code" href="classalb_1_1stl__allocator.html">alb::stl_allocator&lt;MyMapPair, alb::global_allocator&lt;MyAllocator&gt;</a>&gt;  MyMapAllocator;</div>
 <div class="line"></div>
-<div class="line">std::map&lt;int, MyValue, std::less&lt;int&gt;, MyMapAllocator&gt; myValueMap;</div>
+<div class="line">  std::map&lt;int, MyValue, std::less&lt;int&gt;, MyMapAllocator&gt; myValueMap;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 9 2015 23:19:29 for Allocator Builder by
+    <li class="footer">Generated on Sun Nov 15 2015 20:28:19 for Allocator Builder by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

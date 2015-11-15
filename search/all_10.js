@@ -11,6 +11,8 @@ var searchData=
   ['stack',['stack',['../classalb_1_1v__100_1_1internal_1_1stack.html',1,'alb::v_100::internal']]],
   ['stack_5fallocator',['stack_allocator',['../classalb_1_1v__100_1_1stack__allocator.html',1,'alb::v_100']]],
   ['statsoptions',['StatsOptions',['../group__group__stats.html#gabf604ca0a6095e2bdb3649c1ff8ee88d',1,'alb::v_100']]],
+  ['std_5fallocator_5fadapter',['std_allocator_adapter',['../classalb_1_1v__100_1_1std__allocator__adapter.html',1,'alb::v_100']]],
+  ['std_5fallocator_5fadapter_3c_20void_2c_20allocator_20_3e',['std_allocator_adapter&lt; void, Allocator &gt;',['../classalb_1_1v__100_1_1std__allocator__adapter_3_01void_00_01_allocator_01_4.html',1,'alb::v_100']]],
   ['stl_5fallocator',['stl_allocator',['../classalb_1_1stl__allocator.html',1,'alb']]],
   ['stl_5fallocator_3c_20void_2c_20allocator_20_3e',['stl_allocator&lt; void, Allocator &gt;',['../classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4.html',1,'alb']]]
 ];

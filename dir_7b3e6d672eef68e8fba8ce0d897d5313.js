@@ -18,5 +18,6 @@ var dir_7b3e6d672eef68e8fba8ce0d897d5313 =
     [ "segregator.hpp", "segregator_8hpp_source.html", null ],
     [ "shared_heap.hpp", "shared__heap_8hpp_source.html", null ],
     [ "stack_allocator.hpp", "stack__allocator_8hpp_source.html", null ],
-    [ "stl_allocator.hpp", "stl__allocator_8hpp_source.html", null ]
+    [ "stl_allocator.hpp", "stl__allocator_8hpp_source.html", null ],
+    [ "stl_allocator_adapter.hpp", "stl__allocator__adapter_8hpp_source.html", null ]
 ];

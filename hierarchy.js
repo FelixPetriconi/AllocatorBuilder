@@ -84,8 +84,10 @@ var hierarchy =
     [ "alb::v_100::internal::reallocator< Allocator, Enabled >", "structalb_1_1v__100_1_1internal_1_1reallocator.html", null ],
     [ "alb::v_100::internal::reallocator< Allocator, typename std::enable_if< traits::has_expand< Allocator >::value >::type >", "structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_992b5f7969648c64b2ef064428307286.html", null ],
     [ "alb::v_100::internal::reallocator< Allocator, typename std::enable_if<!traits::has_expand< Allocator >::value >::type >", "structalb_1_1v__100_1_1internal_1_1reallocator_3_01_allocator_00_01typename_01std_1_1enable__if_249cd369dde0762b1c21cc0a7d289991.html", null ],
-    [ "alb::stl_allocator< void, Allocator >::rebind< U >", "structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
     [ "alb::stl_allocator< T, Allocator >::rebind< U >", "structalb_1_1stl__allocator_1_1rebind.html", null ],
+    [ "alb::stl_allocator< void, Allocator >::rebind< U >", "structalb_1_1stl__allocator_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
+    [ "alb::v_100::std_allocator_adapter< void, Allocator >::rebind< U >", "structalb_1_1v__100_1_1std__allocator__adapter_3_01void_00_01_allocator_01_4_1_1rebind.html", null ],
+    [ "alb::v_100::std_allocator_adapter< T, Allocator >::rebind< U >", "structalb_1_1v__100_1_1std__allocator__adapter_1_1rebind.html", null ],
     [ "alb::v_100::shared_heap< Allocator, NumberOfChunks, ChunkSize >", "classalb_1_1v__100_1_1shared__heap.html", null ],
     [ "alb::v_100::shared_helpers::SharedLock", "classalb_1_1v__100_1_1shared__helpers_1_1_shared_lock.html", null ],
     [ "SmallAllocator", null, [
@@ -93,6 +95,8 @@ var hierarchy =
     ] ],
     [ "alb::v_100::internal::stack< T, MaxSize >", "classalb_1_1v__100_1_1internal_1_1stack.html", null ],
     [ "alb::v_100::stack_allocator< MaxSize, Alignment >", "classalb_1_1v__100_1_1stack__allocator.html", null ],
+    [ "alb::v_100::std_allocator_adapter< T, Allocator >", "classalb_1_1v__100_1_1std__allocator__adapter.html", null ],
+    [ "alb::v_100::std_allocator_adapter< void, Allocator >", "classalb_1_1v__100_1_1std__allocator__adapter_3_01void_00_01_allocator_01_4.html", null ],
     [ "alb::stl_allocator< T, Allocator >", "classalb_1_1stl__allocator.html", null ],
     [ "alb::stl_allocator< void, Allocator >", "classalb_1_1stl__allocator_3_01void_00_01_allocator_01_4.html", null ],
     [ "true_type", null, [

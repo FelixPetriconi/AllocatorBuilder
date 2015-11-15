@@ -82,7 +82,9 @@ var annotated =
         [ "null_allocator", "classalb_1_1v__100_1_1null__allocator.html", "classalb_1_1v__100_1_1null__allocator" ],
         [ "segregator", "classalb_1_1v__100_1_1segregator.html", "classalb_1_1v__100_1_1segregator" ],
         [ "shared_heap", "classalb_1_1v__100_1_1shared__heap.html", "classalb_1_1v__100_1_1shared__heap" ],
-        [ "stack_allocator", "classalb_1_1v__100_1_1stack__allocator.html", "classalb_1_1v__100_1_1stack__allocator" ]
+        [ "stack_allocator", "classalb_1_1v__100_1_1stack__allocator.html", "classalb_1_1v__100_1_1stack__allocator" ],
+        [ "std_allocator_adapter", "classalb_1_1v__100_1_1std__allocator__adapter.html", "classalb_1_1v__100_1_1std__allocator__adapter" ],
+        [ "std_allocator_adapter< void, Allocator >", "classalb_1_1v__100_1_1std__allocator__adapter_3_01void_00_01_allocator_01_4.html", "classalb_1_1v__100_1_1std__allocator__adapter_3_01void_00_01_allocator_01_4" ]
       ] ],
       [ "length_prefix", "structalb_1_1length__prefix.html", "structalb_1_1length__prefix" ],
       [ "global_allocator", "classalb_1_1global__allocator.html", "classalb_1_1global__allocator" ],
