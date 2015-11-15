@@ -93,9 +93,8 @@ namespace alb {
     template< class T, class Allocator, class... Args>
     std::shared_ptr<T> make_shared(const Allocator& alloc, Args&&... args)
     {
-      using LocalAllocator = typename std_allocator_adapter<T, Allocator>;
-      auto localAllocator = LocalAllocator(alloc);
-      return std::allocate_shared<T, LocalAllocator>(localAllocator, std::forward<Args>(args)...);
+      auto localAllocator = std_allocator_adapter<T, Allocator>(alloc);
+      return std::allocate_shared<T>(localAllocator, std::forward<Args>(args)...);
     }
 
     /**
