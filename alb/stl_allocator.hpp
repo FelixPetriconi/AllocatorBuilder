@@ -14,9 +14,11 @@
 
 namespace alb {
 
-  template <typename T, class Allocator> class stl_allocator;
+  template <typename T, class Allocator> 
+  class stl_allocator;
 
-  template <class Allocator> class stl_allocator<void, Allocator> {
+  template <class Allocator> 
+  class stl_allocator<void, Allocator> {
   public:
     using pointer = void *;
     using const_pointer = const void *;
@@ -26,7 +28,8 @@ namespace alb {
     };
   };
 
-  template <typename T, class Allocator> class stl_allocator {
+  template <typename T, class Allocator> 
+  class stl_allocator {
     typename Allocator::value_type &allocator_;
 
   public:

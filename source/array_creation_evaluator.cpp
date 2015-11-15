@@ -27,7 +27,7 @@ namespace
     }
 
     int v;
-    char s[32];
+    char s[2];
   };
 
   size_t array_offset_internal()

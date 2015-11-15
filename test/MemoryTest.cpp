@@ -97,3 +97,33 @@ TEST_F(MakeUniqueTest, TestThatMakeUniqueOfMultipleDefaultDestructableObjectsWit
 {
   auto t = alb::make_unique<HelpObjectTrivialyDestructable[]>(sut, 42);
 }
+
+
+class MakeSharedTest : public alb::test_helpers::AllocatorBaseTest<MyAllocator>
+{
+};
+
+TEST_F(MakeSharedTest, TestThatMakeUniqueOfASingleObjectWithoutPassingCTorsArgumentsAllocatesAnObject)
+{
+  {
+    auto t = alb::make_shared<HelpObjectNonTrivialDestructable>(sut);
+    EXPECT_EQ(1, HelpObjectNonTrivialDestructable::objectCounter);
+  }
+  EXPECT_EQ(0, HelpObjectNonTrivialDestructable::objectCounter);
+}
+
+TEST_F(MakeSharedTest, TestThatMakeSharedWithPassingCtorsArgumentsAllocatesAnObject)
+{
+  {
+    auto t = alb::make_shared<HelpObjectNonTrivialDestructable>(sut, 42, "Don't panic");
+    EXPECT_EQ(1, HelpObjectNonTrivialDestructable::objectCounter);
+    EXPECT_EQ(42, t->v);
+    EXPECT_EQ(std::string("Don't panic"), t->s);
+    auto t2 = t;
+
+    EXPECT_EQ(2, t.use_count());
+    EXPECT_EQ(42, t2->v);
+    EXPECT_EQ(std::string("Don't panic"), t2->s);
+  }
+  EXPECT_EQ(0, HelpObjectNonTrivialDestructable::objectCounter);
+}

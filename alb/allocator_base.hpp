@@ -11,6 +11,7 @@
 
 #include "internal/traits.hpp"
 #include "internal/array_creation_evaluator.hpp"
+#include "stl_allocator_adapter.hpp"
 #include <utility>
 #include <type_traits>
 #include <stddef.h>
@@ -88,10 +89,13 @@ namespace alb {
       size_t length;
     };
 
+
     template< class T, class Allocator, class... Args>
     std::shared_ptr<T> make_shared(const Allocator& alloc, Args&&... args)
     {
-      return allocate_shared(alloc, std::forward<Args>(args)...);
+      using LocalAllocator = typename std_allocator_adapter<T, Allocator>;
+      auto localAllocator = LocalAllocator(alloc);
+      return std::allocate_shared<T, LocalAllocator>(localAllocator, std::forward<Args>(args)...);
     }
 
     /**

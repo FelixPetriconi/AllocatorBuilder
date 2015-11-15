@@ -29,6 +29,7 @@ set(HEADERS
   ../alb/shared_heap.hpp
   ../alb/stack_allocator.hpp
   ../alb/stl_allocator.hpp
+  ../alb/stl_allocator_adapter.hpp
   ../alb/internal/affix_helper.hpp
   ../alb/internal/array_creation_evaluator.hpp
   ../alb/internal/dynastic.hpp
