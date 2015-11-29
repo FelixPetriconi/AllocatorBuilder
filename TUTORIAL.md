@@ -197,7 +197,7 @@ Beside the pointer to the memory it contains the length. The operator ::delete(v
 typedef affix_allocator<MyAllocator,uint32_t> MyAllocatorPrefixed;
 ~~~
 Let's make as a next step two convenience function for allocation and releasing the memory:
-~~~
+~~~C++
 namespace {
   MyAllocatorPrefixed myGlobalAllocator;
 }
@@ -224,9 +224,9 @@ void operatorDeleteInternal(void* ptr) {
     myGlobalAllocator.deallocate(realBlock);
   }  
 }
-~~~C++
-The global operators would become:
 ~~~
+The global operators would become:
+~~~C++
 void* operator new(std::size_t sz) {
   return operatorNewInternal(sz);
 }

@@ -16,7 +16,7 @@ Example use cases:
   * Wait free allocations in a single threaded environment
 
 So the approach is, every allocator returns such a block:
-~~~
+~~~C++
 struct block {
   void  *ptr;
   size_t length;
@@ -24,7 +24,7 @@ struct block {
 ~~~
 
 And a request goes this way:
-~~~
+~~~C++
 auto myMemBlock = allocator.allocate(42);
 ~~~
 
@@ -33,7 +33,7 @@ Motivation
 Raw memory is temporarily needed inside a function, 64-128 bytes per allocation. The fastest way would be to use ::alloca(); getting the memory from the stack. But this memory cannot be freed explicitly.  But with the combination of free-list these memory block could be recycled. This approach would be must faster than getting the memory from the heap. The order of allocations and de-allocations can happen in any order.
 
 So the code could look like this
-~~~ 
+~~~C++ 
 using StackRecycler = alb::free_list<alb::stack_allocator<16384>, 64, 128, 128>;
 
 StackRecycler localAllocator;
@@ -45,7 +45,7 @@ localAllocator.deallocate(m2);
 ~~~
 
 A more advanced allocator with different sized buckets as one are used in [jemalloc](http://www.canonware.com/jemalloc/) would look like:
-~~~
+~~~C++
 // This defines a FreeList that is later configured by the bucketizer to its size
 using FList = freelist<mallocator, DynamicSetSize, DynamicSetSize>;
 
