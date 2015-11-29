@@ -101,6 +101,7 @@ Author
 Contributions
 -------------
   Gary Furnish
+  Jürgen Braungardt
   
   Comments, feedback or contributions are welcome!
 
