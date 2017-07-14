@@ -48,8 +48,8 @@ namespace alb {
       block controlBuffer_;
 
       // bit field where 0 means used and 1 means free block
-      static const uint64_t all_set = std::numeric_limits<uint64_t>::max();
-      static const uint64_t all_zero = uint64_t(0);
+      const uint64_t all_set = std::numeric_limits<uint64_t>::max();
+      const uint64_t all_zero = uint64_t(0);
 
       uint64_t *control_;
       size_t controlSize_;

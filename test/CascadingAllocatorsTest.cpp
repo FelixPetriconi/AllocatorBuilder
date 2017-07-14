@@ -49,7 +49,7 @@ TEST_F(TCascadingAllocatorsTest, BruteForceSingleAllocationWithinTwoRunningThrea
   const size_t NumberOfThreads = 4;
 
   typedef std::array<unsigned char, NumberOfThreads> TestParams;
-  TestParams maxUsedBytes = {127, 129, 65, 130};
+  TestParams maxUsedBytes = {{127, 129, 65, 130}};
 
   alb::test_helpers::TestWorkerCollector<AllocatorUnderTest, NumberOfThreads,
                                          alb::test_helpers::TestWorker<AllocatorUnderTest>,
@@ -66,7 +66,7 @@ TEST_F(TCascadingAllocatorsTest, BruteForceWithSeveralAllocatedBlocksWithinTwoRu
   const size_t NumberOfThreads = 4;
 
   typedef std::array<unsigned char, NumberOfThreads> TestParams;
-  TestParams maxUsedBytes = {127, 129, 65, 130};
+  TestParams maxUsedBytes = {{127, 129, 65, 130}};
 
   alb::test_helpers::TestWorkerCollector<AllocatorUnderTest, NumberOfThreads,
                                          alb::test_helpers::TestWorker<AllocatorUnderTest>,

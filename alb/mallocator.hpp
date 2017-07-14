@@ -13,7 +13,7 @@
 #include "internal/reallocator.hpp"
 
 namespace alb {
-  namespace v_100 {
+  inline namespace v_100 {
     /**
      * This class implements a facade against the system ::malloc()
      *
