@@ -11,11 +11,11 @@
 
 #include <type_traits>
 #include <stddef.h>
+#include "block.hpp"
 
 namespace alb {
 
   inline namespace v_100 {
-    struct block;
 
     namespace traits {
       /**

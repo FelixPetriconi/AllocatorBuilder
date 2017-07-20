@@ -12,6 +12,9 @@
 #include <alb/heap.hpp>
 #include <alb/mallocator.hpp>
 #include <alb/affix_allocator.hpp>
+
+#include "util.hpp"
+
 #include "TestHelpers/AllocatorBaseTest.h"
 #include "TestHelpers/UsedMemGenerator.h"
 #include "TestHelpers/Thread.h"
@@ -113,6 +116,7 @@ TYPED_TEST(HeapWithSmallAllocationsTest,
 TYPED_TEST(HeapWithSmallAllocationsTest, ThatANullBlockIsReturnedIfTheHeapIsOutOfMemory)
 {
   auto allMem = this->sut.allocate(NumberOfChunks * SmallChunkSize);
+  ignore_unused(allMem);
 
   auto outOfMem = this->sut.allocate(1);
 
@@ -534,7 +538,7 @@ TEST_F(SharedHeapTreatedWithThreadsTest,
   AllocatorUnderTest sut;
 
   typedef std::array<unsigned char, 2> TestParams;
-  TestParams maxAllocatedBytes = {127, 131};
+  TestParams maxAllocatedBytes = {{127, 131}};
 
   TestWorkerCollector<AllocatorUnderTest, 2, TestWorker<AllocatorUnderTest>, TestParams>
       testCollector(sut, maxAllocatedBytes);
@@ -561,7 +565,7 @@ TEST_F(SharedHeapTreatedWithThreadsTest,
   AllocatorUnderTest sut;
 
   using TestParams = std::array<unsigned char, NumberOfThread>;
-  TestParams maxAllocatedBytes = {127, 131, 165, 129};
+  TestParams maxAllocatedBytes = {{127, 131, 165, 129}};
 
   TestWorkerCollector<AllocatorUnderTest, NumberOfThread,
                       MultipleAllocationsTester<AllocatorUnderTest>,

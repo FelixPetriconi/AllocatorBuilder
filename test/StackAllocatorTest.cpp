@@ -9,8 +9,12 @@
 ///////////////////////////////////////////////////////////////////
 #include <gtest/gtest.h>
 #include <alb/stack_allocator.hpp>
+
+#include "util.hpp"
+
 #include "TestHelpers/Base.h"
 #include "TestHelpers/AllocatorBaseTest.h"
+
 
 class stack_allocatorTest
     : public alb::test_helpers::AllocatorBaseTest<alb::stack_allocator<64, 4>> {
@@ -60,6 +64,8 @@ TEST_F(stack_allocatorTest, ThatAFreedBlockWhichWasTheLastAllocatedOnesGetsReuse
   auto mem1 = sut.allocate(8);
   auto mem2 = sut.allocate(8);
 
+  ignore_unused(mem1);
+
   auto ptrOf2ndLocation = mem2.ptr;
   deallocateAndCheckBlockIsThenEmpty(mem2);
 
@@ -90,6 +96,9 @@ TEST_F(stack_allocatorTest, ThatANullBlockIsReturnedWhenTheAllocatorIsOutOfMemor
 {
   auto allMem = sut.allocate(64);
   auto noFreeMem = sut.allocate(1);
+
+  ignore_unused(allMem);
+
   EXPECT_EQ(nullptr, noFreeMem.ptr);
   EXPECT_EQ(0u, noFreeMem.length);
 }
