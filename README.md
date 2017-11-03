@@ -55,11 +55,11 @@ using FList = freelist<mallocator, DynamicSetSize, DynamicSetSize>;
 using AdvancedAllocator = segregator<
   8, freelist<mallocator, 0, 8>, segregator<
     128, bucketizer<FList, 1, 128, 16>, segregator<
-      256, bucketizer<FList, 129, 256, 32>, segegator<
-        512, bucketizer<FList, 257, 512, 64>, segegator<
-          1024, bucketizer<FList, 513, 1024, 128>, segegator<
-            2048, bucketizer<FList, 1025, 2048, 256>, segegator<
-              3584, bucketizer<FList, 2049, 3584, 512>, segegator<
+      256, bucketizer<FList, 129, 256, 32>, segregator<
+        512, bucketizer<FList, 257, 512, 64>, segregator<
+          1024, bucketizer<FList, 513, 1024, 128>, segregator<
+            2048, bucketizer<FList, 1025, 2048, 256>, segregator<
+              3584, bucketizer<FList, 2049, 3584, 512>, segregator<
                 4072 * 1024, cascading_allocator<Heap<mallocator, 1018, 4096>>, mallocator
               >
             >
