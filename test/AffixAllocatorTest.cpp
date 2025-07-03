@@ -56,7 +56,7 @@ using TypesToTest = ::testing::Types<
                          alb::memory_corruption_detector<uint64_t, LargePrefixMarker>,
                          alb::memory_corruption_detector<unsigned, SufixMarker>>>;
 
-TYPED_TEST_CASE(affix_allocatorTest, TypesToTest);
+TYPED_TEST_SUITE(affix_allocatorTest, TypesToTest);
 
 TYPED_TEST(affix_allocatorTest, ThatAnEmptyAllocationReturnsAnEmptyBlock)
 {

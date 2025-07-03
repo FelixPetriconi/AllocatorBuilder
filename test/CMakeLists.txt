@@ -4,14 +4,7 @@ if(WIN32)
   add_definitions(-D_WIN32_WINNT=0x0501)
 ENDIF(WIN32)
 
-# Visual Studio 2012 only supports up to 8 template parameters in
-# std::tr1::tuple by default, but gtest requires 10
-if(MSVC AND MSVC_VERSION EQUAL 1700)
-  add_definitions(-D_VARIADIC_MAX=10)
-endif ()
-
-
-include_directories("${PROJECT_SOURCE_DIR}/../.")
+include_directories("${PROJECT_SOURCE_DIR}/../include")
 include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
 set(HEADERS
@@ -31,7 +24,7 @@ set(SOURCE
   BucketizerTest.cpp
   CascadingAllocatorsTest.cpp
   FallbackAllocatorTest.cpp 
-  HeapTest
+  HeapTest.cpp
   MallocatorTest.cpp
   MemoryTest.cpp
   NullAllocatorTest.cpp
@@ -51,8 +44,8 @@ add_definitions(-DBOOST_ALL_NO_LIB)
 add_dependencies(ALBUnitTest gtest)
 add_dependencies(ALBUnitTest ALB)
 
-set_property(TARGET ALBUnitTest PROPERTY CXX_STANDARD 14)
-set_property(TARGET ALBUnitTest PROPERTY CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+
 target_link_libraries(ALBUnitTest ${Boost_LIBRARIES} gtest ALB)
 
 
