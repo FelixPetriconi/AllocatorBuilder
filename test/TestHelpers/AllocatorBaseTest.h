@@ -21,7 +21,7 @@ template <class Allocator>
 class AllocatorBaseTest : public ::testing::Test
 {
 protected:
-  typedef Allocator allocator;
+  using allocator = Allocator;
 
   void deallocateAndCheckBlockIsThenEmpty(alb::block& b) {
     sut.deallocate(b);

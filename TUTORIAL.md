@@ -66,18 +66,18 @@ class string {
    }
 };
 ~~~
-Let's further assume that SIMD CPU instructions are used in further methods to implement comparison, copy etc. These instructions work on modern CPUs (at least on x86) always on 16 bytes chunks. So we would allocate on the heap the memory in 16 bytes aligned chunks, e.g. 32, 48, 64 etc. So it would be good, if the allocator, that we want to use, automatically returns such aligned memory. But that is not all. Further we assume that our application does lot's of string operations. So there would be lot's of allocation and deallocation operations. We already discussed that these operations are quite expensive. So why not keep the not any more used memory blocks in a pool (or free-list) and reuse them soon. So we start with a freelist:
+Let's further assume that SIMD CPU instructions are used in further methods to implement comparison, copy etc. These instructions work on modern CPUs (at least on x86) always on 16 bytes chunks. So we would allocate on the heap the memory in 16 bytes aligned chunks, e.g. 32, 48, 64 etc. So it would be good, if the allocator_, that we want to use, automatically returns such aligned memory. But that is not all. Further we assume that our application does lot's of string operations. So there would be lot's of allocation and deallocation operations. We already discussed that these operations are quite expensive. So why not keep the not any more used memory blocks in a pool (or free-list) and reuse them soon. So we start with a freelist:
 ~~~C++
 freelist<mallocator, 0, 32, 1024> myFreelist;
 ~~~
-This instance allocates all memory from the heap (via the mallocator) and it stores elements up to 32 bytes in the pool. The max pool size is 1024 elements. This allocator would help for strings that would never be bigger than 32 bytes. In normal cases they get bigger, so let's use a bucketizer that can manage several free-lists:
+This instance allocates all memory from the heap (via the mallocator) and it stores elements up to 32 bytes in the pool. The max pool size is 1024 elements. This allocator_ would help for strings that would never be bigger than 32 bytes. In normal cases they get bigger, so let's use a bucketizer that can manage several free-lists:
 ~~~C++
-typedef shared_freelist<mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024> FList;
+typedef shared_freelist<mallocator, internal::dynastic_dynamic_set, internal::dynastic_dynamic_set, 1024> FList;
 bucketizer<FList, 17, 512, 16> myBucket;
 ~~~
 So the typedef specifies a free-list that's min- and max size can be changed during runtime. (Normally this values are set during compile time). The bucketizer creates free-lists in increasing 16 bytes steps capacity, [17-32], [33-48], [49-64], ... Each free-list has a maximum capacity of 1024 elements. So now we can handle strings up to the length of 512 bytes. If this strings can get longer, we have to add a segregator:
 ~~~C++
-typedef shared_freelist<mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024> FList;
+typedef shared_freelist<mallocator, internal::dynastic_dynamic_set, internal::dynastic_dynamic_set, 1024> FList;
 segregator<512, bucketizer<FList, 17, 512, 16>, mallocator> myAllocator;
 ~~~
 Now all allocations up to 512 bytes are handled by the bucketizer and all above is taken directly from the heap.
@@ -85,7 +85,7 @@ The code from the string class would be rewritten to this:
 ~~~C++
 namespace {
   using namespace alb;
-  typedef shared_freelist<mallocator, internal::DynasticDynamicSet, internal::DynasticDynamicSet, 1024> FList;
+  typedef shared_freelist<mallocator, internal::dynastic_dynamic_set, internal::dynastic_dynamic_set, 1024> FList;
   segregator<512, bucketizer<FList, 17, 512, 16>, mallocator> myAllocator;
 }
 
@@ -122,7 +122,7 @@ public:
 The std::make_unique and std::make_shared creation function cannot take their memory from custom allocators. They always allocate the memory via the global ::new() functions.
 
 ### Solution
-Create an ALB allocator of any that type that has as the outmost allocator an alb::affix_allocator.
+Create an ALB allocator_ of any that type that has as the outmost allocator_ an alb::affix_allocator.
 ~~~C++
 using MyAllocator = alb::affix_allocator<alb::stack_allocator<4096>, size_t>
 ~~~
@@ -183,7 +183,7 @@ void operator delete[](void* ptr)
 }
 ~~~
 ### Solution
-Let's make the assumption that MyAllocator is a combined allocator from the Allocator-Builder (ALB) library that should serve as the basis of the memory allocation.
+Let's make the assumption that MyAllocator is a combined allocator_ from the Allocator-Builder (ALB) library that should serve as the basis of the memory allocation.
 
 We cannot use this MyAllocator directly, because the ALB relies on the fact that always an alb::block must be passed to deallocate().
 ~~~C++
@@ -196,7 +196,7 @@ Beside the pointer to the memory it contains the length. The operator ::delete(v
 ~~~C++
 typedef affix_allocator<MyAllocator,uint32_t> MyAllocatorPrefixed;
 ~~~
-Let's make as a next step two convenience function for allocation and releasing the memory:
+Let's make as a next_ step two convenience function for allocation and releasing the memory:
 ~~~C++
 namespace {
   MyAllocatorPrefixed myGlobalAllocator;
@@ -245,7 +245,7 @@ void operator delete[](void* ptr)
   operatorDeleteInternal(ptr);
 }
 ~~~
-We are almost done. Finally we have to cope the problem of unknown initialization order before main(). So we encapsulate the allocator into a singleton and then we are done. 
+We are almost done. Finally we have to cope the problem of unknown initialization order before main(). So we encapsulate the allocator_ into a singleton and then we are done. 
 ~~~C++
 namespace {
   MyAllocatorPrefixed& myGlobalAllocator() {
@@ -279,7 +279,7 @@ void operatorDeleteInternal(void* ptr) {
   }  
 }
 ~~~
-## Custom STL compatible allocator
+## Custom STL compatible allocator_
 ### Problem
 Let's assume for the moment that we have a STL container under heavy load and with lot's of size changes or lot's of re-balancing in case of a tree base one. (I know, that changing the design in a way, that regularly rebalancing of the tree is avoided totally is even better.) But stick to the idea for the moment.
 So we have to implement the complete interface as it is described e.g. in Nicolai Josuttis excellent book "The Standard Template Library". --> Refer to adendum pdf!

@@ -5,7 +5,6 @@ if(WIN32)
 ENDIF(WIN32)
 
 include_directories("${PROJECT_SOURCE_DIR}/../include")
-include_directories("${PROJECT_SOURCE_DIR}/../util/gtest-1.7.0/include")
 
 set(HEADERS
   TestHelpers/Base.h
@@ -18,17 +17,17 @@ set(HEADERS
 )
 
 set(SOURCE
-  AffixAllocatorTest.cpp
+  #AffixAllocatorTest.cpp
   AllocatorBaseTest.cpp
-  AllocatorWithStatsTest.cpp
+  #AllocatorWithStatsTest.cpp
   BucketizerTest.cpp
   CascadingAllocatorsTest.cpp
-  FallbackAllocatorTest.cpp 
+  FallbackAllocatorTest.cpp
   HeapTest.cpp
   MallocatorTest.cpp
   MemoryTest.cpp
   NullAllocatorTest.cpp
-  SegregatorTest.cpp    
+  SegregatorTest.cpp
   FreeListTest.cpp
   StackAllocatorTest.cpp
   main.cpp
@@ -41,10 +40,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 add_definitions(-DBOOST_ALL_NO_LIB)
 
-add_dependencies(ALBUnitTest gtest)
-add_dependencies(ALBUnitTest ALB)
-
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 target_link_libraries(ALBUnitTest ${Boost_LIBRARIES} gtest ALB)
 

@@ -7,37 +7,34 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_FREELIST_HPP
+#define ALB_FREELIST_HPP
 
-#include "allocator_base.hpp"
-#include "internal/dynastic.hpp"
-#include "internal/reallocator.hpp"
-#include "internal/stack.hpp"
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4189)
-#endif
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/dynastic.hpp>
+#include <alb/internal/reallocator.hpp>
+#include <alb/internal/stack.hpp>
 
 #include <boost/lockfree/stack.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
- * The FreeListBase allocator is a generic implementation of a free list pool
+ * The FreeListBase allocator_ is a generic implementation of a free list pool
  * Users shall use the alb::freelist or the alb::shared_freelist.
  * This class serves a pool of memory blocks and holds them
  * in a list of free blocks Each block's MinSize and MaxSize define the area
- * of blocks sizes that are handled with this allocator.
+ * of blocks sizes that are handled with this allocator_.
  * It held until PoolSize blocks. More requested deallocations a forwarded to
  * the Allocator for deallocation.
  * NumberOfBatchAllocations specifies how blocks are allocated by the Allocator.
  * MinSize and MaxSize can be set at runtime by instantiating this with
- * ALB::DynasticDynamicSet.
- * Except the moment of instantiation, this allocator is thread safe and all
+ * ALB::dynastic_dynamic_set.
+ * Except the moment of instantiation, this allocator_ is thread safe and all
  * operations are lock free.
- * \tparam Shared Set to true, for a multi threaded usage, otherwise to false
- * \tparam Allocator Then allocator that should be used, when a new resource is
+ * \tparam Shared Set to true, for a multi-threaded usage, otherwise to false
+ * \tparam Allocator The allocator that should be used, when a new resource is
  *                    needed
  *
  * \ingroup group_allocators group_shared
@@ -49,19 +46,24 @@ template <bool Shared,
           unsigned PoolSize,
           unsigned NumberOfBatchAllocations>
 class freelist_base {
-    typename traits::type_switch<boost::lockfree::stack<void*,
-                                                        boost::lockfree::fixed_sized<true>,
-                                                        boost::lockfree::capacity<PoolSize>>,
-                                 internal::stack<void*, PoolSize>,
-                                 Shared>::type root_;
+    traits::type_switch_t<boost::lockfree::stack<void*,
+                                                 boost::lockfree::fixed_sized<true>,
+                                                 boost::lockfree::capacity<PoolSize>>,
+                          internal::stack<void*, PoolSize>,
+                          Shared>
+        root_;
 
-    internal::dynastic<(MinSize == internal::DynasticDynamicSet ? internal::DynasticDynamicSet :
-                                                                  MinSize),
-                       internal::DynasticDynamicSet>
+    internal::dynastic<
+        (MinSize == static_cast<std::size_t>(internal::dynastic_options::dynastic_dynamic_set) ?
+             static_cast<std::size_t>(internal::dynastic_options::dynastic_dynamic_set) :
+             MinSize),
+        static_cast<std::size_t>(internal::dynastic_options::dynastic_dynamic_set)>
         _lowerBound;
-    internal::dynastic<(MaxSize == internal::DynasticDynamicSet ? internal::DynasticDynamicSet :
-                                                                  MaxSize),
-                       internal::DynasticDynamicSet>
+    internal::dynastic<
+        (MaxSize == static_cast<std::size_t>(internal::dynastic_options::dynastic_dynamic_set) ?
+             static_cast<std::size_t>(internal::dynastic_options::dynastic_dynamic_set) :
+             MaxSize),
+        static_cast<std::size_t>(internal::dynastic_options::dynastic_dynamic_set)>
         _upperBound;
 
     Allocator allocator_;
@@ -79,7 +81,7 @@ public:
     /**
      * Constructs a FreeListBase with the specified bounding edges
      * This c'tor is just available if the template parameter MinSize
-     * and MaxSize are set to DynasticDynamicSet. (Otherwise the compiler
+     * and MaxSize are set to dynastic_dynamic_set. (Otherwise the compiler
      * will tell ;-)
      * \param minSize The lower boundary accepted by this Allocator
      * \param maxSize The upper boundary accepted by this Allocator
@@ -91,7 +93,7 @@ public:
 
     /**
      * Frees all resources. Beware of using allocated blocks given by
-     * this allocator after calling this.
+     * this allocator_ after calling this.
      */
     ~freelist_base() {
         void* curBlock = nullptr;
@@ -102,17 +104,17 @@ public:
     }
 
     /**
-     * Set the min and max boundary of this allocator. This method is
+     * Set the min and max boundary of this allocator_. This method is
      * just available if the template parameter MinSize and MaxSize
-     * are set to DynasticDynamicSet. (Otherwise the compiler will tell ;-)
+     * are set to dynastic_dynamic_set. (Otherwise the compiler will tell ;-)
      * \param minSize The lower boundary accepted by this Allocator
      * \param maxSize The upper boundary accepted by this Allocator
      */
     void set_min_max(size_t minSize, size_t maxSize) noexcept {
-        assert(_lowerBound.value() == internal::DynasticUndefined);
+        assert(_lowerBound.value() == static_cast<std::size_t>(internal::dynastic_options::undefined));
         // "Changing the lower bound during after initialization is not wise!"
 
-        assert(_upperBound.value() == internal::DynasticUndefined);
+        assert(_upperBound.value() == static_cast<std::size_t>(internal::dynastic_options::undefined));
         // "Changing the upper bound during after initialization is not wise!"
 
         _lowerBound.value(minSize);
@@ -133,7 +135,7 @@ public:
      * Provides a block. If it is available in the pool, then this will be
      * reused. If the pool is empty, then a new block will be created and
      * returned. The passed size n must be within the boundary of the
-     * allocator, otherwise an empty block will returned.
+     * allocator_, otherwise an empty block will returned.
      * Depending on the parameter NumberOfBatchAllocations not only one new
      * block is allocated, but as many as specified.
      * \param n The number of requested bytes. The result is aligned to the
@@ -159,7 +161,7 @@ public:
 
             size_t blockSize = _upperBound.value();
             if (supports_truncated_deallocation) {
-                // allocating in a bunch to gain of having the allocator code in the
+                // allocating in a bunch to gain of having the allocator_ code in the
                 // cache
                 auto batchAllocatedBlocks =
                     allocator_.allocate(blockSize * NumberOfBatchAllocations);
@@ -200,7 +202,7 @@ public:
     /**
      * Reallocates the given block. In this case only trivial case can lead to
      * a positive result. In general reallocation to a different size > 0 is not
-     * supported by this allocator.
+     * supported by this allocator_.
      * \param b The block to reallocate
      * \param n The new size
      * \return True, if the reallocation was successful.
@@ -215,7 +217,7 @@ public:
     /**
      * Checks the ownership of the given block
      * \param b The block to check
-     * \return True, it is owned by this allocator
+     * \return True, it is owned by this allocator_
      */
     bool owns(const block& b) const noexcept {
         return b && _lowerBound.value() <= b.length && b.length <= _upperBound.value();
@@ -280,11 +282,7 @@ public:
         freelist_base<false, Allocator, MinSize, MaxSize, PoolSize, NumberOfBatchAllocations>(
             minSize, maxSize) {}
 };
-} // namespace v_100
-
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
-#ifdef _MSC_VER
-#pragma warning(pop)
 #endif

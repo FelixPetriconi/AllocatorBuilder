@@ -7,19 +7,22 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_CASCADING_ALLOCATOR_HPP
+#define ALB_CASCADING_ALLOCATOR_HPP
 
-#include "allocator_base.hpp"
-#include "internal/noatomic.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/noatomic.hpp>
+#include <alb/internal/reallocator.hpp>
+
 #include <atomic>
 #include <cassert>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
- * This implements a cascade of allocators. If the first allocator cannot
- * fulfill the given request, then a next one is created and the requested is
+ * This implements a cascade of allocators. If the first allocator_ cannot
+ * fulfill the given request, then a next_ one is created and the requested is
  * passed to it.
  * This class is thread safe as far as not deleteAll is called.
  * \tparam Allocator of this type Allocators get created.
@@ -28,68 +31,68 @@ inline namespace v_100 {
  */
 template <bool Shared, typename Allocator>
 class cascading_allocator_base {
-    struct Node;
-    using NodePtr =
-        typename traits::type_switch<std::atomic<Node*>, internal::no_atomic<Node*>, Shared>::type;
+    struct node;
+    using node_ptr =
+        typename traits::type_switch_t<std::atomic<node*>, internal::no_atomic<node*>, Shared>;
 
-    struct Node {
-        Node() noexcept : next{nullptr}, allocatedThisSize{0} {}
+    struct node {
+        node() noexcept : next_{}, allocated_this_size_{} {}
 
-        Node(Node&& x) noexcept { *this = std::move(x); }
+        node(node&& x) noexcept { *this = std::move(x); }
 
-        Node& operator=(Node&& x) noexcept {
-            allocator = std::move(x.allocator);
-            next = x.next.load();
-            allocatedThisSize = x.allocatedThisSize;
+        node& operator=(node&& x) noexcept {
+            allocator_ = std::move(x.allocator_);
+            next_ = x.next_.load();
+            allocated_this_size_ = x.allocated_this_size_;
 
-            x.next = nullptr;
-            x.allocatedThisSize = 0;
+            x.next_ = nullptr;
+            x.allocated_this_size_ = 0;
 
             return *this;
         }
 
-        Allocator allocator;
-        NodePtr next;
-        size_t allocatedThisSize;
+        Allocator allocator_;
+        node_ptr next_;
+        std::size_t allocated_this_size_;
     };
 
-    NodePtr root_;
+    node_ptr root_;
 
-    block allocate_no_grow(size_t n) noexcept {
+    block allocate_no_grow(std::size_t n) noexcept {
         block result;
         auto p = root_.load();
         while (p) {
-            result = p->allocator.allocate(n);
+            result = p->allocator_.allocate(n);
             if (result) {
                 return result;
             }
-            if (!p->next.load()) {
+            if (!p->next_.load()) {
                 break;
             }
-            p = p->next.load();
+            p = p->next_.load();
         }
         return result;
     }
 
-    Node* create_node() noexcept {
-        // Create a temporary node with an allocator on the stack
-        Node nodeOnStack;
+    node* create_node() noexcept {
+        // Create a temporary node with an allocator_ on the stack
+        node node_on_stack;
 
-        // Use this allocator to create the first node in allocators space
-        auto nodeBlock = nodeOnStack.allocator.allocate(sizeof(Node));
+        // Use this allocator_ to create the first node in allocators space
+        auto nodeBlock = node_on_stack.allocator_.allocate(sizeof(node));
 
-        nodeOnStack.allocatedThisSize = nodeBlock.length;
-        auto result = static_cast<Node*>(nodeBlock.ptr);
+        node_on_stack.allocated_this_size_ = nodeBlock.length;
+        auto result = static_cast<node*>(nodeBlock.ptr);
 
         if (!result) {
             return nullptr;
         }
 
-        // Create a new Node emplace
-        new (result) Node();
+        // Create a new node emplace
+        new (result) node();
 
         // Move the node from the stack to the allocated space
-        *result = std::move(nodeOnStack);
+        *result = std::move(node_on_stack);
 
         return result;
     }
@@ -97,34 +100,34 @@ class cascading_allocator_base {
     /**
      * deletes the passed node and all decedents if available
      */
-    void erase_node(Node* n) noexcept {
+    void erase_node(node* n) noexcept {
         if (n == nullptr) {
             return;
         }
-        if (n->next.load()) {
-            // delete all possible next Nodes in the list
-            erase_node(n->next.load());
-            n->next = nullptr;
+        if (n->next_.load()) {
+            // delete all possible next_ Nodes in the list
+            erase_node(n->next_.load());
+            n->next_ = nullptr;
         }
         // Create a temporary node on the stack
-        Node stackNode;
+        node stack_node;
 
-        // Move the allocator to the temporary node
-        stackNode = std::move(*n);
-        block allocatedBlock(n, stackNode.allocatedThisSize);
+        // Move the allocator_ to the temporary node
+        stack_node = std::move(*n);
+        block allocatedBlock(n, stack_node.allocated_this_size_);
 
-        stackNode.allocator.deallocate(allocatedBlock);
+        stack_node.allocator_.deallocate(allocatedBlock);
     }
 
     void shrink() noexcept { erase_node(root_.load()); }
 
-    Node* find_owning_node(const block& b) const noexcept {
+    node* find_owning_node(const block& b) const noexcept {
         auto p = root_.load();
         while (p) {
-            if (p->allocator.owns(b)) {
+            if (p->allocator_.owns(b)) {
                 return p;
             }
-            p = p->next.load();
+            p = p->next_.load();
         }
         return nullptr;
     }
@@ -161,8 +164,8 @@ public:
     ~cascading_allocator_base() { shrink(); }
 
     /**
-     * Sends the request to the first allocator, if it cannot fulfill the request
-     * then the next Allocator is created and so on
+     * Sends the request to the first allocator_, if it cannot fulfill the request
+     * then the next_ Allocator is created and so on
      */
     block allocate(size_t n) noexcept {
         if (n == 0) {
@@ -176,11 +179,11 @@ public:
 
         // no node at all there
         if (root_.load() == nullptr) {
-            auto firstNode = create_node();
-            Node* nullNode = nullptr;
+            auto first_node = create_node();
+            node* null_node = nullptr;
             // test if in the meantime someone else has created a node
-            if (!root_.compare_exchange_weak(nullNode, firstNode)) {
-                erase_node(firstNode);
+            if (!root_.compare_exchange_weak(null_node, first_node)) {
+                erase_node(first_node);
             }
 
             result = allocate_no_grow(n);
@@ -190,15 +193,15 @@ public:
         }
 
         // a new node must be appended
-        auto newNode = create_node();
-        Node* nullNode = nullptr;
+        auto new_node = create_node();
+        node* null_node = nullptr;
         auto p = root_.load();
         do {
             p = root_;
-            while (p->next.load() != nullptr) {
-                p = p->next;
+            while (p->next_.load() != nullptr) {
+                p = p->next_;
             }
-        } while (!p->next.compare_exchange_weak(nullNode, newNode));
+        } while (!p->next_.compare_exchange_weak(null_node, new_node));
 
         result = allocate_no_grow(n);
         return result;
@@ -219,13 +222,13 @@ public:
 
         auto p = find_owning_node(b);
         if (p != nullptr) {
-            p->allocator.deallocate(b);
+            p->allocator_.deallocate(b);
         }
     }
 
     /**
      * Reallocates the given block to the specified size.
-     * If the owning allocator cannot fulfill the request then a cross move is
+     * If the owning allocator_ cannot fulfill the request then a cross move is
      * performed
      * \param b Block to be reallocated
      * \param n The new size
@@ -241,7 +244,7 @@ public:
             return false;
         }
 
-        if (p->allocator.reallocate(b, n)) {
+        if (p->allocator_.reallocate(b, n)) {
             return true;
         }
 
@@ -256,19 +259,19 @@ public:
      * \return True, if the operation was successful
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_expand<U>::value, bool>::type expand(
-        block& b, size_t delta) noexcept {
+    typename std::enable_if_t<traits::has_expand_v<U>, bool> expand(block& b,
+                                                                         size_t delta) noexcept {
         auto p = find_owning_node(b);
         if (p == nullptr) {
             return false;
         }
-        return p->allocator.expand(b, delta);
+        return p->allocator_.expand(b, delta);
     }
 
     /**
      * Checks for the ownership of the given block
      * \param b The block to check
-     * \return True, if one of the allocator owns it.
+     * \return True, if one of the allocator_ owns it.
      */
     bool owns(const block& b) const noexcept { return find_owning_node(b) != nullptr; }
 
@@ -279,16 +282,16 @@ public:
      * This is only available if the Allocator implements it as well.
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_deallocate_all<U>::value, void>::type
+    typename std::enable_if_t<traits::has_deallocate_all_v<U>, void>
         deallocate_all() noexcept {
         shrink();
     }
 };
 
 /**
- * This class implements a thread safe cascading allocator. For details see
+ * This class implements a thread safe cascading allocator_. For details see
  * ALB::CascadingAllocatorsBase
- * \tparam Allocator The allocator that shall be cascaded
+ * \tparam Allocator The allocator_ that shall be cascaded
  *
  * \group group_shared group_allocators
  */
@@ -299,17 +302,19 @@ public:
 };
 
 /**
- * This class implements a non thread safe cascading allocator. For details see
+ * This class implements a non thread safe cascading allocator_. For details see
  * ALB::CascadingAllocatorsBase
- * \tparam Allocator The allocator that shall be cascaded
+ * \tparam Allocator The allocator_ that shall be cascaded
  *
  * \group group_allocators
  */
 template <class Allocator>
 class cascading_allocator : public cascading_allocator_base<false, Allocator> {
 public:
-    cascading_allocator() noexcept {}
+    cascading_allocator() noexcept = default;
 };
-} // namespace v_100
-using namespace v_100;
+
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

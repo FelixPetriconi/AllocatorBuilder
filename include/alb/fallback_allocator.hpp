@@ -7,18 +7,20 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_FALLBACK_ALLOCATOR_HPP
+#define ALB_FALLBACK_ALLOCATOR_HPP
 
-#include "allocator_base.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/reallocator.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
- * All allocation requests are passed to the Primary allocator. Only if this
- * cannot fulfill the request, it is passed to the Fallback allocator
- * \tparam Primary The allocator that gets all requests by default
- * \tparam Fallback The allocator that get the requests, if the Primary failed.
+ * All allocation requests are passed to the Primary allocator_. Only if this
+ * cannot fulfill the request, it is passed to the Fallback allocator_
+ * \tparam Primary The allocator_ that gets all requests by default
+ * \tparam Fallback The allocator_ that get the requests, if the Primary failed.
  *
  * \ingroup group_allocators group_shared
  */
@@ -27,19 +29,19 @@ class fallback_allocator : public Primary, public Fallback {
     using primary = Primary;
     using fallback = Fallback;
 
-    static_assert(!traits::both_same_base<Primary, Fallback>::value,
+    static_assert(!traits::both_same_base<primary, fallback>::value,
                   "Primary- and Fallback-Allocator cannot be both of the same base!");
 
 public:
     static constexpr bool supports_truncated_deallocation =
-        Primary::supports_truncated_deallocation || Fallback::supports_truncated_deallocation;
+        primary::supports_truncated_deallocation || fallback::supports_truncated_deallocation;
 
     static constexpr unsigned alignment =
-        (Primary::alignment > Fallback::alignment) ? Primary::alignment : Fallback::alignment;
+        (primary::alignment > fallback::alignment) ? primary::alignment : fallback::alignment;
 
     /**
      * Allocates the requested number of bytes.
-     * \param n The number of bytes. Depending on the alignment of the allocator,
+     * \param n The number of bytes. Depending on the alignment of the allocator_,
      *          the block might contain a bigger size
      */
     block allocate(size_t n) noexcept {
@@ -47,8 +49,8 @@ public:
         if (n == 0) {
             return result;
         }
-        result = Primary::allocate(n);
-        if (!result) result = Fallback::allocate(n);
+        result = primary::allocate(n);
+        if (!result) result = fallback::allocate(n);
 
         return result;
     }
@@ -62,10 +64,10 @@ public:
             return;
         }
 
-        if (Primary::owns(b))
-            Primary::deallocate(b);
+        if (primary::owns(b))
+            primary::deallocate(b);
         else
-            Fallback::deallocate(b);
+            fallback::deallocate(b);
     }
 
     /**
@@ -76,25 +78,25 @@ public:
      * \return True if the operation was successful
      */
     bool reallocate(block& b, size_t n) noexcept {
-        if (Primary::owns(b)) {
-            if (internal::is_reallocation_handled_default(static_cast<Primary&>(*this), b, n)) {
+        if (primary::owns(b)) {
+            if (internal::is_reallocation_handled_default(static_cast<primary&>(*this), b, n)) {
                 return true;
             }
         } else {
-            if (internal::is_reallocation_handled_default(static_cast<Fallback&>(*this), b, n)) {
+            if (internal::is_reallocation_handled_default(static_cast<fallback&>(*this), b, n)) {
                 return true;
             }
         }
 
-        if (Primary::owns(b)) {
-            if (Primary::reallocate(b, n)) {
+        if (primary::owns(b)) {
+            if (primary::reallocate(b, n)) {
                 return true;
             }
-            return internal::reallocate_with_copy(static_cast<Primary&>(*this),
-                                                  static_cast<Fallback&>(*this), b, n);
+            return internal::reallocate_with_copy(static_cast<primary&>(*this),
+                                                  static_cast<fallback&>(*this), b, n);
         }
 
-        return Fallback::reallocate(b, n);
+        return fallback::reallocate(b, n);
     }
 
     /**
@@ -106,17 +108,16 @@ public:
      * \return True, if the operation could be performed successful.
      */
     template <typename U = Primary, typename V = Fallback>
-    typename std::enable_if<traits::has_expand<U>::value || traits::has_expand<V>::value,
-                            bool>::type
-        expand(block& b, size_t delta) noexcept {
-        if (Primary::owns(b)) {
-            if (traits::has_expand<U>::value) {
-                return traits::Expander<U>::do_it(static_cast<U&>(*this), b, delta);
+    typename std::enable_if_t<traits::has_expand_v<U> || traits::has_expand_v<V>, bool> expand(
+        block& b, size_t delta) noexcept {
+        if (primary::owns(b)) {
+            if constexpr (traits::has_expand_v<U>) {
+                return traits::expander<U>::apply(static_cast<U&>(*this), b, delta);
             }
             return false;
         }
-        if (traits::has_expand<V>::value) {
-            return traits::Expander<V>::do_it(static_cast<V&>(*this), b, delta);
+        if constexpr (traits::has_expand_v<V>) {
+            return traits::expander<V>::apply(static_cast<V&>(*this), b, delta);
         }
         return false;
     }
@@ -128,21 +129,20 @@ public:
      * \return True if the block comes from one of the allocators.
      */
     template <typename U = Primary, typename V = Fallback>
-    typename std::enable_if<traits::has_owns<U>::value && traits::has_owns<V>::value, bool>::type
-        owns(const block& b) const noexcept {
-        return Primary::owns(b) || Fallback::owns(b);
+    typename std::enable_if_t<traits::has_owns_v<U> && traits::has_owns_v<V>, bool> owns(
+        const block& b) const noexcept {
+        return primary::owns(b) || fallback::owns(b);
     }
 
     template <typename U = Primary, typename V = Fallback>
-    typename std::enable_if<traits::has_deallocate_all<U>::value &&
-                                traits::has_deallocate_all<V>::value,
-                            void>::type
+    typename std::enable_if_t<traits::has_deallocate_all_v<U> && traits::has_deallocate_all_v<V>,
+                              void>
         deallocate_all() noexcept {
-        Primary::deallocate_all();
-        Fallback::deallocate_all();
+        primary::deallocate_all();
+        fallback::deallocate_all();
     }
 };
-} // namespace v_100
-
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

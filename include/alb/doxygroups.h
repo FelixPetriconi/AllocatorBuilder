@@ -1,5 +1,5 @@
-#ifndef _DOXYGROUPS_
-#define _DOXYGROUPS_
+#ifndef ALB_DOXYGROUPS_HPP
+#define ALB_DOXYGROUPS_HPP
 
 /**
 \defgroup group_allocators Allocators

@@ -7,15 +7,17 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_SEGREGATOR_HPP
+#define ALB_SEGREGATOR_HPP
 
-#include "allocator_base.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/reallocator.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
- * This allocator separates the allocation requested depending on a threshold
+ * This allocator_ separates the allocation requested depending on a threshold
  * between the Small- and the LargeAllocator
  * \tparam Threshold The edge until all allocations go to the SmallAllocator
  * \tparam SmallAllocator This gets all allocations below the  Threshold
@@ -23,7 +25,7 @@ inline namespace v_100 {
  *
  * \ingroup group_allocators group_shared
  */
-template <size_t Threshold, class SmallAllocator, class LargeAllocator>
+template <std::size_t Threshold, class SmallAllocator, class LargeAllocator>
 class segregator : private SmallAllocator, private LargeAllocator {
     static_assert(!traits::both_same_base<SmallAllocator, LargeAllocator>::value,
                   "Small- and Large-Allocator cannot be both of base!");
@@ -32,7 +34,7 @@ public:
     using small_allocator = SmallAllocator;
     using large_allocator = LargeAllocator;
 
-    static constexpr size_t threshold = Threshold;
+    static constexpr std::size_t threshold = Threshold;
 
     static constexpr bool supports_truncated_deallocation =
         SmallAllocator::supports_truncated_deallocation &&
@@ -49,7 +51,7 @@ public:
      * \param n Number of requested bytes
      * \return Block with the memory information.
      */
-    block allocate(size_t n) noexcept {
+    block allocate(std::size_t n) noexcept {
         block result;
         if (n <= Threshold) {
             result = SmallAllocator::allocate(n);
@@ -85,7 +87,7 @@ public:
      *
      * \ingroup group_allocators group_shared
      */
-    bool reallocate(block& b, size_t n) noexcept {
+    bool reallocate(block& b, std::size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
             return true;
         }
@@ -111,21 +113,21 @@ public:
      * \return True, if the operation was successful
      */
     template <typename U = SmallAllocator, typename V = LargeAllocator>
-    typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
-                                traits::has_expand<LargeAllocator>::value,
-                            bool>::type
-        expand(block& b, size_t delta) noexcept {
+    typename std::enable_if_t<traits::has_expand_v<SmallAllocator> ||
+                                  traits::has_expand_v<LargeAllocator>,
+                              bool>
+        expand(block& b, std::size_t delta) noexcept {
         if (b.length <= Threshold && b.length + delta > Threshold) {
             return false;
         }
         if (b.length <= Threshold) {
-            if (traits::has_expand<U>::value) {
-                return traits::Expander<U>::do_it(static_cast<U&>(*this), b, delta);
+            if (traits::has_expand_v<U>) {
+                return traits::expander<U>::apply(static_cast<U&>(*this), b, delta);
             }
             return false;
         }
-        if (traits::has_expand<V>::value) {
-            return traits::Expander<V>::do_it(static_cast<V&>(*this), b, delta);
+        if (traits::has_expand_v<V>) {
+            return traits::expander<V>::apply(static_cast<V&>(*this), b, delta);
         }
         return false;
     }
@@ -134,12 +136,12 @@ public:
      * Checks the ownership of the given block.
      * This is only available if both Allocator implement it
      * \param b The block to checked
-     * \return True if one of the allocator owns it.
+     * \return True if one of the allocator_ owns it.
      */
     template <typename U = SmallAllocator, typename V = LargeAllocator>
-    typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
-                                traits::has_expand<LargeAllocator>::value,
-                            bool>::type
+    typename std::enable_if_t<traits::has_expand_v<SmallAllocator> ||
+                                  traits::has_expand_v<LargeAllocator>,
+                              bool>
         owns(const block& b) const noexcept {
         if (b.length <= Threshold) {
             return U::owns(b);
@@ -152,14 +154,16 @@ public:
      * This is available if one of the allocators implement it.
      */
     template <typename U = SmallAllocator, typename V = LargeAllocator>
-    typename std::enable_if<traits::has_expand<SmallAllocator>::value ||
-                                traits::has_expand<LargeAllocator>::value,
-                            void>::type
+    typename std::enable_if_t<traits::has_expand_v<SmallAllocator> ||
+                                  traits::has_expand_v<LargeAllocator>,
+                              void>
         deallocate_all() noexcept {
         traits::all_deallocator<U>::do_it(static_cast<U&>(*this));
         traits::all_deallocator<V>::do_it(static_cast<V&>(*this));
     }
 };
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
+
 } // namespace alb
+
+#endif

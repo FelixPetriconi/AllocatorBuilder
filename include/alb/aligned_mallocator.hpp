@@ -9,14 +9,15 @@
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "allocator_base.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/reallocator.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * This class implements a proxy to the system ::malloc() with the ALB interface.
- * According the template * parameter DefaultAlignment the allocated values are
+ * According to the template * parameter DefaultAlignment the allocated values are
  * aligned to the specific boundary in bytes. Normally this should be a multiple
  * of at least 4 bytes.
  * \tparam DefaultAlignment Specified the alignment in bytes of all allocation
@@ -26,14 +27,14 @@ inline namespace v_100 {
  */
 template <unsigned DefaultAlignment = 16>
 class aligned_mallocator {
-    static constexpr unsigned int alignment = DefaultAlignment;
+    static constexpr std::uint32_t alignment = DefaultAlignment;
 
-    static constexpr size_t good_size(size_t n) {
+    static constexpr std::size_t good_size(std::size_t n) {
         return internal::round_to_alignment(alignment, n);
     }
 
 #ifdef _MSC_VER
-    bool aligned_reallocate(block& b, size_t n) noexcept {
+    bool aligned_reallocate(block& b, std::size_t n) noexcept {
         block reallocatedBlock{_aligned_realloc(b.ptr, n, alignment), n};
 
         if (reallocatedBlock) {
@@ -46,10 +47,10 @@ class aligned_mallocator {
     // On posix there is no _aligned_realloc so we try a normal realloc
     // if the result is still aligned we are fine
     // otherwise we have to do it by hand
-    bool aligned_reallocate(block& b, size_t n) noexcept {
+    bool aligned_reallocate(block& b, std::size_t n) noexcept {
         block reallocatedBlock(::realloc(b.ptr, n));
         if (reallocatedBlock) {
-            if (static_cast<size_t>(b.ptr) % alignment != 0) {
+            if (static_cast<std::size_t>(b.ptr) % alignment != 0) {
                 auto newAlignedBlock = allocate(n);
                 if (!newAlignedBlock) {
                     return false;
@@ -72,7 +73,7 @@ public:
      * If the system cannot allocate the specified amount of memory then
      * a null Block is returned.
      */
-    block allocate(size_t n) noexcept {
+    block allocate(std::size_t n) noexcept {
 #ifdef _MSC_VER
         return block{_aligned_malloc(n, alignment), n};
 #else
@@ -90,7 +91,7 @@ public:
      * \param n The new size of the block
      * \return True, if the operation was successful
      */
-    bool reallocate(block& b, size_t n) noexcept {
+    bool reallocate(block& b, std::size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
             return true;
         }
@@ -113,6 +114,5 @@ public:
         }
     }
 };
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb

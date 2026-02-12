@@ -4,15 +4,20 @@
 //
 // License: http://boost.org/LICENSE_1_0.txt, Boost License 1.0
 //
-// Authors: http://petriconi.net, Felix Petriconi 
+// Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
 
-#include <cstring>
 #include <algorithm>
+#include <cstring>
 
-void alb::v_100::internal::block_copy(const alb::block& source, alb::block& destination) noexcept
-{
-  ::memcpy(destination.ptr, source.ptr, std::min(source.length, destination.length));
+namespace alb {
+inline namespace ALB_VERSION_NAMESPACE() {
+namespace internal {
+void block_copy(const alb::block& source, alb::block& destination) noexcept {
+    ::memcpy(destination.ptr, source.ptr, std::min(source.length, destination.length));
 }
+} // namespace internal
+} // namespace ALB_VERSION_NAMESPACE()
+} // namespace alb

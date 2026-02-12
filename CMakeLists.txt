@@ -9,7 +9,7 @@ ENDIF(WIN32)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")  
   #set(CMAKE_CXX_FLAGS "-O3 -fsanitize=thread -g -Wall -std=c++11")
-  set(CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++14")
+  set(CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
   set(CMAKE_LINK_FLAGS "-pthreads")
 endif()
 
@@ -21,7 +21,7 @@ set(Boost_USE_STATIC_RUNTIME     OFF)
 find_package( Boost REQUIRED COMPONENTS system thread chrono date_time)
 
 
-add_subdirectory(util/googletest)
+add_subdirectory(modules/googletest)
 add_subdirectory(src)
 add_subdirectory(test)
 

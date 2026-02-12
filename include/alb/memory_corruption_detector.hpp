@@ -7,8 +7,10 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
+#ifndef ALB_MEMORY_CORRUPTION_DETECTOR_HPP
+#define ALB_MEMORY_CORRUPTION_DETECTOR_HPP
 
-#pragma once
+#include <alb/config.hpp>
 
 #include <cassert>
 #include <cstdint>
@@ -16,7 +18,7 @@
 #include <iostream>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * This class can be used as Prefix and/or Suffix with the affix_allocator to
  * detect
@@ -26,16 +28,16 @@ inline namespace v_100 {
  *
  * \ingroup group_internal
  */
-template <typename T, size_t Pattern>
+template <typename T, std::size_t Pattern>
 class memory_corruption_detector {
-    static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(uint64_t),
+    static_assert(sizeof(char) < sizeof(T) && sizeof(T) <= sizeof(std::uint64_t),
                   "Memory check not for supported types");
 
     T pattern_;
 
 public:
     using value_type = T;
-    static const size_t pattern = Pattern;
+    static const std::size_t pattern = Pattern;
 
     memory_corruption_detector() noexcept : pattern_(Pattern) {}
 
@@ -52,7 +54,8 @@ public:
 };
 
 template <typename T, size_t Pattern>
-const size_t memory_corruption_detector<T, Pattern>::pattern;
-} // namespace v_100
-using namespace v_100;
+const std::size_t memory_corruption_detector<T, Pattern>::pattern;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

@@ -35,7 +35,7 @@ std::size_t array_offset_internal() {
 }
 } // namespace
 
-std::size_t alb::helpers::array_offset() {
+std::size_t alb::internal::array_offset() {
     static std::size_t result = array_offset_internal();
     return result;
 }

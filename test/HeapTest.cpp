@@ -577,7 +577,7 @@ TEST_F(SharedHeapTreatedWithThreadsTest,
   // is by trying to allocate everything
   auto allDeallocatedCheck =
       sut.allocate(NumberOfChunks * BlockSize - AllocatorUnderTest::prefix_size -
-                   AllocatorUnderTest::sufix_size);
+                   AllocatorUnderTest::suffix_size);
 
   EXPECT_TRUE(static_cast<bool>(allDeallocatedCheck));
 }

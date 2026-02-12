@@ -7,13 +7,15 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_MALLOCATOR_HPP
+#define ALB_MALLOCATOR_HPP
 
-#include "allocator_base.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/reallocator.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * This class implements a facade against the system ::malloc()
  *
@@ -22,7 +24,7 @@ inline namespace v_100 {
 class mallocator {
 public:
     static constexpr bool supports_truncated_deallocation = false;
-    static constexpr unsigned alignment = 4;
+    static constexpr std::uint32_t alignment = 4;
 
     /**
      * Allocates the specified number of bytes.
@@ -31,7 +33,7 @@ public:
      * \param n The number of bytes.
      * \return Block with memory information
      */
-    block allocate(size_t n) noexcept {
+    block allocate(std::size_t n) noexcept {
         block result;
 
         if (n == 0) {
@@ -52,7 +54,7 @@ public:
      * \param n The new size
      * \return True, if the operation was successful.
      */
-    bool reallocate(block& b, size_t n) noexcept {
+    bool reallocate(block& b, std::size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
             return true;
         }
@@ -77,6 +79,7 @@ public:
         }
     }
 };
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

@@ -7,14 +7,18 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_BUCKETIZER_HPP
+#define ALB_BUCKETIZER_HPP
 
-#include "allocator_base.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/reallocator.hpp>
+
 #include <cassert>
 
 namespace alb {
-inline namespace v_100 {
+
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * The Bucketizer is intended to hold allocators with StepSize increasing
  * buckets,
@@ -48,11 +52,11 @@ public:
 
     using allocator = Allocator;
 
-    Allocator _buckets[number_of_buckets];
+    allocator buckets_[number_of_buckets];
 
     bucketizer() noexcept {
         for (size_t i = 0; i < number_of_buckets; i++) {
-            _buckets[i].set_min_max(MinSize + i * StepSize, MinSize + (i + 1) * StepSize - 1);
+            buckets_[i].set_min_max(MinSize + i * StepSize, MinSize + (i + 1) * StepSize - 1);
         }
     }
 
@@ -69,8 +73,8 @@ public:
     block allocate(size_t n) noexcept {
         size_t i = 0;
         while (i < number_of_buckets) {
-            if (_buckets[i].min_size() <= n && n <= _buckets[i].max_size()) {
-                return _buckets[i].allocate(n);
+            if (buckets_[i].min_size() <= n && n <= buckets_[i].max_size()) {
+                return buckets_[i].allocate(n);
             }
             ++i;
         }
@@ -140,23 +144,24 @@ public:
      * This method is only available if Allocator::deallocate_all is available
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_deallocate_all<U>::value, void>::type
-        deallocate_all() noexcept {
-        for (auto& item : _buckets) {
+    typename std::enable_if_t<traits::has_deallocate_all_v<U>, void> deallocate_all() noexcept {
+        for (auto& item : buckets_) {
             traits::all_deallocator<U>::do_it(item);
         }
     }
 
 private:
-    Allocator* find_matching_allocator(size_t n) noexcept {
+    allocator* find_matching_allocator(size_t n) noexcept {
         assert(MinSize <= n && n <= MaxSize);
-        auto v = alb::internal::round_to_alignment(StepSize, n);
-        return &_buckets[(v - MinSize) / StepSize];
+        auto v = internal::round_to_alignment(StepSize, n);
+        return &buckets_[(v - MinSize) / StepSize];
     }
 };
 
 template <class Allocator, unsigned MinSize, unsigned MaxSize, unsigned StepSize>
 const unsigned bucketizer<Allocator, MinSize, MaxSize, StepSize>::number_of_buckets;
-} // namespace v_100
-using namespace v_100;
+
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

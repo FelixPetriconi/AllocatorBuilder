@@ -7,23 +7,25 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_STACK_ALLOCATOR_HPP
+#define ALB_STACK_ALLOCATOR_HPP
 
-#include "allocator_base.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * Allocator that provides memory from the stack.
  * By design it is not thread safe!
  * \tparam MaxSize The maximum number of bytes that can be allocated by this
- *         allocator
+ *         allocator_
  * \tparam Alignment Each memory allocation request by  allocate,
  *         reallocate and expand is aligned by this value
  *
  * \ingroup group_allocators
  */
-template <size_t MaxSize, size_t Alignment = 16>
+template <std::size_t MaxSize, std::size_t Alignment = 16>
 
 class stack_allocator {
     alignas(Alignment) char _data[MaxSize];
@@ -38,12 +40,12 @@ public:
     using allocator = stack_allocator;
 
     static const bool supports_truncated_deallocation = true;
-    static const size_t max_size = MaxSize;
-    static const size_t alignment = Alignment;
+    static const std::size_t max_size = MaxSize;
+    static const std::size_t alignment = Alignment;
 
     stack_allocator() noexcept : _p(_data) {}
 
-    block allocate(size_t n) noexcept {
+    block allocate(std::size_t n) noexcept {
         block result;
 
         if (n == 0) {
@@ -72,7 +74,7 @@ public:
         }
 
         // If it was the most recent allocated MemoryBlock, then we can re-use the
-        // memory. Otherwise this freed MemoryBlock is not available for further
+        // memory. Otherwise, this freed MemoryBlock is not available for further
         // allocations. Since all happens on the stack this is not a leak!
         if (is_last_used_block(b)) {
             _p = static_cast<char*>(b.ptr);
@@ -80,7 +82,7 @@ public:
         b.reset();
     }
 
-    bool reallocate(block& b, size_t n) noexcept {
+    bool reallocate(block& b, std::size_t n) noexcept {
         if (b.length == n) {
             return true;
         }
@@ -129,7 +131,7 @@ public:
      * \return true, if the operation was successful or false if not enough
      *         memory is left
      */
-    bool expand(block& b, size_t delta) noexcept {
+    bool expand(block& b, std::size_t delta) noexcept {
         if (delta == 0) {
             return true;
         }
@@ -151,7 +153,7 @@ public:
 
     /**
      * Returns true, if the provided block was allocated previously with this
-     * allocator
+     * allocator_
      * \param b The block to be checked.
      */
     bool owns(const block& b) const noexcept {
@@ -167,8 +169,8 @@ public:
 
 private:
     // disable move ctor and move assignment operators
-    stack_allocator(stack_allocator&&) = delete;
-    stack_allocator& operator=(stack_allocator&&) = delete;
+    stack_allocator(stack_allocator&&) noexcept = delete;
+    stack_allocator& operator=(stack_allocator&&) noexcept = delete;
     stack_allocator(const stack_allocator&) = delete;
     stack_allocator& operator=(const stack_allocator&) = delete;
     // disable heap allocation
@@ -180,10 +182,12 @@ private:
     stack_allocator* operator&() = delete;
 };
 
-template <size_t MaxSize, size_t Alignment>
-const size_t stack_allocator<MaxSize, Alignment>::max_size;
-template <size_t MaxSize, size_t Alignment>
-const size_t stack_allocator<MaxSize, Alignment>::alignment;
-} // namespace v_100
-using namespace v_100;
+template <std::size_t MaxSize, std::size_t Alignment>
+constexpr std::size_t stack_allocator<MaxSize, Alignment>::max_size;
+
+template <std::size_t MaxSize, std::size_t Alignment>
+constexpr std::size_t stack_allocator<MaxSize, Alignment>::alignment;
+
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+#endif

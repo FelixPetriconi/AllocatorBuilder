@@ -7,11 +7,17 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_GLOBAL_ALLOCATOR_HPP
+#define ALB_GLOBAL_ALLOCATOR_HPP
+
+#include <alb/config.hpp>
 
 namespace alb {
+
+inline namespace ALB_VERSION_NAMESPACE() {
+
 struct length_prefix {
-    unsigned length;
+    std::uint32_t length;
 };
 
 template <class Allocator>
@@ -24,4 +30,7 @@ public:
         return in;
     }
 };
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

@@ -10,17 +10,19 @@
 #ifndef ALB_BLOCK_HPP
 #define ALB_BLOCK_HPP
 
-#include <cstdef>
+#include <alb/config.hpp>
+
+#include <cstddef>
 #include <utility>
 
 namespace alb {
 
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 
 struct block {
     block() noexcept : ptr(nullptr), length(0) {}
 
-    constexpr block(void* ptr, size_t length) noexcept : ptr(ptr), length(length) {}
+    constexpr block(void* ptr, std::size_t length) noexcept : ptr(ptr), length(length) {}
 
     constexpr block(block&& x) noexcept { *this = std::move(x); }
 
@@ -35,7 +37,7 @@ struct block {
     constexpr block(const block& x) noexcept = default;
 
     /**
-     * During destruction of any of this instance, the described memory
+     * During destruction of this instance, the described memory
      * is not freed!
      */
     // ~block()
@@ -58,12 +60,12 @@ struct block {
     }
 
     /// This points to the start address of the described memory block
-    void* ptr;
+    void* ptr{};
 
     /// This describes the length of the reserved bytes.
-    std::size_t length;
+    std::size_t length{};
 };
 
-} // namespace v_100
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 #endif

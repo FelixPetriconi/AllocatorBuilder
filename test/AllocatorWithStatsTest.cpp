@@ -198,7 +198,7 @@ public:
 template <class Allocator> class AllocatorWithStatsBaseTest : public ::testing::Test {
 protected:
   using AllocatorUnderTest = Allocator;
-  using CurrentAllocationInfo = typename Allocator::AllocationInfo;
+  using CurrentAllocationInfo = typename Allocator::allocation_info;
 
   void deleteAllExpectations(std::vector<CurrentAllocationInfo *> &expectation)
   {
@@ -210,9 +210,9 @@ protected:
   auto createCallerExpectation(const char *file, const char *function, size_t size)
   {
     auto expectedCallerInfo = new CurrentAllocationInfo;
-    expectedCallerInfo->callerFile = file;
-    expectedCallerInfo->callerFunction = function;
-    expectedCallerInfo->callerSize = size;
+    expectedCallerInfo->caller_file = file;
+    expectedCallerInfo->caller_function = function;
+    expectedCallerInfo->caller_size = size;
     return expectedCallerInfo;
   }
 
@@ -277,7 +277,7 @@ TEST_F(AllocatorWithStatsTest, ThatAllocatingAnAlignedNumerOfBytesIsStored)
   std::unique_ptr<CurrentAllocationInfo> expectedCallerInfo(
       createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem = ALLOCATE((*sut), 4);
-  expectedCallerInfo->callerLine = __LINE__;
+  expectedCallerInfo->caller_line = __LINE__;
 
   auto afterAllocationOf4Bytes = AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
                                      .withNumAllocate(1)
@@ -315,11 +315,11 @@ TEST_F(AllocatorWithStatsTest, ThatTwoAllocationsAreStoredAndThatTheCallerStatsA
   std::vector<CurrentAllocationInfo *> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem1st = ALLOCATE((*sut), 4);
-  expectedCallerInfo[0]->callerLine = __LINE__;
+  expectedCallerInfo[0]->caller_line = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
   auto mem2nd = ALLOCATE((*sut), 8);
-  expectedCallerInfo[1]->callerLine = __LINE__;
+  expectedCallerInfo[1]->caller_line = __LINE__;
 
   auto afterAllocationOf4And8Bytes = AllocationExpectationBuilder<AllocatorUnderTest>(*sut)
                                          .withNumAllocate(2)
@@ -382,7 +382,7 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingInPlaceIsStored)
   std::unique_ptr<CurrentAllocationInfo> expectedCallerInfo(
       createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem = ALLOCATE((*sut), 4);
-  expectedCallerInfo->callerLine = __LINE__;
+  expectedCallerInfo->caller_line = __LINE__;
 
   EXPECT_TRUE(sut->reallocate(mem, 16));
 
@@ -430,15 +430,15 @@ TEST_F(AllocatorWithStatsTest,
   std::vector<CurrentAllocationInfo *> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem1st = ALLOCATE((*sut), 4);
-  expectedCallerInfo[0]->callerLine = __LINE__;
+  expectedCallerInfo[0]->caller_line = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
   auto mem2nd = ALLOCATE((*sut), 8);
-  expectedCallerInfo[1]->callerLine = __LINE__;
+  expectedCallerInfo[1]->caller_line = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 12));
   auto mem3rd = ALLOCATE((*sut), 12);
-  expectedCallerInfo[2]->callerLine = __LINE__;
+  expectedCallerInfo[2]->caller_line = __LINE__;
 
   {
     const auto allocations = sut->allocations();
@@ -472,11 +472,11 @@ TEST_F(AllocatorWithStatsTest, ThatIncreasingReallocatingNotInPlaceIsStored)
   std::vector<CurrentAllocationInfo *> expectedCallerInfo;
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 4));
   auto mem1st = ALLOCATE((*sut), 4);
-  expectedCallerInfo[0]->callerLine = __LINE__;
+  expectedCallerInfo[0]->caller_line = __LINE__;
 
   expectedCallerInfo.push_back(createCallerExpectation(__FILE__, __FUNCTION__, 8));
   auto mem2nd = ALLOCATE((*sut), 8);
-  expectedCallerInfo[1]->callerLine = __LINE__;
+  expectedCallerInfo[1]->caller_line = __LINE__;
 
   EXPECT_TRUE(sut->reallocate(mem2nd, 128));
 

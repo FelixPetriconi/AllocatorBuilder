@@ -10,16 +10,20 @@
 #ifndef ALB_ARRAY_CREATION_EVALUATOR_HPP
 #define ALB_ARRAY_CREATION_EVALUATOR_HPP
 
-#include <cstdint>
+#include <alb/config.hpp>
+
+#include <cstddef>
 
 namespace alb {
 
-namespace v_100::helpers {
+inline namespace ALB_VERSION_NAMESPACE() {
+
+namespace internal {
+
 std::size_t array_offset();
 
 }
-
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

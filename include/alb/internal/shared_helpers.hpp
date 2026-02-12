@@ -10,20 +10,22 @@
 #ifndef ALB_SHARED_HELPERS_HPP
 #define ALB_SHARED_HELPERS_HPP
 
+#include <alb/config.hpp>
+
 #include <shared_mutex>
 
 namespace alb {
-inline namespace v_100 {
-namespace shared_helpers {
+inline namespace ALB_VERSION_NAMESPACE() {
+namespace internal {
 
 /**
  * Class that does not lock a given mutex
  *
  * \ingroup group_internal
  */
-class NullLock {
+class null_lock {
 public:
-    [[nodiscard]] explicit NullLock(std::shared_mutex&) noexcept {}
+    [[nodiscard]] explicit null_lock(std::shared_mutex&) noexcept {}
 };
 
 /**
@@ -31,11 +33,11 @@ public:
  *
  * \ingroup group_internal
  */
-class SharedLock {
-    std::shared_lock<std::shared_mutex> _lock;
+class shared_lock {
+    std::shared_lock<std::shared_mutex> lock_;
 
 public:
-    [[nodiscard]] explicit SharedLock(std::shared_mutex& m) noexcept : _lock(m) {}
+    [[nodiscard]] explicit shared_lock(std::shared_mutex& m) noexcept : lock_(m) {}
 };
 
 /**
@@ -43,18 +45,14 @@ public:
  *
  * \ingroup group_internal
  */
-class UniqueLock {
-    std::unique_lock<std::shared_mutex> _lock;
+class unique_lock {
+    std::unique_lock<std::shared_mutex> lock_;
 
 public:
-    [[nodiscard]] explicit UniqueLock(std::shared_mutex& m) noexcept : _lock(m) {}
+    [[nodiscard]] explicit unique_lock(std::shared_mutex& m) noexcept : lock_(m) {}
 };
 
 struct null_mutex {};
-
-struct null_lock {
-    explicit null_lock(null_mutex&) noexcept {}
-};
 
 template <class M>
 struct lock_guard;
@@ -72,9 +70,8 @@ private:
     explicit lock_guard(std::mutex& m) noexcept : _lock(m) {}
 };
 
-} // namespace shared_helpers
-} // namespace v_100
-using namespace v_100;
+} // namespace internal
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

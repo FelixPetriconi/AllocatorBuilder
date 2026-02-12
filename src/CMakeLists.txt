@@ -17,6 +17,7 @@ set(HEADERS
         ../include/alb/allocator_base.hpp
         ../include/alb/allocator_with_stats.hpp
         ../include/alb/bucketizer.hpp
+        ../include/alb/config.hpp
         ../include/alb/cascading_allocator.hpp
         ../include/alb/fallback_allocator.hpp
         ../include/alb/global_allocator.hpp
@@ -32,6 +33,7 @@ set(HEADERS
         ../include/alb/stl_allocator_adapter.hpp
         ../include/alb/internal/affix_helper.hpp
         ../include/alb/internal/array_creation_evaluator.hpp
+        ../include/alb/internal/atomic_shared_ptr.hpp
         ../include/alb/internal/dynastic.hpp
         ../include/alb/internal/heap_helpers.hpp
         ../include/alb/internal/noatomic.hpp
@@ -44,6 +46,6 @@ set(HEADERS
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(ALB ${SOURCE} ${HEADERS})
-set_property(TARGET ALB PROPERTY CXX_STANDARD 17)
+set_property(TARGET ALB PROPERTY CXX_STANDARD 20)
 set_property(TARGET ALB PROPERTY CXX_STANDARD_REQUIRED ON)
 

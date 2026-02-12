@@ -11,19 +11,19 @@
 #define ALB_TRAITS_HPP
 
 #include <alb/block.hpp>
+#include <alb/config.hpp>
 
 #include <cstdint>
 #include <type_traits>
 
 namespace alb {
 
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 
 namespace traits {
 
 // implementation of the detect idiom as in std::experimental
-
-template <class...>
+template <typename...>
 using void_t = void;
 
 struct nonesuch {
@@ -33,29 +33,31 @@ struct nonesuch {
     void operator=(nonesuch const&) = delete;
 };
 
-namespace detail {
-template <class Default, class AlwaysVoid, template <class...> class Op, class... Args>
+// primary template handles all types not supporting the archetypal Op:
+template <class Default, class, template <class...> class Op, class... Args>
 struct detector {
     using value_t = std::false_type;
     using type = Default;
 };
 
+// the specialization recognizes and handles only types supporting Op:
 template <class Default, template <class...> class Op, class... Args>
 struct detector<Default, void_t<Op<Args...>>, Op, Args...> {
     using value_t = std::true_type;
     using type = Op<Args...>;
 };
 
-} // namespace detail
+template <template <class...> class Op, class... Args>
+using is_detected = typename detector<nonesuch, void, Op, Args...>::value_t;
 
 template <template <class...> class Op, class... Args>
-using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
+constexpr bool is_detected_v = is_detected<Op, Args...>::value;
 
 template <template <class...> class Op, class... Args>
-using detected_t = typename detail::detector<nonesuch, void, Op, Args...>::type;
+using detected_t = typename detector<nonesuch, void, Op, Args...>::type;
 
 template <class Default, template <class...> class Op, class... Args>
-using detected_or = detail::detector<Default, void, Op, Args...>;
+using detected_or = detector<Default, void, Op, Args...>;
 
 template <class Expected, template <class...> class Op, class... Args>
 using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
@@ -66,24 +68,23 @@ using is_detected_exact = std::is_same<Expected, detected_t<Op, Args...>>;
  * \ingroup group_traits
  */
 
-template <class T>
-using has_expand =
-    decltype(std::declval<T&>().expand(std::declval<block>(), std::declval<std::size_t>()));
-
 template <typename T>
-using has_expand_v = is_detected_exact<bool, has_expand, T>;
+using expand_t =
+    decltype(std::declval<T&>().expand(std::declval<block&>(), std::declval<std::size_t>()));
+
+template <class T>
+constexpr bool has_expand_v = is_detected_v<expand_t, T>;
 
 /**
  * Trait that checks if the given class implements void deallocate_all()
  *
  * \ingroup group_traits
  */
+template <typename T>
+using deallocate_all_t = decltype(std::declval<T&>().deallocate_all());
 
 template <class T>
-using has_deallocate_all = decltype(std::declval<T&>().deallocate_all());
-
-template <typename T>
-using has_deallocate_all_v = is_detected_exact<void, has_deallocate_all, T>;
+constexpr bool has_deallocate_all_v = is_detected_v<deallocate_all_t, T>;
 
 /**
  * Trait that checks if the given class implements bool owns(const Block&) const
@@ -91,20 +92,20 @@ using has_deallocate_all_v = is_detected_exact<void, has_deallocate_all, T>;
  * \ingroup group_traits
  */
 template <class T>
-using has_owns = decltype(std::declval<T&>().owns(std::declval<block>()));
+using owns_t = decltype(std::declval<T&>().owns(std::declval<block>()));
 
 template <typename T>
-using has_owns_v = is_detected_exact<bool, has_owns, T>;
+constexpr bool has_owns_v = is_detected_v<owns_t, T>;
 
 /**
- * This traits returns true if both passed types have the same type, resp.
+ * This trait returns true if both passed types have the same type, resp.
  * template base type
  *
  * e.g. both_same_base<stack_allocator<32>, stack_allocator<64>>::value == true
  *
  * It's usage is not absolute safe, because it would mean to unroll all possible
  * parameter combinations.
- * But all currently available allocator should work.
+ * But all currently available allocator_ should work.
  * \ingroup group_traits
  */
 
@@ -191,12 +192,14 @@ struct expander;
 
 template <class Allocator>
 struct expander<Allocator, typename std::enable_if_t<has_expand_v<Allocator>>> {
-    static bool apply(Allocator& a, block& b, size_t delta) noexcept { return a.expand(b, delta); }
+    static bool apply(Allocator& a, block& b, std::size_t delta) noexcept {
+        return a.expand(b, delta);
+    }
 };
 
 template <class Allocator>
 struct expander<Allocator, typename std::enable_if_t<!has_expand_v<Allocator>>> {
-    static bool apply(Allocator&, block&, size_t) noexcept { return false; }
+    static bool apply(Allocator&, block&, std::size_t) noexcept { return false; }
 };
 
 /**
@@ -238,10 +241,12 @@ template <class A, class B>
 struct type_switch<A, B, false> {
     using type = B;
 };
-} // namespace traits
-} // namespace v_100
 
-using namespace v_100;
+template <class A, class B, bool C>
+using type_switch_t = typename type_switch<A, B, C>::type;
+
+} // namespace traits
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

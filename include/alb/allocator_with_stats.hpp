@@ -11,12 +11,15 @@
 //          http://petriconi.net, Felix Petriconi
 //
 //////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_ALLOCATOR_WITH_STATS
+#define ALB_ALLOCATOR_WITH_STATS
 
-#include "affix_allocator.hpp"
-#include "allocator_base.hpp"
-#include "internal/noatomic.hpp"
-#include "internal/traits.hpp"
+#include <alb/affix_allocator.hpp>
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/noatomic.hpp>
+#include <alb/internal/traits.hpp>
+
 #include <atomic>
 #include <chrono>
 
@@ -31,17 +34,17 @@ private:                   \
     statistic_type X##_;   \
                            \
 public:                    \
-    size_t X() const noexcept { return X##_.load(); }
+    std::size_t X() const noexcept { return X##_.load(); }
 
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * The following options define what statistics shall be collected during runtime
- * taken from https://github.com/andralex/phobos/blob/allocator/std/allocator.d
+ * taken from https://github.com/andralex/phobos/blob/allocator_/std/allocator_.d
  * and adapted to this implementation.
  *
  * \ingroup group_stats
  */
-enum StatsOptions : unsigned {
+enum stats_options : std::uint32_t {
     /**
      * Counts the number of calls to alb::allocator_with_stats::owns.
      */
@@ -81,7 +84,7 @@ enum StatsOptions : unsigned {
     /**
      * Counts the number of calls to alb::allocator_with_stats::reallocate that
      * resulted in an in-place reallocation (no memory moved). If this number
-     * is close to the total number of reallocations, that indicates the allocator
+     * is close to the total number of reallocations, that indicates the allocator_
      * finds room at the current block's end in a large fraction of the cases, but
      * also that internal fragmentation may be high (the size of the unit of
      * allocation is large compared to the typical allocation size of the
@@ -186,59 +189,60 @@ enum StatsOptions : unsigned {
 };
 
 /**
- * This Allocator serves as a facade in front of the specified allocator to
+ * This Allocator serves as a facade in front of the specified allocator_ to
  * collect statistics during runtime about all operations done on this instance.
  * This is an implementation that is not intended to be used in a shared
  * environment when statistics for file, line or time is enabled
  *
  * In case that caller information shall be collected, the Allocator
  * parameter is encapsulated with an ALB::affix_allocator. In this case
- * alb::allocator_with_stats::AllocationInfo is in used as Prefix and so all
+ * alb::allocator_with_stats::allocation_info is in used as Prefix and so all
  * caller information is prepended to every allocated block.
  * Be aware that collecting of caller informations adds on top of each
  * allocation
- * sizeof(AllocatorWithStats::AllocationInfo) bytes!
+ * sizeof(AllocatorWithStats::allocation_info) bytes!
  * With a good optimizing compiler only the code for the enabled
  * statistic information is created.
- * \tparam Allocator The allocator that performs all allocations
+ * \tparam Allocator The allocator_ that performs all allocations
  * \tparam Flags Specifies what kind of statistics get collected
  *
  * \ingroup group_allocators group_stats
  */
-template <bool Shared, class Allocator, unsigned Flags = alb::StatsOptions::All>
+template <bool Shared, class Allocator, unsigned Flags = alb::stats_options::All>
 class allocator_with_stats_base {
 public:
     /**
      * In case that we store allocation state, we use an affix_allocator to store
-     * the additional informations as a Prefix
+     * the additional information as a Prefix
      *
      * \ingroup group_stats
      */
-    struct AllocationInfo {
-        size_t callerSize;
-        const char* callerFile;
-        const char* callerFunction;
-        int callerLine;
+    struct allocation_info {
+        size_t caller_size{};
+        const char* caller_file{};
+        const char* caller_function{};
+        int caller_line{};
+
+        std::chrono::time_point<std::chrono::system_clock> caller_time{};
+        allocation_info *previous{}, *next{};
 
         /* The comparison does not take the allocation time into account
-         * It is a template to be able to compare the AllocationInfo from different
+         * It is a template to be able to compare the allocation_info from different
          * allocators
          */
         template <typename RHS>
         bool operator==(const RHS& rhs) const {
-            return callerSize == rhs.callerSize &&
-                   (callerFile == rhs.callerFile || ::strcmp(callerFile, rhs.callerFile) == 0) &&
-                   (callerFunction == rhs.callerFunction ||
-                    ::strcmp(callerFunction, rhs.callerFunction) == 0);
+            return caller_size == rhs.caller_size &&
+                   (caller_file == rhs.caller_file ||
+                    ::strcmp(caller_file, rhs.caller_file) == 0) &&
+                   (caller_function == rhs.caller_function ||
+                    ::strcmp(caller_function, rhs.caller_function) == 0);
         }
-
-        std::chrono::time_point<std::chrono::system_clock> callerTime;
-        AllocationInfo *previous, *next;
     };
 
     /**
      * This container implements a facade over all currently available
-     * AllocationInfo. The alb::allocator_with_stats owns all elements and changing
+     * allocation_info. The alb::allocator_with_stats owns all elements and changing
      * any element has undefined behavior!
      *
      * \ingroup group_stats
@@ -246,28 +250,28 @@ public:
     class Allocations {
     public:
         /**
-         * Iterator for Allocations elements
+         * Iterator for allocations elements
          */
         class iterator {
         public:
             using iterator_category = std::bidirectional_iterator_tag;
-            using value_type = AllocationInfo*;
+            using value_type = allocation_info*;
             using difference_type = ptrdiff_t;
             using pointer = value_type;
             using const_pointer = const pointer;
             using reference = value_type;
             using const_reference = const reference;
 
-            iterator() : _node{nullptr} {}
+            iterator() : node_{nullptr} {}
 
-            explicit iterator(AllocationInfo* data) : _node{data} {}
+            explicit iterator(allocation_info* data) : node_{data} {}
 
-            reference operator*() const { return _node; }
+            reference operator*() const { return node_; }
 
             pointer operator->() const { return &(operator*()); }
 
             iterator& operator++() {
-                _node = _node->next;
+                node_ = node_->next;
                 return *this;
             }
 
@@ -278,7 +282,7 @@ public:
             }
 
             iterator& operator--() {
-                _node = _node->previous();
+                node_ = node_->previous();
                 return *this;
             }
 
@@ -289,37 +293,37 @@ public:
             }
 
             friend bool operator==(const iterator& x, const iterator& y) {
-                return x._node == y._node;
+                return x.node_ == y.node_;
             }
 
             friend bool operator!=(const iterator& x, const iterator& y) { return !(x == y); }
 
         private:
-            AllocationInfo* _node;
+            allocation_info* node_;
         };
 
     public:
         using const_iterator = const iterator;
 
-        explicit Allocations(AllocationInfo* root) : _begin(root), _end(nullptr) {}
+        explicit Allocations(allocation_info* root) : begin_(root), end_(nullptr) {}
 
-        const_iterator cbegin() const { return _begin; }
+        const_iterator cbegin() const { return begin_; }
 
-        const_iterator cend() const { return _end; }
+        const_iterator cend() const { return end_; }
 
-        bool empty() const { return _begin == _end; }
+        bool empty() const { return begin_ == end_; }
 
     private:
-        const const_iterator _begin;
-        const const_iterator _end;
+        const const_iterator begin_;
+        const const_iterator end_;
     };
 
-    static const bool HasPerAllocationState =
+    static constexpr bool has_per_allocation_state =
         (Flags &
-         (StatsOptions::CallerTime | StatsOptions::CallerFile | StatsOptions::CallerLine)) != 0;
+         (stats_options::CallerTime | stats_options::CallerFile | stats_options::CallerLine)) != 0;
 
     static_assert(
-        HasPerAllocationState && !Shared,
+        has_per_allocation_state && !Shared,
         "Currently it is not supported to collect per file/line/time stats in shared mode!");
 
     using statistic_type = typename traits::
@@ -352,7 +356,6 @@ public:
 
     static constexpr bool supports_truncated_deallocation =
         Allocator::supports_truncated_deallocation;
-    static constexpr bool has_per_allocation_state = HasPerAllocationState;
     static constexpr unsigned alignment = Allocator::alignment;
 
     allocator_with_stats_base() noexcept :
@@ -379,22 +382,22 @@ public:
                    const char* function = nullptr,
                    int line = 0) noexcept {
         auto result = allocator_.allocate(n);
-        up(StatsOptions::NumAllocate, num_allocate_);
-        upOK(StatsOptions::NumAllocateOK, num_allocate_ok_, n > 0 && result);
-        add(StatsOptions::BytesAllocated, bytes_allocated_, result.length);
+        up(stats_options::NumAllocate, num_allocate_);
+        upOK(stats_options::NumAllocateOK, num_allocate_ok_, n > 0 && result);
+        add(stats_options::BytesAllocated, bytes_allocated_, result.length);
         update_high_tide();
 
         if (has_per_allocation_state) {
             if (result) {
-                AllocationInfo* stat =
-                    traits::affix_extractor<decltype(allocator_), AllocationInfo>::prefix(
+                allocation_info* stat =
+                    traits::affix_extractor<decltype(allocator_), allocation_info>::prefix(
                         allocator_, result);
 
-                set(StatsOptions::CallerSize, stat->callerSize, n);
-                set(StatsOptions::CallerFile, stat->callerFile, file);
-                set(StatsOptions::CallerFunction, stat->callerFunction, function);
-                set(StatsOptions::CallerLine, stat->callerLine, line);
-                set(StatsOptions::CallerTime, stat->callerTime, std::chrono::system_clock::now());
+                set(stats_options::CallerSize, stat->caller_size, n);
+                set(stats_options::CallerFile, stat->caller_file, file);
+                set(stats_options::CallerFunction, stat->caller_function, function);
+                set(stats_options::CallerLine, stat->caller_line, line);
+                set(stats_options::CallerTime, stat->caller_time, std::chrono::system_clock::now());
 
                 // push into caller info stack
                 if (root_) {
@@ -419,12 +422,12 @@ public:
      * \param b Block to be freed
      */
     void deallocate(block& b) noexcept {
-        up(StatsOptions::NumDeallocate, num_deallocate_);
-        add(StatsOptions::BytesDeallocated, bytes_deallocated_, b.length);
+        up(stats_options::NumDeallocate, num_deallocate_);
+        add(stats_options::BytesDeallocated, bytes_deallocated_, b.length);
 
         if (has_per_allocation_state) {
             if (b) {
-                auto stat = traits::affix_extractor<decltype(allocator_), AllocationInfo>::prefix(
+                auto stat = traits::affix_extractor<decltype(allocator_), allocation_info>::prefix(
                     allocator_, b);
                 if (stat->previous) {
                     stat->previous->next = stat->next;
@@ -454,36 +457,36 @@ public:
         if (has_per_allocation_state) {
             if (b) {
                 wasRootBlock =
-                    root_ == traits::affix_extractor<decltype(allocator_), AllocationInfo>::prefix(
+                    root_ == traits::affix_extractor<decltype(allocator_), allocation_info>::prefix(
                                  allocator_, b);
             }
         }
-        up(StatsOptions::NumReallocate, num_reallocate_);
+        up(stats_options::NumReallocate, num_reallocate_);
 
         if (!allocator_.reallocate(b, n)) {
             return false;
         }
-        up(StatsOptions::NumReallocateOK, num_reallocate_ok_);
+        up(stats_options::NumReallocateOK, num_reallocate_ok_);
         std::make_signed<size_t>::type delta = b.length - originalBlock.length;
         if (b.ptr == originalBlock.ptr) {
-            up(StatsOptions::NumReallocateInPlace, num_reallocate_in_place_);
+            up(stats_options::NumReallocateInPlace, num_reallocate_in_place_);
             if (delta > 0) {
-                add(StatsOptions::BytesAllocated, bytes_allocated_, delta);
-                add(StatsOptions::BytesExpanded, bytes_expanded_, delta);
+                add(stats_options::BytesAllocated, bytes_allocated_, delta);
+                add(stats_options::BytesExpanded, bytes_expanded_, delta);
             } else {
-                add(StatsOptions::BytesDeallocated, bytes_deallocated_, -delta);
-                add(StatsOptions::BytesContracted, bytes_contracted_, -delta);
+                add(stats_options::BytesDeallocated, bytes_deallocated_, -delta);
+                add(stats_options::BytesContracted, bytes_contracted_, -delta);
             }
         } // was moved to a new location
         else {
-            add(StatsOptions::BytesAllocated, bytes_allocated_, b.length);
-            add(StatsOptions::BytesMoved, bytes_moved_, originalBlock.length);
-            add(StatsOptions::BytesDeallocated, bytes_deallocated_, originalBlock.length);
+            add(stats_options::BytesAllocated, bytes_allocated_, b.length);
+            add(stats_options::BytesMoved, bytes_moved_, originalBlock.length);
+            add(stats_options::BytesDeallocated, bytes_deallocated_, originalBlock.length);
 
             if (has_per_allocation_state) {
                 if (b) {
                     auto stat =
-                        traits::affix_extractor<decltype(allocator_), AllocationInfo>::prefix(
+                        traits::affix_extractor<decltype(allocator_), allocation_info>::prefix(
                             allocator_, b);
                     if (stat->next) {
                         stat->next->previous = stat;
@@ -510,15 +513,14 @@ public:
      * \param b The block its ownership shall be checked
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_owns<U>::value, bool>::type owns(
-        const block& b) const noexcept {
-        up(StatsOptions::NumOwns, num_owns_);
+    typename std::enable_if<traits::has_owns_v<U>, bool>::type owns(const block& b) const noexcept {
+        up(stats_options::NumOwns, num_owns_);
         return allocator_.owns(b);
     }
 
     /**
      * The given block is passed to the underlying Allocator to be expanded
-     * This method is only available if the underlying allocator implements it.
+     * This method is only available if the underlying allocator_ implements it.
      * Depending on the specified Flag, the expand statistic information
      * is stored.
      * \param b The block that should be expanded
@@ -526,19 +528,19 @@ public:
      * \return True, if the operation was successful
      */
     template <typename U = Allocator>
-    typename std::enable_if<traits::has_expand<U>::value, bool>::type expand(
-        block& b, size_t delta) noexcept {
-        up(StatsOptions::NumExpand, num_expand_);
+    typename std::enable_if<traits::has_expand_v<U>, bool>::type expand(block& b,
+                                                                        size_t delta) noexcept {
+        up(stats_options::NumExpand, num_expand_);
         auto oldLength = b.length;
         auto result = allocator_.expand(b, delta);
         if (result) {
-            up(StatsOptions::NumExpandOK, num_expand_ok_);
-            add(StatsOptions::BytesExpanded, bytes_expanded_, b.length - oldLength);
-            add(StatsOptions::BytesAllocated, bytes_allocated_, b.length - oldLength);
+            up(stats_options::NumExpandOK, num_expand_ok_);
+            add(stats_options::BytesExpanded, bytes_expanded_, b.length - oldLength);
+            add(stats_options::BytesAllocated, bytes_allocated_, b.length - oldLength);
             update_high_tide();
             // if (b && has_per_allocation_state) {
             //   auto stat = traits::AffixExtractor<
-            //       decltype(allocator_), AllocationInfo>::prefix(allocator_, b);
+            //       decltype(allocator_), allocation_info>::prefix(allocator_, b);
             // }
         }
         return result;
@@ -556,7 +558,7 @@ private:
      * Increases the given value by one if the passed option is set
      */
     template <typename T>
-    inline void up(StatsOptions option, T& value) const noexcept {
+    inline void up(stats_options option, T& value) const noexcept {
         if (Flags & option) ++value;
     }
 
@@ -565,7 +567,7 @@ private:
      * is set to true
      */
     template <typename T>
-    inline void upOK(StatsOptions option, T& value, bool ok) const noexcept {
+    inline void upOK(stats_options option, T& value, bool ok) const noexcept {
         if (Flags & option && ok) ++value;
     }
 
@@ -574,7 +576,7 @@ private:
      * set. Delta can be negative
      */
     template <typename T>
-    void inline add(StatsOptions option,
+    void inline add(stats_options option,
                     T& value,
                     typename std::make_signed<typename T::type>::type delta) const noexcept {
         if (Flags & option) value += delta;
@@ -584,7 +586,7 @@ private:
      * Sets the given value to the passed reference, if the passed option is set
      */
     template <typename T>
-    inline void set(StatsOptions option, T& value, T t) const noexcept {
+    inline void set(stats_options option, T& value, T t) const noexcept {
         if (Flags & option) value = std::move(t);
     }
 
@@ -592,7 +594,7 @@ private:
      * If the high tide information shall be collected, it is recalculated
      */
     void update_high_tide() noexcept {
-        if (Flags & StatsOptions::BytesHighTide) {
+        if (Flags & stats_options::BytesHighTide) {
             const size_t currentlyAllocated = bytes_allocated_ - bytes_deallocated_;
             if (bytes_high_tide_ < currentlyAllocated) {
                 bytes_high_tide_ = currentlyAllocated;
@@ -604,26 +606,27 @@ private:
      * Depending on setting that caller information shall be collected
      * an affix_allocator or the specified Allocator directly is used.
      */
-    typename traits::type_switch<affix_allocator<Allocator, AllocationInfo>,
+    typename traits::type_switch<affix_allocator<Allocator, allocation_info>,
                                  Allocator,
-                                 HasPerAllocationState>::type allocator_;
+                                 has_per_allocation_state>::type allocator_;
 
-    AllocationInfo* root_;
+    allocation_info* root_;
 };
 
-template <class Allocator, unsigned Flags = alb::StatsOptions::All>
+template <class Allocator, unsigned Flags = alb::stats_options::All>
 class allocator_with_stats : public allocator_with_stats_base<false, Allocator, Flags> {
 public:
     allocator_with_stats() noexcept {}
 };
 
-// template <class Allocator, unsigned Flags = alb::StatsOptions::All>
+// template <class Allocator, unsigned Flags = alb::stats_options::All>
 // class shared_allocator_with_stats : public allocator_with_stats_base<true, Allocator, Flags>
 // {
 // public:
 //  shared_allocator_with_stats() noexcept {}
 //};
 
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

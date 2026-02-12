@@ -7,13 +7,14 @@
 // Authors: http://petriconi.net, Felix Petriconi
 //
 ///////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef ALB_HEAP_HPP
+#define ALB_HEAP_HPP
 
-#include "allocator_base.hpp"
-
-#include "internal/dynastic.hpp"
-#include "internal/heap_helpers.hpp"
-#include "internal/reallocator.hpp"
+#include <alb/allocator_base.hpp>
+#include <alb/config.hpp>
+#include <alb/internal/dynastic.hpp>
+#include <alb/internal/heap_helpers.hpp>
+#include <alb/internal/reallocator.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -27,31 +28,40 @@
 #endif
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 /**
  * The Heap implements a classic heap with a pre-allocated size of
  * numberOfChunks_.value() * chunk_size_.value()
- * It has a overhead of one bit per block and linear complexity for allocation
+ * It has an overhead of one bit per block and linear complexity for allocation
  * and deallocation operations.
  *
  * \ingroup group_allocators
  */
-template <class Allocator, size_t NumberOfChunks, size_t ChunkSize>
+template <class Allocator, std::size_t NumberOfChunks, std::size_t ChunkSize>
 class heap {
-    internal::dynastic<(NumberOfChunks == internal::DynasticDynamicSet ? 0 : NumberOfChunks), 0>
+    internal::dynastic<(NumberOfChunks == static_cast<std::size_t>(
+                                              internal::dynastic_options::dynastic_dynamic_set) ?
+                            0 :
+                            NumberOfChunks),
+                       0>
         numberOfChunks_;
 
-    internal::dynastic<(ChunkSize == internal::DynasticDynamicSet ? 0 : ChunkSize), 0> chunk_size_;
+    internal::dynastic<(ChunkSize == static_cast<std::size_t>(
+                                         internal::dynastic_options::dynastic_dynamic_set) ?
+                            0 :
+                            ChunkSize),
+                       0>
+        chunk_size_;
 
     block buffer_;
     block controlBuffer_;
 
     // bit field where 0 means used and 1 means free block
-    const uint64_t all_set = std::numeric_limits<uint64_t>::max();
-    const uint64_t all_zero = uint64_t(0);
+    const std::uint64_t all_set = std::numeric_limits<uint64_t>::max();
+    const std::uint64_t all_zero = uint64_t(0);
 
-    uint64_t* control_;
-    size_t controlSize_;
+    std::uint64_t* control_;
+    std::size_t controlSize_;
 
     Allocator allocator_;
 
@@ -68,11 +78,11 @@ public:
     using allocator = Allocator;
 
     static constexpr bool supports_truncated_deallocation = true;
-    static constexpr unsigned alignment = Allocator::alignment;
+    static constexpr std::uint32_t alignment = Allocator::alignment;
 
     heap() noexcept { init(); }
 
-    heap(size_t numberOfChunks, size_t chunkSize) noexcept {
+    heap(std::size_t numberOfChunks, std::size_t chunkSize) noexcept {
         numberOfChunks_.value(internal::round_to_alignment(64, numberOfChunks));
         chunk_size_.value(internal::round_to_alignment(4, chunkSize));
         init();
@@ -100,9 +110,9 @@ public:
 
     ~heap() { shrink(); }
 
-    size_t number_of_chunk() const noexcept { return numberOfChunks_.value(); }
+    std::size_t number_of_chunk() const noexcept { return numberOfChunks_.value(); }
 
-    size_t chunk_size() const noexcept { return chunk_size_.value(); }
+    std::size_t chunk_size() const noexcept { return chunk_size_.value(); }
 
     bool owns(const block& b) const noexcept {
         return b && buffer_.ptr <= b.ptr &&
@@ -122,7 +132,7 @@ public:
 
         size_t numberOfAlignedBytes = internal::round_to_alignment(chunk_size_.value(), n);
         size_t numberOfBlocks = numberOfAlignedBytes / chunk_size_.value();
-        numberOfBlocks = std::max(size_t(1), numberOfBlocks);
+        numberOfBlocks = std::max(std::size_t(1), numberOfBlocks);
 
         if (numberOfBlocks < 64) {
             result = allocate_within_single_control_register(numberOfBlocks);
@@ -173,8 +183,8 @@ public:
             return true;
         }
 
-        const auto numberOfBlocks = static_cast<int>(b.length / chunk_size_.value());
-        const auto numberOfNewNeededBlocks = static_cast<int>(
+        const auto numberOfBlocks = static_cast<std::int32_t>(b.length / chunk_size_.value());
+        const auto numberOfNewNeededBlocks = static_cast<std::int32_t>(
             internal::round_to_alignment(chunk_size_.value(), n) / chunk_size_.value());
 
         if (numberOfBlocks == numberOfNewNeededBlocks) {
@@ -197,7 +207,7 @@ public:
         return internal::reallocate_with_copy(*this, *this, b, n);
     }
 
-    bool expand(block& b, size_t delta) noexcept {
+    bool expand(block& b, std::size_t delta) noexcept {
         if (delta == 0) {
             return true;
         }
@@ -231,10 +241,10 @@ private:
         assert(chunk_size_.value() % alignment == 0);
 
         controlSize_ = numberOfChunks_.value() / 64;
-        controlBuffer_ = allocator_.allocate(sizeof(uint64_t) * controlSize_);
+        controlBuffer_ = allocator_.allocate(sizeof(std::uint64_t) * controlSize_);
         assert((bool)controlBuffer_);
 
-        control_ = static_cast<uint64_t*>(controlBuffer_.ptr);
+        control_ = static_cast<std::uint64_t*>(controlBuffer_.ptr);
         buffer_ = allocator_.allocate(chunk_size_.value() * numberOfChunks_.value());
         assert((bool)buffer_);
 
@@ -267,7 +277,7 @@ private:
         if ((currentRegister & mask) != mask) {
             return false;
         }
-        newRegister = helpers::set_used<Used>(currentRegister, mask);
+        newRegister = internal::set_used<Used>(currentRegister, mask);
         control_[context.registerIndex] = newRegister;
         return true;
     }
@@ -289,7 +299,7 @@ private:
             uint64_t currentRegister, newRegister;
 
             currentRegister = control_[registerIndex];
-            newRegister = helpers::set_used<Used>(currentRegister, mask);
+            newRegister = internal::set_used<Used>(currentRegister, mask);
             control_[registerIndex] = newRegister;
 
             if (subIndexStart + chunksToTest > 64) {
@@ -350,7 +360,7 @@ private:
 
         uint64_t currentRegister, newRegister;
         currentRegister = control_[context.registerIndex];
-        newRegister = helpers::set_used<Used>(currentRegister, mask);
+        newRegister = internal::set_used<Used>(currentRegister, mask);
         control_[context.registerIndex] = newRegister;
     }
 
@@ -372,7 +382,7 @@ private:
                 while (i <= 64 - numberOfBlocks) {
                     if ((currentControlRegister & mask) == mask) {
                         auto newControlRegister =
-                            helpers::set_used<false>(currentControlRegister, mask);
+                            internal::set_used<false>(currentControlRegister, mask);
 
                         control_[controlIndex] = newControlRegister;
 
@@ -491,6 +501,7 @@ private:
         set_over_multiple_registers<true>(context);
     }
 };
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
+
+#endif

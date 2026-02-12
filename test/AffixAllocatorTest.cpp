@@ -16,9 +16,9 @@
 #include "TestHelpers/Base.h"
 
 namespace {
-  const unsigned PrefixMarker = 0xbaadf00d;
-  const uint64_t LargePrefixMarker = 0xfefefefebaadf00d;
-  const unsigned SufixMarker = 0xf000baaa;
+  constexpr std::uint32_t PrefixMarker = 0xbaadf00d;
+  constexpr std::uint64_t LargePrefixMarker = 0xfefefefebaadf00d;
+  constexpr std::uint32_t SuffixMarker = 0xf000baaa;
 }
 
 template <class T> class affix_allocatorTest : public alb::test_helpers::AllocatorBaseTest<T> {
@@ -35,9 +35,9 @@ protected:
                 *(static_cast<typename T::prefix::value_type *>(this->mem.ptr) - 1))
           << "Problem with type " << typeid(T).name();
     }
-    if (T::sufix_size > 0) {
-      EXPECT_EQ(T::sufix::pattern, *(static_cast<typename T::sufix::value_type *>(this->mem.ptr) +
-                                     this->mem.length / sizeof(typename T::sufix::value_type)))
+    if (T::suffix_size > 0) {
+      EXPECT_EQ(T::suffix::pattern, *(static_cast<typename T::suffix::value_type *>(this->mem.ptr) +
+                                     this->mem.length / sizeof(typename T::suffix::value_type)))
           << "Problem with type " << typeid(T).name();
     }
   }
@@ -48,13 +48,13 @@ using TypesToTest = ::testing::Types<
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<unsigned, PrefixMarker>>,
     alb::affix_allocator<alb::stack_allocator<512, 4>, alb::affix_helper::no_affix,
-                         alb::memory_corruption_detector<unsigned, SufixMarker>>,
+                         alb::memory_corruption_detector<unsigned, SuffixMarker>>,
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<unsigned, PrefixMarker>,
-                         alb::memory_corruption_detector<unsigned, SufixMarker>>,
+                         alb::memory_corruption_detector<unsigned, SuffixMarker>>,
     alb::affix_allocator<alb::stack_allocator<512, 4>,
                          alb::memory_corruption_detector<uint64_t, LargePrefixMarker>,
-                         alb::memory_corruption_detector<unsigned, SufixMarker>>>;
+                         alb::memory_corruption_detector<unsigned, SuffixMarker>>>;
 
 TYPED_TEST_SUITE(affix_allocatorTest, TypesToTest);
 
@@ -132,7 +132,7 @@ TYPED_TEST(
 TYPED_TEST(affix_allocatorTest,
            ThatAnEmptyBlockedExpandedIntoTheLimitsOfTheAllocatorBytesHasNowThatSizeAndHasNowMarker)
 {
-  size_t sizeThatFitsJustIntoTheAllocator = 512 - TypeParam::prefix_size - TypeParam::sufix_size;
+  size_t sizeThatFitsJustIntoTheAllocator = 512 - TypeParam::prefix_size - TypeParam::suffix_size;
   EXPECT_TRUE(this->sut.expand(this->mem, sizeThatFitsJustIntoTheAllocator));
   EXPECT_EQ(sizeThatFitsJustIntoTheAllocator, this->mem.length);
   this->checkAffixContent();

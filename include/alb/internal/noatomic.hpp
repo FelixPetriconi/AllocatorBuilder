@@ -10,17 +10,19 @@
 #ifndef ALB_NO_ATOMIC_HPP
 #define ALB_NO_ATOMIC_HPP
 
+#include <alb/config.hpp>
+
 #include <utility>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 namespace internal {
 
 /**
  * Template that mimics (partly) the std::atomic<T> interface, without
- * beeing an atomic.
- * It is usefull, if during compilation time the selection between single
- * threaded or multi threaded is needed
+ * being an atomic.
+ * It is usefull if during compilation time the selection between single
+ * threaded or multi-threaded is needed
  * \tparam T The value that the class encapsulate
  *
  * \ingroup group_internal
@@ -58,8 +60,7 @@ public:
     T operator-=(T arg) { return value_ -= arg; }
 };
 } // namespace internal
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

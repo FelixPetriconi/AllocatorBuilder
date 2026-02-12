@@ -10,11 +10,15 @@
 #ifndef ALB_DYNASTIC_HPP
 #define ALB_DYNASTIC_HPP
 
+#include <alb/config.hpp>
+
 #include <cstdint>
 #include <limits>
 
 namespace alb {
-inline namespace v_100 {
+
+inline namespace ALB_VERSION_NAMESPACE() {
+
 namespace internal {
 
 /**
@@ -22,14 +26,14 @@ namespace internal {
  * can be changed during runtime.
  * \ingroup group_internal
  */
-enum class DynasticOptions : std::size_t {
-    DynasticUndefined = std::numeric_limits<std::size_t>::max(),
-    DynasticDynamicSet = std::numeric_limits<std::size_t>::max() - 1
+enum class dynastic_options : std::size_t {
+    undefined = std::numeric_limits<std::size_t>::max(),
+    dynastic_dynamic_set = std::numeric_limits<std::size_t>::max() - 1
 };
 
 /**
  * Simple generic value type that is either compile time constant or dynamically
- * set-able depending of DynamicEnableSwitch. If v and DynamicEnableSwitch, then
+ * set-able depending on DynamicEnableSwitch. If v and DynamicEnableSwitch, then
  * value can be changed during runtime.
  * @Author Andrei Alexandrescu
  *
@@ -40,13 +44,13 @@ struct dynastic {
     constexpr std::size_t value() const noexcept { return v; }
 };
 
-template <size_t DynamicEnableSwitch>
+template <std::size_t DynamicEnableSwitch>
 struct dynastic<DynamicEnableSwitch, DynamicEnableSwitch> {
 private:
     std::size_t v_;
 
 public:
-    constexpr dynastic() noexcept : v_(static_cast<std::size_t>(DynasticOptions::DynasticUndefined)) {}
+    constexpr dynastic() noexcept : v_(static_cast<std::size_t>(dynastic_options::undefined)) {}
 
     constexpr std::size_t value() const noexcept { return v_; }
 
@@ -54,9 +58,7 @@ public:
 };
 
 } // namespace internal
-} // namespace v_100
-
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

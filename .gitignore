@@ -1,0 +1,51 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+*.js
+
+# MacOS nonsense
+.DS_Store
+
+# cmake build directory
+build/
+
+# clion build directory
+clion_build/
+
+.idea
+.vscode
+cmake-*
+clion_*
+
+# jupyter backups
+.ipynb_checkpoints/
+stlab/config.hpp
+/.cpm-cache
+/.cache
+compile_commands.json

@@ -12,11 +12,12 @@
 
 #include <alb/allocator_base.hpp>
 #include <alb/block.hpp>
+#include <alb/config.hpp>
 #include <alb/internal/affix_helper.hpp>
 #include <alb/internal/reallocator.hpp>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 
 /**
  * This allocator enables the possibility to surround allocated memory blocks
@@ -28,9 +29,9 @@ inline namespace v_100 {
  * of the used Allocator, Prefix, memory and Suffix are each aligned.
  * Prefix and Suffix, if used, must be trivially copyable. (This cannot be
  * statically asserted, because this would block the possibility to use this
- * allocator as guard for memory under- or overflow.
+ * allocator_ as guard for memory under- or overflow.
  * One should keep in mind, that using a Suffix is not CPU cache friendly!
- * \tparam Allocator The allocator that is used as underlying allocator
+ * \tparam Allocator The allocator_ that is used as underlying allocator_
  * \tparam Prefix If defined, then an object of that kind is constructed in
  *                front of any returned block
  * \tparam Suffix If defined, then an object of that kind is constructed beyond
@@ -42,14 +43,15 @@ template <class Allocator, typename Prefix, typename Suffix = affix_helper::no_a
 class affix_allocator {
     Allocator allocator_;
 
-
-    static constexpr bool supports_truncated_deallocation =
-        Allocator::supports_truncated_deallocation;
-    static constexpr unsigned alignment = Allocator::alignment;
-
+public:
     using allocator = Allocator;
     using prefix = Prefix;
     using suffix = Suffix;
+
+private:
+    static constexpr bool supports_truncated_deallocation =
+        Allocator::supports_truncated_deallocation;
+    static constexpr unsigned alignment = Allocator::alignment;
 
     constexpr prefix* inner_to_prefix(const block& b) const noexcept {
         return static_cast<prefix*>(b.ptr);
@@ -71,15 +73,15 @@ public:
     affix_allocator(const affix_allocator&) = delete;
     affix_allocator& operator=(const affix_allocator&) = delete;
 
-
     static constexpr std::size_t prefix_size =
         std::is_same_v<Prefix, affix_helper::no_affix> ?
             0 :
             internal::round_to_alignment(alignment, sizeof(prefix));
 
-    static constexpr std::size_t suffix_size = std::is_same_v<suffix, affix_helper::no_affix> ?
-                                             0 :
-                                             internal::round_to_alignment(alignment, sizeof(suffix));
+    static constexpr std::size_t suffix_size =
+        std::is_same_v<suffix, affix_helper::no_affix> ?
+            0 :
+            internal::round_to_alignment(alignment, sizeof(suffix));
 
     static constexpr std::size_t good_size(std::size_t n) { return allocator::good_size(n); }
 
@@ -92,18 +94,19 @@ public:
     /**
      * This Method returns on a given block the prefix.
      * \param b The block that was prefixed. The result is absolute unpredictable
-     *          if a block is passed, that is not owned by this allocator!
+     *          if a block is passed, that is not owned by this allocator_!
      * \return Pointer to the Prefix before the given block
      */
     constexpr prefix* outer_to_prefix(const block& b) const noexcept {
-        return b ? reinterpret_cast<prefix*>(static_cast<std::byte*>(b.ptr) - prefix_size) : nullptr;
+        return b ? reinterpret_cast<prefix*>(static_cast<std::byte*>(b.ptr) - prefix_size) :
+                   nullptr;
     }
 
     /**
-     * This Method returns on a given block the sufix.
-     * \param b The block that was sufixed. The result is absolute unpredictable
-     *          if a block is passed, that is not owned by this allocator!
-     * \return Pointer to the sufix before the given block
+     * This Method returns on a given block the suffix.
+     * \param b The block that was suffixed. The result is absolute unpredictable
+     *          if a block is passed, that is not owned by this allocator_!
+     * \return Pointer to the suffix before the given block
      */
     constexpr suffix* outer_to_suffix(const block& b) const noexcept {
         return b ? (reinterpret_cast<suffix*>(static_cast<std::byte*>(b.ptr) + b.length)) : nullptr;
@@ -148,10 +151,10 @@ public:
             return;
         }
         if constexpr (prefix_size > 0) {
-            outer_to_prefix(b)->~Prefix();
+            outer_to_prefix(b)->~prefix();
         }
         if constexpr (suffix_size > 0) {
-            outer_to_suffix(b)->~Sufix();
+            outer_to_suffix(b)->~suffix();
         }
         auto innerBlock(to_inner_block(b));
         allocator_.deallocate(innerBlock);
@@ -160,12 +163,11 @@ public:
 
     /**
      * If the underlying Allocator defines ::owns() this method is available.
-     * It returns true, if the given block is owned by this allocator.
+     * It returns true, if the given block is owned by this allocator_.
      * \param b The Block that should be checked for ownership
      */
     template <typename U = Allocator>
-    typename std::enable_if_t<traits::has_owns_v<U>, bool> owns(
-        const block& b) const noexcept {
+    typename std::enable_if_t<traits::has_owns_v<U>, bool> owns(const block& b) const noexcept {
         return b && allocator_.owns(to_inner_block(b));
     }
 
@@ -177,7 +179,7 @@ public:
      * \return True if the operation was successful
      */
 
-    bool reallocate(block& b, size_t n) noexcept {
+    bool reallocate(block& b, std::size_t n) noexcept {
         if (internal::is_reallocation_handled_default(*this, b, n)) {
             return true;
         }
@@ -189,7 +191,7 @@ public:
         oldSufix.store(outer_to_suffix(b));
 
         if (allocator_.reallocate(innerBlock, n + prefix_size + suffix_size)) {
-            oldSufix.unload(inner_to_sufix(innerBlock));
+            oldSufix.unload(inner_to_suffix(innerBlock));
             b = to_outer_block(innerBlock);
             return true;
         }
@@ -205,8 +207,8 @@ public:
      * \return True, if the operation was successful.
      */
     template <typename U = Allocator>
-    typename std::enable_if_t<traits::has_expand_v<U>, bool>::type expand(
-        block& b, size_t delta) noexcept {
+    typename std::enable_if_t<traits::has_expand_v<U>, bool>::type expand(block& b,
+                                                                          std::size_t delta) noexcept {
         if (delta == 0) {
             return true;
         }
@@ -221,7 +223,7 @@ public:
 
         if (allocator_.expand(innerBlock, delta)) {
             if constexpr (suffix_size > 0) {
-                new (inner_to_sufix(innerBlock)) Suffix(*outer_to_suffix(oldBlock));
+                new (inner_to_suffix(innerBlock)) Suffix(*outer_to_suffix(oldBlock));
             }
             b = to_outer_block(innerBlock);
             return true;
@@ -250,13 +252,12 @@ struct affix_extractor<affix_allocator<A, Prefix, Suffix>, T> {
         return allocator.outer_to_prefix(b);
     }
     static constexpr Suffix* sufix(affix_allocator<A, Prefix, Suffix>& allocator,
-                                  const block& b) noexcept {
+                                   const block& b) noexcept {
         return allocator.outer_to_sufix(b);
     }
 };
 } // namespace traits
-} // namespace v_100
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

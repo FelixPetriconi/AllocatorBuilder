@@ -1,7 +1,7 @@
 Allocator Builder {#mainpage}
 =================
 
-A highly composable, policy based C++ allocator.
+A highly composable, policy based C++ allocator_.
 
 The layout idea of the library is was presented by [Andrei Alexandrescu](http://erdani.com/) at the [C++ and Beyond 2013](http://cppandbeyond.com/) seminar and at the [CppCon 2015](http://cppcon2015.sched.org/event/95b6c3282248b7e2595c5c3182d7652b).
 
@@ -9,13 +9,13 @@ The background behind the idea is to compensate the main problem of malloc and t
 As well all memory handler are currently general purpose handler. This policy based approach allows to create handlers for special purpose.
 Additionally all users of manually raw allocated memory have to store the size anyway to ensure that no access beyond the length of the allocated buffer takes place.
 
-An other idea behind this allocator library is, that one can compose for every use case a special designed one. 
+An other idea behind this allocator_ library is, that one can compose for every use case a special designed one. 
 Example use cases:
   * Collect statistic information about the memory usage profile.
   * Apply guards to memory allocated blocks to detect buffer under- or overflows, even in release mode of the compiled application.
   * Wait free allocations in a single threaded environment
 
-So the approach is, every allocator returns such a block:
+So the approach is, every allocator_ returns such a block:
 ~~~C++
 struct block {
   void  *ptr;
@@ -25,7 +25,7 @@ struct block {
 
 And a request goes this way:
 ~~~C++
-auto myMemBlock = allocator.allocate(42);
+auto myMemBlock = allocator_.allocate(42);
 ~~~
 
 Motivation
@@ -40,11 +40,11 @@ StackRecycler localAllocator;
 auto m1 = localAllocator.allocate(64);
 auto m2 = localAllocator.allocate(128);
 
-localAllocator.deallocate(m1); // This freed memory can now we reused with calling the next allocation
+localAllocator.deallocate(m1); // This freed memory can now we reused with calling the next_ allocation
 localAllocator.deallocate(m2);
 ~~~
 
-A more advanced allocator with different sized buckets as one are used in [jemalloc](http://www.canonware.com/jemalloc/) would look like:
+A more advanced allocator_ with different sized buckets as one are used in [jemalloc](http://www.canonware.com/jemalloc/) would look like:
 ~~~C++
 // This defines a FreeList that is later configured by the bucketizer to its size
 using FList = freelist<mallocator, DynamicSetSize, DynamicSetSize>;
@@ -77,11 +77,11 @@ Allocator Overview
 |Allocator                 |Description                                                                 |
 ---------------------------|----------------------------------------------------------------------------
 | affix_allocator          | Allows to automatically pre- and sufix allocated regions. |
-| allocator_with_stats     | An allocator that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
+| allocator_with_stats     | An allocator_ that collects a configured number of statistic information, like number of allocated bytes, number of successful expansions and high tide |
 | bucketizer               | Manages a bunch of Allocators with increasing bucket size |
 | fallback_allocator       | Either the default Allocator can handle a request, otherwise it is passed to a fall-back Allocator |
 | (aligned_)mallocator     | Provides and interface to systems ::malloc(), the aligned variant allocates according to a given alignment  |
-| null_allocator           | An Null allocator |
+| null_allocator           | An Null allocator_ |
 | segregator               | Separates allocation requests depending on a threshold to Allocator A or B |
 | (shared_)freelist        | Manages a list of freed memory blocks in a list for faster re-usage. (The Shared variant is thread safe) |
 | (shared_)cascading_allocator | Manages in a thread safe way Allocators and automatically creates a new one when the previous are out of memory. (The Shared variant is thread safe, but it needs further improvements, because it does not frees unused allocators) |

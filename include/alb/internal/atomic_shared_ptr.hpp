@@ -8,13 +8,18 @@
 //
 ///////////////////////////////////////////////////////////////////
 
-#ifndef ALB_ATOMIC_SHARED_PTR
-#define ALB_ATOMIC_SHARED_PTR
+#ifndef ALB_ATOMIC_SHARED_PTR_HPP
+#define ALB_ATOMIC_SHARED_PTR_HPP
+
+#include <alb/config.hpp>
 
 #include <atomic>
 #include <memory>
 
 namespace alb {
+
+inline namespace ALB_VERSION_NAMESPACE() {
+
 namespace internal {
 
 template <typename T>
@@ -73,6 +78,7 @@ public:
     operator std::shared_ptr<T>() const noexcept { return load(); }
 };
 } // namespace internal
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

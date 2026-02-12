@@ -10,19 +10,22 @@
 #ifndef ALB_AFFIX_HELPER_HPP
 #define ALB_AFFIX_HELPER_HPP
 
+#include <alb/config.hpp>
+
 #include <cstdint>
 #include <type_traits>
 
 namespace alb {
-inline namespace v_100 {
+
+inline namespace ALB_VERSION_NAMESPACE() {
+
 namespace affix_helper {
 
 template <typename Affix, typename Enabled = void>
 struct affix_creator;
 
 template <typename Affix>
-struct affix_creator<Affix,
-                     typename std::enable_if_t<std::is_default_constructible_v<Affix>>> {
+struct affix_creator<Affix, typename std::enable_if_t<std::is_default_constructible_v<Affix>>> {
     template <typename Allocator>
     static constexpr void create(void* p, Allocator&) {
         new (p) Affix{};
@@ -30,8 +33,7 @@ struct affix_creator<Affix,
 };
 
 template <typename Affix>
-struct affix_creator<Affix,
-                     typename std::enable_if_t<!std::is_default_constructible_v<Affix>>> {
+struct affix_creator<Affix, typename std::enable_if_t<!std::is_default_constructible_v<Affix>>> {
     template <typename Allocator>
     static constexpr void create(void* p, Allocator& a) {
         new (p) Affix(a);
@@ -68,9 +70,7 @@ struct optional_suffix_store<Suffix, 0> {
 };
 
 } // namespace affix_helper
-} // namespace v_100
-using namespace v_100;
-
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif

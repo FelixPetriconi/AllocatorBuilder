@@ -10,10 +10,11 @@
 #ifndef ALB_STACK_HPP
 #define ALB_STACK_HPP
 
+#include <alb/config.hpp>
 #include <type_traits>
 
 namespace alb {
-inline namespace v_100 {
+inline namespace ALB_VERSION_NAMESPACE() {
 namespace internal {
 
 /**
@@ -35,12 +36,12 @@ class stack {
 
 public:
     using value_type = T;
-    static const size_t max_size = MaxSize;
+    static const std::size_t max_size = MaxSize;
 
     stack() noexcept : pos_(-1) {}
 
     bool push(T v) noexcept {
-        if (pos_ < static_cast<int>(MaxSize) - 1) {
+        if (pos_ < static_cast<std::int32_t>(MaxSize) - 1) {
             pos_++;
             elements_[pos_] = v;
             return true;
@@ -60,9 +61,7 @@ public:
     bool empty() const noexcept { return pos_ == -1; }
 };
 } // namespace internal
-} // namespace v_100
-
-using namespace v_100;
+} // namespace ALB_VERSION_NAMESPACE()
 } // namespace alb
 
 #endif
