@@ -23,7 +23,7 @@ namespace {
 
 template <class T> class affix_allocatorTest : public alb::test_helpers::AllocatorBaseTest<T> {
 protected:
-  void TearDown()
+  void TearDown() override
   {
     this->deallocateAndCheckBlockIsThenEmpty(this->mem);
   }
@@ -144,7 +144,7 @@ TYPED_TEST(affix_allocatorTest,
   auto firstSize = 8;
   this->mem = this->sut.allocate(firstSize);
   size_t sizeThatFitsJustIntoTheAllocator =
-      512 - this->mem.length - TypeParam::prefix_size - TypeParam::sufix_size;
+      512 - this->mem.length - TypeParam::prefix_size - TypeParam::suffix_size;
   EXPECT_TRUE(this->sut.expand(this->mem, sizeThatFitsJustIntoTheAllocator));
   EXPECT_EQ(sizeThatFitsJustIntoTheAllocator + firstSize, this->mem.length);
   this->checkAffixContent();

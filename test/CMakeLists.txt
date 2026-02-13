@@ -17,9 +17,9 @@ set(HEADERS
 )
 
 set(SOURCE
-  #AffixAllocatorTest.cpp
+  AffixAllocatorTest.cpp
   AllocatorBaseTest.cpp
-  #AllocatorWithStatsTest.cpp
+  AllocatorWithStatsTest.cpp
   BucketizerTest.cpp
   CascadingAllocatorsTest.cpp
   FallbackAllocatorTest.cpp
@@ -32,6 +32,7 @@ set(SOURCE
   StackAllocatorTest.cpp
   main.cpp
   TestHelpers/Base.cpp
+        AffixAllocatorTest.cpp
 )
 
 add_executable(ALBUnitTest ${SOURCE} ${HEADERS})
@@ -39,8 +40,6 @@ add_executable(ALBUnitTest ${SOURCE} ${HEADERS})
 include_directories(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 add_definitions(-DBOOST_ALL_NO_LIB)
-
-set(CMAKE_CXX_STANDARD 20)
 
 target_link_libraries(ALBUnitTest ${Boost_LIBRARIES} gtest ALB)
 

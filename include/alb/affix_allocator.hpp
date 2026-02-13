@@ -87,9 +87,9 @@ public:
 
     affix_allocator() noexcept {}
 
-    affix_allocator(affix_allocator&& x) = default;
+    affix_allocator(affix_allocator&& x) noexcept = default;
 
-    affix_allocator& operator=(affix_allocator&& x) = default;
+    affix_allocator& operator=(affix_allocator&& x) noexcept = default;
 
     /**
      * This Method returns on a given block the prefix.
@@ -114,7 +114,7 @@ public:
 
     /**
      * Allocates a Block of n bytes. Actually a Block of n + sizeof(Prefix) +
-     * sizeof(Suffix) bytes is allocated. Depending of the defines Prefix and Suffix
+     * sizeof(Suffix) bytes is allocated. Depending on the defines Prefix and Suffix
      * types objects of this gets instantiated before and/or beyond the returned
      * Block. If Zero bytes are allocated then no allocation at all takes places
      * and an empty Block is returned.
@@ -143,7 +143,7 @@ public:
 
     /**
      * The given block gets deallocated. If Prefix or Suffix are defined then
-     * their d'tor(s) are called.
+     * their destructors are called.
      * \param b The Block that should be freed.
      */
     void deallocate(block& b) noexcept {
@@ -167,7 +167,7 @@ public:
      * \param b The Block that should be checked for ownership
      */
     template <typename U = Allocator>
-    typename std::enable_if_t<traits::has_owns_v<U>, bool> owns(const block& b) const noexcept {
+    std::enable_if_t<traits::has_owns_v<U>, bool> owns(const block& b) const noexcept {
         return b && allocator_.owns(to_inner_block(b));
     }
 
@@ -207,8 +207,8 @@ public:
      * \return True, if the operation was successful.
      */
     template <typename U = Allocator>
-    typename std::enable_if_t<traits::has_expand_v<U>, bool>::type expand(block& b,
-                                                                          std::size_t delta) noexcept {
+    std::enable_if_t<traits::has_expand_v<U>, bool> expand(block& b,
+                                                                    std::size_t delta) noexcept {
         if (delta == 0) {
             return true;
         }
@@ -235,7 +235,7 @@ public:
 namespace traits {
 /**
  * This trait implements a generic way to access a possible Affix surrounded
- * by a ALB::Block. In general it returns a nullptr. Only if the passed
+ * by a ALB::Block. Normally it returns a nullptr. Only if the passed
  * Allocator is an affix_allocator it returns a real object
  * \ingroup group_traits
  */
